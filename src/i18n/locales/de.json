@@ -1,0 +1,86 @@
+{
+  "title": "Scattergories",
+  "roundCounter": "Runde {{current}} von {{total}}",
+  "buttons": {
+    "startRound": "Runde Starten",
+    "nextRound": "Nächste Runde",
+    "spinning": "Dreht...",
+    "skipLetter": "Buchstabe Überspringen",
+    "reset": "⟲ Zurücksetzen",
+    "pause": "Pause",
+    "resume": "Fortsetzen",
+    "newGame": "Neues Spiel",
+    "mute": "Stummschalten",
+    "unmute": "Ton Einschalten",
+    "shuffle": "Mischen",
+    "add": "Hinzufügen",
+    "remove": "Entfernen",
+    "close": "✕"
+  },
+  "timer": {
+    "timeUp": "Zeit abgelaufen!",
+    "getReady": "Mach dich bereit...",
+    "go": "Los!",
+    "roundOver": "Runde beendet!",
+    "gameComplete": "Spiel beendet. Starten Sie ein neues Spiel.",
+    "gameCompleteRound": "Runde beendet! Spiel beendet."
+  },
+  "status": {
+    "seconds": "Sekunden"
+  },
+  "settings": {
+    "duration": "Timer",
+    "rounds": "Runden",
+    "categorySource": "Quelle",
+    "categoryDraw": "Ziehen",
+    "addCustom": "Benutzerdefinierte Kategorie hinzufügen",
+    "placeholder": "z.B. Programmiersprachen"
+  },
+  "categories": {
+    "title": "Kategorien",
+    "default": "Standard",
+    "custom": "Benutzerdefiniert",
+    "mixed": "Gemischt",
+    "noCustom": "Noch keine benutzerdefinierten Kategorien.",
+    "minimumRequired": "Fügen Sie mindestens eine benutzerdefinierte Kategorie hinzu, um den benutzerdefinierten Modus zu verwenden."
+  },
+  "usedLetters": "Verwendete Buchstaben: {{letters}}{{empty}}",
+  "usedLettersEmpty": "Noch keine",
+  "shortcuts": "Abkürzungen: Leerzeichen nächste Runde, R Buchstabe überspringen, P Pause, N neues Spiel, C Kategorien, A benutzerdefiniert hinzufügen",
+  "footer": {
+    "howToPlay": "Spielanleitung",
+    "officialGame": "Offizielles Spiel",
+    "sourceCode": "Quellcode",
+    "privacy": "Diese App speichert deine Einstellungen und benutzerdefinierten Kategorien lokal mit localStorage in deinem Browser. Es werden keine Daten an einen Server gesendet."
+  },
+  "modal": {
+    "title": "Wie man Scattergories spielt",
+    "objective": "Ziel",
+    "objectiveText": "Punkte verdienen, indem du Wörter aufschreibst, die mit einem bestimmten Buchstaben beginnen und in die Kategorien passen.",
+    "gameplay": "Spielablauf",
+    "gameplayPoints": [
+      "Ein Buchstabe wird zufällig ausgewählt und angezeigt",
+      "Du hast eine begrenzte Zeit (standardmäßig 90 Sekunden), um Antworten aufzuschreiben",
+      "Alle Antworten müssen mit dem angegebenen Buchstaben beginnen",
+      "Jede Kategorie muss eine eindeutige Antwort haben (keine Duplikate zwischen Kategorien)"
+    ],
+    "scoring": "Punktevergabe (mit einem anderen Spieler)",
+    "scoringPoints": [
+      "1 Punkt: Dein Wort ist eindeutig (niemand anders hat es aufgeschrieben)",
+      "0 Punkte: Ein anderer Spieler hat das gleiche Wort auch aufgeschrieben",
+      "Ungewöhnliche, kreative Antworten sind oft wertvoller!"
+    ],
+    "categories": "Kategorien",
+    "categoriesText": "Dieses Tool zieht Kategorien aus dem offiziellen Scattergories-Spiel. Du kannst auch benutzerdefinierte Kategorien erstellen und sie mit den Standardkategorien mischen.",
+    "features": "Funktionen",
+    "featuresList": [
+      "Verwende die Schaltfläche Buchstabe überspringen (oder drücke R), um einen neuen Buchstaben zu erhalten",
+      "Aktiviere Pause (drücke P) während einer Runde zum Nachdenken",
+      "Passe die Timer-Dauer und Anzahl der Runden in den Einstellungen an",
+      "Stummschaltung bei Bedarf",
+      "Alle Einstellungen werden automatisch gespeichert"
+    ],
+    "footer": "Dies ist ein Hilfstool zum Verwalten des Buchstabens und des Timers. Viel Spaß mit deinen Freunden!"
+  },
+  "language": "Sprache"
+}

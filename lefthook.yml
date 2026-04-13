@@ -1,0 +1,28 @@
+# Lefthook configuration
+# See https://github.com/evilmartians/lefthook for documentation
+
+pre-commit:
+  parallel: true
+  commands:
+    biome:
+      glob: "*.{js,ts,jsx,tsx,json,jsonc,css}"
+      run: pnpm exec biome check --files-ignore-unknown=true --no-errors-on-unmatched --write {staged_files}
+      stage_fixed: true
+
+    spellcheck:
+      run: pnpm exec cspell lint --config=cspell.yaml --no-progress --no-must-find-files {staged_files}
+
+    python-lint:
+      root: "tools"
+      glob: "tools/**/*.py"
+      run: uv run --quiet ruff check {staged_files}
+
+    python-typecheck:
+      root: "tools"
+      glob: "tools/**/*.py"
+      run: uv run --quiet ty check
+
+pre-push:
+  commands:
+    full-ci:
+      run: pnpm ci

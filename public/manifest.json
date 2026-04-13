@@ -1,0 +1,21 @@
+{
+  "name": "Scattergories Timer Helper",
+  "short_name": "Scattergories",
+  "description": "A helper app to manage the letter spinner and timer for the Scattergories word game",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#2b2f45",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-or-landscape",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["games", "productivity"],
+  "screenshots": [],
+  "prefer_related_applications": false
+}

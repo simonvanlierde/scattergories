@@ -1,0 +1,69 @@
+# Default task ensures just lists its commands
+default:
+    @just --list
+
+#----------------------
+# Development commands
+#----------------------
+
+# Install dependencies
+install:
+    @uv sync
+
+# Install optional translation dependencies (Argos)
+install-translation:
+    @uv sync --group translation
+
+# Run linting checks
+lint:
+    @uv run ruff check
+
+# Format with ruff (if fixing is available)
+format:
+    @uv run ruff check --fix
+
+# Run type checking (includes optional translation deps)
+typecheck:
+    @uv run --group translation ty check
+
+# Run tests
+test:
+    @uv run pytest
+
+# Run all checks (lint, type, test)
+check: lint typecheck test
+
+# Generate letter weights from Wikitext (`small` by default, pass `large` for Wikitext-103)
+generate-weights size='small':
+    @if [ "{{ size }}" = "large" ]; then uv run python -m letter_frequency.wikitext_frequencies --large; else uv run python -m letter_frequency.wikitext_frequencies; fi
+
+# Preview selected dataset and output path (`small` by default, pass `large` for Wikitext-103)
+dry-run size='small':
+    @if [ "{{ size }}" = "large" ]; then uv run python -m letter_frequency.wikitext_frequencies --dry-run --large; else uv run python -m letter_frequency.wikitext_frequencies --dry-run; fi
+
+# Display generated letter weights (`small` by default, pass `large` for Wikitext-103)
+show-weights size='small':
+    @dataset="wikitext-2-raw-v1"; \
+    if [ "{{ size }}" = "large" ]; then dataset="wikitext-103-raw-v1"; fi; \
+    echo "=== $$dataset weights ==="; \
+    cat "letter_frequency/data/$$dataset/letter_weights.ts" 2>/dev/null || echo "Run 'just generate-weights {{ size }}' first"
+
+# Translate src/game/constants.ts CATEGORIES into other locales
+translate-categories locales='es':
+    @uv run --group translation python translation/service.py --target-locales {{ locales }}
+
+# Preview category translation without downloading or translating
+translate-categories-dry-run locales='es':
+    @uv run python translation/service.py --target-locales {{ locales }} --dry-run
+
+# Translate src/i18n/locales/en.json payload into target locale files
+translate-locales locales='es':
+    @uv run --group translation python translation/service.py --mode locales --target-locales {{ locales }}
+
+# Preview locale payload translation without downloading or translating
+translate-locales-dry-run locales='es':
+    @uv run python translation/service.py --mode locales --target-locales {{ locales }} --dry-run
+
+# Clean generated artifacts
+clean:
+    @rm -rf data/ __pycache__ .pytest_cache .ruff_cache

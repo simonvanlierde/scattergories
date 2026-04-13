@@ -1,0 +1,86 @@
+{
+  "title": "Scattergories",
+  "roundCounter": "Round {{current}} of {{total}}",
+  "buttons": {
+    "startRound": "Start Round",
+    "nextRound": "Next Round",
+    "spinning": "Spinning...",
+    "skipLetter": "Skip Letter",
+    "reset": "⟲ Reset",
+    "pause": "Pause",
+    "resume": "Resume",
+    "newGame": "New Game",
+    "mute": "Mute",
+    "unmute": "Unmute",
+    "shuffle": "Shuffle",
+    "add": "Add",
+    "remove": "Remove",
+    "close": "✕"
+  },
+  "timer": {
+    "timeUp": "Time's up!",
+    "getReady": "Get ready...",
+    "go": "Go!",
+    "roundOver": "Round over!",
+    "gameComplete": "Game complete. Start a new game.",
+    "gameCompleteRound": "Round over! Game complete."
+  },
+  "status": {
+    "seconds": "seconds"
+  },
+  "settings": {
+    "duration": "Timer",
+    "rounds": "Rounds",
+    "categorySource": "Source",
+    "categoryDraw": "Draw",
+    "addCustom": "Add custom category",
+    "placeholder": "e.g. Programming Languages"
+  },
+  "categories": {
+    "title": "Categories",
+    "default": "Default",
+    "custom": "Custom",
+    "mixed": "Mixed",
+    "noCustom": "No custom categories yet.",
+    "minimumRequired": "Add at least one custom category to use Custom mode."
+  },
+  "usedLetters": "Used letters: {{letters}}{{empty}}",
+  "usedLettersEmpty": "None yet",
+  "shortcuts": "Shortcuts: Space next round, R skip letter, P pause, N new game, C categories, A add custom",
+  "footer": {
+    "howToPlay": "How to Play",
+    "officialGame": "Official Game",
+    "sourceCode": "Source Code",
+    "privacy": "This app uses localStorage to save your settings and custom categories locally in your browser. No data is sent to any server."
+  },
+  "modal": {
+    "title": "How to Play Scattergories",
+    "objective": "Objective",
+    "objectiveText": "Score points by writing down words that start with a given letter and fit the categories.",
+    "gameplay": "Gameplay",
+    "gameplayPoints": [
+      "A letter is randomly selected and displayed",
+      "You have a limited time (default 90 seconds) to write answers",
+      "All answers must start with the given letter",
+      "Each category must have a unique answer (no duplicates across categories)"
+    ],
+    "scoring": "Scoring (with another player)",
+    "scoringPoints": [
+      "1 point: Your word is unique (no one else wrote it)",
+      "0 points: Someone else also wrote the same word",
+      "Uncommon, creative answers are often more valuable!"
+    ],
+    "categories": "Categories",
+    "categoriesText": "This tool draws categories from the official Scattergories game. You can also create custom categories and mix them with the defaults.",
+    "features": "Features",
+    "featuresList": [
+      "Use the Skip Letter button (or press R) to get a new letter",
+      "Toggle Pause (press P) during a round to think",
+      "Adjust timer duration and number of rounds in Settings",
+      "Mute sound if needed",
+      "All settings are saved automatically"
+    ],
+    "footer": "This is a helper tool to manage the letter and timer. Have fun with friends!"
+  },
+  "language": "Language"
+}

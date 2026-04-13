@@ -1,0 +1,50 @@
+[project]
+  dependencies    = ["datasets>=4.8.4"]
+  description     = "Derive first-letter frequencies from corpora for Scattergories letter weighting"
+  name            = "letter-frequency"
+  readme          = "README.md"
+  requires-python = ">=3.14"
+  version         = "0.1.0"
+
+  [project.scripts]
+    translate-categories = "translation.service:main"
+
+[dependency-groups]
+  dev         = ["pytest-cov>=6.0.0", "pytest>=8.0.0", "ruff>=0.15.9", "ty>=0.0.29"]
+  translation = ["argostranslate>=1.9.6"]
+
+[tool.pytest.ini_options]
+  addopts   = ["--cov-branch", "--cov-report=html", "--cov-report=term-missing", "--cov=.", "--tb=short", "-v"]
+  testpaths = ["tests"]
+
+[tool.ruff]
+  line-length    = 120
+  target-version = "py314"
+
+  extend-exclude = ["*/.venv/*"]
+
+  format.docstring-code-format = true
+
+  [tool.ruff.lint]
+
+    fixable = ["ALL"]
+    select  = ["ALL"]
+
+    ignore = [
+      # Avoid conflicts with the formatter
+      "COM812", # missing-trailing-comma
+
+      # Overly strict rules
+      "ANN204", # missing-return-type-special-method
+      "D105",   # undocumented-magic-method
+      "D107",   # undocumented-public-init
+    ]
+
+    pydocstyle.convention = "google"
+
+    [tool.ruff.lint.per-file-ignores]
+
+      "tests/**/*.py" = [
+        "PLR2004", # Literal values keep assertions readable in tests
+        "S101",    # allow assert in test files
+      ]

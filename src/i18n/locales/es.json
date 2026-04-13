@@ -1,0 +1,86 @@
+{
+  "title": "Scattergories",
+  "roundCounter": "Ronda {{current}} de {{total}}",
+  "buttons": {
+    "startRound": "Comenzar Ronda",
+    "nextRound": "Siguiente Ronda",
+    "spinning": "Girando...",
+    "skipLetter": "Saltar Letra",
+    "reset": "⟲ Reiniciar",
+    "pause": "Pausa",
+    "resume": "Reanudar",
+    "newGame": "Nuevo Juego",
+    "mute": "Silenciar",
+    "unmute": "Activar Sonido",
+    "shuffle": "Mezclar",
+    "add": "Añadir",
+    "remove": "Eliminar",
+    "close": "✕"
+  },
+  "timer": {
+    "timeUp": "¡Se acabó el tiempo!",
+    "getReady": "Prepárate...",
+    "go": "¡Adelante!",
+    "roundOver": "¡Ronda terminada!",
+    "gameComplete": "Juego completado. Inicia un nuevo juego.",
+    "gameCompleteRound": "¡Ronda terminada! Juego completado."
+  },
+  "status": {
+    "seconds": "segundos"
+  },
+  "settings": {
+    "duration": "Temporizador",
+    "rounds": "Rondas",
+    "categorySource": "Origen",
+    "categoryDraw": "Dibujar",
+    "addCustom": "Añadir categoría personalizada",
+    "placeholder": "p.ej. Lenguajes de Programación"
+  },
+  "categories": {
+    "title": "Categorías",
+    "default": "Predeterminadas",
+    "custom": "Personalizado",
+    "mixed": "Mixto",
+    "noCustom": "Sin categorías personalizadas aún.",
+    "minimumRequired": "Añade al menos una categoría personalizada para usar el modo Personalizado."
+  },
+  "usedLetters": "Letras usadas: {{letters}}{{empty}}",
+  "usedLettersEmpty": "Ninguna aún",
+  "shortcuts": "Atajos: Espacio siguiente ronda, R saltar letra, P pausa, N nuevo juego, C categorías, A añadir personalizado",
+  "footer": {
+    "howToPlay": "Cómo Jugar",
+    "officialGame": "Juego Oficial",
+    "sourceCode": "Código Fuente",
+    "privacy": "Esta aplicación utiliza localStorage para guardar tus configuraciones y categorías personalizadas localmente en tu navegador. Ningún dato se envía a ningún servidor."
+  },
+  "modal": {
+    "title": "Cómo Jugar Scattergories",
+    "objective": "Objetivo",
+    "objectiveText": "Obtén puntos escribiendo palabras que comiencen con una letra determinada y se ajusten a las categorías.",
+    "gameplay": "Juego",
+    "gameplayPoints": [
+      "Se selecciona y se muestra una letra al azar",
+      "Tienes un tiempo limitado (90 segundos por defecto) para escribir respuestas",
+      "Todas las respuestas deben comenzar con la letra dada",
+      "Cada categoría debe tener una respuesta única (sin duplicados entre categorías)"
+    ],
+    "scoring": "Puntuación (con otro jugador)",
+    "scoringPoints": [
+      "1 punto: Tu palabra es única (nadie más la escribió)",
+      "0 puntos: Otro jugador también escribió la misma palabra",
+      "¡Las respuestas poco comunes y creativas suelen valer más!"
+    ],
+    "categories": "Categorías",
+    "categoriesText": "Esta herramienta extrae categorías del juego oficial de Scattergories. También puedes crear categorías personalizadas y combinarlas con las predeterminadas.",
+    "features": "Características",
+    "featuresList": [
+      "Usa el botón Saltar Letra (o presiona R) para obtener una nueva letra",
+      "Activa Pausa (presiona P) durante una ronda para pensar",
+      "Ajusta la duración del temporizador y el número de rondas en Configuración",
+      "Silencia el sonido si es necesario",
+      "Todos los ajustes se guardan automáticamente"
+    ],
+    "footer": "Esta es una herramienta auxiliar para administrar la letra y el temporizador. ¡Diviértete con amigos!"
+  },
+  "language": "Idioma"
+}

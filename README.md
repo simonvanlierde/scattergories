@@ -1,0 +1,84 @@
+# 🎲 Scattergories Helper
+
+A beautiful, responsive, digital companion for the classic game of Scattergories. This app completely replaces the physical 20-sided letter die, the sand timer, and the paper category cards, letting you play effortlessly with just paper and a pen.
+
+## 🌟 Features
+
+- **Draw 12 Mechanics**: Generates a perfect standard 12-category round by default.
+- **Anti-Duplication Letter Roller**: A satisfying animated letter roller that uses an actual Fisher-Yates shuffle under the hood to ensure you never roll the same letter twice in a game.
+- **Configurable Timer**: An urgent, pulsing timer with an alarm built right in.
+- **Progressive Round Engine**: Click "Next Round" to automatically increment the round, reroll the letter, and preserve your existing categories!
+- **Fully Responsive & Local**: Works seamlessly on mobile and desktop, stores all custom data privately locally via `localStorage`, and functions fully offline if installed as a PWA.
+
+## 🛠️ Tech Stack
+
+- **Framework:** React 19 + TypeScript + Vite 8
+- **Package manager:** pnpm (via Corepack)
+- **Lint & format:** Biome
+- **Unit tests:** Vitest
+- **E2E tests:** Playwright (chromium, against the built `vite preview` bundle)
+- **Runtime image:** Caddy serving a static SPA bundle
+
+## 🚀 Getting started
+
+Requirements: **Node ≥ 24** and **pnpm ≥ 10** (Corepack handles pnpm automatically). [`just`](https://github.com/casey/just) is recommended as a thin command runner.
+
+### Local development
+
+```bash
+pnpm install
+pnpm dev
+```
+
+Open <http://localhost:5173> in your browser.
+
+### Local quality gate
+
+The same checks CI runs, in one command:
+
+```bash
+just ci   # or: pnpm ci
+```
+
+This runs typecheck → spellcheck → biome → unit tests → production build.
+
+### End-to-end tests
+
+Playwright boots `vite preview` against the production build and exercises the app in chromium:
+
+```bash
+pnpm test:e2e
+```
+
+### Git hooks
+
+Pre-commit hooks (via [lefthook](https://github.com/evilmartians/lefthook)) run Biome and cspell on staged files plus ruff/ty on `tools/**`. A pre-push hook runs the full `pnpm ci` pipeline so regressions never reach `origin`.
+
+## 🐳 Self-hosting with Docker
+
+No registry image is published — build locally and run. The runtime image is Caddy serving the static bundle with SPA fallback, long-cache headers on hashed assets, and a hardened runtime (read-only filesystem, no new privileges, all caps dropped).
+
+```bash
+just up       # build and start (http://localhost:8080)
+just logs     # tail logs
+just down     # stop
+```
+
+To expose the app over a Cloudflare Tunnel, set `TUNNEL_TOKEN` in a `.env` file next to `docker-compose.yml` and run:
+
+```bash
+just up-tunnel
+```
+
+## 🤖 CI
+
+GitHub Actions runs on every pull request and push to `main`:
+
+1. **`check`** — install, typecheck, spellcheck, biome, Vitest with coverage, production build.
+2. **`e2e`** — Playwright against the built bundle (chromium, with browser cache).
+
+Dependabot opens grouped weekly PRs for npm, GitHub Actions, Docker, and the `tools/` uv environment.
+
+## 🔒 Privacy
+
+Custom categories are stored entirely in your browser's `localStorage`. Nothing ever leaves the device.
