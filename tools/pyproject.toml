@@ -10,7 +10,7 @@
     translate-categories = "translation.service:main"
 
 [dependency-groups]
-  dev         = ["pytest-cov>=6.0.0", "pytest>=8.0.0", "ruff>=0.15.9", "ty>=0.0.29"]
+  dev         = ["pytest-cov>=6.0.0", "pytest>=9.0.3", "ruff>=0.15.9", "ty>=0.0.29"]
   translation = ["argostranslate>=1.9.6"]
 
 [tool.pytest.ini_options]
