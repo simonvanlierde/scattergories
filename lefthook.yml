@@ -25,4 +25,4 @@ pre-commit:
 pre-push:
   commands:
     full-ci:
-      run: pnpm ci
+      run: pnpm run ci
