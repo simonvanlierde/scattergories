@@ -37,6 +37,10 @@ updates:
     labels:
       - dependencies
       - docker
+    groups:
+      docker-dependencies:
+        patterns:
+          - "*"
 
   - package-ecosystem: uv
     directory: /tools
@@ -47,3 +51,7 @@ updates:
     labels:
       - dependencies
       - python
+    groups:
+      python-dependencies:
+        patterns:
+          - "*"
