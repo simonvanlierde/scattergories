@@ -10,9 +10,9 @@ default:
 install:
     pnpm install --frozen-lockfile
 
-# Run the full local CI pipeline (typecheck + lint + spellcheck + unit tests + build)
-ci:
-    pnpm run ci
+# Run the full local verification pipeline (typecheck + lint + spellcheck + unit tests + build)
+verify:
+    pnpm run verify
 
 # Audit dependencies for known security and adverse-status issues
 audit:
@@ -38,6 +38,14 @@ dev:
 # Build for production
 build:
     pnpm build
+
+# Run spellcheck across the full repo
+spellcheck:
+    pnpm run spellcheck
+
+# Run spellcheck only on selected files
+spellcheck-changed *files:
+    pnpm run spellcheck-changed -- {{ files }}
 
 # Typecheck, spellcheck, and lint
 check:

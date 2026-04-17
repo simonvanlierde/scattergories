@@ -1,7 +1,7 @@
 # 🎲 Scattergories Helper
 
 [![CI](https://github.com/simonvanlierde/scattergories/actions/workflows/ci.yml/badge.svg)](https://github.com/simonvanlierde/scattergories/actions/workflows/ci.yml)
-[![Tools CI](https://github.com/simonvanlierde/scattergories/actions/workflows/tools.yml/badge.svg)](https://github.com/simonvanlierde/scattergories/actions/workflows/tools.yml)
+[![Tools Validate](https://github.com/simonvanlierde/scattergories/actions/workflows/tools.yml/badge.svg)](https://github.com/simonvanlierde/scattergories/actions/workflows/tools.yml)
 
 A beautiful, responsive, digital companion for the classic game of Scattergories. This app completely replaces the physical 20-sided letter die, the sand timer, and the paper category cards, letting you play effortlessly with just paper and a pen.
 
@@ -37,13 +37,14 @@ Open <http://localhost:5173> in your browser.
 
 ### Local quality gate
 
-The same checks CI runs, in one command:
+Run the full local pipeline in one command:
 
 ```bash
-just ci   # or: pnpm ci
+just verify   # or: pnpm run verify
 ```
 
-This runs typecheck → spellcheck → biome → unit tests → production build.
+This runs typecheck → full spellcheck → biome → unit tests → production build.
+Use `just spellcheck` for a full-repo spelling pass, or `just spellcheck-changed <files...>` for a targeted run.
 
 ### End-to-end tests
 
@@ -55,7 +56,7 @@ pnpm test:e2e
 
 ### Git hooks
 
-Pre-commit hooks (via [lefthook](https://github.com/evilmartians/lefthook)) run Biome and cspell on staged files plus ruff/ty on `tools/**`. A pre-push hook runs the full `pnpm ci` pipeline so regressions never reach `origin`.
+Pre-commit hooks (via [lefthook](https://github.com/evilmartians/lefthook)) run Biome and targeted cspell on staged files plus ruff/ty on `tools/**`. A pre-push hook runs the full `pnpm run verify` pipeline so regressions never reach `origin`.
 
 ## 🐳 Self-hosting with Docker
 
@@ -77,7 +78,7 @@ just up-tunnel
 
 GitHub Actions runs on every pull request and push to `main`:
 
-1. **`check`** — install, typecheck, spellcheck, biome, Vitest with coverage, production build.
+1. **`Validate`** — install, typecheck, changed-file spellcheck on PRs, full spellcheck on manual dispatch, biome, Vitest, production build.
 2. **`e2e`** — Playwright against the built bundle (chromium, with browser cache).
 
 Dependabot opens grouped weekly PRs for npm, GitHub Actions, Docker, and the `tools/` uv environment.

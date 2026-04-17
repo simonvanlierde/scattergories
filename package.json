@@ -15,12 +15,13 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "typecheck": "tsc --noEmit",
-    "spellcheck": "cspell lint .",
+    "spellcheck": "cspell lint . --config=cspell.yml --no-config-search --cache --cache-strategy content",
+    "spellcheck-changed": "cspell lint --config=cspell.yml --no-config-search --cache --cache-strategy content --no-progress --no-must-find-files",
     "check": "pnpm typecheck && pnpm spellcheck && pnpm lint",
+    "verify": "pnpm check && pnpm test && pnpm build",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:e2e": "playwright test",
-    "ci": "pnpm check && pnpm test && pnpm build"
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "i18next": "^26.0.5",

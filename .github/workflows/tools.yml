@@ -1,4 +1,4 @@
-name: Tools CI
+name: Tools Validate
 
 on:
   pull_request:
@@ -7,6 +7,7 @@ on:
       - 'tools/**/*.py'
       - 'tools/pyproject.toml'
       - 'tools/uv.lock'
+      - 'tools/justfile'
       - '.github/workflows/tools.yml'
   workflow_dispatch:
 

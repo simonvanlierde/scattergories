@@ -1,4 +1,4 @@
-name: CI
+name: Validate
 
 on:
   pull_request:
@@ -7,6 +7,9 @@ on:
       - 'biome.json'
       - 'cspell.yml'
       - 'index.html'
+      - 'justfile'
+      - 'lefthook.yml'
+      - 'README.md'
       - 'package.json'
       - 'pnpm-lock.yaml'
       - 'public/**'
@@ -26,11 +29,13 @@ permissions:
 
 jobs:
   ci:
-    name: Validate app
+    name: Verify app
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - uses: pnpm/action-setup@v6
 
@@ -40,4 +45,28 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
-      - run: pnpm run ci
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      - name: Spellcheck changed files
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          mapfile -t changed_files < <(git diff --name-only --diff-filter=ACMRT "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}")
+
+          if [ "${#changed_files[@]}" -gt 0 ]; then
+            pnpm run spellcheck-changed -- "${changed_files[@]}"
+          fi
+
+      - name: Spellcheck full repo
+        if: github.event_name != 'pull_request'
+        run: pnpm run spellcheck
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Unit tests
+        run: pnpm run test
+
+      - name: Production build
+        run: pnpm run build

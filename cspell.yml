@@ -84,6 +84,7 @@ words:
   # Tools ecosystem
   - addopts
   - argostranslate
+  - ACMRT
   - huggingface
   - justfile
   - monkeypatch
