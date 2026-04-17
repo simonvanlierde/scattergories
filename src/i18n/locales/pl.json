@@ -5,7 +5,7 @@
     "startRound": "Rozpocznij Rundę",
     "nextRound": "Następna Runda",
     "spinning": "Losowanie...",
-    "skipLetter": "Zmień Literę",
+    "skipLetter": "Pomiń Literę",
     "reset": "⟲ Resetuj",
     "pause": "Pauza",
     "resume": "Wznów",
@@ -49,7 +49,7 @@
   },
   "usedLetters": "Użyte litery: {{letters}}{{empty}}",
   "usedLettersEmpty": "Brak",
-  "shortcuts": "Skróty: Spacja następna runda, R nowa litera, P pauza, N nowa gra, C kategorie, A dodaj kategorię",
+  "shortcuts": "Skróty: Spacja następna runda, R pomiń literę, P pauza, N nowa gra, C kategorie, A dodaj kategorię",
   "footer": {
     "howToPlay": "Jak grać",
     "officialGame": "Oficjalna Gra",
@@ -77,7 +77,7 @@
     "categoriesText": "To narzędzie korzysta z kategorii z oficjalnej gry. Możesz też tworzyć własne kategorie i mieszać je ze standardowymi.",
     "features": "Funkcje",
     "featuresList": [
-      "Użyj przycisku Zmień Literę (lub R), jeśli litera jest za trudna",
+      "Użyj przycisku Pomiń Literę (lub R), jeśli litera jest za trudna",
       "Włącz Pauzę (lub P) podczas rundy, aby zyskać chwilę na zastanowienie",
       "Dostosuj czas i liczbę rund w Ustawieniach",
       "Możesz w każdej chwili wyciszyć dźwięk",

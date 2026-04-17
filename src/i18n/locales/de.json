@@ -4,8 +4,8 @@
   "buttons": {
     "startRound": "Runde Starten",
     "nextRound": "Nächste Runde",
-    "spinning": "Wird gewählt...",
-    "skipLetter": "Anderer Buchstabe",
+    "spinning": "Wird gedreht...",
+    "skipLetter": "Buchstabe überspringen",
     "reset": "⟲ Zurücksetzen",
     "pause": "Pause",
     "resume": "Fortsetzen",
@@ -35,7 +35,7 @@
     "duration": "Zeitlimit",
     "rounds": "Rundenanzahl",
     "categorySource": "Quelle",
-    "categoryDraw": "Ziehen",
+    "categoryDraw": "Auslosung",
     "addCustom": "Eigene Kategorie",
     "placeholder": "z.B. Programmiersprachen"
   },
@@ -49,7 +49,7 @@
   },
   "usedLetters": "Benutzte Buchstaben: {{letters}}{{empty}}",
   "usedLettersEmpty": "Keine",
-  "shortcuts": "Shortcuts: Leertaste Nächste Runde, R Neuer Buchstabe, P Pause, N Neues Spiel, C Kategorien, A Kategorie hinzufügen",
+  "shortcuts": "Shortcuts: Leertaste Nächste Runde, R Buchstabe überspringen, P Pause, N Neues Spiel, C Kategorien, A Kategorie hinzufügen",
   "footer": {
     "howToPlay": "Spielanleitung",
     "officialGame": "Offizielles Spiel",

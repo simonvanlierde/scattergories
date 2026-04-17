@@ -2,10 +2,10 @@
   "title": "Scattergories",
   "roundCounter": "Ronde {{current}} van {{total}}",
   "buttons": {
-    "startRound": "Ronde Starten",
+    "startRound": "Start Ronde",
     "nextRound": "Volgende Ronde",
-    "spinning": "Kiezen...",
-    "skipLetter": "Andere Letter",
+    "spinning": "Draaien...",
+    "skipLetter": "Letter Overslaan",
     "reset": "⟲ Resetten",
     "pause": "Pauze",
     "resume": "Hervatten",
@@ -24,7 +24,7 @@
   "timer": {
     "timeUp": "Tijd om!",
     "getReady": "Maak je klaar...",
-    "go": "Start!",
+    "go": "Gaan!",
     "roundOver": "Ronde voorbij!",
     "gameCompleteRound": "Ronde voorbij! Spel voltooid."
   },
@@ -35,7 +35,7 @@
     "duration": "Timer",
     "rounds": "Aantal rondes",
     "categorySource": "Bron",
-    "categoryDraw": "Selectie",
+    "categoryDraw": "Loting",
     "addCustom": "Eigen categorie",
     "placeholder": "bijv. Programmeertalen"
   },

@@ -4,8 +4,8 @@
   "buttons": {
     "startRound": "Démarrer la manche",
     "nextRound": "Manche suivante",
-    "spinning": "Choix en cours...",
-    "skipLetter": "Changer de lettre",
+    "spinning": "Tirage au sort...",
+    "skipLetter": "Passer la lettre",
     "reset": "⟲ Réinitialiser",
     "pause": "Pause",
     "resume": "Reprendre",
@@ -49,7 +49,7 @@
   },
   "usedLetters": "Lettres utilisées : {{letters}}{{empty}}",
   "usedLettersEmpty": "Aucune pour l'instant",
-  "shortcuts": "Raccourcis : Espace manche suivante, R changer lettre, P pause, N nouvelle partie, C catégories, A ajouter catégorie",
+  "shortcuts": "Raccourcis : Espace manche suivante, R passer lettre, P pause, N nouvelle partie, C catégories, A ajouter catégorie",
   "footer": {
     "howToPlay": "Comment jouer",
     "officialGame": "Jeu Officiel",

@@ -4,8 +4,8 @@
   "buttons": {
     "startRound": "Inizia Round",
     "nextRound": "Prossimo Round",
-    "spinning": "Scelta in corso...",
-    "skipLetter": "Cambia Lettera",
+    "spinning": "Sorteggio...",
+    "skipLetter": "Salta Lettera",
     "reset": "⟲ Ripristina",
     "pause": "Pausa",
     "resume": "Riprendi",
@@ -49,7 +49,7 @@
   },
   "usedLetters": "Lettere usate: {{letters}}{{empty}}",
   "usedLettersEmpty": "Nessuna",
-  "shortcuts": "Scorciatoie: Spazio prossimo round, R cambia lettera, P pausa, N nuova partita, C categorie, A aggiungi categoria",
+  "shortcuts": "Scorciatoie: Spazio prossimo round, R salta lettera, P pausa, N nuova partita, C categorie, A aggiungi categoria",
   "footer": {
     "howToPlay": "Come Giocare",
     "officialGame": "Gioco Ufficiale",
@@ -77,7 +77,7 @@
     "categoriesText": "Questo strumento usa le categorie del gioco ufficiale. Puoi anche crearne di tue e mischiarle con quelle standard.",
     "features": "Funzioni",
     "featuresList": [
-      "Usa il tasto Cambia Lettera (o premi R) se una lettera è troppo difficile",
+      "Usa il tasto Salta Lettera (o premi R) se una lettera è troppo difficile",
       "Usa la Pausa (premi P) durante il round per pensare",
       "Regola la durata e il numero di round nelle Impostazioni",
       "Disattiva l'audio se necessario",
