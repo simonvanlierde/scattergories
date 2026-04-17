@@ -13,19 +13,25 @@ function toStringArray(value: unknown): string[] {
   return value.filter((item): item is string => typeof item === 'string');
 }
 
-// biome-ignore lint/style/noDefaultExport: required for React.lazy
-export default function HowToPlayModal({ onClose }: HowToPlayModalProps) {
+export function HowToPlayModal({ onClose }: HowToPlayModalProps) {
   const { t } = useTranslation();
   const gameplayPoints = toStringArray(t('modal.gameplayPoints', { returnObjects: true }));
   const scoringPoints = toStringArray(t('modal.scoringPoints', { returnObjects: true }));
   const featuresList = toStringArray(t('modal.featuresList', { returnObjects: true }));
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const lastFocusedRef = useRef<HTMLElement | null>(null);
+
+  function closeDialog() {
+    onClose();
+    lastFocusedRef.current?.focus();
+  }
 
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) {
       return;
     }
+    lastFocusedRef.current = document.activeElement as HTMLElement | null;
     dialog.showModal();
 
     function onBackdropClick(event: MouseEvent) {
@@ -46,13 +52,13 @@ export default function HowToPlayModal({ onClose }: HowToPlayModalProps) {
       ref={dialogRef}
       className="modal-dialog"
       aria-labelledby="how-to-play-title"
-      onClose={onClose}
+      onClose={closeDialog}
     >
       <div className="modal-content">
         <button
           type="button"
           className="modal-close"
-          onClick={onClose}
+          onClick={() => dialogRef.current?.close()}
           aria-label={t('buttons.close')}
           title={t('buttons.closeTooltip', { defaultValue: t('buttons.close') })}
         >

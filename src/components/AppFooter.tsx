@@ -1,28 +1,33 @@
-import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Theme } from '../hooks/useSettings';
-import { ensureLanguageLoaded } from '../i18n/config';
-import { getEnabledLocales, isLocaleEnabled } from '../i18n/localeHealth';
-import { getNativeName, SUPPORTED_LOCALES } from '../i18n/localeRegistry';
 
 interface AppFooterProps {
+  currentLanguage: string;
+  isLanguagePending: boolean;
+  languageOptions: Array<{
+    code: string;
+    isDisabled: boolean;
+    nativeName: string;
+  }>;
   theme: Theme;
+  onLanguageChange: (language: string) => void;
   onToggleTheme: () => void;
   onShowHowToPlay: () => void;
 }
 
-const LANGUAGE_CODES = SUPPORTED_LOCALES;
-
-export const AppFooter = memo(function AppFooter({
+function AppFooter({
+  currentLanguage,
+  isLanguagePending,
+  languageOptions,
   theme,
+  onLanguageChange,
   onToggleTheme,
   onShowHowToPlay,
 }: AppFooterProps) {
-  const { t, i18n } = useTranslation();
-  const enabledLocales = getEnabledLocales();
+  const { t } = useTranslation();
 
   return (
-    <footer className="app-footer">
+    <footer className="app-footer card-surface">
       <div className="footer-content">
         <button type="button" className="footer-link" onClick={onShowHowToPlay}>
           {t('footer.howToPlay')}
@@ -45,29 +50,29 @@ export const AppFooter = memo(function AppFooter({
         </a>
         <button
           type="button"
-          className="footer-link theme-toggle"
+          className="footer-link footer-toggle"
           onClick={onToggleTheme}
-          title={t('theme.toggleTooltip', { defaultValue: t('theme.toggle') })}
-          aria-label={t('theme.toggleTooltip', { defaultValue: t('theme.toggle') })}
+          aria-pressed={theme === 'dark'}
         >
-          {theme === 'light' ? '🌙' : '☀️'}
+          <span className="footer-toggle__label">
+            {t('theme.toggleLabel', { defaultValue: 'Theme' })}
+          </span>
+          <strong>
+            {theme === 'light'
+              ? t('theme.dark', { defaultValue: 'Dark' })
+              : t('theme.light', { defaultValue: 'Light' })}
+          </strong>
         </button>
         <select
           className="footer-link language-selector"
           aria-label={t('language.label')}
-          value={i18n.resolvedLanguage ?? i18n.language}
-          onChange={async (event) => {
-            if (!isLocaleEnabled(event.target.value)) {
-              return;
-            }
-            const language = await ensureLanguageLoaded(event.target.value);
-            await i18n.changeLanguage(language);
-            window.localStorage.setItem('scattergories.language', language);
-          }}
+          value={currentLanguage}
+          disabled={isLanguagePending}
+          onChange={(event) => onLanguageChange(event.target.value)}
         >
-          {LANGUAGE_CODES.map((code) => (
-            <option key={code} value={code} disabled={!enabledLocales.includes(code)}>
-              {getNativeName(code)}
+          {languageOptions.map((option) => (
+            <option key={option.code} value={option.code} disabled={option.isDisabled}>
+              {option.nativeName}
             </option>
           ))}
         </select>
@@ -75,4 +80,6 @@ export const AppFooter = memo(function AppFooter({
       <div className="footer-privacy">{t('footer.privacy')}</div>
     </footer>
   );
-});
+}
+
+export { AppFooter };

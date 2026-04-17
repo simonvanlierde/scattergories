@@ -1,26 +1,40 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { LOCALE_VALIDATION_TIMEOUT_MS } from './test/constants';
 
-vi.mock('./i18n/config', () => ({
-  startupLocaleWarning: 'Missing letter weights for fr; using en instead.',
-}));
+vi.mock('./i18n/localeHealth', async () => {
+  const actual = await vi.importActual<typeof import('./i18n/localeHealth')>('./i18n/localeHealth');
 
-vi.mock('./i18n/localeHealth', () => ({
-  getEnabledLocales: () => ['en', 'es', 'de', 'it', 'nl', 'pl', 'pt', 'el'],
-  isLocaleEnabled: (locale: string) => locale !== 'fr',
-}));
+  return {
+    ...actual,
+    getBootstrapLocaleWarning: () => 'Missing letter weights for fr; using en instead.',
+    getEnabledLocales: () => ['en', 'es', 'de', 'it', 'nl', 'pl', 'pt', 'el'],
+    isLocaleEnabled: (locale: string) => locale !== 'fr',
+    resolveLocale: () => 'en',
+  };
+});
 
 describe('locale startup validation', () => {
-  it('shows a startup warning and disables incomplete locales', async () => {
-    const { App } = await import('./App');
-    render(<App />);
+  beforeEach(() => {
+    window.localStorage.clear();
+  });
 
-    expect(screen.getByRole('alert')).toHaveTextContent('Missing letter weights for fr');
-    const languageSelector = screen.getByLabelText('language.label');
-    expect(languageSelector).toBeInTheDocument();
-    const frOption = screen
-      .getAllByRole('option')
-      .find((option) => option.getAttribute('value') === 'fr');
-    expect(frOption).toBeDisabled();
-  }, 15_000);
+  it(
+    'shows a startup warning and disables incomplete locales',
+    async () => {
+      const { App } = await import('./App');
+
+      await Promise.resolve();
+      render(<App />);
+
+      const languageSelector = await screen.findByRole('combobox', { name: 'Language' });
+      expect(screen.getByRole('alert')).toHaveTextContent('Missing letter weights for fr');
+      expect(languageSelector).toBeInTheDocument();
+      const frOption = screen
+        .getAllByRole('option')
+        .find((option) => option.getAttribute('value') === 'fr');
+      expect(frOption).toBeDisabled();
+    },
+    LOCALE_VALIDATION_TIMEOUT_MS,
+  );
 });

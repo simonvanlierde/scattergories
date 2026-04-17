@@ -1,0 +1,66 @@
+@layer tokens {
+  :root {
+    --font-display: "Avenir Next", "Trebuchet MS", "Segoe UI", sans-serif;
+    --font-ui: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+    --space-1: 0.35rem;
+    --space-2: 0.6rem;
+    --space-3: 0.9rem;
+    --space-4: 1.2rem;
+    --space-5: 1.6rem;
+    --space-6: 2rem;
+    --space-7: 2.8rem;
+    --space-8: 4rem;
+    --radius-sm: 0.75rem;
+    --radius-md: 1.25rem;
+    --radius-lg: 2rem;
+    --shadow-soft: 0 1.2rem 3rem rgb(17 24 39 / 0.12);
+    --shadow-strong: 0 2rem 5rem rgb(17 24 39 / 0.18);
+    --motion-fast: 160ms;
+    --motion-normal: 240ms;
+    --motion-slow: 440ms;
+  }
+
+  .app-shell {
+    --bg-page: #f7f2e8;
+    --bg-elevated: rgb(255 255 255 / 0.82);
+    --bg-elevated-strong: #fffaf3;
+    --bg-soft: rgb(255 244 220 / 0.7);
+    --text-primary: #1c1a17;
+    --text-secondary: #524638;
+    --text-muted: #756452;
+    --border-soft: rgb(80 61 38 / 0.14);
+    --border-strong: rgb(160 90 25 / 0.36);
+    --accent: #9f3f0f;
+    --accent-strong: #7a2f0b;
+    --accent-soft: #ffe0bf;
+    --danger: #b72d3d;
+    --danger-soft: #ffe3e3;
+    --success: #1a7f63;
+    --success-soft: #d9f4e7;
+    --warning: #9d6800;
+    --warning-soft: #fff1c9;
+    --button-fg: #fffaf4;
+  }
+
+  .app-shell[data-theme="dark"] {
+    --bg-page: #151311;
+    --bg-elevated: rgb(32 28 25 / 0.84);
+    --bg-elevated-strong: #201c19;
+    --bg-soft: rgb(60 48 41 / 0.66);
+    --text-primary: #fff7ed;
+    --text-secondary: #e6cfb8;
+    --text-muted: #b6a089;
+    --border-soft: rgb(255 214 169 / 0.12);
+    --border-strong: rgb(255 168 93 / 0.32);
+    --accent: #ff9f5a;
+    --accent-strong: #ffc18f;
+    --accent-soft: rgb(151 81 27 / 0.28);
+    --danger: #ff7986;
+    --danger-soft: rgb(111 31 40 / 0.4);
+    --success: #6fe1b5;
+    --success-soft: rgb(24 82 63 / 0.42);
+    --warning: #ffd676;
+    --warning-soft: rgb(92 68 12 / 0.42);
+    --button-fg: #1c1712;
+  }
+}

@@ -9,15 +9,76 @@ const TICK_DECAY_GAIN = 0.001;
 const TICK_DURATION_S = 0.08;
 
 // Alarm sound (round over) — three descending tones
+const ALARM_START_1_S = 0.0;
+const ALARM_START_2_S = 0.4;
+const ALARM_START_3_S = 0.8;
+const ALARM_FREQ_1_HZ = 880;
+const ALARM_FREQ_2_HZ = 660;
+const ALARM_FREQ_3_HZ = 440;
+const ALARM_DURATION_1_S = 0.3;
+const ALARM_DURATION_2_S = 0.3;
+const ALARM_DURATION_3_S = 0.6;
 const ALARM_GAIN = 0.25;
 const ALARM_TONES: [number, number, number][] = [
-  [0.0, 880, 0.3],
-  [0.4, 660, 0.3],
-  [0.8, 440, 0.6],
+  [ALARM_START_1_S, ALARM_FREQ_1_HZ, ALARM_DURATION_1_S],
+  [ALARM_START_2_S, ALARM_FREQ_2_HZ, ALARM_DURATION_2_S],
+  [ALARM_START_3_S, ALARM_FREQ_3_HZ, ALARM_DURATION_3_S],
 ];
 
 function resolveAudioCtor(): typeof AudioContext | undefined {
   return window.AudioContext || (window as WindowWithWebkit).webkitAudioContext;
+}
+
+function createAudioNode(context: AudioContext, type: OscillatorType, time: number) {
+  const oscillator = context.createOscillator();
+  const gain = context.createGain();
+  oscillator.connect(gain);
+  gain.connect(context.destination);
+  oscillator.type = type;
+  oscillator.start(time);
+  return { gain, oscillator };
+}
+
+function playTone(
+  context: AudioContext,
+  tone: {
+    type: OscillatorType;
+    startTime: number;
+    frequency: number;
+    duration: number;
+    gainValue: number;
+    decayGain: number;
+  },
+) {
+  const { gain, oscillator } = createAudioNode(context, tone.type, tone.startTime);
+  oscillator.frequency.setValueAtTime(tone.frequency, tone.startTime);
+  gain.gain.setValueAtTime(tone.gainValue, tone.startTime);
+  gain.gain.exponentialRampToValueAtTime(tone.decayGain, tone.startTime + tone.duration);
+  oscillator.stop(tone.startTime + tone.duration);
+}
+
+function playTickSound(context: AudioContext) {
+  playTone(context, {
+    type: 'triangle',
+    startTime: context.currentTime,
+    frequency: TICK_FREQ_HZ,
+    duration: TICK_DURATION_S,
+    gainValue: TICK_GAIN,
+    decayGain: TICK_DECAY_GAIN,
+  });
+}
+
+function playAlarmSound(context: AudioContext) {
+  for (const [time, frequency, duration] of ALARM_TONES) {
+    playTone(context, {
+      type: 'square',
+      startTime: context.currentTime + time,
+      frequency,
+      duration,
+      gainValue: ALARM_GAIN,
+      decayGain: TICK_DECAY_GAIN,
+    });
+  }
 }
 
 export function useAudio(isMuted: boolean) {
@@ -49,16 +110,7 @@ export function useAudio(isMuted: boolean) {
       return;
     }
 
-    const oscillator = context.createOscillator();
-    const gain = context.createGain();
-    oscillator.connect(gain);
-    gain.connect(context.destination);
-    oscillator.type = 'triangle';
-    oscillator.frequency.setValueAtTime(TICK_FREQ_HZ, context.currentTime);
-    gain.gain.setValueAtTime(TICK_GAIN, context.currentTime);
-    gain.gain.exponentialRampToValueAtTime(TICK_DECAY_GAIN, context.currentTime + TICK_DURATION_S);
-    oscillator.start(context.currentTime);
-    oscillator.stop(context.currentTime + TICK_DURATION_S);
+    playTickSound(context);
   }, [getContext, isMuted]);
 
   const playAlarm = useCallback(() => {
@@ -72,21 +124,7 @@ export function useAudio(isMuted: boolean) {
       return;
     }
 
-    for (const [time, frequency, duration] of ALARM_TONES) {
-      const oscillator = context.createOscillator();
-      const gain = context.createGain();
-      oscillator.connect(gain);
-      gain.connect(context.destination);
-      oscillator.type = 'square';
-      oscillator.frequency.setValueAtTime(frequency, context.currentTime + time);
-      gain.gain.setValueAtTime(ALARM_GAIN, context.currentTime + time);
-      gain.gain.exponentialRampToValueAtTime(
-        TICK_DECAY_GAIN,
-        context.currentTime + time + duration,
-      );
-      oscillator.start(context.currentTime + time);
-      oscillator.stop(context.currentTime + time + duration);
-    }
+    playAlarmSound(context);
   }, [getContext, isMuted]);
 
   useEffect(

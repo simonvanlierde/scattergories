@@ -1,8 +1,23 @@
 import { act, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import {
+  FIVE,
+  FOUR,
+  ONE,
+  ONE_SECOND_MS,
+  TEN,
+  TWENTY,
+  TWO,
+  TWO_SECONDS_MS,
+  ZERO,
+} from '../test/constants';
 import { useAudio } from './useAudio';
 import { useLetterRoller } from './useLetterRoller';
 import { useRound } from './useRound';
+
+const SHORT_ROUND_SECONDS = FIVE;
+const LONG_ROUND_SECONDS = TWENTY;
+const BUFFER_TICKS = FIVE;
 
 vi.mock('./useAudio');
 vi.mock('./useLetterRoller');
@@ -39,16 +54,16 @@ describe('useRound', () => {
   });
 
   const defaultOptions = {
-    gameSeconds: 5,
-    totalRounds: 2,
+    gameSeconds: SHORT_ROUND_SECONDS,
+    totalRounds: TWO,
     isMuted: false,
     locale: 'en',
   };
 
   const advanceBuffer = () => {
-    for (let i = 0; i < 5; i += 1) {
+    for (let i = 0; i < BUFFER_TICKS; i += 1) {
       act(() => {
-        vi.advanceTimersByTime(1000);
+        vi.advanceTimersByTime(ONE_SECOND_MS);
       });
     }
   };
@@ -56,7 +71,7 @@ describe('useRound', () => {
   it('starts in idle state', () => {
     const { result } = renderHook(() => useRound(defaultOptions));
     expect(result.current.phase).toBe('idle');
-    expect(result.current.roundCount).toBe(0);
+    expect(result.current.roundCount).toBe(ZERO);
   });
 
   it('transitions idle -> spinning when startRound is called', () => {
@@ -65,7 +80,7 @@ describe('useRound', () => {
       result.current.startRound();
     });
     expect(result.current.phase).toBe('spinning');
-    expect(result.current.roundCount).toBe(1);
+    expect(result.current.roundCount).toBe(ONE);
     expect(mockSpinTo).toHaveBeenCalled();
   });
 
@@ -86,7 +101,7 @@ describe('useRound', () => {
     });
 
     expect(result.current.phase).toBe('buffer');
-    expect(result.current.secondsLeft).toBeGreaterThan(0);
+    expect(result.current.secondsLeft).toBeGreaterThan(ZERO);
   });
 
   it('transitions buffer -> running after buffer timeout', () => {
@@ -103,13 +118,13 @@ describe('useRound', () => {
     act(() => landCallback?.());
 
     expect(result.current.phase).toBe('buffer');
-    expect(result.current.secondsLeft).toBe(5);
+    expect(result.current.secondsLeft).toBe(SHORT_ROUND_SECONDS);
 
     // One tick at a time to be safe with fake timers + effects
     advanceBuffer();
 
     expect(result.current.phase).toBe('running');
-    expect(result.current.secondsLeft).toBe(5);
+    expect(result.current.secondsLeft).toBe(SHORT_ROUND_SECONDS);
   });
 
   it('transitions running -> done when time expires', () => {
@@ -131,8 +146,8 @@ describe('useRound', () => {
     expect(result.current.phase).toBe('running');
 
     // Fast forward game duration (5s)
-    for (let i = 0; i < 5; i++) {
-      act(() => vi.advanceTimersByTime(1000));
+    for (let i = 0; i < SHORT_ROUND_SECONDS; i += 1) {
+      act(() => vi.advanceTimersByTime(ONE_SECOND_MS));
     }
 
     expect(result.current.phase).toBe('done');
@@ -146,7 +161,9 @@ describe('useRound', () => {
       landCallback = cb;
     });
 
-    const { result } = renderHook(() => useRound({ ...defaultOptions, gameSeconds: 20 }));
+    const { result } = renderHook(() =>
+      useRound({ ...defaultOptions, gameSeconds: LONG_ROUND_SECONDS }),
+    );
     act(() => {
       result.current.startRound();
     });
@@ -156,22 +173,22 @@ describe('useRound', () => {
     // Buffer
     advanceBuffer();
 
-    expect(result.current.secondsLeft).toBe(20);
+    expect(result.current.secondsLeft).toBe(LONG_ROUND_SECONDS);
     expect(mockPlayTick).not.toHaveBeenCalled();
 
     // Advance 10 seconds (down to 10)
-    for (let i = 0; i < 10; i++) {
-      act(() => vi.advanceTimersByTime(1000));
+    for (let i = 0; i < TEN; i += 1) {
+      act(() => vi.advanceTimersByTime(ONE_SECOND_MS));
     }
 
-    expect(result.current.secondsLeft).toBe(10);
-    expect(mockPlayTick).toHaveBeenCalledTimes(1);
+    expect(result.current.secondsLeft).toBe(TEN);
+    expect(mockPlayTick).toHaveBeenCalledTimes(ONE);
 
     // One more tick
     act(() => {
-      vi.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(ONE_SECOND_MS);
     });
-    expect(mockPlayTick).toHaveBeenCalledTimes(2);
+    expect(mockPlayTick).toHaveBeenCalledTimes(TWO);
   });
 
   it('can pause and resume during running phase', () => {
@@ -191,7 +208,7 @@ describe('useRound', () => {
     advanceBuffer();
 
     expect(result.current.phase).toBe('running');
-    expect(result.current.secondsLeft).toBe(5);
+    expect(result.current.secondsLeft).toBe(SHORT_ROUND_SECONDS);
 
     act(() => {
       result.current.togglePause();
@@ -199,9 +216,9 @@ describe('useRound', () => {
     expect(result.current.isPaused).toBe(true);
 
     act(() => {
-      vi.advanceTimersByTime(2000);
+      vi.advanceTimersByTime(TWO_SECONDS_MS);
     });
-    expect(result.current.secondsLeft).toBe(5); // should not have changed
+    expect(result.current.secondsLeft).toBe(SHORT_ROUND_SECONDS); // should not have changed
 
     act(() => {
       result.current.togglePause();
@@ -209,9 +226,9 @@ describe('useRound', () => {
     expect(result.current.isPaused).toBe(false);
 
     act(() => {
-      vi.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(ONE_SECOND_MS);
     });
-    expect(result.current.secondsLeft).toBe(4);
+    expect(result.current.secondsLeft).toBe(FOUR);
   });
 
   it('transitions to game-complete status when the last round finishes', () => {
@@ -221,7 +238,7 @@ describe('useRound', () => {
     });
 
     // totalRounds: 1
-    const { result } = renderHook(() => useRound({ ...defaultOptions, totalRounds: 1 }));
+    const { result } = renderHook(() => useRound({ ...defaultOptions, totalRounds: ONE }));
 
     act(() => {
       result.current.startRound();
@@ -233,8 +250,8 @@ describe('useRound', () => {
     advanceBuffer();
 
     // Game (5s)
-    for (let i = 0; i < 5; i++) {
-      act(() => vi.advanceTimersByTime(1000));
+    for (let i = 0; i < SHORT_ROUND_SECONDS; i += 1) {
+      act(() => vi.advanceTimersByTime(ONE_SECOND_MS));
     }
 
     expect(result.current.phase).toBe('done');

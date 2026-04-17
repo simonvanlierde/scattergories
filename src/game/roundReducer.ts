@@ -1,15 +1,15 @@
-import { BUFFER_SECONDS } from './constants';
+import { bufferSeconds } from './constants';
 
-export type Phase = 'idle' | 'spinning' | 'buffer' | 'running' | 'done';
+type Phase = 'idle' | 'spinning' | 'buffer' | 'running' | 'done';
 
-export type StatusKey =
+type StatusKey =
   | 'timer.getReady'
   | 'timer.go'
   | 'timer.roundOver'
   | 'timer.gameCompleteRound'
   | null;
 
-export interface RoundState {
+interface RoundState {
   phase: Phase;
   secondsLeft: number;
   isPaused: boolean;
@@ -22,7 +22,7 @@ export interface RoundState {
   drawnLetters: string[];
 }
 
-export type RoundAction =
+type RoundAction =
   | {
       type: 'START_SPIN';
       gameSeconds: number;
@@ -39,124 +39,156 @@ export type RoundAction =
   | { type: 'SYNC_BAGS'; remainingLetters: string[]; drawnLetters: string[] }
   | { type: 'NEW_GAME' };
 
-export const initialRoundState: RoundState = {
+const initialRoundState: RoundState = {
   phase: 'idle',
   secondsLeft: 0,
   isPaused: false,
   roundCount: 0,
-  totalRounds: 1,
-  gameSeconds: 0,
+  totalRounds: 0,
+  gameSeconds: 60,
   alarmOn: false,
   statusKey: null,
   remainingLetters: [],
   drawnLetters: [],
 };
 
-export function roundReducer(state: RoundState, action: RoundAction): RoundState {
+function handleStartSpin(
+  state: RoundState,
+  action: Extract<RoundAction, { type: 'START_SPIN' }>,
+): RoundState {
+  const nextRoundCount = action.incrementRound ? state.roundCount + 1 : state.roundCount;
+
+  return {
+    ...state,
+    phase: 'spinning',
+    secondsLeft: 0,
+    isPaused: false,
+    alarmOn: false,
+    statusKey: null,
+    roundCount: nextRoundCount,
+    totalRounds: action.totalRounds,
+    gameSeconds: action.gameSeconds,
+    remainingLetters: action.remainingLetters,
+    drawnLetters: action.drawnLetters,
+  };
+}
+
+function handleLetterLanded(state: RoundState): RoundState {
+  if (state.phase !== 'spinning') {
+    return state;
+  }
+
+  return {
+    ...state,
+    phase: 'buffer',
+    secondsLeft: bufferSeconds,
+    statusKey: 'timer.getReady',
+  };
+}
+
+function handleTick(state: RoundState): RoundState {
+  if (state.isPaused) {
+    return state;
+  }
+
+  if (state.phase === 'buffer') {
+    if (state.secondsLeft <= 1) {
+      return {
+        ...state,
+        phase: 'running',
+        secondsLeft: state.gameSeconds,
+        statusKey: 'timer.go',
+      };
+    }
+
+    return { ...state, secondsLeft: state.secondsLeft - 1 };
+  }
+
+  if (state.phase === 'running') {
+    if (state.secondsLeft <= 1) {
+      const hasMoreRounds = state.roundCount < state.totalRounds;
+
+      return {
+        ...state,
+        phase: 'done',
+        secondsLeft: 0,
+        alarmOn: true,
+        statusKey: hasMoreRounds ? 'timer.roundOver' : 'timer.gameCompleteRound',
+      };
+    }
+
+    return { ...state, secondsLeft: state.secondsLeft - 1 };
+  }
+
+  return state;
+}
+
+function handlePauseToggle(state: RoundState): RoundState {
+  if (state.phase !== 'buffer' && state.phase !== 'running') {
+    return state;
+  }
+
+  return { ...state, isPaused: !state.isPaused };
+}
+
+function handleReset(state: RoundState): RoundState {
+  return {
+    ...state,
+    phase: 'idle',
+    secondsLeft: 0,
+    isPaused: false,
+    alarmOn: false,
+    statusKey: null,
+  };
+}
+
+function handleAlarmOff(state: RoundState): RoundState {
+  return { ...state, alarmOn: false };
+}
+
+function handleSyncBags(
+  state: RoundState,
+  action: Extract<RoundAction, { type: 'SYNC_BAGS' }>,
+): RoundState {
+  return {
+    ...state,
+    remainingLetters: action.remainingLetters,
+    drawnLetters: action.drawnLetters,
+  };
+}
+
+function handleNewGame(state: RoundState): RoundState {
+  return {
+    ...initialRoundState,
+    totalRounds: state.totalRounds,
+    remainingLetters: [],
+    drawnLetters: [],
+  };
+}
+
+function roundReducer(state: RoundState, action: RoundAction): RoundState {
   switch (action.type) {
-    case 'START_SPIN': {
-      const nextRoundCount = action.incrementRound ? state.roundCount + 1 : state.roundCount;
-
-      return {
-        ...state,
-        phase: 'spinning',
-        secondsLeft: 0,
-        isPaused: false,
-        alarmOn: false,
-        statusKey: null,
-        roundCount: nextRoundCount,
-        totalRounds: action.totalRounds,
-        gameSeconds: action.gameSeconds,
-        remainingLetters: action.remainingLetters,
-        drawnLetters: action.drawnLetters,
-      };
-    }
-
+    case 'START_SPIN':
+      return handleStartSpin(state, action);
     case 'LETTER_LANDED':
-      if (state.phase !== 'spinning') {
-        return state;
-      }
-
-      return {
-        ...state,
-        phase: 'buffer',
-        secondsLeft: BUFFER_SECONDS,
-        statusKey: 'timer.getReady',
-      };
-
-    case 'TICK': {
-      if (state.isPaused) {
-        return state;
-      }
-
-      if (state.phase === 'buffer') {
-        if (state.secondsLeft <= 1) {
-          return {
-            ...state,
-            phase: 'running',
-            secondsLeft: state.gameSeconds,
-            statusKey: 'timer.go',
-          };
-        }
-
-        return { ...state, secondsLeft: state.secondsLeft - 1 };
-      }
-
-      if (state.phase === 'running') {
-        if (state.secondsLeft <= 1) {
-          const hasMoreRounds = state.roundCount < state.totalRounds;
-
-          return {
-            ...state,
-            phase: 'done',
-            secondsLeft: 0,
-            alarmOn: true,
-            statusKey: hasMoreRounds ? 'timer.roundOver' : 'timer.gameCompleteRound',
-          };
-        }
-
-        return { ...state, secondsLeft: state.secondsLeft - 1 };
-      }
-
-      return state;
-    }
-
+      return handleLetterLanded(state);
+    case 'TICK':
+      return handleTick(state);
     case 'PAUSE_TOGGLE':
-      if (state.phase !== 'buffer' && state.phase !== 'running') {
-        return state;
-      }
-
-      return { ...state, isPaused: !state.isPaused };
-
+      return handlePauseToggle(state);
     case 'RESET':
-      return {
-        ...state,
-        phase: 'idle',
-        secondsLeft: 0,
-        isPaused: false,
-        alarmOn: false,
-        statusKey: null,
-      };
-
+      return handleReset(state);
     case 'ALARM_OFF':
-      return { ...state, alarmOn: false };
-
+      return handleAlarmOff(state);
     case 'SYNC_BAGS':
-      return {
-        ...state,
-        remainingLetters: action.remainingLetters,
-        drawnLetters: action.drawnLetters,
-      };
-
+      return handleSyncBags(state, action);
     case 'NEW_GAME':
-      return {
-        ...initialRoundState,
-        totalRounds: state.totalRounds,
-        remainingLetters: [],
-        drawnLetters: [],
-      };
+      return handleNewGame(state);
 
     default:
       return state;
   }
 }
+
+export type { Phase, RoundAction, RoundState, StatusKey };
+export { initialRoundState, roundReducer };

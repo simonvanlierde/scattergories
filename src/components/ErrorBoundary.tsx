@@ -3,6 +3,7 @@ import { Component } from 'react';
 
 interface Props {
   children: ReactNode;
+  fallback?: ReactNode;
 }
 
 interface State {
@@ -17,20 +18,13 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   override componentDidCatch(error: Error, info: ErrorInfo) {
+    // biome-ignore lint/suspicious/noConsole: error boundaries intentionally report uncaught render errors.
     console.error('Uncaught error:', error, info.componentStack);
   }
 
   override render() {
     if (this.state.hasError) {
-      return (
-        <div style={{ padding: '2rem', textAlign: 'center' }}>
-          <h1>Something went wrong</h1>
-          <p>Try reloading the page.</p>
-          <button type="button" onClick={() => window.location.reload()}>
-            Reload
-          </button>
-        </div>
-      );
+      return this.props.fallback ?? null;
     }
     return this.props.children;
   }

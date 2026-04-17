@@ -1,6 +1,34 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { getLocaleLetters } from '../i18n/localeRegistry';
-import { ENGLISH_LETTERS } from './constants';
+import {
+  APPROACHES_ONE,
+  EIGHT,
+  FIFTEEN,
+  FIFTY,
+  FIFTY_NINE,
+  FIVE,
+  FORTY_FIVE,
+  FORTY_TWO,
+  FOUR,
+  HUNDRED_AND_TWENTY_FIVE,
+  NEGATIVE_FIVE,
+  NEGATIVE_HUNDRED,
+  NEGATIVE_TEN,
+  NINE,
+  ONE,
+  SEVEN,
+  SIX,
+  SIX_HUNDRED,
+  SIXTY,
+  SIXTY_FIVE,
+  TEN,
+  THOUSAND,
+  THREE,
+  THREE_THOUSAND_SIX_HUNDRED,
+  TWENTY,
+  ZERO,
+} from '../test/constants';
+import { englishLetters } from './constants';
 import {
   clampInt,
   formatSeconds,
@@ -13,50 +41,53 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+const TWO = 2;
+const NINETY_NINE = 99;
+
 describe('clampInt', () => {
   it.each([
-    { value: 5, min: 1, max: 10, expected: 5 },
-    { value: 0, min: 1, max: 10, expected: 1 },
-    { value: 15, min: 1, max: 10, expected: 10 },
-    { value: 1, min: 1, max: 10, expected: 1 },
-    { value: 10, min: 1, max: 10, expected: 10 },
-    { value: -5, min: -10, max: 10, expected: -5 },
-    { value: -100, min: -10, max: 10, expected: -10 },
+    { value: FIVE, min: ONE, max: TEN, expected: FIVE },
+    { value: ZERO, min: ONE, max: TEN, expected: ONE },
+    { value: FIFTEEN, min: ONE, max: TEN, expected: TEN },
+    { value: ONE, min: ONE, max: TEN, expected: ONE },
+    { value: TEN, min: ONE, max: TEN, expected: TEN },
+    { value: NEGATIVE_FIVE, min: NEGATIVE_TEN, max: TEN, expected: NEGATIVE_FIVE },
+    { value: NEGATIVE_HUNDRED, min: NEGATIVE_TEN, max: TEN, expected: NEGATIVE_TEN },
   ])('clamps $value within [$min, $max] → $expected', ({ value, min, max, expected }) => {
-    expect(clampInt(value, min, max, 0)).toBe(expected);
+    expect(clampInt(value, min, max, ZERO)).toBe(expected);
   });
 
   it('parses numeric strings', () => {
-    expect(clampInt('5', 1, 10, 0)).toBe(5);
-    expect(clampInt('15', 1, 10, 0)).toBe(10);
+    expect(clampInt('5', ONE, TEN, ZERO)).toBe(FIVE);
+    expect(clampInt('15', ONE, TEN, ZERO)).toBe(TEN);
   });
 
   it('returns fallback for non-numeric strings', () => {
-    expect(clampInt('foo', 1, 10, 99)).toBe(99);
-    expect(clampInt('', 1, 10, 99)).toBe(99);
+    expect(clampInt('foo', ONE, TEN, NINETY_NINE)).toBe(NINETY_NINE);
+    expect(clampInt('', ONE, TEN, NINETY_NINE)).toBe(NINETY_NINE);
   });
 
   it('returns fallback for NaN', () => {
-    expect(clampInt(Number.NaN, 1, 10, 42)).toBe(42);
+    expect(clampInt(Number.NaN, ONE, TEN, FORTY_TWO)).toBe(FORTY_TWO);
   });
 
   it('clamps Infinity to bounds', () => {
-    expect(clampInt(Number.POSITIVE_INFINITY, 1, 10, 0)).toBe(10);
-    expect(clampInt(Number.NEGATIVE_INFINITY, 1, 10, 0)).toBe(1);
+    expect(clampInt(Number.POSITIVE_INFINITY, ONE, TEN, ZERO)).toBe(TEN);
+    expect(clampInt(Number.NEGATIVE_INFINITY, ONE, TEN, ZERO)).toBe(ONE);
   });
 });
 
 describe('formatSeconds', () => {
   it.each([
-    [0, '0s'],
-    [9, '9s'],
-    [45, '45s'],
-    [59, '59s'],
-    [60, '1:00'],
-    [65, '1:05'],
-    [125, '2:05'],
-    [600, '10:00'],
-    [3600, '60:00'],
+    [ZERO, '0s'],
+    [NINE, '9s'],
+    [FORTY_FIVE, '45s'],
+    [FIFTY_NINE, '59s'],
+    [SIXTY, '1:00'],
+    [SIXTY_FIVE, '1:05'],
+    [HUNDRED_AND_TWENTY_FIVE, '2:05'],
+    [SIX_HUNDRED, '10:00'],
+    [THREE_THOUSAND_SIX_HUNDRED, '60:00'],
   ])('formats %ss as "%s"', (input, expected) => {
     expect(formatSeconds(input)).toBe(expected);
   });
@@ -66,17 +97,17 @@ describe('pickRandom', () => {
   const items = ['A', 'B', 'C', 'D'] as const;
 
   it('returns the first element when Math.random is 0', () => {
-    vi.spyOn(Math, 'random').mockReturnValue(0);
+    vi.spyOn(Math, 'random').mockReturnValue(ZERO);
     expect(pickRandom(items)).toBe('A');
   });
 
   it('returns the last element when Math.random approaches 1', () => {
-    vi.spyOn(Math, 'random').mockReturnValue(0.9999);
+    vi.spyOn(Math, 'random').mockReturnValue(APPROACHES_ONE);
     expect(pickRandom(items)).toBe('D');
   });
 
   it('always returns a member of the input', () => {
-    for (let i = 0; i < 50; i += 1) {
+    for (let i = ZERO; i < FIFTY; i += ONE) {
       expect(items).toContain(pickRandom(items));
     }
   });
@@ -84,7 +115,7 @@ describe('pickRandom', () => {
 
 describe('shuffleFisherYates', () => {
   it('returns a new array with the same elements', () => {
-    const original = [1, 2, 3, 4, 5];
+    const original = [ONE, TWO, THREE, FOUR, FIVE];
     const result = shuffleFisherYates(original);
 
     expect(result).not.toBe(original);
@@ -93,14 +124,20 @@ describe('shuffleFisherYates', () => {
   });
 
   it('produces a deterministic shuffle for a fixed RNG', () => {
-    vi.spyOn(Math, 'random').mockReturnValue(0);
-    expect(shuffleFisherYates([1, 2, 3, 4, 5])).toEqual([2, 3, 4, 5, 1]);
+    vi.spyOn(Math, 'random').mockReturnValue(ZERO);
+    expect(shuffleFisherYates([ONE, TWO, THREE, FOUR, FIVE])).toEqual([
+      TWO,
+      THREE,
+      FOUR,
+      FIVE,
+      ONE,
+    ]);
   });
 
   it('actually permutes the input across many runs', () => {
-    const input = [1, 2, 3, 4, 5, 6, 7, 8];
+    const input = [ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT];
     const seen = new Set<string>();
-    for (let i = 0; i < 50; i += 1) {
+    for (let i = ZERO; i < FIFTY; i += ONE) {
       seen.add(shuffleFisherYates(input).join(','));
     }
     expect(seen.size).toBeGreaterThan(1);
@@ -110,14 +147,14 @@ describe('shuffleFisherYates', () => {
 describe('weightedLetterBag', () => {
   it('contains every letter exactly once', () => {
     const bag = weightedLetterBag();
-    expect(bag).toHaveLength(ENGLISH_LETTERS.length);
-    expect([...bag].sort()).toEqual([...ENGLISH_LETTERS].sort());
+    expect(bag).toHaveLength(englishLetters.length);
+    expect([...bag].sort()).toEqual([...englishLetters].sort());
   });
 
   it('accepts a locale argument and still returns all letters', () => {
     const bag = weightedLetterBag('fr-FR');
-    expect(bag).toHaveLength(ENGLISH_LETTERS.length);
-    expect([...bag].sort()).toEqual([...ENGLISH_LETTERS].sort());
+    expect(bag).toHaveLength(englishLetters.length);
+    expect([...bag].sort()).toEqual([...englishLetters].sort());
   });
 
   it('uses the Greek alphabet for Greek locales', () => {
@@ -128,7 +165,7 @@ describe('weightedLetterBag', () => {
 
   it('produces varying orderings across calls', () => {
     const orderings = new Set<string>();
-    for (let i = 0; i < 20; i += 1) {
+    for (let i = ZERO; i < TWENTY; i += ONE) {
       orderings.add(weightedLetterBag().join(''));
     }
     expect(orderings.size).toBeGreaterThan(1);
@@ -140,7 +177,7 @@ describe('weightedLetterBag', () => {
     const highPositions: number[] = [];
     const lowPositions: number[] = [];
 
-    for (let i = 0; i < 1000; i += 1) {
+    for (let i = ZERO; i < THOUSAND; i += ONE) {
       const bag = weightedLetterBag('en');
       highPositions.push(bag.indexOf(highWeightLetter));
       lowPositions.push(bag.indexOf(lowWeightLetter));

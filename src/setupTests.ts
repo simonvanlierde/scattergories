@@ -1,6 +1,9 @@
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
+const noop = () => undefined;
+const noopEventDispatch = () => false;
+
 const localStorageMock = (() => {
   let store: Record<string, string> = {};
   return {
@@ -59,9 +62,9 @@ vi.stubGlobal('matchMedia', (query: string) => ({
   matches: false,
   media: query,
   onchange: null,
-  addListener: () => {},
-  removeListener: () => {},
-  addEventListener: () => {},
-  removeEventListener: () => {},
-  dispatchEvent: () => false,
+  addListener: noop,
+  removeListener: noop,
+  addEventListener: noop,
+  removeEventListener: noop,
+  dispatchEvent: noopEventDispatch,
 }));

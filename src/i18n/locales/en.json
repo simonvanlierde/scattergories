@@ -1,5 +1,22 @@
 {
   "title": "Scattergories",
+  "hero": {
+    "eyebrow": "Party game companion",
+    "description": "Spin a locale-aware letter, draw a fresh deck of prompts, and keep every round moving.",
+    "metaLabel": "Game pace"
+  },
+  "round": {
+    "panelEyebrow": "Round control room",
+    "letterLabel": "Current letter",
+    "timerLabel": "Round clock"
+  },
+  "controls": {
+    "eyebrow": "Controls",
+    "title": "Keep the round moving",
+    "body": "Start, pause, reroll, and tune pacing without leaving the board.",
+    "group": "Round controls",
+    "settingsLegend": "Session settings"
+  },
   "roundCounter": "Round {{current}} of {{total}}",
   "buttons": {
     "startRound": "Start Round",
@@ -41,11 +58,16 @@
   },
   "categories": {
     "title": "Categories",
+    "eyebrow": "Prompt deck",
+    "description": "Mix official and custom prompts, then reshuffle a fresh board whenever the table needs a reset.",
     "default": "Default",
     "custom": "Custom",
     "mixed": "Mixed",
     "noCustom": "No custom categories yet.",
-    "minimumRequired": "Add at least one custom category to use Custom mode."
+    "minimumRequired": "Add at least one custom category to use Custom mode.",
+    "availableSummary": "{{count}} prompts ready",
+    "customListLabel": "Custom categories",
+    "drawnListLabel": "Category board"
   },
   "usedLetters": "Used letters: {{letters}}{{empty}}",
   "usedLettersEmpty": "None yet",
@@ -83,6 +105,7 @@
       "Mute sound if needed",
       "All settings are saved automatically"
     ],
+    "loading": "Opening rules…",
     "footer": "This is a helper tool to manage the letter and timer. Have fun with friends!"
   },
   "language": {
@@ -91,6 +114,17 @@
   },
   "theme": {
     "toggle": "Toggle theme",
-    "toggleTooltip": "Switch between light and dark theme"
+    "toggleTooltip": "Switch between light and dark theme",
+    "toggleLabel": "Theme",
+    "dark": "Dark",
+    "light": "Light"
+  },
+  "errors": {
+    "chunkTitle": "A fresh app version is ready.",
+    "chunkBody": "One of the interface chunks changed while the app was open. Reload to continue safely.",
+    "boundaryEyebrow": "Recovery mode",
+    "boundaryTitle": "Something went wrong.",
+    "boundaryBody": "Reload the app to reset the current session and continue playing.",
+    "reload": "Reload app"
   }
 }

@@ -2,6 +2,8 @@ import { act, renderHook } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { useAudio } from './useAudio';
 
+const ALARM_TONE_COUNT = 3;
+
 function makeAudioContextMock() {
   const oscillatorMock = {
     connect: vi.fn(),
@@ -84,8 +86,8 @@ describe('useAudio', () => {
         result.current.playAlarm();
       });
 
-      expect(contextMock.createOscillator).toHaveBeenCalledTimes(3);
-      expect(contextMock.createGain).toHaveBeenCalledTimes(3);
+      expect(contextMock.createOscillator).toHaveBeenCalledTimes(ALARM_TONE_COUNT);
+      expect(contextMock.createGain).toHaveBeenCalledTimes(ALARM_TONE_COUNT);
     });
 
     it('reuses the same AudioContext on subsequent calls', () => {

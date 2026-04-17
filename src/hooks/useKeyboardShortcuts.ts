@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useEffectEvent } from 'react';
 
 export interface ShortcutHandlers {
   onSpace?: () => void;
@@ -10,45 +10,43 @@ export interface ShortcutHandlers {
 }
 
 export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
-  const handlersRef = useRef(handlers);
-  handlersRef.current = handlers;
+  const onShortcut = useEffectEvent((event: KeyboardEvent) => {
+    const target = event.target as HTMLElement | null;
+    const tag = target?.tagName;
 
-  useEffect(() => {
-    function onKeyDown(event: KeyboardEvent) {
-      const target = event.target as HTMLElement | null;
-      const tag = target?.tagName;
-      if (tag === 'INPUT' || tag === 'TEXTAREA') {
-        return;
-      }
-
-      if (event.code === 'Space') {
-        event.preventDefault();
-        handlersRef.current.onSpace?.();
-        return;
-      }
-
-      switch (event.key.toLowerCase()) {
-        case 'r':
-          handlersRef.current.onR?.();
-          break;
-        case 'n':
-          handlersRef.current.onN?.();
-          break;
-        case 'p':
-          handlersRef.current.onP?.();
-          break;
-        case 'c':
-          handlersRef.current.onC?.();
-          break;
-        case 'a':
-          handlersRef.current.onA?.();
-          break;
-        default:
-          break;
-      }
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target?.isContentEditable) {
+      return;
     }
 
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
+    if (event.code === 'Space') {
+      event.preventDefault();
+      handlers.onSpace?.();
+      return;
+    }
+
+    switch (event.key.toLowerCase()) {
+      case 'r':
+        handlers.onR?.();
+        break;
+      case 'n':
+        handlers.onN?.();
+        break;
+      case 'p':
+        handlers.onP?.();
+        break;
+      case 'c':
+        handlers.onC?.();
+        break;
+      case 'a':
+        handlers.onA?.();
+        break;
+      default:
+        break;
+    }
+  });
+
+  useEffect(() => {
+    window.addEventListener('keydown', onShortcut);
+    return () => window.removeEventListener('keydown', onShortcut);
   }, []);
 }

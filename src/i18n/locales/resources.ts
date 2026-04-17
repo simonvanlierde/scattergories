@@ -7,13 +7,13 @@ interface LocaleNamespaces {
   categories: CategoriesResource;
 }
 
-type TranslationResource = typeof enTranslation;
-type CategoriesResource = typeof categoriesResourceEn;
+type TranslationResource = Record<string, unknown>;
+type CategoriesResource = Record<string, string>;
 type LocaleCode = (typeof SUPPORTED_LOCALES)[number];
 type LocaleLoader = () => Promise<LocaleNamespaces>;
 
-const translationResourceEn = enTranslation;
-const categoriesResourceEnValue = categoriesResourceEn;
+const translationResourceEn: TranslationResource = enTranslation;
+const categoriesResourceEnValue: CategoriesResource = categoriesResourceEn;
 
 const localeLoaders: Record<LocaleCode, LocaleLoader> = {
   de: async () => {

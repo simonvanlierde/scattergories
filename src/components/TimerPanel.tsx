@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { DURATION_MAX, DURATION_MIN, ROUNDS_MAX, ROUNDS_MIN } from '../game/constants';
+import { durationMax, durationMin, roundsMax, roundsMin } from '../game/constants';
 import type { Phase, StatusKey } from '../game/roundReducer';
 import { formatSeconds } from '../game/utils';
 
@@ -43,83 +43,174 @@ interface TimerPanelProps {
   actions: TimerActions;
 }
 
-function TimerPanel({ round, settings, actions }: TimerPanelProps) {
-  const { t } = useTranslation();
-  const {
-    phase,
-    secondsLeft,
-    isPaused,
-    letter,
-    letterVisible,
-    letterLanding,
-    roundCount,
-    hasMoreRounds,
-    statusKey,
-  } = round;
-  const { isMuted, durationInput, totalRoundsInput, totalRounds } = settings;
+function getTimerText(
+  phase: Phase,
+  secondsLeft: number,
+  t: ReturnType<typeof useTranslation>['t'],
+) {
+  if (phase === 'done') {
+    return t('timer.timeUp');
+  }
 
+  if (phase === 'buffer' || phase === 'running') {
+    return formatSeconds(Math.max(0, secondsLeft));
+  }
+
+  return '';
+}
+
+function getTimerClassName(phase: Phase, secondsLeft: number) {
+  if (phase === 'buffer') {
+    return 'timer buffer';
+  }
+
+  if (phase === 'running') {
+    const urgent = secondsLeft <= URGENT_THRESHOLD_SECONDS ? ' urgent' : '';
+    return `timer running${urgent}`;
+  }
+
+  if (phase === 'done') {
+    return 'timer done';
+  }
+
+  return 'timer';
+}
+
+function getMainButtonLabel(
+  phase: Phase,
+  roundCount: number,
+  t: ReturnType<typeof useTranslation>['t'],
+) {
+  if (phase === 'spinning') {
+    return t('buttons.spinning');
+  }
+
+  if (roundCount === 0) {
+    return t('buttons.startRound');
+  }
+
+  return t('buttons.nextRound');
+}
+
+function RoundDisplay({
+  phase,
+  secondsLeft,
+  letter,
+  letterVisible,
+  letterLanding,
+  roundCount,
+  totalRounds,
+  statusKey,
+}: Pick<
+  TimerRoundState,
+  | 'phase'
+  | 'secondsLeft'
+  | 'letter'
+  | 'letterVisible'
+  | 'letterLanding'
+  | 'roundCount'
+  | 'statusKey'
+> & { totalRounds: number }) {
+  const { t } = useTranslation();
   const displayRound = Math.min(totalRounds, Math.max(1, roundCount || 1));
+  const timerText = getTimerText(phase, secondsLeft, t);
+  const timerClassName = getTimerClassName(phase, secondsLeft);
+
+  return (
+    <div className="round-display">
+      <div className="round-display__header">
+        <div>
+          <p className="eyebrow" id="round-panel-title">
+            {t('round.panelEyebrow', { defaultValue: 'Round control room' })}
+          </p>
+          <p className="round-counter">
+            {t('roundCounter', { current: displayRound, total: totalRounds })}
+          </p>
+        </div>
+        <p className="round-hint">
+          {t('shortcuts', {
+            defaultValue:
+              'Shortcuts: Space next round, R skip letter, P pause, N new game, C categories, A add custom',
+          })}
+        </p>
+      </div>
+
+      <div className="letter-stage" aria-live="polite" aria-atomic="true">
+        <span className="letter-stage__label">
+          {t('round.letterLabel', { defaultValue: 'Current letter' })}
+        </span>
+        <div
+          className={`letter ${letterVisible ? '' : 'hidden'} ${letterLanding ? 'landing' : ''}`}
+        >
+          {letter}
+        </div>
+      </div>
+
+      <div className="round-timer">
+        <span className="round-timer__label">
+          {t('round.timerLabel', { defaultValue: 'Round clock' })}
+        </span>
+        <div className={timerClassName} aria-live="off">
+          {timerText}
+        </div>
+      </div>
+
+      <div
+        className={`status${phase === 'done' ? ' done' : ''}`}
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {statusKey ? t(statusKey) : ''}
+      </div>
+    </div>
+  );
+}
+
+function ControlCard({
+  actions,
+  isMuted,
+  isPaused,
+  phase,
+  roundCount,
+  hasMoreRounds,
+  durationInput,
+  totalRoundsInput,
+}: {
+  actions: TimerActions;
+  isMuted: boolean;
+  durationInput: string;
+  totalRoundsInput: string;
+} & {
+  hasMoreRounds: boolean;
+  roundCount: number;
+  isPaused: boolean;
+  phase: TimerRoundState['phase'];
+}) {
+  const { t } = useTranslation();
   const canEditDuration = phase === 'idle' || phase === 'done';
   const isRunning = phase === 'buffer' || phase === 'running';
-
-  let timerText = '';
-  if (phase === 'done') {
-    timerText = t('timer.timeUp');
-  } else if (isRunning) {
-    timerText = formatSeconds(Math.max(0, secondsLeft));
-  }
-
-  let timerClassName = 'timer';
-  if (phase === 'buffer') {
-    timerClassName = 'timer buffer';
-  } else if (phase === 'running') {
-    const urgent = secondsLeft <= URGENT_THRESHOLD_SECONDS ? ' urgent' : '';
-    timerClassName = `timer running${urgent}`;
-  } else if (phase === 'done') {
-    timerClassName = 'timer done';
-  }
-
-  let mainButtonLabel: string;
-  if (phase === 'spinning') {
-    mainButtonLabel = t('buttons.spinning');
-  } else if (roundCount === 0) {
-    mainButtonLabel = t('buttons.startRound');
-  } else {
-    mainButtonLabel = t('buttons.nextRound');
-  }
+  const mainButtonLabel = getMainButtonLabel(phase, roundCount, t);
   const pauseButtonLabel = isPaused ? t('buttons.resume') : t('buttons.pause');
   const skipButtonTooltip = t('buttons.skipLetterTooltip');
   const resetButtonTooltip = t('buttons.resetTooltip');
   const muteLabel = isMuted ? t('buttons.unmute') : t('buttons.mute');
 
   return (
-    <section className="timer-section" aria-label="Round timer" data-phase={phase}>
-      <div className="play-surface">
-        <p className="round-counter">
-          {t('roundCounter', { current: displayRound, total: totalRounds })}
+    <div className="control-card">
+      <div className="panel-heading">
+        <div>
+          <p className="eyebrow">{t('controls.eyebrow', { defaultValue: 'Controls' })}</p>
+          <h2>{t('controls.title', { defaultValue: 'Keep the round moving' })}</h2>
+        </div>
+        <p>
+          {t('controls.body', {
+            defaultValue: 'Start, pause, reroll, and tune pacing without leaving the board.',
+          })}
         </p>
-        <div
-          className={`letter ${letterVisible ? '' : 'hidden'} ${letterLanding ? 'landing' : ''}`}
-        >
-          {letter}
-        </div>
-        {/* aria-live="off": avoid announcing every tick; status div below covers phase transitions */}
-        <div className={timerClassName} aria-live="off">
-          {timerText}
-        </div>
-        {/* Announce only meaningful phase changes (get ready, go, round over, game complete) */}
-        <div
-          className={`status${phase === 'done' ? ' done' : ''}`}
-          aria-live="polite"
-          aria-atomic="true"
-        >
-          {statusKey ? t(statusKey) : ''}
-        </div>
       </div>
 
       <div className="buttons">
         <button
-          id="btn"
           type="button"
           onClick={actions.onStart}
           disabled={phase === 'spinning' || !hasMoreRounds}
@@ -158,8 +249,33 @@ function TimerPanel({ round, settings, actions }: TimerPanelProps) {
         </button>
       </div>
 
-      <fieldset className="settings">
-        <legend className="sr-only">{`${t('settings.duration')} ${t('settings.rounds')}`}</legend>
+      <SessionSettings
+        actions={actions}
+        canEditDuration={canEditDuration}
+        durationInput={durationInput}
+        totalRoundsInput={totalRoundsInput}
+      />
+    </div>
+  );
+}
+
+function SessionSettings({
+  actions,
+  canEditDuration,
+  durationInput,
+  totalRoundsInput,
+}: {
+  actions: TimerActions;
+  canEditDuration: boolean;
+  durationInput: string;
+  totalRoundsInput: string;
+}) {
+  const { t } = useTranslation();
+
+  return (
+    <fieldset className="settings-panel">
+      <legend>{t('controls.settingsLegend', { defaultValue: 'Session settings' })}</legend>
+      <div className="settings-grid">
         <div className="setting-field">
           <label htmlFor="duration">{t('settings.duration')}</label>
           <div className="number-with-unit">
@@ -167,8 +283,8 @@ function TimerPanel({ round, settings, actions }: TimerPanelProps) {
               type="number"
               id="duration"
               value={durationInput}
-              min={DURATION_MIN}
-              max={DURATION_MAX}
+              min={durationMin}
+              max={durationMax}
               disabled={!canEditDuration}
               onChange={(event) => actions.onDurationChange(event.target.value)}
               onBlur={actions.onDurationBlur}
@@ -183,14 +299,60 @@ function TimerPanel({ round, settings, actions }: TimerPanelProps) {
             type="number"
             id="totalRounds"
             value={totalRoundsInput}
-            min={ROUNDS_MIN}
-            max={ROUNDS_MAX}
+            min={roundsMin}
+            max={roundsMax}
             disabled={!canEditDuration}
             onChange={(event) => actions.onTotalRoundsChange(event.target.value)}
             onBlur={actions.onTotalRoundsBlur}
           />
         </div>
-      </fieldset>
+      </div>
+    </fieldset>
+  );
+}
+
+function TimerPanel({ round, settings, actions }: TimerPanelProps) {
+  const {
+    phase,
+    secondsLeft,
+    letter,
+    letterVisible,
+    letterLanding,
+    roundCount,
+    hasMoreRounds,
+    statusKey,
+    isPaused,
+  } = round;
+  const { isMuted, durationInput, totalRoundsInput, totalRounds } = settings;
+
+  return (
+    <section
+      className="round-card"
+      aria-labelledby="round-panel-title"
+      data-phase={phase}
+      data-running={phase === 'buffer' || phase === 'running' ? 'true' : 'false'}
+    >
+      <RoundDisplay
+        phase={phase}
+        secondsLeft={secondsLeft}
+        letter={letter}
+        letterVisible={letterVisible}
+        letterLanding={letterLanding}
+        roundCount={roundCount}
+        statusKey={statusKey}
+        totalRounds={totalRounds}
+      />
+
+      <ControlCard
+        actions={actions}
+        durationInput={durationInput}
+        hasMoreRounds={hasMoreRounds}
+        isMuted={isMuted}
+        isPaused={isPaused}
+        phase={phase}
+        roundCount={roundCount}
+        totalRoundsInput={totalRoundsInput}
+      />
     </section>
   );
 }
