@@ -1,14 +1,18 @@
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { CategoryMode } from '../hooks/useSettings';
 
-interface CategoriesPanelProps {
-  categoryMode: CategoryMode;
+export interface CategoriesState {
+  mode: CategoryMode;
   catCountInput: string;
   customCategories: string[];
   drawnCategories: string[];
   availableCount: number;
   usedLetters: string[];
   newCategoryInput: string;
+}
+
+export interface CategoriesActions {
   onCategoryModeChange: (mode: CategoryMode) => void;
   onCatCountChange: (value: string) => void;
   onCatCountBlur: () => void;
@@ -18,53 +22,73 @@ interface CategoriesPanelProps {
   onNewCategoryInputChange: (value: string) => void;
 }
 
-export function CategoriesPanel(props: CategoriesPanelProps) {
+interface CategoriesPanelProps {
+  categories: CategoriesState;
+  actions: CategoriesActions;
+}
+
+export const CategoriesPanel = memo(function CategoriesPanel({
+  categories,
+  actions,
+}: CategoriesPanelProps) {
   const { t } = useTranslation();
   const {
-    categoryMode,
+    mode,
     catCountInput,
     customCategories,
     drawnCategories,
     availableCount,
     usedLetters,
     newCategoryInput,
-  } = props;
+  } = categories;
 
   return (
     <section className="categories-section" aria-label="Categories">
-      <h2>{t('categories.title')}</h2>
-      <div className="source-controls">
-        <label htmlFor="categoryMode">{t('settings.categorySource')}</label>
-        <select
-          id="categoryMode"
-          value={categoryMode}
-          onChange={(event) => props.onCategoryModeChange(event.target.value as CategoryMode)}
-        >
-          <option value="default">{t('categories.default')}</option>
-          <option value="custom">{t('categories.custom')}</option>
-          <option value="mixed">{t('categories.mixed')}</option>
-        </select>
+      <div className="section-heading">
+        <h2>{t('categories.title')}</h2>
+        <p className="used-letters">
+          {t('usedLetters', {
+            letters: usedLetters.length > 0 ? usedLetters.join(', ') : '',
+            empty: usedLetters.length > 0 ? '' : t('usedLettersEmpty'),
+          })}
+        </p>
       </div>
-      <div className="cat-controls">
-        <label htmlFor="catCount">{t('settings.categoryDraw')}</label>
-        <input
-          type="number"
-          id="catCount"
-          min={1}
-          max={25}
-          value={catCountInput}
-          onChange={(event) => props.onCatCountChange(event.target.value)}
-          onBlur={props.onCatCountBlur}
-        />
-        <button
-          id="catBtn"
-          type="button"
-          className="btn-secondary cat-shuffle"
-          onClick={props.onShuffle}
-        >
-          {t('buttons.shuffle')}
-        </button>
+
+      <div className="category-toolbar">
+        <div className="source-controls">
+          <label htmlFor="categoryMode">{t('settings.categorySource')}</label>
+          <select
+            id="categoryMode"
+            value={mode}
+            onChange={(event) => actions.onCategoryModeChange(event.target.value as CategoryMode)}
+          >
+            <option value="default">{t('categories.default')}</option>
+            <option value="custom">{t('categories.custom')}</option>
+            <option value="mixed">{t('categories.mixed')}</option>
+          </select>
+        </div>
+        <div className="cat-controls">
+          <label htmlFor="catCount">{t('settings.categoryDraw')}</label>
+          <input
+            type="number"
+            id="catCount"
+            min={1}
+            max={25}
+            value={catCountInput}
+            onChange={(event) => actions.onCatCountChange(event.target.value)}
+            onBlur={actions.onCatCountBlur}
+          />
+          <button
+            id="catBtn"
+            type="button"
+            className="btn-secondary cat-shuffle"
+            onClick={actions.onShuffle}
+          >
+            {t('buttons.shuffle')}
+          </button>
+        </div>
       </div>
+
       <div className="custom-categories">
         <label htmlFor="newCategory">{t('settings.addCustom')}</label>
         <div className="custom-category-input-row">
@@ -74,18 +98,19 @@ export function CategoriesPanel(props: CategoriesPanelProps) {
             value={newCategoryInput}
             maxLength={50}
             placeholder={t('settings.placeholder')}
-            onChange={(event) => props.onNewCategoryInputChange(event.target.value)}
+            onChange={(event) => actions.onNewCategoryInputChange(event.target.value)}
             onKeyDown={(event) => {
               if (event.key === 'Enter') {
                 event.preventDefault();
-                props.onAddCustom();
+                actions.onAddCustom();
               }
             }}
           />
           <button
             type="button"
             className="btn-secondary add-category-btn"
-            onClick={props.onAddCustom}
+            onClick={actions.onAddCustom}
+            title={t('buttons.addTooltip', { defaultValue: t('buttons.add') })}
           >
             {t('buttons.add')}
           </button>
@@ -99,7 +124,7 @@ export function CategoriesPanel(props: CategoriesPanelProps) {
                   type="button"
                   className="remove-btn"
                   aria-label={`${t('buttons.remove')} ${category}`}
-                  onClick={() => props.onRemoveCustom(category)}
+                  onClick={() => actions.onRemoveCustom(category)}
                 >
                   {t('buttons.remove')}
                 </button>
@@ -118,18 +143,11 @@ export function CategoriesPanel(props: CategoriesPanelProps) {
       <ul className="cat-list" id="catList">
         {drawnCategories.map((category, index) => (
           <li key={category}>
-            <span className="cat-index">{index + 1}.</span>
-            <span>{category}</span>
+            <span className="cat-index">{`${index + 1}.`}</span>
+            <span>{t(category, { ns: 'categories' })}</span>
           </li>
         ))}
       </ul>
-
-      <p className="used-letters">
-        {t('usedLetters', {
-          letters: usedLetters.length > 0 ? usedLetters.join(', ') : '',
-          empty: usedLetters.length > 0 ? '' : t('usedLettersEmpty'),
-        })}
-      </p>
     </section>
   );
-}
+});

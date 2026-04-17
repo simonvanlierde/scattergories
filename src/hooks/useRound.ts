@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { LETTERS } from '../game/constants';
+import { useCallback, useEffect, useReducer, useRef } from 'react';
 import { initialRoundState, roundReducer } from '../game/roundReducer';
 import { pickRandom, weightedLetterBag } from '../game/utils';
+import { getLocaleLetters } from '../i18n/localeRegistry';
 import { useAudio } from './useAudio';
 import { useLetterRoller } from './useLetterRoller';
 
@@ -11,28 +11,35 @@ interface UseRoundOptions {
   gameSeconds: number;
   totalRounds: number;
   isMuted: boolean;
+  locale: string;
 }
 
-export function useRound({ gameSeconds, totalRounds, isMuted }: UseRoundOptions) {
+export function useRound({ gameSeconds, totalRounds, isMuted, locale }: UseRoundOptions) {
   const [state, dispatch] = useReducer(roundReducer, initialRoundState);
-  const roller = useLetterRoller();
+  const roller = useLetterRoller(locale);
   const { playTick, playAlarm } = useAudio(isMuted);
 
-  const [usedLetters, setUsedLetters] = useState<string[]>([]);
-  const letterBagRef = useRef<string[]>([]);
   const tickedSecondRef = useRef<number | null>(null);
   const alarmTimeoutRef = useRef<number | null>(null);
+  const resetRoller = roller.reset;
 
-  const drawNextLetter = useCallback(() => {
-    if (letterBagRef.current.length === 0) {
-      letterBagRef.current = weightedLetterBag();
-      setUsedLetters([]);
-    }
+  const drawNextLetter = useCallback(
+    (currentRemaining: string[], currentDrawn: string[]) => {
+      let remaining = [...currentRemaining];
+      let drawn = [...currentDrawn];
 
-    const chosen = letterBagRef.current.pop() ?? pickRandom(LETTERS);
-    setUsedLetters((prev) => [...prev, chosen]);
-    return chosen;
-  }, []);
+      if (remaining.length === 0) {
+        remaining = weightedLetterBag(locale);
+        drawn = [];
+      }
+
+      const chosen = remaining.pop() ?? pickRandom(getLocaleLetters(locale));
+      drawn.push(chosen);
+
+      return { chosen, remaining, drawn };
+    },
+    [locale],
+  );
 
   const clearAlarmTimeout = useCallback(() => {
     if (alarmTimeoutRef.current !== null) {
@@ -41,6 +48,10 @@ export function useRound({ gameSeconds, totalRounds, isMuted }: UseRoundOptions)
     }
   }, []);
 
+  useEffect(() => {
+    resetRoller();
+  }, [resetRoller]);
+
   const beginRound = useCallback(
     (incrementRound: boolean) => {
       if (state.phase === 'spinning') {
@@ -48,20 +59,25 @@ export function useRound({ gameSeconds, totalRounds, isMuted }: UseRoundOptions)
       }
 
       if (incrementRound && state.roundCount >= state.totalRounds && state.totalRounds > 0) {
-        dispatch({ type: 'START_BLOCKED' });
         return;
       }
 
       clearAlarmTimeout();
-      const nextLetter = drawNextLetter();
+      const { chosen, remaining, drawn } = drawNextLetter(
+        state.remainingLetters,
+        state.drawnLetters,
+      );
+
       dispatch({
         type: 'START_SPIN',
         gameSeconds,
         totalRounds,
         incrementRound,
+        remainingLetters: remaining,
+        drawnLetters: drawn,
       });
 
-      roller.spinTo(nextLetter, () => {
+      roller.spinTo(chosen, () => {
         dispatch({ type: 'LETTER_LANDED' });
       });
     },
@@ -74,11 +90,34 @@ export function useRound({ gameSeconds, totalRounds, isMuted }: UseRoundOptions)
       state.roundCount,
       state.totalRounds,
       totalRounds,
+      state.drawnLetters,
+      state.remainingLetters,
     ],
   );
 
   const startRound = useCallback(() => beginRound(true), [beginRound]);
-  const rerollLetter = useCallback(() => beginRound(false), [beginRound]);
+  const rerollLetter = useCallback(() => {
+    if (state.phase === 'buffer' || state.phase === 'running') {
+      const { chosen, remaining, drawn } = drawNextLetter(
+        state.remainingLetters,
+        state.drawnLetters,
+      );
+
+      // Note: we're intentionally not dispatching START_SPIN here because
+      // rerolling mid-round shouldn't reset the timer or increment round.
+      // However, we DO need to sync the bags.
+      // To keep it simple, let's add a SYNC_BAGS action or just handle it in START_SPIN.
+      // Actually, START_SPIN is what initiates a letter roll usually.
+      // If we're mid-round, we just want the roller to roll.
+      // Wait, if we roll a new letter, we definitely want it to stay.
+      // I'll add a SYNC_BAGS action to the reducer for mid-round rerolls.
+      roller.spinTo(chosen, () => undefined);
+      dispatch({ type: 'SYNC_BAGS', remainingLetters: remaining, drawnLetters: drawn });
+      return;
+    }
+
+    beginRound(false);
+  }, [beginRound, drawNextLetter, roller, state.phase, state.remainingLetters, state.drawnLetters]);
 
   const togglePause = useCallback(() => {
     dispatch({ type: 'PAUSE_TOGGLE' });
@@ -91,13 +130,10 @@ export function useRound({ gameSeconds, totalRounds, isMuted }: UseRoundOptions)
   }, [clearAlarmTimeout, roller]);
 
   const newGame = useCallback(() => {
-    letterBagRef.current = [];
-    setUsedLetters([]);
     roller.reset();
     clearAlarmTimeout();
     dispatch({ type: 'NEW_GAME' });
-    beginRound(false);
-  }, [beginRound, clearAlarmTimeout, roller]);
+  }, [clearAlarmTimeout, roller]);
 
   // Countdown clock
   useEffect(() => {
@@ -165,7 +201,7 @@ export function useRound({ gameSeconds, totalRounds, isMuted }: UseRoundOptions)
     letter: roller.letter,
     letterVisible: roller.visible,
     letterLanding: roller.landing,
-    usedLetters,
+    usedLetters: state.drawnLetters,
     hasMoreRounds: state.roundCount < totalRounds,
     startRound,
     rerollLetter,

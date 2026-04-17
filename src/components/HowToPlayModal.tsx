@@ -1,34 +1,60 @@
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface HowToPlayModalProps {
   onClose: () => void;
 }
 
-export function HowToPlayModal({ onClose }: HowToPlayModalProps) {
+function toStringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.filter((item): item is string => typeof item === 'string');
+}
+
+// biome-ignore lint/style/noDefaultExport: required for React.lazy
+export default function HowToPlayModal({ onClose }: HowToPlayModalProps) {
   const { t } = useTranslation();
-  const gameplayPoints = t('modal.gameplayPoints', { returnObjects: true }) as string[];
-  const scoringPoints = t('modal.scoringPoints', { returnObjects: true }) as string[];
-  const featuresList = t('modal.featuresList', { returnObjects: true }) as string[];
+  const gameplayPoints = toStringArray(t('modal.gameplayPoints', { returnObjects: true }));
+  const scoringPoints = toStringArray(t('modal.scoringPoints', { returnObjects: true }));
+  const featuresList = toStringArray(t('modal.featuresList', { returnObjects: true }));
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) {
+      return;
+    }
+    dialog.showModal();
+
+    function onBackdropClick(event: MouseEvent) {
+      if (event.target === dialog && dialog) {
+        dialog.close();
+      }
+    }
+
+    dialog.addEventListener('click', onBackdropClick);
+    return () => {
+      dialog.removeEventListener('click', onBackdropClick);
+      dialog.close();
+    };
+  }, []);
 
   return (
-    <div className="modal-overlay">
-      <button
-        type="button"
-        className="modal-backdrop"
-        aria-label={t('buttons.close')}
-        onClick={onClose}
-      />
-      <div
-        className="modal-content"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="how-to-play-title"
-      >
+    <dialog
+      ref={dialogRef}
+      className="modal-dialog"
+      aria-labelledby="how-to-play-title"
+      onClose={onClose}
+    >
+      <div className="modal-content">
         <button
           type="button"
           className="modal-close"
           onClick={onClose}
           aria-label={t('buttons.close')}
+          title={t('buttons.closeTooltip', { defaultValue: t('buttons.close') })}
         >
           {t('buttons.close')}
         </button>
@@ -63,6 +89,6 @@ export function HowToPlayModal({ onClose }: HowToPlayModalProps) {
 
         <p className="modal-footer-text">{t('modal.footer')}</p>
       </div>
-    </div>
+    </dialog>
   );
 }

@@ -1,33 +1,8 @@
-export const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+import { getLocaleLetters } from '../i18n/localeRegistry';
 
-export const LETTER_WEIGHTS: Record<string, number> = {
-  A: 0.120_858_29,
-  B: 0.047_715_98,
-  C: 0.053_093_05,
-  D: 0.031_777,
-  E: 0.024_692_97,
-  F: 0.045_236_78,
-  G: 0.017_946_93,
-  H: 0.041_639_63,
-  I: 0.061_361_25,
-  J: 0.007_798_17,
-  K: 0.007_207_32,
-  L: 0.024_839_7,
-  M: 0.038_116_47,
-  N: 0.020_291_41,
-  O: 0.065_461_86,
-  P: 0.040_000_5,
-  Q: 0.001_555_54,
-  R: 0.034_166_15,
-  S: 0.078_439_94,
-  T: 0.154_633_37,
-  U: 0.011_549_04,
-  V: 0.008_365_68,
-  W: 0.057_486_07,
-  X: 0.000_385_18,
-  Y: 0.004_566_91,
-  Z: 0.000_811_31,
-};
+// The default letter set used for English and as a baseline for tests.
+export const ENGLISH_LETTERS = getLocaleLetters('en');
+export const LETTERS = ENGLISH_LETTERS;
 
 export const CATEGORIES = [
   'Animals',
@@ -289,3 +264,16 @@ export const CATEGORIES = [
 ];
 
 export const BUFFER_SECONDS = 5;
+
+// Settings bounds and defaults
+export const DURATION_MIN = 10;
+export const DURATION_MAX = 600;
+export const DURATION_DEFAULT = 90;
+
+export const CAT_COUNT_MIN = 1;
+export const CAT_COUNT_MAX = 25;
+export const CAT_COUNT_DEFAULT = 12;
+
+export const ROUNDS_MIN = 1;
+export const ROUNDS_MAX = 10;
+export const ROUNDS_DEFAULT = 3;

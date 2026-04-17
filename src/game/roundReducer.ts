@@ -7,7 +7,6 @@ export type StatusKey =
   | 'timer.go'
   | 'timer.roundOver'
   | 'timer.gameCompleteRound'
-  | 'timer.gameComplete'
   | null;
 
 export interface RoundState {
@@ -19,6 +18,8 @@ export interface RoundState {
   gameSeconds: number;
   alarmOn: boolean;
   statusKey: StatusKey;
+  remainingLetters: string[];
+  drawnLetters: string[];
 }
 
 export type RoundAction =
@@ -27,13 +28,15 @@ export type RoundAction =
       gameSeconds: number;
       totalRounds: number;
       incrementRound: boolean;
+      remainingLetters: string[];
+      drawnLetters: string[];
     }
-  | { type: 'START_BLOCKED' }
   | { type: 'LETTER_LANDED' }
   | { type: 'TICK' }
   | { type: 'PAUSE_TOGGLE' }
   | { type: 'RESET' }
   | { type: 'ALARM_OFF' }
+  | { type: 'SYNC_BAGS'; remainingLetters: string[]; drawnLetters: string[] }
   | { type: 'NEW_GAME' };
 
 export const initialRoundState: RoundState = {
@@ -45,6 +48,8 @@ export const initialRoundState: RoundState = {
   gameSeconds: 0,
   alarmOn: false,
   statusKey: null,
+  remainingLetters: [],
+  drawnLetters: [],
 };
 
 export function roundReducer(state: RoundState, action: RoundAction): RoundState {
@@ -62,11 +67,10 @@ export function roundReducer(state: RoundState, action: RoundAction): RoundState
         roundCount: nextRoundCount,
         totalRounds: action.totalRounds,
         gameSeconds: action.gameSeconds,
+        remainingLetters: action.remainingLetters,
+        drawnLetters: action.drawnLetters,
       };
     }
-
-    case 'START_BLOCKED':
-      return { ...state, statusKey: 'timer.gameComplete' };
 
     case 'LETTER_LANDED':
       if (state.phase !== 'spinning') {
@@ -137,10 +141,19 @@ export function roundReducer(state: RoundState, action: RoundAction): RoundState
     case 'ALARM_OFF':
       return { ...state, alarmOn: false };
 
+    case 'SYNC_BAGS':
+      return {
+        ...state,
+        remainingLetters: action.remainingLetters,
+        drawnLetters: action.drawnLetters,
+      };
+
     case 'NEW_GAME':
       return {
         ...initialRoundState,
         totalRounds: state.totalRounds,
+        remainingLetters: [],
+        drawnLetters: [],
       };
 
     default:

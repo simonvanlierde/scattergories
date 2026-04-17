@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useSyncExternalStore } from 'react';
+import { CAT_COUNT_DEFAULT, DURATION_DEFAULT, ROUNDS_DEFAULT } from '../game/constants';
 
-export type CategoryMode = 'default' | 'custom' | 'mixed';
-export type Theme = 'light' | 'dark';
+type CategoryMode = 'default' | 'custom' | 'mixed';
+type Theme = 'light' | 'dark';
 
-export interface Settings {
+interface Settings {
   durationInput: string;
   catCountInput: string;
   totalRoundsInput: string;
@@ -13,7 +14,7 @@ export interface Settings {
   theme: Theme;
 }
 
-const STORAGE_KEY = 'scattegories.settings.v1';
+const STORAGE_KEY = 'scattergories.settings.v1';
 
 function preferredTheme(): Theme {
   if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
@@ -23,16 +24,17 @@ function preferredTheme(): Theme {
 }
 
 const defaults = (): Settings => ({
-  durationInput: '90',
-  catCountInput: '12',
-  totalRoundsInput: '3',
+  durationInput: String(DURATION_DEFAULT),
+  catCountInput: String(CAT_COUNT_DEFAULT),
+  totalRoundsInput: String(ROUNDS_DEFAULT),
   categoryMode: 'default',
   customCategories: [],
   isMuted: false,
   theme: preferredTheme(),
 });
 
-function parseStored(raw: string | null, fallback: Settings): Settings {
+function parseStored(raw: string | null): Settings {
+  const fallback = defaults();
   if (!raw) {
     return fallback;
   }
@@ -72,22 +74,94 @@ function parseStored(raw: string | null, fallback: Settings): Settings {
 
     return merged;
   } catch {
-    window.localStorage.removeItem(STORAGE_KEY);
     return fallback;
   }
 }
 
-export function useSettings() {
-  const [settings, setSettings] = useState<Settings>(() =>
-    parseStored(window.localStorage.getItem(STORAGE_KEY), defaults()),
+// External store for settings
+let currentSettings = parseStored(
+  typeof window === 'undefined' ? null : window.localStorage.getItem(STORAGE_KEY),
+);
+
+const listeners = new Set<() => void>();
+
+const settingsStore = {
+  subscribe(onStoreChange: () => void) {
+    listeners.add(onStoreChange);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('storage', this.handleStorageEvent);
+      window
+        .matchMedia('(prefers-color-scheme: dark)')
+        .addEventListener('change', this.handleThemeEvent);
+    }
+    return () => {
+      listeners.delete(onStoreChange);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('storage', this.handleStorageEvent);
+        window
+          .matchMedia('(prefers-color-scheme: dark)')
+          .removeEventListener('change', this.handleThemeEvent);
+      }
+    };
+  },
+
+  getSnapshot() {
+    return currentSettings;
+  },
+
+  getServerSnapshot() {
+    return defaults();
+  },
+
+  handleStorageEvent(event: StorageEvent) {
+    if (event.key === STORAGE_KEY) {
+      currentSettings = parseStored(event.newValue);
+      for (const listener of listeners) {
+        listener();
+      }
+    }
+  },
+
+  handleThemeEvent(event: MediaQueryListEvent) {
+    const newTheme: Theme = event.matches ? 'dark' : 'light';
+    const prevOsTheme: Theme = event.matches ? 'light' : 'dark';
+    if (currentSettings.theme === prevOsTheme) {
+      settingsStore.updateSettings({ ...currentSettings, theme: newTheme });
+    }
+  },
+
+  updateSettings(next: Settings) {
+    if (next === currentSettings) {
+      return;
+    }
+    currentSettings = next;
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    }
+    for (const listener of listeners) {
+      listener();
+    }
+  },
+
+  reset() {
+    currentSettings = parseStored(
+      typeof window === 'undefined' ? null : window.localStorage.getItem(STORAGE_KEY),
+    );
+    for (const listener of listeners) {
+      listener();
+    }
+  },
+};
+
+function useSettings() {
+  const settings = useSyncExternalStore(
+    settingsStore.subscribe.bind(settingsStore),
+    settingsStore.getSnapshot,
+    settingsStore.getServerSnapshot,
   );
 
-  useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
-  }, [settings]);
-
   const update = useCallback(<K extends keyof Settings>(key: K, value: Settings[K]) => {
-    setSettings((prev) => ({ ...prev, [key]: value }));
+    settingsStore.updateSettings({ ...currentSettings, [key]: value });
   }, []);
 
   const addCustomCategory = useCallback((raw: string) => {
@@ -95,20 +169,24 @@ export function useSettings() {
     if (!trimmed) {
       return;
     }
-    setSettings((prev) => {
-      if (prev.customCategories.some((c) => c.toLowerCase() === trimmed.toLowerCase())) {
-        return prev;
-      }
-      return { ...prev, customCategories: [...prev.customCategories, trimmed] };
+    if (currentSettings.customCategories.some((c) => c.toLowerCase() === trimmed.toLowerCase())) {
+      return;
+    }
+    settingsStore.updateSettings({
+      ...currentSettings,
+      customCategories: [...currentSettings.customCategories, trimmed],
     });
   }, []);
 
   const removeCustomCategory = useCallback((category: string) => {
-    setSettings((prev) => ({
-      ...prev,
-      customCategories: prev.customCategories.filter((c) => c !== category),
-    }));
+    settingsStore.updateSettings({
+      ...currentSettings,
+      customCategories: currentSettings.customCategories.filter((c) => c !== category),
+    });
   }, []);
 
   return { settings, update, addCustomCategory, removeCustomCategory };
 }
+
+export type { CategoryMode, Settings, Theme };
+export { settingsStore, useSettings };

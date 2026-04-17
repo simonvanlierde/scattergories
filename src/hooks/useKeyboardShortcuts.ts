@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 export interface ShortcutHandlers {
   onSpace?: () => void;
@@ -10,6 +10,9 @@ export interface ShortcutHandlers {
 }
 
 export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
+  const handlersRef = useRef(handlers);
+  handlersRef.current = handlers;
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       const target = event.target as HTMLElement | null;
@@ -20,25 +23,25 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
 
       if (event.code === 'Space') {
         event.preventDefault();
-        handlers.onSpace?.();
+        handlersRef.current.onSpace?.();
         return;
       }
 
       switch (event.key.toLowerCase()) {
         case 'r':
-          handlers.onR?.();
+          handlersRef.current.onR?.();
           break;
         case 'n':
-          handlers.onN?.();
+          handlersRef.current.onN?.();
           break;
         case 'p':
-          handlers.onP?.();
+          handlersRef.current.onP?.();
           break;
         case 'c':
-          handlers.onC?.();
+          handlersRef.current.onC?.();
           break;
         case 'a':
-          handlers.onA?.();
+          handlersRef.current.onA?.();
           break;
         default:
           break;
@@ -47,5 +50,5 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [handlers]);
+  }, []);
 }

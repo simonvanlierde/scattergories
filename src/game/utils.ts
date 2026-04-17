@@ -1,10 +1,14 @@
-import { LETTER_WEIGHTS, LETTERS } from './constants';
+import { FALLBACK_LOCALE, getLocaleLetters, normalizeLocale } from '../i18n/localeRegistry';
+import { getLocaleLetterWeights } from './localeWeights';
 
-export function weightedLetterBag(): string[] {
-  return [...LETTERS]
+export function weightedLetterBag(locale: string = FALLBACK_LOCALE): string[] {
+  const normalizedLocale = normalizeLocale(locale);
+  const letterWeights = getLocaleLetterWeights(normalizedLocale);
+  const letters = getLocaleLetters(normalizedLocale);
+  return [...letters]
     .map((letter) => ({
       letter,
-      score: Math.random() * (LETTER_WEIGHTS[letter] ?? 1),
+      score: Math.random() * (letterWeights[letter] ?? 1),
     }))
     .sort((a, b) => a.score - b.score)
     .map((entry) => entry.letter);
