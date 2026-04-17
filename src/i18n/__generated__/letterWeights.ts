@@ -1,4 +1,4 @@
-import type { LocaleCode } from './resources';
+import type { LocaleCode } from '../locales/resources';
 
 export interface LocaleWeightManifest {
   locale: LocaleCode;

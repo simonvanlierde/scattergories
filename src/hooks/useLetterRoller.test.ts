@@ -29,7 +29,7 @@ afterEach(() => {
 
 describe('useLetterRoller', () => {
   it('starts with letter "?", not visible, not landing', () => {
-    const { result } = renderHook(() => useLetterRoller());
+    const { result } = renderHook(() => useLetterRoller('en'));
     expect(result.current.letter).toBe('?');
     expect(result.current.visible).toBe(false);
     expect(result.current.landing).toBe(false);
@@ -39,7 +39,7 @@ describe('useLetterRoller', () => {
     // Use reduced-motion so spinTo snaps synchronously and does not loop rAF.
     stubReducedMotion();
 
-    const { result } = renderHook(() => useLetterRoller());
+    const { result } = renderHook(() => useLetterRoller('en'));
     act(() => {
       result.current.spinTo('A', vi.fn());
     });
@@ -56,7 +56,7 @@ describe('useLetterRoller', () => {
       stubReducedMotion();
 
       const onLanded = vi.fn();
-      const { result } = renderHook(() => useLetterRoller());
+      const { result } = renderHook(() => useLetterRoller('en'));
 
       act(() => {
         result.current.spinTo('Z', onLanded);
@@ -70,7 +70,7 @@ describe('useLetterRoller', () => {
 
     it('sets letter and visible immediately when motion is not reduced', () => {
       // matchMedia returns matches: false by default (from setupTests).
-      const { result } = renderHook(() => useLetterRoller());
+      const { result } = renderHook(() => useLetterRoller('en'));
 
       act(() => {
         result.current.spinTo('M', vi.fn());
@@ -88,7 +88,7 @@ describe('useLetterRoller', () => {
     stubReducedMotion();
 
     const onLanded = vi.fn();
-    const { result } = renderHook(() => useLetterRoller());
+    const { result } = renderHook(() => useLetterRoller('en'));
 
     act(() => {
       result.current.cancelSpin();

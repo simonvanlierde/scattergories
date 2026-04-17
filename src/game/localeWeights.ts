@@ -1,11 +1,11 @@
-import { FALLBACK_LOCALE, normalizeLocale } from '../i18n/localeRegistry';
 import {
   LETTER_WEIGHTS_BY_LOCALE as GENERATED_LETTER_WEIGHTS_BY_LOCALE,
   LOCALE_WEIGHT_MANIFEST as GENERATED_LOCALE_WEIGHT_MANIFEST,
-} from '../i18n/locales/letterWeights.generated';
+} from '../i18n/__generated__/letterWeights';
+import { FALLBACK_LOCALE, normalizeLocale } from '../i18n/localeRegistry';
 
 type GeneratedLocaleWeightManifest =
-  import('../i18n/locales/letterWeights.generated').LocaleWeightManifest;
+  import('../i18n/__generated__/letterWeights').LocaleWeightManifest;
 
 export const LETTER_WEIGHTS_BY_LOCALE = GENERATED_LETTER_WEIGHTS_BY_LOCALE;
 export const LOCALE_WEIGHT_MANIFEST = GENERATED_LOCALE_WEIGHT_MANIFEST;
@@ -22,4 +22,4 @@ export function getLocaleWeightManifest(
   return LOCALE_WEIGHT_MANIFEST[normalized] ?? LOCALE_WEIGHT_MANIFEST[FALLBACK_LOCALE];
 }
 
-export type { LocaleWeightManifest };
+export type LocaleWeightManifest = GeneratedLocaleWeightManifest;
