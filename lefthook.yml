@@ -17,13 +17,8 @@ pre-commit:
       glob: "tools/**/*.py"
       run: uv run --quiet ruff check {staged_files}
 
-    python-typecheck:
-      root: "tools"
-      glob: "tools/**/*.py"
-      run: uv run --quiet ty check
-
 pre-push:
   commands:
-    full-ci:
-      run: pnpm run verify
+    typecheck:
+      run: pnpm run typecheck
       timeout: 1m

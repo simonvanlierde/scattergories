@@ -13,6 +13,23 @@ on:
       - 'package.json'
       - 'pnpm-lock.yaml'
       - 'public/**'
+      - 'scripts/ci/**'
+      - 'src/**'
+      - 'tests/**'
+      - 'tsconfig*.json'
+      - 'vite.config.*'
+      - '.github/workflows/ci.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'biome.json'
+      - 'cspell.yml'
+      - 'index.html'
+      - 'lefthook.yml'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'public/**'
+      - 'scripts/ci/**'
       - 'src/**'
       - 'tests/**'
       - 'tsconfig*.json'
@@ -41,7 +58,7 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.13.0
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
@@ -70,3 +87,6 @@ jobs:
 
       - name: Production build
         run: pnpm run build
+
+      - name: Bundle budgets
+        run: pnpm run budget

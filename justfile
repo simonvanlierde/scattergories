@@ -10,9 +10,15 @@ default:
 install:
     pnpm install --frozen-lockfile
 
-# Run the full local verification pipeline (typecheck + lint + spellcheck + unit tests + build)
+# Run the app verification pipeline (typecheck + spellcheck + lint + unit tests + build)
 verify:
     pnpm run verify
+
+# Run app, tools, and infrastructure validation
+verify-full:
+    pnpm run verify
+    cd tools && just --justfile justfile check
+    pnpm run infra:check
 
 # Audit dependencies for known security and adverse-status issues
 audit:
@@ -30,6 +36,10 @@ audit-all:
 # Run the full security audit suite
 security:
     just audit-all
+
+# Validate Docker/Compose/Caddy infrastructure locally
+infra-check:
+    pnpm run infra:check
 
 # Start the dev server
 dev:
@@ -75,25 +85,31 @@ test-e2e:
 # wrappers that invoke the tools file explicitly with `-f`.
 
 tools-list:
-    @just tools/ --list
+    @just -f tools/justfile --list
 
 tools-install:
-    @just tools/install
+    @just -f tools/justfile install
 
 tools-check:
-    @just tools/check
+    @just -f tools/justfile check
+
+tools-doctor:
+    @just -f tools/justfile doctor
 
 tools-audit:
-    @just tools/audit
+    @just -f tools/justfile audit
 
 tools-update:
-    @just tools/update
+    @just -f tools/justfile update
 
 tools-generate-weights:
-    @just tools/tools-generate-weights
+    @just -f tools/justfile weights-sample-write
 
-tools-clean:
-    @just tools/tools-clean
+tools-weights-locales:
+    @just -f tools/justfile weights-locales
+
+tools-translate-categories *locales:
+    @just -f tools/justfile translate-categories {{ locales }}
 
 #----------------------
 # Docker deployment
