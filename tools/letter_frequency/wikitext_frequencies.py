@@ -35,7 +35,7 @@ WIKIPEDIA_DATASET = "wikimedia/wikipedia"
 WIKIPEDIA_DATASET_DATE = "20231101"
 DEFAULT_MAX_BYTES = 150_000_000
 DEFAULT_LOCALE_REGISTRY = Path(__file__).resolve().parents[2] / "src/i18n/locales/registry.json"
-DEFAULT_SOURCE_OUTPUT = Path(__file__).resolve().parents[2] / "src/i18n/locales/letterWeights.generated.ts"
+DEFAULT_SOURCE_OUTPUT = Path(__file__).resolve().parents[2] / "src/i18n/__generated__/letterWeights.ts"
 DEFAULT_WIKIPEDIA_MAX_BYTES = DEFAULT_MAX_BYTES
 
 
@@ -237,7 +237,7 @@ def render_locale_weight_source(
 ) -> str:
     """Render a committed TypeScript module containing locale weight tables."""
     lines: list[str] = [
-        "import type { LocaleCode } from './resources';",
+        "import type { LocaleCode } from '../locales/resources';",
         "",
         "export interface LocaleWeightManifest {",
         "  locale: LocaleCode;",
