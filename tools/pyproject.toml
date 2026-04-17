@@ -1,34 +1,43 @@
+[build-system]
+  build-backend = "uv_build"
+  requires      = ["uv_build>=0.11.7"]
+
 [project]
-  dependencies    = ["datasets>=4.8.4", "tqdm>=4.67.0"]
-  description     = "Derive first-letter frequencies from corpora for Scattergories letter weighting"
-  name            = "letter-frequency"
-  readme          = "README.md"
-  requires-python = ">=3.14"
-  version         = "0.1.0"
+  dependencies    = ['datasets>=4.8.4', 'tqdm>=4.67.0', 'typer>=0.16.0']
+  description     = 'Internal Python tooling for Scattergories locale assets and data workflows'
+  name            = 'scattergories-tools'
+  readme          = 'README.md'
+  requires-python = '>=3.14'
+  version         = '0.2.0'
 
   [project.scripts]
-    translate-categories = "translation.service:main"
+    sg-tools = 'scattergories_tools.cli:main'
 
 [dependency-groups]
-  dev         = ["pytest-cov>=6.0.0", "pytest>=9.0.3", "ruff>=0.15.10", "ty>=0.0.29"]
-  translation = ["argostranslate>=1.9.6"]
+  dev         = ['pytest>=9.0.3', 'pytest-cov>=6.0.0', 'ruff>=0.15.10', 'ty>=0.0.29', "uv-build>=0.11.7"]
+  translation = ['argostranslate>=1.9.6']
 
 [tool.pytest.ini_options]
-  addopts   = ["--cov-branch", "--cov-report=html", "--cov-report=term-missing", "--cov=.", "--tb=short", "-v"]
-  testpaths = ["tests"]
+  addopts = [
+    '--cov-branch',
+    '--cov-report=term-missing',
+    '--cov=src/scattergories_tools',
+    '--strict-config',
+    '--strict-markers',
+    '--tb=short',
+    '-q',
+  ]
+  testpaths = ['tests']
 
 [tool.ruff]
-  line-length    = 120
-  target-version = "py314"
-
-  extend-exclude = ["*/.venv/*"]
-
+  extend-exclude               = ['.venv', '.cache', 'out']
   format.docstring-code-format = true
+  line-length                  = 100
+  src                          = ['src', 'tests']
+  target-version               = 'py314'
 
   [tool.ruff.lint]
-
-    fixable = ["ALL"]
-    select  = ["ALL"]
+    fixable = ['ALL']
 
     ignore = [
       # Avoid conflicts with the formatter
@@ -39,14 +48,10 @@
       "D105",   # undocumented-magic-method
       "D107",   # undocumented-public-init
     ]
+    select = ['ALL']
 
-    pydocstyle.convention = "google"
+    [tool.ruff.lint.pydocstyle]
+      convention = 'google'
 
     [tool.ruff.lint.per-file-ignores]
-
-      "tests/**/*.py" = [
-        "PLR2004", # Literal values keep assertions readable in tests
-        "S101",    # allow assert in test files
-        "S105",    # test fixture token strings are not real credentials
-        "S106",    # same — hardcoded argument value is a test stub
-      ]
+      'tests/**/*.py' = ['S101']

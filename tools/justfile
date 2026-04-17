@@ -1,90 +1,55 @@
-# Default task ensures just lists its commands
 default:
     @just --list
 
-#----------------------
-# Development commands
-#----------------------
-
-# Install dependencies
 install:
-    @uv sync
+    @uv sync --locked
 
-# Install optional translation dependencies (Argos)
 install-translation:
-    @uv sync --group translation
+    @uv sync --group translation --locked
 
-# Run linting checks
 lint:
-    @uv run ruff check
+    @uv run ruff check .
 
-# Audit dependencies for known security and adverse-status issues
-audit:
-    @uv audit --preview-features audit --locked
-
-# Update dependencies and refresh the lockfile
-update:
-    @uv lock --upgrade
-
-# Format with ruff (if fixing is available)
 format:
-    @uv run ruff check --fix
+    @uv run ruff format .
 
-# Run type checking (includes optional translation deps)
 typecheck:
-    @uv run --group translation ty check
+    @uv run ty check
 
-# Run tests
 test:
     @uv run pytest
 
-# Run all checks (lint, type, test)
 check: lint typecheck test
 
-# Generate letter weights from Wikitext (`small` by default, pass `large` for Wikitext-103)
-generate-weights size='small':
-    @if [ "{{ size }}" = "large" ]; then uv run python -m letter_frequency.wikitext_frequencies --large; else uv run python -m letter_frequency.wikitext_frequencies; fi
+update:
+    @uv lock --upgrade
 
-# Generate locale-specific letter weights from src/i18n/locales/*.json
-generate-locale-weights locales='en es fr de it nl pl pt el' max_bytes='150000000':
-    @uv run python -m letter_frequency.wikitext_frequencies --mode locales --locales {{ locales }} --max-bytes {{ max_bytes }}
+doctor:
+    @uv run sg-tools doctor
 
-# Preview selected dataset and output path (`small` by default, pass `large` for Wikitext-103)
-dry-run size='small':
-    @if [ "{{ size }}" = "large" ]; then uv run python -m letter_frequency.wikitext_frequencies --dry-run --large; else uv run python -m letter_frequency.wikitext_frequencies --dry-run; fi
+weights-sample dataset='wikitext-2':
+    @uv run sg-tools weights sample --dataset {{ dataset }}
 
-# Preview locale-specific weight generation without writing files
-dry-run-locales locales='en es fr de it nl pl pt el' max_bytes='150000000':
-    @uv run python -m letter_frequency.wikitext_frequencies --mode locales --locales {{ locales }} --max-bytes {{ max_bytes }} --dry-run
+weights-sample-write dataset='wikitext-2':
+    @uv run sg-tools weights sample --dataset {{ dataset }} --write
 
-# Display generated letter weights (`small` by default, pass `large` for Wikitext-103)
-show-weights size='small':
-    @dataset="wikitext-2-raw-v1"; \
-    if [ "{{ size }}" = "large" ]; then dataset="wikitext-103-raw-v1"; fi; \
-    echo "=== $$dataset weights ==="; \
-    cat "letter_frequency/data/$$dataset/letter_weights.ts" 2>/dev/null || echo "Run 'just generate-weights {{ size }}' first"
+weights-locales locales='en es fr de it nl pl pt el' max_bytes='150000000':
+    @uv run sg-tools weights locales --locales {{ locales }} --max-bytes {{ max_bytes }}
 
-# Display generated locale-specific weights
-show-locale-weights locale='en':
-    @echo "=== $$locale weights ==="; \
-    cat "letter_frequency/data/$$locale/letter_weights.ts" 2>/dev/null || echo "Run 'just generate-locale-weights {{ locale }}' first"
+weights-locales-write locales='en es fr de it nl pl pt el' max_bytes='150000000':
+    @uv run sg-tools weights locales --locales {{ locales }} --max-bytes {{ max_bytes }} --write-app-file
 
-# Translate src/game/constants.ts CATEGORIES into other locales (space or comma-separated: just translate-categories es fr)
 translate-categories *locales='es':
-    @uv run --group translation python translation/service.py --target-locales {{ locales }}
+    @uv run --group translation sg-tools translate categories --target-locales {{ locales }}
 
-# Preview category translation without downloading or translating
-translate-categories-dry-run *locales='es':
-    @uv run python translation/service.py --target-locales {{ locales }} --dry-run
+translate-categories-write *locales='es':
+    @uv run --group translation sg-tools translate categories --target-locales {{ locales }} --write-app-files
 
-# Translate src/i18n/locales/en.json payload into target locale files (space or comma-separated: just translate-locales es fr)
 translate-locales *locales='es':
-    @uv run --group translation python translation/service.py --mode locales --target-locales {{ locales }}
+    @uv run --group translation sg-tools translate locales --target-locales {{ locales }}
 
-# Preview locale payload translation without downloading or translating
-translate-locales-dry-run *locales='es':
-    @uv run python translation/service.py --mode locales --target-locales {{ locales }} --dry-run
+translate-locales-write *locales='es':
+    @uv run --group translation sg-tools translate locales --target-locales {{ locales }} --write-app-files
 
-# Clean generated artifacts
-clean:
-    @rm -rf data/ __pycache__ .pytest_cache .ruff_cache
+audit:
+    @uv audit --preview-features audit --locked

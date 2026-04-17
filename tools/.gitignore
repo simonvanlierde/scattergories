@@ -1,17 +1,10 @@
-# Python
 __pycache__/
 .pytest_cache/
 .ruff_cache/
 .venv/
 *.pyc
 *.pyo
-
-# Cache
-translation/.translation-cache.json
-
-# Translations - the auto-generated files are not source of truth and can be re-generated as needed
-# Move translations to src/i8n/locales`src/i18n/locales` directory if manually overridden
-translation/data/*
-
-# Letter frequency data - auto-generated and not source of truth
-letter_frequency/data/*
+.DS_Store
+.cache/
+out/
+htmlcov/
