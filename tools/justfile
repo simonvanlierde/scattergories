@@ -37,9 +37,17 @@ check: lint typecheck test
 generate-weights size='small':
     @if [ "{{ size }}" = "large" ]; then uv run python -m letter_frequency.wikitext_frequencies --large; else uv run python -m letter_frequency.wikitext_frequencies; fi
 
+# Generate locale-specific letter weights from src/i18n/locales/*.json
+generate-locale-weights locales='en es fr de it nl pl pt el' max_bytes='150000000':
+    @uv run python -m letter_frequency.wikitext_frequencies --mode locales --locales {{ locales }} --max-bytes {{ max_bytes }}
+
 # Preview selected dataset and output path (`small` by default, pass `large` for Wikitext-103)
 dry-run size='small':
     @if [ "{{ size }}" = "large" ]; then uv run python -m letter_frequency.wikitext_frequencies --dry-run --large; else uv run python -m letter_frequency.wikitext_frequencies --dry-run; fi
+
+# Preview locale-specific weight generation without writing files
+dry-run-locales locales='en es fr de it nl pl pt el' max_bytes='150000000':
+    @uv run python -m letter_frequency.wikitext_frequencies --mode locales --locales {{ locales }} --max-bytes {{ max_bytes }} --dry-run
 
 # Display generated letter weights (`small` by default, pass `large` for Wikitext-103)
 show-weights size='small':
@@ -48,20 +56,25 @@ show-weights size='small':
     echo "=== $$dataset weights ==="; \
     cat "letter_frequency/data/$$dataset/letter_weights.ts" 2>/dev/null || echo "Run 'just generate-weights {{ size }}' first"
 
-# Translate src/game/constants.ts CATEGORIES into other locales
-translate-categories locales='es':
+# Display generated locale-specific weights
+show-locale-weights locale='en':
+    @echo "=== $$locale weights ==="; \
+    cat "letter_frequency/data/$$locale/letter_weights.ts" 2>/dev/null || echo "Run 'just generate-locale-weights {{ locale }}' first"
+
+# Translate src/game/constants.ts CATEGORIES into other locales (space or comma-separated: just translate-categories es fr)
+translate-categories *locales='es':
     @uv run --group translation python translation/service.py --target-locales {{ locales }}
 
 # Preview category translation without downloading or translating
-translate-categories-dry-run locales='es':
+translate-categories-dry-run *locales='es':
     @uv run python translation/service.py --target-locales {{ locales }} --dry-run
 
-# Translate src/i18n/locales/en.json payload into target locale files
-translate-locales locales='es':
+# Translate src/i18n/locales/en.json payload into target locale files (space or comma-separated: just translate-locales es fr)
+translate-locales *locales='es':
     @uv run --group translation python translation/service.py --mode locales --target-locales {{ locales }}
 
 # Preview locale payload translation without downloading or translating
-translate-locales-dry-run locales='es':
+translate-locales-dry-run *locales='es':
     @uv run python translation/service.py --mode locales --target-locales {{ locales }} --dry-run
 
 # Clean generated artifacts

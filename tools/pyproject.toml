@@ -1,5 +1,5 @@
 [project]
-  dependencies    = ["datasets>=4.8.4"]
+  dependencies    = ["datasets>=4.8.4", "tqdm>=4.67.0"]
   description     = "Derive first-letter frequencies from corpora for Scattergories letter weighting"
   name            = "letter-frequency"
   readme          = "README.md"
@@ -47,4 +47,6 @@
       "tests/**/*.py" = [
         "PLR2004", # Literal values keep assertions readable in tests
         "S101",    # allow assert in test files
+        "S105",    # test fixture token strings are not real credentials
+        "S106",    # same — hardcoded argument value is a test stub
       ]

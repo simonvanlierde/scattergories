@@ -4,8 +4,9 @@ import argparse
 import json
 import logging
 import re
+from collections.abc import Iterable
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
@@ -28,6 +29,7 @@ DEFAULT_OUTPUT_DIR = Path(__file__).resolve().parent / "data"
 DEFAULT_CACHE_PATH = Path(__file__).resolve().parent / ".translation-cache.json"
 DEFAULT_SOURCE_LOCALE = "en"
 DEFAULT_TARGET_LOCALES = ("es",)
+DEFAULT_LOCALE_REGISTRY_PATH = Path(__file__).resolve().parents[2] / "src/i18n/locales/registry.json"
 PLACEHOLDER_RE = re.compile(r"{{\s*[^{}]+\s*}}")
 
 
@@ -74,6 +76,35 @@ def save_cache(cache_path: Path, cache: dict[str, str]) -> None:
         cache_path.write_text(json.dumps(cache, indent=2, ensure_ascii=False), encoding="utf-8")
     except OSError as error:
         logger.warning("Failed to save cache to %s: %s", cache_path, error)
+
+
+def load_locale_registry(registry_path: Path) -> dict[str, Any]:
+    """Load the shared locale registry used by the app and tools."""
+    raw = registry_path.read_text(encoding="utf-8")
+    registry = json.loads(raw)
+    if not isinstance(registry, dict):
+        msg = f"Invalid locale registry at {registry_path}"
+        raise TypeError(msg)
+    return registry
+
+
+def supported_locales(registry_path: Path = DEFAULT_LOCALE_REGISTRY_PATH) -> list[str]:
+    """Return the canonical locale list from the shared registry."""
+    registry = load_locale_registry(registry_path)
+    locales = registry.get("locales")
+    if not isinstance(locales, list) or not all(isinstance(locale, str) for locale in locales):
+        msg = f"Invalid locale list in {registry_path}"
+        raise RuntimeError(msg)
+    return cast("list[str]", list(locales))
+
+
+def validate_locales(requested: Iterable[str], registry_path: Path = DEFAULT_LOCALE_REGISTRY_PATH) -> None:
+    """Ensure requested locales all exist in the shared registry."""
+    allowed = set(supported_locales(registry_path))
+    invalid = sorted({locale for locale in requested if locale not in allowed})
+    if invalid:
+        msg = f"Unsupported locale code(s): {', '.join(invalid)}"
+        raise RuntimeError(msg)
 
 
 def cache_key(*, from_locale: str, to_locale: str, text: str) -> str:
@@ -144,7 +175,9 @@ class ArgosTranslator:
 
         try:
             self.argos_translate.get_translation_from_codes(from_locale, to_locale)
-        except LookupError, ValueError:
+        except LookupError, ValueError, AttributeError:
+            # AttributeError happens when argostranslate resolves to a None language object
+            # (i.e. the locale code is unknown or the package is not yet installed).
             for package in self.available_packages:
                 if package.from_code == from_locale and package.to_code == to_locale:
                     download_path = package.download()
@@ -152,7 +185,9 @@ class ArgosTranslator:
                     self.installed_pairs.add((from_locale, to_locale))
                     return
 
-            msg = f"No Argos package available for {from_locale} -> {to_locale}"
+            available_targets = sorted({pkg.to_code for pkg in self.available_packages if pkg.from_code == from_locale})
+            hint = f"Available targets from {from_locale!r}: {', '.join(available_targets) or 'none'}"
+            msg = f"No Argos package available for {from_locale} -> {to_locale}. {hint}"
             raise RuntimeError(msg) from None
         else:
             self.installed_pairs.add((from_locale, to_locale))
@@ -247,13 +282,17 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--verbose", action="store_true")
-    return parser.parse_args()
+    args = parser.parse_args()
+    # Accept both "es fr" (space-separated, from shell) and "es,fr" (comma-separated).
+    args.target_locales = [loc for item in args.target_locales for loc in item.split(",") if loc]
+    return args
 
 
 def main() -> None:
     """Translate categories list and write one JSON output per locale."""
     args = parse_args()
     configure_logging(verbose=args.verbose)
+    validate_locales([args.from_locale, *args.target_locales])
 
     cache = load_cache(args.cache_path)
 
@@ -294,7 +333,7 @@ def main() -> None:
                 translate_text=translator.translate,
                 cache=cache,
             )
-            output_path = args.output_dir / f"locale.{to_locale}.json"
+            output_path = args.output_dir / f"{to_locale}.json"
             output_path.parent.mkdir(parents=True, exist_ok=True)
             output_path.write_text(
                 json.dumps(translated_payload, indent=2, ensure_ascii=False),
