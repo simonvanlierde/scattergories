@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { LETTERS } from './constants';
+import { getLocaleLetters } from '../i18n/localeRegistry';
+import { ENGLISH_LETTERS } from './constants';
 import {
   clampInt,
   formatSeconds,
@@ -109,8 +110,20 @@ describe('shuffleFisherYates', () => {
 describe('weightedLetterBag', () => {
   it('contains every letter exactly once', () => {
     const bag = weightedLetterBag();
-    expect(bag).toHaveLength(LETTERS.length);
-    expect([...bag].sort()).toEqual([...LETTERS].sort());
+    expect(bag).toHaveLength(ENGLISH_LETTERS.length);
+    expect([...bag].sort()).toEqual([...ENGLISH_LETTERS].sort());
+  });
+
+  it('accepts a locale argument and still returns all letters', () => {
+    const bag = weightedLetterBag('fr-FR');
+    expect(bag).toHaveLength(ENGLISH_LETTERS.length);
+    expect([...bag].sort()).toEqual([...ENGLISH_LETTERS].sort());
+  });
+
+  it('uses the Greek alphabet for Greek locales', () => {
+    const bag = weightedLetterBag('el');
+    expect(bag).toHaveLength(getLocaleLetters('el').length);
+    expect([...bag].sort()).toEqual([...getLocaleLetters('el')].sort());
   });
 
   it('produces varying orderings across calls', () => {
@@ -119,5 +132,23 @@ describe('weightedLetterBag', () => {
       orderings.add(weightedLetterBag().join(''));
     }
     expect(orderings.size).toBeGreaterThan(1);
+  });
+
+  it('places high-weight letters later in the bag than low-weight letters over many runs', () => {
+    const highWeightLetter = 'T';
+    const lowWeightLetter = 'Q';
+    const highPositions: number[] = [];
+    const lowPositions: number[] = [];
+
+    for (let i = 0; i < 1000; i += 1) {
+      const bag = weightedLetterBag('en');
+      highPositions.push(bag.indexOf(highWeightLetter));
+      lowPositions.push(bag.indexOf(lowWeightLetter));
+    }
+
+    const averageHigh = highPositions.reduce((sum, value) => sum + value, 0) / highPositions.length;
+    const averageLow = lowPositions.reduce((sum, value) => sum + value, 0) / lowPositions.length;
+
+    expect(averageHigh).toBeGreaterThan(averageLow);
   });
 });

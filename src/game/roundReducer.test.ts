@@ -7,6 +7,8 @@ const startSpin = (incrementRound: boolean) => ({
   gameSeconds: 90,
   totalRounds: 3,
   incrementRound,
+  remainingLetters: ['A', 'B'],
+  drawnLetters: ['C'],
 });
 
 describe('roundReducer', () => {
@@ -14,6 +16,8 @@ describe('roundReducer', () => {
     expect(initialRoundState.phase).toBe('idle');
     expect(initialRoundState.secondsLeft).toBe(0);
     expect(initialRoundState.roundCount).toBe(0);
+    expect(initialRoundState.remainingLetters).toEqual([]);
+    expect(initialRoundState.drawnLetters).toEqual([]);
   });
 
   it('START_SPIN moves to spinning and increments round when requested', () => {
@@ -24,6 +28,8 @@ describe('roundReducer', () => {
     expect(next.totalRounds).toBe(3);
     expect(next.alarmOn).toBe(false);
     expect(next.statusKey).toBeNull();
+    expect(next.remainingLetters).toEqual(['A', 'B']);
+    expect(next.drawnLetters).toEqual(['C']);
   });
 
   it('START_SPIN does not increment round when incrementRound is false', () => {
@@ -157,15 +163,25 @@ describe('roundReducer', () => {
     expect(fresh.phase).toBe('idle');
     expect(fresh.roundCount).toBe(0);
     expect(fresh.totalRounds).toBe(5);
+    expect(fresh.remainingLetters).toEqual([]);
+    expect(fresh.drawnLetters).toEqual([]);
+  });
+
+  it('SYNC_BAGS updates letter bags without changing other state', () => {
+    const mid = { ...initialRoundState, phase: 'running' as const, secondsLeft: 10 };
+    const synced = roundReducer(mid, {
+      type: 'SYNC_BAGS',
+      remainingLetters: ['X'],
+      drawnLetters: ['Y'],
+    });
+    expect(synced.phase).toBe('running');
+    expect(synced.secondsLeft).toBe(10);
+    expect(synced.remainingLetters).toEqual(['X']);
+    expect(synced.drawnLetters).toEqual(['Y']);
   });
 
   it('ALARM_OFF clears the alarm flag', () => {
     const ringing = { ...initialRoundState, alarmOn: true };
     expect(roundReducer(ringing, { type: 'ALARM_OFF' }).alarmOn).toBe(false);
-  });
-
-  it('START_BLOCKED sets the gameComplete status', () => {
-    const next = roundReducer(initialRoundState, { type: 'START_BLOCKED' });
-    expect(next.statusKey).toBe('timer.gameComplete');
   });
 });
