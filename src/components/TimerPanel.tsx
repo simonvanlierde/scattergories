@@ -140,6 +140,7 @@ function RoundDisplay({
           {t('round.letterLabel', { defaultValue: 'Current letter' })}
         </span>
         <div
+          data-testid="current-letter"
           className={`letter ${letterVisible ? '' : 'hidden'} ${letterLanding ? 'landing' : ''}`}
         >
           {letter}
@@ -150,12 +151,13 @@ function RoundDisplay({
         <span className="round-timer__label">
           {t('round.timerLabel', { defaultValue: 'Round clock' })}
         </span>
-        <div className={timerClassName} aria-live="off">
+        <div className={timerClassName} aria-live="off" data-testid="round-clock">
           {timerText}
         </div>
       </div>
 
       <div
+        data-testid="round-status"
         className={`status${phase === 'done' ? ' done' : ''}`}
         aria-live="polite"
         aria-atomic="true"
