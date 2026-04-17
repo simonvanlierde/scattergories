@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.10/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.11/schema.json",
   "files": {
     "includes": [
       "**",
@@ -95,16 +95,7 @@
       "linter": {
         "rules": {
           "complexity": {
-            "noExcessiveCognitiveComplexity": "off",
-            "noExcessiveLinesPerFunction": "off",
-            "noVoid": "off"
-          },
-          "style": {
-            "noDefaultExport": "off",
-            "noJsxLiterals": "off",
-            "noMagicNumbers": "off",
-            "noNestedTernary": "off",
-            "useConsistentTypeDefinitions": "off"
+            "noExcessiveLinesPerFunction": "off"
           }
         }
       }
@@ -118,9 +109,7 @@
             "noExcessiveLinesPerFunction": "off"
           },
           "style": {
-            "noJsxLiterals": "off",
-            "noMagicNumbers": "off",
-            "useExportsLast": "off"
+            "noMagicNumbers": "off"
           }
         }
       }
@@ -139,12 +128,26 @@
       }
     },
     {
+      "includes": ["src/components/ErrorBoundary.tsx"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noJsxLiterals": "off"
+          },
+          "suspicious": {
+            "noConsole": "off"
+          }
+        }
+      }
+    },
+    {
       "includes": ["src/i18n/config.ts"],
       "linter": {
         "rules": {
           "style": {
             "noDefaultExport": "off",
-            "noExportedImports": "off"
+            "noExportedImports": "off",
+            "useNamingConvention": "off"
           }
         }
       }

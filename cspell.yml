@@ -1,0 +1,125 @@
+---
+version: "0.2"
+language: en
+dictionaries:
+  - cpp-compound-words
+  - docker
+  - filetypes
+  - npm
+  - python-common
+  - software-tools
+  - softwareTerms
+
+import:
+  - "@cspell/dict-de-de/cspell-ext.json"
+  - "@cspell/dict-es-es/cspell-ext.json"
+  - "@cspell/dict-fr-fr/cspell-ext.json"
+  - "@cspell/dict-it-it/cspell-ext.json"
+  - "@cspell/dict-nl-nl/cspell-ext.json"
+  - "@cspell/dict-pl_pl/cspell-ext.json"
+  - "@cspell/dict-pt-br/cspell-ext.json"
+  - "@cspell/dict-el/cspell-ext.json"
+
+# Include hidden files
+enableGlobDot: true
+
+# Exclude files in .gitignore
+useGitignore: true
+ignorePaths:
+  - ".git"
+  - "*-lock.*"
+  - ".vscode/**"
+  # SVG markup is a sea of attribute names, not prose.
+  - "**/*.svg"
+  # Generated data files (frequencies etc.)
+  - "tools/letter_frequency/data/**"
+
+# Check locale and translation files in their respective languages.
+overrides:
+  - filename: "**/{de,*.de}.json"
+    language: en,de
+  - filename: "**/{es,*.es}.json"
+    language: en,es
+  - filename: "**/{fr,*.fr}.json"
+    language: en,fr
+  - filename: "**/{it,*.it}.json"
+    language: en,it
+  - filename: "**/{nl,*.nl}.json"
+    language: en,nl
+  - filename: "**/{pl,*.pl}.json"
+    language: en,pl
+  - filename: "**/{pt,*.pt}.json"
+    language: en,pt
+  - filename: "**/{el,*.el}.json"
+    language: en,el
+
+words:
+  - Lierde
+  - scattergories
+  - Wikitext
+  # Fonts
+  - Avenir
+  # Biome rule name
+  - Filenaming
+  # HTTP / infra terms
+  - CICD
+  - geolocation
+  - htmlcov
+  - nosniff
+  - tmpfs
+  - unmute
+  - zstd
+  # Native language names shown in UI language picker
+  - Deutsch
+  - Español
+  - Français
+  - Italiano
+  - Nederlands
+  - Polski
+  - Português
+  - Ελληνικά
+  # Product-specific coinages
+  - Childrens
+  - Footware
+  # Tools ecosystem
+  - addopts
+  - argostranslate
+  - huggingface
+  - justfile
+  - monkeypatch
+  - testpaths
+  - toupper
+  - tqdm
+  # Sample categories in test fixtures
+  - Animales
+  - Comidas
+  - Cómo
+  - Démarrer
+  - Empezar
+  - Giocare
+  - Inizia
+  - jouer
+  - Jugar
+  - Runde
+  - Starten
+  - Spielanleitung
+  # Greek letters used in locale registry
+  - ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ
+  # Words not in the above dictionaries but used in the app or tests
+  - Souvenirshop
+  - Spielebegriffe
+  - Celebryci
+  - Kozennamen
+  - Snackfood
+  - gerenciar
+  - mezclarlas
+  - stummschalten
+  - Υπερήρωες
+  - Σίγαση
+  - Ήχος
+  # Longer forms for accessibility/tooltips
+  - Απενεργοποίηση
+  - Ενεργοποίηση
+  - Απενεργοποίηση ήχου
+  - Ενεργοποίηση ήχου
+  - ήχου

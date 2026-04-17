@@ -10,7 +10,7 @@ pre-commit:
       stage_fixed: true
 
     spellcheck:
-      run: pnpm exec cspell lint --config=cspell.yaml --no-progress --no-must-find-files {staged_files}
+      run: pnpm exec cspell lint --config=cspell.yml --no-progress --no-must-find-files {staged_files}
 
     python-lint:
       root: "tools"
@@ -24,5 +24,10 @@ pre-commit:
 
 pre-push:
   commands:
+    audit:
+      run: just security
+      timeout: 2m
+
     full-ci:
       run: pnpm run ci
+      timeout: 1m

@@ -1,12 +1,11 @@
-# syntax=docker/dockerfile:1.7
-
 # ---- Build stage ----
 FROM node:25-alpine AS build
 WORKDIR /app
 
 ENV PNPM_HOME=/pnpm
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+ARG PNPM_VERSION=10.33.0
+RUN npm install -g pnpm@${PNPM_VERSION}
 
 COPY --link package.json pnpm-lock.yaml ./
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \

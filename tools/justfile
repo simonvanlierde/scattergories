@@ -18,6 +18,14 @@ install-translation:
 lint:
     @uv run ruff check
 
+# Audit dependencies for known security and adverse-status issues
+audit:
+    @uv audit --preview-features audit --locked
+
+# Update dependencies and refresh the lockfile
+update:
+    @uv lock --upgrade
+
 # Format with ruff (if fixing is available)
 format:
     @uv run ruff check --fix

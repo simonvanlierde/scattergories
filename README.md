@@ -1,11 +1,14 @@
 # 🎲 Scattergories Helper
 
+[![CI](https://github.com/simonvanlierde/scattergories/actions/workflows/ci.yml/badge.svg)](https://github.com/simonvanlierde/scattergories/actions/workflows/ci.yml)
+[![Tools CI](https://github.com/simonvanlierde/scattergories/actions/workflows/tools.yml/badge.svg)](https://github.com/simonvanlierde/scattergories/actions/workflows/tools.yml)
+
 A beautiful, responsive, digital companion for the classic game of Scattergories. This app completely replaces the physical 20-sided letter die, the sand timer, and the paper category cards, letting you play effortlessly with just paper and a pen.
 
 ## 🌟 Features
 
 - **Draw 12 Mechanics**: Generates a perfect standard 12-category round by default.
-- **Anti-Duplication Letter Roller**: A satisfying animated letter roller that uses an actual Fisher-Yates shuffle under the hood to ensure you never roll the same letter twice in a game.
+- **Smart Randomization**: A satisfying animated letter roller that uses natural language frequency weights. You'll get playable letters more often, but every letter (A-Z) is still possible! It uses a perfect Fisher-Yates shuffle under the hood to ensure you never roll the same letter twice in a game.
 - **Configurable Timer**: An urgent, pulsing timer with an alarm built right in.
 - **Progressive Round Engine**: Click "Next Round" to automatically increment the round, reroll the letter, and preserve your existing categories!
 - **Fully Responsive & Local**: Works seamlessly on mobile and desktop, stores all custom data privately locally via `localStorage`, and functions fully offline if installed as a PWA.
@@ -13,7 +16,7 @@ A beautiful, responsive, digital companion for the classic game of Scattergories
 ## 🛠️ Tech Stack
 
 - **Framework:** React 19 + TypeScript + Vite 8
-- **Package manager:** pnpm (via Corepack)
+- **Package manager:** pnpm
 - **Lint & format:** Biome
 - **Unit tests:** Vitest
 - **E2E tests:** Playwright (chromium, against the built `vite preview` bundle)
@@ -21,7 +24,7 @@ A beautiful, responsive, digital companion for the classic game of Scattergories
 
 ## 🚀 Getting started
 
-Requirements: **Node ≥ 24** and **pnpm ≥ 10** (Corepack handles pnpm automatically). [`just`](https://github.com/casey/just) is recommended as a thin command runner.
+Requirements: **Node ≥ 24** and **pnpm ≥ 10**. [`just`](https://github.com/casey/just) is recommended as a thin command runner.
 
 ### Local development
 

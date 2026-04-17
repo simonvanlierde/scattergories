@@ -37,4 +37,11 @@ test-results
 .pytest_cache
 .ty_cache
 __pycache__/
+
+# Test coverage reports
+coverage/
+.coverage
 htmlcov/
+
+# Misc
+AGENTS.md
