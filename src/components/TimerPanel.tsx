@@ -5,7 +5,7 @@ import { formatSeconds } from '../game/utils';
 
 const URGENT_THRESHOLD_SECONDS = 15;
 
-export interface TimerRoundState {
+interface TimerRoundState {
   phase: Phase;
   secondsLeft: number;
   isPaused: boolean;
@@ -17,14 +17,14 @@ export interface TimerRoundState {
   statusKey: StatusKey;
 }
 
-export interface TimerSettings {
+interface TimerSettings {
   isMuted: boolean;
   durationInput: string;
   totalRoundsInput: string;
   totalRounds: number;
 }
 
-export interface TimerActions {
+interface TimerActions {
   onStart: () => void;
   onSkip: () => void;
   onReset: () => void;
@@ -43,7 +43,7 @@ interface TimerPanelProps {
   actions: TimerActions;
 }
 
-export function TimerPanel({ round, settings, actions }: TimerPanelProps) {
+function TimerPanel({ round, settings, actions }: TimerPanelProps) {
   const { t } = useTranslation();
   const {
     phase,
@@ -194,3 +194,5 @@ export function TimerPanel({ round, settings, actions }: TimerPanelProps) {
     </section>
   );
 }
+
+export { TimerPanel };

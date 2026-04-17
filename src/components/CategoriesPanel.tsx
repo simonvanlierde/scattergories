@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { CategoryMode } from '../hooks/useSettings';
 
-export interface CategoriesState {
+interface CategoriesState {
   mode: CategoryMode;
   catCountInput: string;
   customCategories: string[];
@@ -12,7 +12,7 @@ export interface CategoriesState {
   newCategoryInput: string;
 }
 
-export interface CategoriesActions {
+interface CategoriesActions {
   onCategoryModeChange: (mode: CategoryMode) => void;
   onCatCountChange: (value: string) => void;
   onCatCountBlur: () => void;
@@ -27,7 +27,7 @@ interface CategoriesPanelProps {
   actions: CategoriesActions;
 }
 
-export const CategoriesPanel = memo(function CategoriesPanel({
+const CategoriesPanel = memo(function CategoriesPanel({
   categories,
   actions,
 }: CategoriesPanelProps) {
@@ -151,3 +151,5 @@ export const CategoriesPanel = memo(function CategoriesPanel({
     </section>
   );
 });
+
+export { CategoriesPanel };

@@ -23,6 +23,7 @@ import { useRound } from './hooks/useRound';
 import { useSettings } from './hooks/useSettings';
 import { startupLocaleWarning } from './i18n/config';
 
+// biome-ignore lint/security/noSecrets: import path is not a secret; Biome flags the string literal here.
 const HowToPlayModal = lazy(() => import('./components/HowToPlayModal'));
 
 function App() {
