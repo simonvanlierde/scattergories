@@ -2,85 +2,95 @@
   "title": "Scattergories",
   "roundCounter": "Ronda {{current}} de {{total}}",
   "buttons": {
-    "startRound": "Comenzar Ronda",
+    "startRound": "Empezar Ronda",
     "nextRound": "Siguiente Ronda",
     "spinning": "Girando...",
-    "skipLetter": "Saltar Letra",
+    "skipLetter": "Cambiar Letra",
     "reset": "⟲ Reiniciar",
     "pause": "Pausa",
     "resume": "Reanudar",
-    "newGame": "Nuevo Juego",
+    "newGame": "Nueva Partida",
     "mute": "Silenciar",
     "unmute": "Activar Sonido",
     "shuffle": "Mezclar",
+    "skipLetterTooltip": "Elegir una letra aleatoria diferente para esta ronda",
+    "resetTooltip": "Reiniciar el temporizador para la ronda actual",
     "add": "Añadir",
-    "remove": "Eliminar",
-    "close": "✕"
+    "remove": "Quitar",
+    "close": "✕",
+    "addTooltip": "Añadir esta categoría a tu colección personalizada",
+    "closeTooltip": "Cerrar esta ventana"
   },
   "timer": {
-    "timeUp": "¡Se acabó el tiempo!",
+    "timeUp": "¡Tiempo agotado!",
     "getReady": "Prepárate...",
-    "go": "¡Adelante!",
+    "go": "¡Ya!",
     "roundOver": "¡Ronda terminada!",
-    "gameComplete": "Juego completado. Inicia un nuevo juego.",
-    "gameCompleteRound": "¡Ronda terminada! Juego completado."
+    "gameCompleteRound": "¡Ronda terminada! Partida completada."
   },
   "status": {
     "seconds": "segundos"
   },
   "settings": {
     "duration": "Temporizador",
-    "rounds": "Rondas",
-    "categorySource": "Origen",
-    "categoryDraw": "Dibujar",
-    "addCustom": "Añadir categoría personalizada",
-    "placeholder": "p.ej. Lenguajes de Programación"
+    "rounds": "Número de rondas",
+    "categorySource": "Fuente",
+    "categoryDraw": "Sorteo",
+    "addCustom": "Añadir categoría propia",
+    "placeholder": "ej. Lenguajes de programación"
   },
   "categories": {
     "title": "Categorías",
-    "default": "Predeterminadas",
-    "custom": "Personalizado",
-    "mixed": "Mixto",
-    "noCustom": "Sin categorías personalizadas aún.",
-    "minimumRequired": "Añade al menos una categoría personalizada para usar el modo Personalizado."
+    "default": "Estándar",
+    "custom": "Propias",
+    "mixed": "Mezcladas",
+    "noCustom": "No hay categorías propias todavía.",
+    "minimumRequired": "Añade al menos una categoría propia para usar el modo Personalizado."
   },
   "usedLetters": "Letras usadas: {{letters}}{{empty}}",
-  "usedLettersEmpty": "Ninguna aún",
-  "shortcuts": "Atajos: Espacio siguiente ronda, R saltar letra, P pausa, N nuevo juego, C categorías, A añadir personalizado",
+  "usedLettersEmpty": "Ninguna",
+  "shortcuts": "Atajos: Espacio siguiente ronda, R cambiar letra, P pausa, N nueva partida, C categorías, A añadir propia",
   "footer": {
     "howToPlay": "Cómo Jugar",
     "officialGame": "Juego Oficial",
     "sourceCode": "Código Fuente",
-    "privacy": "Esta aplicación utiliza localStorage para guardar tus configuraciones y categorías personalizadas localmente en tu navegador. Ningún dato se envía a ningún servidor."
+    "privacy": "Esta aplicación usa localStorage para guardar tus preferencias y categorías localmente en tu navegador. No se envían datos a ningún servidor."
   },
   "modal": {
-    "title": "Cómo Jugar Scattergories",
+    "title": "Cómo jugar a Scattergories",
     "objective": "Objetivo",
-    "objectiveText": "Obtén puntos escribiendo palabras que comiencen con una letra determinada y se ajusten a las categorías.",
-    "gameplay": "Juego",
+    "objectiveText": "Gana puntos escribiendo palabras que empiecen por la letra dada y encajen en las categorías.",
+    "gameplay": "Reglas de Juego",
     "gameplayPoints": [
-      "Se selecciona y se muestra una letra al azar",
-      "Tienes un tiempo limitado (90 segundos por defecto) para escribir respuestas",
-      "Todas las respuestas deben comenzar con la letra dada",
-      "Cada categoría debe tener una respuesta única (sin duplicados entre categorías)"
+      "Se selecciona una letra al azar y se muestra en pantalla",
+      "Tienes un tiempo limitado (por defecto 90s) para escribir las respuestas",
+      "Todas las respuestas deben empezar por la letra indicada",
+      "Cada categoría debe tener una respuesta única (sin repetir palabras)"
     ],
-    "scoring": "Puntuación (con otro jugador)",
+    "scoring": "Puntuación (con otros jugadores)",
     "scoringPoints": [
-      "1 punto: Tu palabra es única (nadie más la escribió)",
-      "0 puntos: Otro jugador también escribió la misma palabra",
-      "¡Las respuestas poco comunes y creativas suelen valer más!"
+      "1 punto: Tu palabra es única (nadie más la ha escrito)",
+      "0 puntos: Alguien más ha escrito la misma palabra",
+      "¡Las respuestas originales y creativas suelen valer más!"
     ],
     "categories": "Categorías",
-    "categoriesText": "Esta herramienta extrae categorías del juego oficial de Scattergories. También puedes crear categorías personalizadas y combinarlas con las predeterminadas.",
-    "features": "Características",
+    "categoriesText": "Esta herramienta utiliza categorías del juego oficial. También puedes crear las tuyas propias y mezclarlas.",
+    "features": "Funciones",
     "featuresList": [
-      "Usa el botón Saltar Letra (o presiona R) para obtener una nueva letra",
-      "Activa Pausa (presiona P) durante una ronda para pensar",
-      "Ajusta la duración del temporizador y el número de rondas en Configuración",
+      "Usa el botón de Cambiar Letra (o pulsa R) si una letra es muy difícil",
+      "Activa la Pausa (pulsa P) durante la ronda para pensar",
+      "Ajusta la duración y el número de rondas en Configuración",
       "Silencia el sonido si es necesario",
       "Todos los ajustes se guardan automáticamente"
     ],
-    "footer": "Esta es una herramienta auxiliar para administrar la letra y el temporizador. ¡Diviértete con amigos!"
+    "footer": "Esta es una herramienta de ayuda para gestionar letras y tiempo. ¡Diviértete con tus amigos!"
   },
-  "language": "Idioma"
+  "language": {
+    "label": "Idioma",
+    "nativeName": "Español"
+  },
+  "theme": {
+    "toggle": "Cambiar tema",
+    "toggleTooltip": "Alternar entre el tema claro y oscuro"
+  }
 }

@@ -1,0 +1,96 @@
+{
+  "title": "Scattergories",
+  "roundCounter": "Rodada {{current}} de {{total}}",
+  "buttons": {
+    "startRound": "Iniciar Rodada",
+    "nextRound": "Próxima Rodada",
+    "spinning": "Sorteando...",
+    "skipLetter": "Trocar Letra",
+    "reset": "⟲ Reiniciar",
+    "pause": "Pausa",
+    "resume": "Retomar",
+    "newGame": "Novo Jogo",
+    "mute": "Mudo",
+    "unmute": "Ativar Som",
+    "skipLetterTooltip": "Escolher uma letra aleatória diferente para esta rodada",
+    "resetTooltip": "Reiniciar o temporizador para a rodada atual",
+    "shuffle": "Embaralhar",
+    "add": "Adicionar",
+    "remove": "Remover",
+    "close": "✕",
+    "addTooltip": "Adicionar esta categoria à sua coleção personalizada",
+    "closeTooltip": "Fechar esta janela"
+  },
+  "timer": {
+    "timeUp": "Tempo esgotado!",
+    "getReady": "Prepare-se...",
+    "go": "Vai!",
+    "roundOver": "Rodada encerrada!",
+    "gameCompleteRound": "Rodada encerrada! Jogo finalizado."
+  },
+  "status": {
+    "seconds": "segundos"
+  },
+  "settings": {
+    "duration": "Temporizador",
+    "rounds": "Número de rodadas",
+    "categorySource": "Fonte",
+    "categoryDraw": "Sorteio",
+    "addCustom": "Categoria personalizada",
+    "placeholder": "ex: Linguagens de programação"
+  },
+  "categories": {
+    "title": "Categorias",
+    "default": "Padrão",
+    "custom": "Próprias",
+    "mixed": "Mistas",
+    "noCustom": "Nenhuma categoria personalizada ainda.",
+    "minimumRequired": "Adicione pelo menos uma categoria para usar o modo Personalizado."
+  },
+  "usedLetters": "Letras usadas: {{letters}}{{empty}}",
+  "usedLettersEmpty": "Nenhuma",
+  "shortcuts": "Atalhos: Espaço próxima rodada, R trocar letra, P pausa, N novo jogo, C categorias, A adicionar categoria",
+  "footer": {
+    "howToPlay": "Como Jogar",
+    "officialGame": "Jogo Oficial",
+    "sourceCode": "Código Fonte",
+    "privacy": "Este aplicativo usa o localStorage para salvar suas configurações e categorias localmente no navegador. Nenhum dado é enviado para servidores."
+  },
+  "modal": {
+    "title": "Como jogar Scattergories",
+    "objective": "Objetivo",
+    "objectiveText": "Acumule pontos escrevendo palavras que comecem com a letra sorteada e se encaixem nas categorias exibidas.",
+    "gameplay": "Regras do Jogo",
+    "gameplayPoints": [
+      "Uma letra é sorteada aleatoriamente",
+      "Você tem tempo limitado (padrão 90s) para encontrar as respostas",
+      "Todas as respostas devem começar com a letra indicada",
+      "Cada categoria deve ter uma resposta única (não repita palavras)"
+    ],
+    "scoring": "Pontuação (com outros jogadores)",
+    "scoringPoints": [
+      "1 ponto: Sua palavra é única (ninguém mais escreveu)",
+      "0 pontos: Outro jogador escreveu a mesma palavra",
+      "Respostas originais e criativas costumam valer mais!"
+    ],
+    "categories": "Categorias",
+    "categoriesText": "Esta ferramenta utiliza as categorias do jogo oficial. Você também pode criar as suas e misturá-las com as padrão.",
+    "features": "Recursos",
+    "featuresList": [
+      "Use o botão Trocar Letra (ou aperte R) se uma letra for muito difícil",
+      "Ative a Pausa (aperte P) durante a rodada para pensar",
+      "Ajuste a duração e o número de rodadas nas Configurações",
+      "Silencie o som se desejar",
+      "Todas as configurações são salvas automaticamente"
+    ],
+    "footer": "Esta é uma ferramenta de ajuda para gerenciar as letras e o tempo. Divirta-se com seus amigos!"
+  },
+  "language": {
+    "label": "Idioma",
+    "nativeName": "Português"
+  },
+  "theme": {
+    "toggle": "Alternar tema",
+    "toggleTooltip": "Alternar entre os temas claro e escuro"
+  }
+}

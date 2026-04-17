@@ -1,0 +1,96 @@
+{
+  "title": "Scattergories",
+  "roundCounter": "Ronde {{current}} van {{total}}",
+  "buttons": {
+    "startRound": "Ronde Starten",
+    "nextRound": "Volgende Ronde",
+    "spinning": "Kiezen...",
+    "skipLetter": "Andere Letter",
+    "reset": "⟲ Resetten",
+    "pause": "Pauze",
+    "resume": "Hervatten",
+    "newGame": "Nieuw Spel",
+    "mute": "Dempen",
+    "unmute": "Geluid Aan",
+    "skipLetterTooltip": "Kies een andere willekeurige letter voor deze ronde",
+    "resetTooltip": "Start de timer opnieuw voor deze ronde",
+    "shuffle": "Schudden",
+    "add": "Toevoegen",
+    "remove": "Verwijderen",
+    "close": "✕",
+    "addTooltip": "Voeg deze categorie toe aan je eigen verzameling",
+    "closeTooltip": "Sluit dit venster"
+  },
+  "timer": {
+    "timeUp": "Tijd om!",
+    "getReady": "Maak je klaar...",
+    "go": "Start!",
+    "roundOver": "Ronde voorbij!",
+    "gameCompleteRound": "Ronde voorbij! Spel voltooid."
+  },
+  "status": {
+    "seconds": "seconden"
+  },
+  "settings": {
+    "duration": "Timer",
+    "rounds": "Aantal rondes",
+    "categorySource": "Bron",
+    "categoryDraw": "Selectie",
+    "addCustom": "Eigen categorie",
+    "placeholder": "bijv. Programmeertalen"
+  },
+  "categories": {
+    "title": "Categorieën",
+    "default": "Standaard",
+    "custom": "Eigen",
+    "mixed": "Gemengd",
+    "noCustom": "Nog geen eigen categorieën toegevoegd.",
+    "minimumRequired": "Voeg minimaal één categorie toe om de 'Eigen' modus te gebruiken."
+  },
+  "usedLetters": "Gebruikte letters: {{letters}}{{empty}}",
+  "usedLettersEmpty": "Geen",
+  "shortcuts": "Sneltoetsen: Spatie volgende ronde, R nieuwe letter, P pauze, N nieuw spel, C categorieën, A categorie toevoegen",
+  "footer": {
+    "howToPlay": "Hoe te spelen",
+    "officialGame": "Officieel Spel",
+    "sourceCode": "Broncode",
+    "privacy": "Deze app gebruikt localStorage om je instellingen en categorieën lokaal op te slaan in je browser. Er worden geen gegevens naar een server verzonden."
+  },
+  "modal": {
+    "title": "Hoe speel je Scattergories",
+    "objective": "Doel",
+    "objectiveText": "Verdien punten door woorden op te schrijven die beginnen met de gekozen letter en passen in de categorieën.",
+    "gameplay": "Spelregels",
+    "gameplayPoints": [
+      "Er wordt willekeurig een letter gekozen",
+      "Je hebt beperkte tijd (standaard 90 seconden) om antwoorden te vinden",
+      "Alle antwoorden moeten beginnen met de gekozen letter",
+      "Elke categorie moet een uniek antwoord hebben (geen dubbele woorden)"
+    ],
+    "scoring": "Puntentelling (met anderen)",
+    "scoringPoints": [
+      "1 punt: Je woord is uniek (niemand anders heeft het)",
+      "0 punten: Iemand anders heeft hetzelfde woord opgeschreven",
+      "Originele en creatieve antwoorden zijn vaak meer waard!"
+    ],
+    "categories": "Categorieën",
+    "categoriesText": "Deze tool gebruikt categorieën uit het officiële spel. Je kunt ook eigen categorieën maken en mixen met de rest.",
+    "features": "Functies",
+    "featuresList": [
+      "Gebruik 'Andere Letter' (of druk op R) als een letter te moeilijk is",
+      "Gebruik de Pauze (of druk op P) tijdens een ronde om na te denken",
+      "Pas de timer en het aantal rondes aan in de Instellingen",
+      "Je kunt het geluid op elk moment dempen",
+      "Alle instellingen worden automatisch opgeslagen"
+    ],
+    "footer": "Dit is een hulpmiddel voor het beheren van letters en tijd. Veel plezier met je vrienden!"
+  },
+  "language": {
+    "label": "Taal",
+    "nativeName": "Nederlands"
+  },
+  "theme": {
+    "toggle": "Thema wisselen",
+    "toggleTooltip": "Wisselen tussen licht en donker thema"
+  }
+}

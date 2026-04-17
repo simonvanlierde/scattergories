@@ -1,0 +1,96 @@
+{
+  "title": "Scattergories",
+  "roundCounter": "Runda {{current}} z {{total}}",
+  "buttons": {
+    "startRound": "Rozpocznij Rundę",
+    "nextRound": "Następna Runda",
+    "spinning": "Losowanie...",
+    "skipLetter": "Zmień Literę",
+    "reset": "⟲ Resetuj",
+    "pause": "Pauza",
+    "resume": "Wznów",
+    "newGame": "Nowa Gra",
+    "mute": "Wycisz",
+    "unmute": "Włącz Dźwięk",
+    "skipLetterTooltip": "Wybierz inną losową literę na tę rundę",
+    "resetTooltip": "Zrestartuj timer dla bieżącej rundy",
+    "shuffle": "Tasuj",
+    "add": "Dodaj",
+    "remove": "Usuń",
+    "close": "✕",
+    "addTooltip": "Dodaj tę kategorię do swojej własnej kolekcji",
+    "closeTooltip": "Zamknij to okno"
+  },
+  "timer": {
+    "timeUp": "Czas minął!",
+    "getReady": "Przygotuj się...",
+    "go": "Start!",
+    "roundOver": "Runda zakończona!",
+    "gameCompleteRound": "Runda zakończona! Koniec gry."
+  },
+  "status": {
+    "seconds": "sekundy"
+  },
+  "settings": {
+    "duration": "Czasomierz",
+    "rounds": "Liczba rund",
+    "categorySource": "Źródło",
+    "categoryDraw": "Losowanie",
+    "addCustom": "Własna kategoria",
+    "placeholder": "np. Języki programowania"
+  },
+  "categories": {
+    "title": "Kategorie",
+    "default": "Standardowe",
+    "custom": "Własne",
+    "mixed": "Mieszane",
+    "noCustom": "Nie dodano jeszcze własnych kategorii.",
+    "minimumRequired": "Dodaj co najmniej jedną kategorię, aby użyć trybu Własne."
+  },
+  "usedLetters": "Użyte litery: {{letters}}{{empty}}",
+  "usedLettersEmpty": "Brak",
+  "shortcuts": "Skróty: Spacja następna runda, R nowa litera, P pauza, N nowa gra, C kategorie, A dodaj kategorię",
+  "footer": {
+    "howToPlay": "Jak grać",
+    "officialGame": "Oficjalna Gra",
+    "sourceCode": "Kod źródłowy",
+    "privacy": "Ta aplikacja używa localStorage, aby zapisywać Twoje ustawienia i kategorie lokalnie w przeglądarce. Żadne dane nie są wysyłane na serwer."
+  },
+  "modal": {
+    "title": "Jak grać w Scattergories",
+    "objective": "Cel gry",
+    "objectiveText": "Zdobywaj punkty, zapisując słowa, które zaczynają się na wylosowaną literę i pasują do wybranych kategorii.",
+    "gameplay": "Zasady",
+    "gameplayPoints": [
+      "Litera jest wybierana losowo i wyświetlana na ekranie",
+      "Masz ograniczony czas (domyślnie 90s) na znalezienie odpowiedzi",
+      "Wszystkie słowa muszą zaczynać się na wskazaną literę",
+      "Każda kategoria musi mieć unikalną odpowiedź (nie powtarzaj słów)"
+    ],
+    "scoring": "Punktacja (z innymi graczami)",
+    "scoringPoints": [
+      "1 punkt: Twoje słowo jest unikalne (nikt inny go nie zapisał)",
+      "0 punktów: Ktoś inny zapisał to samo słowo",
+      "Oryginalne i kreatywne odpowiedzi są zazwyczaj bezpieczniejsze!"
+    ],
+    "categories": "Kategorie",
+    "categoriesText": "To narzędzie korzysta z kategorii z oficjalnej gry. Możesz też tworzyć własne kategorie i mieszać je ze standardowymi.",
+    "features": "Funkcje",
+    "featuresList": [
+      "Użyj przycisku Zmień Literę (lub R), jeśli litera jest za trudna",
+      "Włącz Pauzę (lub P) podczas rundy, aby zyskać chwilę na zastanowienie",
+      "Dostosuj czas i liczbę rund w Ustawieniach",
+      "Możesz w każdej chwili wyciszyć dźwięk",
+      "Wszystkie ustawienia zapisują się automatycznie"
+    ],
+    "footer": "To jest narzędzie pomocnicze do zarządzania literami i czasem. Miłej zabawy ze znajomymi!"
+  },
+  "language": {
+    "label": "Język",
+    "nativeName": "Polski"
+  },
+  "theme": {
+    "toggle": "Zmień motyw",
+    "toggleTooltip": "Przełącz między jasnym a ciemnym motywem"
+  }
+}

@@ -2,85 +2,95 @@
   "title": "Scattergories",
   "roundCounter": "Manche {{current}} sur {{total}}",
   "buttons": {
-    "startRound": "Commencer la Manche",
-    "nextRound": "Manche Suivante",
-    "spinning": "En cours...",
-    "skipLetter": "Ignorer la Lettre",
+    "startRound": "Démarrer la manche",
+    "nextRound": "Manche suivante",
+    "spinning": "Choix en cours...",
+    "skipLetter": "Changer de lettre",
     "reset": "⟲ Réinitialiser",
     "pause": "Pause",
     "resume": "Reprendre",
-    "newGame": "Nouveau Jeu",
-    "mute": "Couper le Son",
-    "unmute": "Activer le Son",
+    "newGame": "Nouvelle partie",
+    "mute": "Muet",
+    "unmute": "Son activé",
+    "skipLetterTooltip": "Obtenir une autre lettre aléatoire pour cette manche",
+    "resetTooltip": "Redémarrer le chronomètre pour la manche actuelle",
     "shuffle": "Mélanger",
     "add": "Ajouter",
     "remove": "Supprimer",
-    "close": "✕"
+    "close": "✕",
+    "addTooltip": "Ajouter cette catégorie à votre collection personnalisée",
+    "closeTooltip": "Fermer cette fenêtre"
   },
   "timer": {
     "timeUp": "Temps écoulé !",
     "getReady": "Préparez-vous...",
-    "go": "Allez !",
+    "go": "C'est parti !",
     "roundOver": "Manche terminée !",
-    "gameComplete": "Jeu terminé. Commencez un nouveau jeu.",
-    "gameCompleteRound": "Manche terminée ! Jeu terminé."
+    "gameCompleteRound": "Manche terminée ! Partie finie."
   },
   "status": {
     "seconds": "secondes"
   },
   "settings": {
-    "duration": "Minuteur",
-    "rounds": "Manches",
+    "duration": "Chronomètre",
+    "rounds": "Nombre de manches",
     "categorySource": "Source",
-    "categoryDraw": "Tirer",
-    "addCustom": "Ajouter une catégorie personnalisée",
-    "placeholder": "p.ex. Langages de Programmation"
+    "categoryDraw": "Tirage",
+    "addCustom": "Ajouter une catégorie",
+    "placeholder": "ex: Langages de programmation"
   },
   "categories": {
     "title": "Catégories",
-    "default": "Par Défaut",
-    "custom": "Personnalisé",
-    "mixed": "Mélangé",
-    "noCustom": "Aucune catégorie personnalisée pour le moment.",
-    "minimumRequired": "Ajoutez au moins une catégorie personnalisée pour utiliser le mode Personnalisé."
+    "default": "Standard",
+    "custom": "Perso",
+    "mixed": "Mélangées",
+    "noCustom": "Aucune catégorie personnalisée.",
+    "minimumRequired": "Ajoutez au moins une catégorie pour utiliser le mode Perso."
   },
   "usedLetters": "Lettres utilisées : {{letters}}{{empty}}",
-  "usedLettersEmpty": "Aucune pour le moment",
-  "shortcuts": "Raccourcis : Espace manche suivante, R ignorer lettre, P pause, N nouveau jeu, C catégories, A ajouter personnalisé",
+  "usedLettersEmpty": "Aucune pour l'instant",
+  "shortcuts": "Raccourcis : Espace manche suivante, R changer lettre, P pause, N nouvelle partie, C catégories, A ajouter catégorie",
   "footer": {
-    "howToPlay": "Comment Jouer",
+    "howToPlay": "Comment jouer",
     "officialGame": "Jeu Officiel",
     "sourceCode": "Code Source",
-    "privacy": "Cette application utilise localStorage pour sauvegarder vos paramètres et catégories personnalisées localement dans votre navigateur. Aucune donnée n'est envoyée à un serveur."
+    "privacy": "Cette application utilise le localStorage pour enregistrer vos paramètres localement dans votre navigateur. Aucune donnée n'est envoyée à un serveur."
   },
   "modal": {
-    "title": "Comment Jouer à Scattergories",
+    "title": "Comment jouer au Scattergories",
     "objective": "Objectif",
-    "objectiveText": "Marquez des points en écrivant des mots qui commencent par une lettre donnée et correspondent aux catégories.",
-    "gameplay": "Jeu",
+    "objectiveText": "Marquez des points en écrivant des mots qui commencent par la lettre donnée et correspondent aux catégories.",
+    "gameplay": "Déroulement",
     "gameplayPoints": [
-      "Une lettre est sélectionnée et affichée au hasard",
-      "Vous avez un temps limité (90 secondes par défaut) pour écrire les réponses",
-      "Toutes les réponses doivent commencer par la lettre donnée",
-      "Chaque catégorie doit avoir une réponse unique (pas de doublons entre catégories)"
+      "Une lettre est choisie au hasard et affichée",
+      "Vous avez un temps limité (90s par défaut) pour trouver les réponses",
+      "Toutes les réponses doivent commencer par la lettre imposée",
+      "Chaque catégorie doit avoir une réponse unique (pas de doublons)"
     ],
-    "scoring": "Notation (avec un autre joueur)",
+    "scoring": "Points (avec d'autres joueurs)",
     "scoringPoints": [
-      "1 point : Votre mot est unique (personne d'autre ne l'a écrit)",
-      "0 points : Un autre joueur a aussi écrit le même mot",
-      "Les réponses rares et créatives valent souvent plus !"
+      "1 point : Votre mot est unique (personne d'autre ne l'a)",
+      "0 point : Quelqu'un d'autre a écrit le même mot",
+      "Les réponses originales et créatives sont souvent les meilleures !"
     ],
     "categories": "Catégories",
-    "categoriesText": "Cet outil tire les catégories du jeu officiel de Scattergories. Vous pouvez également créer des catégories personnalisées et les mélanger avec les catégories par défaut.",
-    "features": "Caractéristiques",
+    "categoriesText": "Cet outil utilise les catégories du jeu officiel. Vous pouvez aussi créer les vôtres et les mélanger aux autres.",
+    "features": "Fonctionnalités",
     "featuresList": [
-      "Utilisez le bouton Ignorer la Lettre (ou appuyez sur R) pour obtenir une nouvelle lettre",
-      "Activez Pause (appuyez sur P) pendant une manche pour réfléchir",
-      "Ajustez la durée du minuteur et le nombre de manches dans les Paramètres",
+      "Utilisez le bouton de changement de lettre (ou R) pour en obtenir une nouvelle",
+      "Utilisez la Pause (ou P) pendant une manche pour réfléchir",
+      "Ajustez la durée et le nombre de manches dans les Paramètres",
       "Coupez le son si nécessaire",
-      "Tous les paramètres sont enregistrés automatiquement"
+      "Tous les réglages sont sauvegardés automatiquement"
     ],
-    "footer": "Cet outil permet de gérer la lettre et le minuteur. Amusez-vous bien avec vos amis !"
+    "footer": "Ceci est un outil d'aide pour gérer les lettres et le temps. Amusez-vous bien !"
   },
-  "language": "Langue"
+  "language": {
+    "label": "Langue",
+    "nativeName": "Français"
+  },
+  "theme": {
+    "toggle": "Changer le thème",
+    "toggleTooltip": "Basculer entre le thème clair et sombre"
+  }
 }

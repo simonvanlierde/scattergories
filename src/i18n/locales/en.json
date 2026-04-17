@@ -12,17 +12,20 @@
     "newGame": "New Game",
     "mute": "Mute",
     "unmute": "Unmute",
+    "skipLetterTooltip": "Get a different random letter for this round",
+    "resetTooltip": "Start the timer over from the beginning",
     "shuffle": "Shuffle",
     "add": "Add",
     "remove": "Remove",
-    "close": "✕"
+    "close": "✕",
+    "addTooltip": "Add this category to your custom collection",
+    "closeTooltip": "Close this window"
   },
   "timer": {
     "timeUp": "Time's up!",
     "getReady": "Get ready...",
     "go": "Go!",
     "roundOver": "Round over!",
-    "gameComplete": "Game complete. Start a new game.",
     "gameCompleteRound": "Round over! Game complete."
   },
   "status": {
@@ -82,5 +85,12 @@
     ],
     "footer": "This is a helper tool to manage the letter and timer. Have fun with friends!"
   },
-  "language": "Language"
+  "language": {
+    "label": "Language",
+    "nativeName": "English"
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "toggleTooltip": "Switch between light and dark theme"
+  }
 }

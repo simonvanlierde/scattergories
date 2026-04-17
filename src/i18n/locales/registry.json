@@ -1,0 +1,26 @@
+{
+  "fallbackLocale": "en",
+  "locales": ["en", "es", "fr", "de", "it", "nl", "pl", "pt", "el"],
+  "lettersByLocale": {
+    "en": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    "es": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    "fr": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    "de": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    "it": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    "nl": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    "pl": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    "pt": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    "el": "ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ"
+  },
+  "nativeNames": {
+    "en": "English",
+    "es": "Español",
+    "fr": "Français",
+    "de": "Deutsch",
+    "it": "Italiano",
+    "nl": "Nederlands",
+    "pl": "Polski",
+    "pt": "Português",
+    "el": "Ελληνικά"
+  }
+}

@@ -4,83 +4,93 @@
   "buttons": {
     "startRound": "Runde Starten",
     "nextRound": "Nächste Runde",
-    "spinning": "Dreht...",
-    "skipLetter": "Buchstabe Überspringen",
+    "spinning": "Wird gewählt...",
+    "skipLetter": "Anderer Buchstabe",
     "reset": "⟲ Zurücksetzen",
     "pause": "Pause",
     "resume": "Fortsetzen",
     "newGame": "Neues Spiel",
-    "mute": "Stummschalten",
-    "unmute": "Ton Einschalten",
+    "mute": "Stumm",
+    "unmute": "Ton an",
+    "skipLetterTooltip": "Einen anderen zufälligen Buchstaben für diese Runde wählen",
+    "resetTooltip": "Timer für die aktuelle Runde neu starten",
     "shuffle": "Mischen",
     "add": "Hinzufügen",
     "remove": "Entfernen",
-    "close": "✕"
+    "close": "✕",
+    "addTooltip": "Diese Kategorie zu deiner Sammlung hinzufügen",
+    "closeTooltip": "Dieses Fenster schließen"
   },
   "timer": {
     "timeUp": "Zeit abgelaufen!",
-    "getReady": "Mach dich bereit...",
+    "getReady": "Bereit machen...",
     "go": "Los!",
-    "roundOver": "Runde beendet!",
-    "gameComplete": "Spiel beendet. Starten Sie ein neues Spiel.",
-    "gameCompleteRound": "Runde beendet! Spiel beendet."
+    "roundOver": "Runde vorbei!",
+    "gameCompleteRound": "Runde vorbei! Spiel beendet."
   },
   "status": {
     "seconds": "Sekunden"
   },
   "settings": {
-    "duration": "Timer",
-    "rounds": "Runden",
+    "duration": "Zeitlimit",
+    "rounds": "Rundenanzahl",
     "categorySource": "Quelle",
     "categoryDraw": "Ziehen",
-    "addCustom": "Benutzerdefinierte Kategorie hinzufügen",
+    "addCustom": "Eigene Kategorie",
     "placeholder": "z.B. Programmiersprachen"
   },
   "categories": {
     "title": "Kategorien",
     "default": "Standard",
-    "custom": "Benutzerdefiniert",
+    "custom": "Eigene",
     "mixed": "Gemischt",
-    "noCustom": "Noch keine benutzerdefinierten Kategorien.",
-    "minimumRequired": "Fügen Sie mindestens eine benutzerdefinierte Kategorie hinzu, um den benutzerdefinierten Modus zu verwenden."
+    "noCustom": "Noch keine eigenen Kategorien vorhanden.",
+    "minimumRequired": "Füge mindestens eine Kategorie hinzu, um den Modus 'Eigene' zu nutzen."
   },
-  "usedLetters": "Verwendete Buchstaben: {{letters}}{{empty}}",
-  "usedLettersEmpty": "Noch keine",
-  "shortcuts": "Abkürzungen: Leerzeichen nächste Runde, R Buchstabe überspringen, P Pause, N neues Spiel, C Kategorien, A benutzerdefiniert hinzufügen",
+  "usedLetters": "Benutzte Buchstaben: {{letters}}{{empty}}",
+  "usedLettersEmpty": "Keine",
+  "shortcuts": "Shortcuts: Leertaste Nächste Runde, R Neuer Buchstabe, P Pause, N Neues Spiel, C Kategorien, A Kategorie hinzufügen",
   "footer": {
     "howToPlay": "Spielanleitung",
     "officialGame": "Offizielles Spiel",
     "sourceCode": "Quellcode",
-    "privacy": "Diese App speichert deine Einstellungen und benutzerdefinierten Kategorien lokal mit localStorage in deinem Browser. Es werden keine Daten an einen Server gesendet."
+    "privacy": "Diese App nutzt localStorage, um Einstellungen und Kategorien lokal im Browser zu speichern. Es werden keine Daten an Server übertragen."
   },
   "modal": {
-    "title": "Wie man Scattergories spielt",
-    "objective": "Ziel",
-    "objectiveText": "Punkte verdienen, indem du Wörter aufschreibst, die mit einem bestimmten Buchstaben beginnen und in die Kategorien passen.",
-    "gameplay": "Spielablauf",
+    "title": "So spielst du Scattergories",
+    "objective": "Ziel des Spiels",
+    "objectiveText": "Sammle Punkte, indem du Begriffe aufschreibst, die mit dem gewählten Buchstaben beginnen und in die jeweilige Kategorie passen.",
+    "gameplay": "Ablauf",
     "gameplayPoints": [
-      "Ein Buchstabe wird zufällig ausgewählt und angezeigt",
-      "Du hast eine begrenzte Zeit (standardmäßig 90 Sekunden), um Antworten aufzuschreiben",
-      "Alle Antworten müssen mit dem angegebenen Buchstaben beginnen",
-      "Jede Kategorie muss eine eindeutige Antwort haben (keine Duplikate zwischen Kategorien)"
+      "Ein Buchstabe wird zufällig ausgewählt",
+      "Du hast begrenzt Zeit (Standard: 90 Sek.), um Begriffe zu finden",
+      "Alle Antworten müssen mit dem gewählten Buchstaben beginnen",
+      "Jede Kategorie braucht eine eigene Antwort (keine Dopplungen)"
     ],
-    "scoring": "Punktevergabe (mit einem anderen Spieler)",
+    "scoring": "Punktewertung (mit Mitspielern)",
     "scoringPoints": [
-      "1 Punkt: Dein Wort ist eindeutig (niemand anders hat es aufgeschrieben)",
-      "0 Punkte: Ein anderer Spieler hat das gleiche Wort auch aufgeschrieben",
-      "Ungewöhnliche, kreative Antworten sind oft wertvoller!"
+      "1 Punkt: Dein Begriff ist einzigartig (kein anderer hat ihn)",
+      "0 Punkte: Jemand anderes hat den gleichen Begriff",
+      "Kreative und seltene Antworten sind meist sicherer!"
     ],
     "categories": "Kategorien",
-    "categoriesText": "Dieses Tool zieht Kategorien aus dem offiziellen Scattergories-Spiel. Du kannst auch benutzerdefinierte Kategorien erstellen und sie mit den Standardkategorien mischen.",
-    "features": "Funktionen",
+    "categoriesText": "Dieses Tool nutzt Kategorien aus dem offiziellen Spiel. Du kannst auch eigene hinzufügen und diese mischen.",
+    "features": "Features",
     "featuresList": [
-      "Verwende die Schaltfläche Buchstabe überspringen (oder drücke R), um einen neuen Buchstaben zu erhalten",
-      "Aktiviere Pause (drücke P) während einer Runde zum Nachdenken",
-      "Passe die Timer-Dauer und Anzahl der Runden in den Einstellungen an",
-      "Stummschaltung bei Bedarf",
-      "Alle Einstellungen werden automatisch gespeichert"
+      "Nutze 'Anderer Buchstabe' (oder R), falls ein Buchstabe zu schwer ist",
+      "Pausiere mit P, um kurz nachzudenken",
+      "Passe Zeit und Runden in den Einstellungen an",
+      "Du kannst den Ton jederzeit stummschalten",
+      "Einstellungen werden automatisch gespeichert"
     ],
-    "footer": "Dies ist ein Hilfstool zum Verwalten des Buchstabens und des Timers. Viel Spaß mit deinen Freunden!"
+    "footer": "Dies ist ein Hilfstool für Buchstaben und Zeit. Viel Spaß beim Spielen!"
   },
-  "language": "Sprache"
+  "language": {
+    "label": "Sprache",
+    "nativeName": "Deutsch"
+  },
+  "theme": {
+    "toggle": "Design umschalten",
+    "toggleTooltip": "Zwischen hellem und dunklem Design wechseln"
+  }
 }

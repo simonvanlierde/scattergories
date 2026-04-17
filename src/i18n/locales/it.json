@@ -3,84 +3,94 @@
   "roundCounter": "Round {{current}} di {{total}}",
   "buttons": {
     "startRound": "Inizia Round",
-    "nextRound": "Round Successivo",
-    "spinning": "In rotazione...",
-    "skipLetter": "Salta Lettera",
+    "nextRound": "Prossimo Round",
+    "spinning": "Scelta in corso...",
+    "skipLetter": "Cambia Lettera",
     "reset": "⟲ Ripristina",
     "pause": "Pausa",
     "resume": "Riprendi",
-    "newGame": "Nuovo Gioco",
-    "mute": "Muto",
-    "unmute": "Attiva Suono",
-    "shuffle": "Mescola",
+    "newGame": "Nuova Partita",
+    "mute": "Muta",
+    "unmute": "Attiva Audio",
+    "skipLetterTooltip": "Scegli un'altra lettera casuale per questo round",
+    "resetTooltip": "Riavvia il timer per il round attuale",
+    "shuffle": "Mischia",
     "add": "Aggiungi",
     "remove": "Rimuovi",
-    "close": "✕"
+    "close": "✕",
+    "addTooltip": "Aggiungi questa categoria alla tua collezione personalizzata",
+    "closeTooltip": "Chiudi questa finestra"
   },
   "timer": {
     "timeUp": "Tempo scaduto!",
     "getReady": "Preparati...",
-    "go": "Vai!",
+    "go": "Via!",
     "roundOver": "Round terminato!",
-    "gameComplete": "Gioco terminato. Inizia una nuova partita.",
-    "gameCompleteRound": "Round terminato! Gioco completato."
+    "gameCompleteRound": "Round terminato! Partita completata."
   },
   "status": {
     "seconds": "secondi"
   },
   "settings": {
     "duration": "Timer",
-    "rounds": "Round",
+    "rounds": "Numero di round",
     "categorySource": "Fonte",
-    "categoryDraw": "Estrai",
-    "addCustom": "Aggiungi categoria personalizzata",
-    "placeholder": "es. Linguaggi di Programmazione"
+    "categoryDraw": "Sorteggio",
+    "addCustom": "Aggiungi categoria",
+    "placeholder": "es. Linguaggi di programmazione"
   },
   "categories": {
     "title": "Categorie",
-    "default": "Predefinite",
-    "custom": "Personalizzato",
-    "mixed": "Misto",
+    "default": "Standard",
+    "custom": "Personali",
+    "mixed": "Miste",
     "noCustom": "Nessuna categoria personalizzata ancora.",
-    "minimumRequired": "Aggiungi almeno una categoria personalizzata per utilizzare la modalità Personalizzato."
+    "minimumRequired": "Aggiungi almeno una categoria per usare la modalità Personalizzata."
   },
   "usedLetters": "Lettere usate: {{letters}}{{empty}}",
-  "usedLettersEmpty": "Nessuna ancora",
-  "shortcuts": "Scorciatoie: Spazio round successivo, R salta lettera, P pausa, N nuovo gioco, C categorie, A aggiungi personalizzato",
+  "usedLettersEmpty": "Nessuna",
+  "shortcuts": "Scorciatoie: Spazio prossimo round, R cambia lettera, P pausa, N nuova partita, C categorie, A aggiungi categoria",
   "footer": {
     "howToPlay": "Come Giocare",
     "officialGame": "Gioco Ufficiale",
     "sourceCode": "Codice Sorgente",
-    "privacy": "Questa app utilizza localStorage per salvare le tue impostazioni e le categorie personalizzate localmente nel tuo browser. Nessun dato viene inviato a un server."
+    "privacy": "Questa app usa il localStorage per salvare le impostazioni e le categorie localmente nel browser. Nessun dato viene inviato a server esterni."
   },
   "modal": {
-    "title": "Come Giocare a Scattergories",
+    "title": "Come giocare a Scattergories",
     "objective": "Obiettivo",
-    "objectiveText": "Guadagna punti scrivendo parole che iniziano con una lettera data e si adattano alle categorie.",
-    "gameplay": "Attività di Gioco",
+    "objectiveText": "Guadagna punti scrivendo parole che iniziano con la lettera data e rientrano nelle categorie selezionate.",
+    "gameplay": "Regole del Gioco",
     "gameplayPoints": [
-      "Una lettera viene selezionata e visualizzata casualmente",
-      "Hai un tempo limitato (90 secondi per impostazione predefinita) per scrivere le risposte",
-      "Tutte le risposte devono iniziare con la lettera data",
-      "Ogni categoria deve avere una risposta unica (nessun duplicato tra le categorie)"
+      "Una lettera viene scelta casualmente e mostrata",
+      "Hai un tempo limitato (default 90s) per scrivere le risposte",
+      "Tutte le risposte devono iniziare con la lettera indicata",
+      "Ogni categoria deve avere una risposta unica (niente doppioni)"
     ],
-    "scoring": "Punteggio (con un altro giocatore)",
+    "scoring": "Punteggio (con altri giocatori)",
     "scoringPoints": [
       "1 punto: La tua parola è unica (nessun altro l'ha scritta)",
-      "0 punti: Un altro giocatore ha scritto la stessa parola",
-      "Le risposte non comuni e creative valgono spesso di più!"
+      "0 punti: Qualcun altro ha scritto la stessa parola",
+      "Le risposte originali e creative valgono di più!"
     ],
     "categories": "Categorie",
-    "categoriesText": "Questo strumento estrae le categorie dal gioco ufficiale di Scattergories. Puoi anche creare categorie personalizzate e mischiarle con le impostazioni predefinite.",
-    "features": "Caratteristiche",
+    "categoriesText": "Questo strumento usa le categorie del gioco ufficiale. Puoi anche crearne di tue e mischiarle con quelle standard.",
+    "features": "Funzioni",
     "featuresList": [
-      "Usa il pulsante Salta Lettera (o premi R) per ottenere una nuova lettera",
-      "Attiva Pausa (premi P) durante un round per riflettere",
-      "Regola la durata del timer e il numero di round nelle Impostazioni",
-      "Silenzia l'audio se necessario",
+      "Usa il tasto Cambia Lettera (o premi R) se una lettera è troppo difficile",
+      "Usa la Pausa (premi P) durante il round per pensare",
+      "Regola la durata e il numero di round nelle Impostazioni",
+      "Disattiva l'audio se necessario",
       "Tutte le impostazioni vengono salvate automaticamente"
     ],
-    "footer": "Questo è uno strumento di supporto per gestire la lettera e il timer. Divertiti con i tuoi amici!"
+    "footer": "Questo è uno strumento di supporto per gestire lettere e tempo. Buon divertimento con gli amici!"
   },
-  "language": "Lingua"
+  "language": {
+    "label": "Lingua",
+    "nativeName": "Italiano"
+  },
+  "theme": {
+    "toggle": "Cambia tema",
+    "toggleTooltip": "Passa dal tema chiaro a quello scuro e viceversa"
+  }
 }
