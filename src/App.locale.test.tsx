@@ -16,7 +16,7 @@ describe('locale startup validation', () => {
     render(<App />);
 
     expect(screen.getByRole('alert')).toHaveTextContent('Missing letter weights for fr');
-    const languageSelector = screen.getByLabelText('Language');
+    const languageSelector = screen.getByLabelText('language.label');
     expect(languageSelector).toBeInTheDocument();
     const frOption = screen
       .getAllByRole('option')

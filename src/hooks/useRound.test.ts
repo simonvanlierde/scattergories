@@ -15,6 +15,10 @@ describe('useRound', () => {
 
   beforeEach(() => {
     vi.useFakeTimers();
+    mockPlayTick.mockClear();
+    mockPlayAlarm.mockClear();
+    mockSpinTo.mockClear();
+    mockResetRoller.mockClear();
     vi.mocked(useAudio).mockReturnValue({
       playTick: mockPlayTick,
       playAlarm: mockPlayAlarm,
@@ -39,6 +43,14 @@ describe('useRound', () => {
     totalRounds: 2,
     isMuted: false,
     locale: 'en',
+  };
+
+  const advanceBuffer = () => {
+    for (let i = 0; i < 5; i += 1) {
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+    }
   };
 
   it('starts in idle state', () => {
@@ -91,14 +103,10 @@ describe('useRound', () => {
     act(() => landCallback?.());
 
     expect(result.current.phase).toBe('buffer');
-    expect(result.current.secondsLeft).toBe(3);
+    expect(result.current.secondsLeft).toBe(5);
 
     // One tick at a time to be safe with fake timers + effects
-    for (let i = 0; i < 3; i++) {
-      act(() => {
-        vi.advanceTimersByTime(1000);
-      });
-    }
+    advanceBuffer();
 
     expect(result.current.phase).toBe('running');
     expect(result.current.secondsLeft).toBe(5);
@@ -118,9 +126,7 @@ describe('useRound', () => {
     act(() => landCallback?.());
 
     // Fast forward buffer
-    for (let i = 0; i < 3; i++) {
-      act(() => vi.advanceTimersByTime(1000));
-    }
+    advanceBuffer();
 
     expect(result.current.phase).toBe('running');
 
@@ -148,9 +154,7 @@ describe('useRound', () => {
     act(() => landCallback?.());
 
     // Buffer
-    for (let i = 0; i < 3; i++) {
-      act(() => vi.advanceTimersByTime(1000));
-    }
+    advanceBuffer();
 
     expect(result.current.secondsLeft).toBe(20);
     expect(mockPlayTick).not.toHaveBeenCalled();
@@ -184,9 +188,7 @@ describe('useRound', () => {
     act(() => landCallback?.());
 
     // Buffer
-    for (let i = 0; i < 3; i++) {
-      act(() => vi.advanceTimersByTime(1000));
-    }
+    advanceBuffer();
 
     expect(result.current.phase).toBe('running');
     expect(result.current.secondsLeft).toBe(5);
@@ -228,9 +230,7 @@ describe('useRound', () => {
     act(() => landCallback?.());
 
     // Buffer
-    for (let i = 0; i < 3; i++) {
-      act(() => vi.advanceTimersByTime(1000));
-    }
+    advanceBuffer();
 
     // Game (5s)
     for (let i = 0; i < 5; i++) {

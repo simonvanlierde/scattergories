@@ -1,10 +1,8 @@
 import { act, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { useSettings } from './useSettings';
+import { settingsStore, useSettings } from './useSettings';
 
 const STORAGE_KEY = 'scattergories.settings.v1';
-
-import { settingsStore } from './useSettings';
 
 beforeEach(() => {
   window.localStorage.clear();
@@ -47,6 +45,7 @@ describe('useSettings', () => {
         removeEventListener: vi.fn(),
         dispatchEvent: vi.fn(),
       }));
+      settingsStore.reset();
       const { result } = renderHook(() => useSettings());
       expect(result.current.settings.theme).toBe('light');
     });
@@ -67,17 +66,17 @@ describe('useSettings', () => {
         STORAGE_KEY,
         JSON.stringify({ durationInput: '120', isMuted: true }),
       );
+      settingsStore.reset();
       const { result } = renderHook(() => useSettings());
       expect(result.current.settings.durationInput).toBe('120');
       expect(result.current.settings.isMuted).toBe(true);
     });
 
-    it('falls back to defaults on malformed JSON and writes valid defaults back', () => {
+    it('falls back to defaults on malformed JSON and rewrites storage', () => {
       window.localStorage.setItem(STORAGE_KEY, '{not valid json}');
+      settingsStore.reset();
       const { result } = renderHook(() => useSettings());
       expect(result.current.settings.durationInput).toBe('90');
-      // The useEffect immediately re-persists the defaults, so the key is
-      // present again — but now contains valid JSON with default values.
       const stored = JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? 'null');
       expect(stored).not.toBeNull();
       expect(stored.durationInput).toBe('90');

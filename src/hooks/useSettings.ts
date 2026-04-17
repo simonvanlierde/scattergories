@@ -33,7 +33,15 @@ const defaults = (): Settings => ({
   theme: preferredTheme(),
 });
 
-function parseStored(raw: string | null): Settings {
+function persistSettings(next: Settings): void {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+}
+
+function loadStoredSettings(raw: string | null): Settings {
   const fallback = defaults();
   if (!raw) {
     return fallback;
@@ -72,14 +80,20 @@ function parseStored(raw: string | null): Settings {
       merged.theme = parsed.theme;
     }
 
+    const canonical = JSON.stringify(merged);
+    if (canonical !== raw) {
+      persistSettings(merged);
+    }
+
     return merged;
   } catch {
+    persistSettings(fallback);
     return fallback;
   }
 }
 
 // External store for settings
-let currentSettings = parseStored(
+let currentSettings = loadStoredSettings(
   typeof window === 'undefined' ? null : window.localStorage.getItem(STORAGE_KEY),
 );
 
@@ -115,7 +129,7 @@ const settingsStore = {
 
   handleStorageEvent(event: StorageEvent) {
     if (event.key === STORAGE_KEY) {
-      currentSettings = parseStored(event.newValue);
+      currentSettings = loadStoredSettings(event.newValue);
       for (const listener of listeners) {
         listener();
       }
@@ -135,16 +149,14 @@ const settingsStore = {
       return;
     }
     currentSettings = next;
-    if (typeof window !== 'undefined') {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    }
+    persistSettings(next);
     for (const listener of listeners) {
       listener();
     }
   },
 
   reset() {
-    currentSettings = parseStored(
+    currentSettings = loadStoredSettings(
       typeof window === 'undefined' ? null : window.localStorage.getItem(STORAGE_KEY),
     );
     for (const listener of listeners) {
