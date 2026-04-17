@@ -1,20 +1,12 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.4.12/schema.json",
   "files": {
-    "includes": [
-      "**",
-      "!**/.venv",
-      "!**/site-packages",
-      "!coverage",
-      "!dist",
-      "!node_modules",
-      "!playwright-report",
-      "!test-results",
-      "!tools/.venv",
-      "!tools/htmlcov",
-      "!tools/letter_frequency/data",
-      "!tools/letter-frequency/data"
-    ]
+    "includes": ["**", "!tools/letter_frequency/data", "!tools/letter-frequency/data"]
+  },
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
   },
   "formatter": {
     "enabled": true,
@@ -22,6 +14,27 @@
     "indentWidth": 2,
     "lineWidth": 100
   },
+  "overrides": [
+    {
+      "includes": [
+        "src/app.test.tsx",
+        "src/game/roundReducer.test.ts",
+        "src/hooks/useAudio.test.ts",
+        "src/hooks/useGameSession.ts",
+        "src/hooks/useKeyboardShortcuts.test.ts",
+        "src/hooks/useLetterRoller.test.ts",
+        "src/hooks/useRound.test.ts",
+        "src/hooks/useSettings.test.ts"
+      ],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noExcessiveLinesPerFunction": "off"
+          }
+        }
+      }
+    }
+  ],
   "linter": {
     "enabled": true,
     "rules": {
@@ -40,117 +53,5 @@
       "quoteStyle": "single",
       "semicolons": "always"
     }
-  },
-  "overrides": [
-    {
-      "includes": ["src/game/constants.ts"],
-      "linter": {
-        "rules": {
-          "security": {
-            "noSecrets": "off"
-          },
-          "style": {
-            "useNamingConvention": "off"
-          }
-        }
-      }
-    },
-    {
-      "includes": ["playwright.config.ts", "vite.config.ts"],
-      "linter": {
-        "rules": {
-          "complexity": {
-            "noImplicitCoercions": "off"
-          },
-          "correctness": {
-            "noProcessGlobal": "off"
-          },
-          "style": {
-            "noDefaultExport": "off",
-            "noProcessEnv": "off",
-            "useNamingConvention": "off"
-          }
-        }
-      }
-    },
-    {
-      "includes": ["src/**/*.test.ts", "src/**/*.test.tsx"],
-      "linter": {
-        "rules": {
-          "complexity": {
-            "noExcessiveLinesPerFunction": "off"
-          },
-          "performance": {
-            "useTopLevelRegex": "off"
-          },
-          "style": {
-            "noMagicNumbers": "off",
-            "useFilenamingConvention": "off"
-          }
-        }
-      }
-    },
-    {
-      "includes": ["src/App.tsx"],
-      "linter": {
-        "rules": {
-          "complexity": {
-            "noExcessiveLinesPerFunction": "off"
-          }
-        }
-      }
-    },
-    {
-      "includes": ["src/components/**", "src/hooks/**", "src/game/roundReducer.ts"],
-      "linter": {
-        "rules": {
-          "complexity": {
-            "noExcessiveCognitiveComplexity": "off",
-            "noExcessiveLinesPerFunction": "off"
-          },
-          "style": {
-            "noMagicNumbers": "off"
-          }
-        }
-      }
-    },
-    {
-      "includes": ["src/setupTests.ts"],
-      "linter": {
-        "rules": {
-          "style": {
-            "noMagicNumbers": "off"
-          },
-          "suspicious": {
-            "noEmptyBlockStatements": "off"
-          }
-        }
-      }
-    },
-    {
-      "includes": ["src/components/ErrorBoundary.tsx"],
-      "linter": {
-        "rules": {
-          "style": {
-            "noJsxLiterals": "off"
-          },
-          "suspicious": {
-            "noConsole": "off"
-          }
-        }
-      }
-    },
-    {
-      "includes": ["src/i18n/config.ts"],
-      "linter": {
-        "rules": {
-          "style": {
-            "noDefaultExport": "off",
-            "noExportedImports": "off",
-            "useNamingConvention": "off"
-          }
-        }
-      }
-    }
-  ]
+  }
 }

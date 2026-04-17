@@ -31,8 +31,6 @@ ignorePaths:
   - ".vscode/**"
   # SVG markup is a sea of attribute names, not prose.
   - "**/*.svg"
-  # Generated data files (frequencies etc.)
-  - "tools/letter_frequency/data/**"
 
 # Check locale and translation files in their respective languages.
 overrides:
@@ -88,9 +86,11 @@ words:
   - huggingface
   - justfile
   - monkeypatch
+  - scattegories
   - testpaths
   - toupper
   - tqdm
+  - typer
   # Sample categories in test fixtures
   - Animales
   - Comidas

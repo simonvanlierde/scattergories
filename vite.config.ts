@@ -1,11 +1,30 @@
-import react from '@vitejs/plugin-react';
+// biome-ignore-all lint/style/noDefaultExport: Vite config must use the default export shape.
+import babel from '@rolldown/plugin-babel';
+import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import { configDefaults, defineConfig } from 'vitest/config';
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    babel({
+      presets: [reactCompilerPreset()],
+    }),
+  ],
   build: {
-    target: 'es2022',
+    rolldownOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('/node_modules/react-dom') || id.includes('/node_modules/react/')) {
+            return 'react';
+          }
+
+          if (id.includes('/node_modules/i18next') || id.includes('/node_modules/react-i18next')) {
+            return 'i18n';
+          }
+        },
+      },
+    },
   },
   test: {
     environment: 'jsdom',

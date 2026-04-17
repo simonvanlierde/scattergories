@@ -1,5 +1,5 @@
 # ---- Build stage ----
-FROM node:25-alpine AS build
+FROM node:24.13.0-alpine3.23 AS build
 WORKDIR /app
 
 ENV PNPM_HOME=/pnpm
@@ -15,7 +15,7 @@ COPY --link . .
 RUN pnpm build
 
 # ---- Runtime stage ----
-FROM caddy:2-alpine AS runtime
+FROM caddy:2.11.2-alpine AS runtime
 
 COPY --link Caddyfile /etc/caddy/Caddyfile
 COPY --link --from=build /app/dist /usr/share/caddy

@@ -24,7 +24,17 @@ A beautiful, responsive, digital companion for the classic game of Scattergories
 
 ## 🚀 Getting started
 
-Requirements: **Node ≥ 24** and **pnpm ≥ 10**. [`just`](https://github.com/casey/just) is recommended as a thin command runner.
+Requirements: **Node 24.x**, **pnpm 10.x**, and **Python 3.14** for `tools/`. [`just`](https://github.com/casey/just) is recommended as a thin command runner, and [`mise`](https://mise.jdx.dev/) is the preferred way to keep the toolchain aligned.
+
+### Install toolchain
+
+Preferred:
+
+```bash
+mise install
+```
+
+Fallback: install Node 24, pnpm 10, and Python 3.14 manually.
 
 ### Local development
 
@@ -37,14 +47,28 @@ Open <http://localhost:5173> in your browser.
 
 ### Local quality gate
 
-Run the full local pipeline in one command:
+Run the standard app-only pipeline in one command:
 
 ```bash
 just verify   # or: pnpm run verify
 ```
 
 This runs typecheck → full spellcheck → biome → unit tests → production build.
-Use `just spellcheck` for a full-repo spelling pass, or `just spellcheck-changed <files...>` for a targeted run.
+Use `just spellcheck` for the app-focused spelling pass, or `just spellcheck-changed <files...>` for a targeted run.
+
+For higher-risk changes that touch CI, Docker, or Python tooling, run the full local validation pass:
+
+```bash
+just verify-full
+```
+
+This runs app checks, `tools/` checks, and infrastructure validation.
+
+To validate deployment-related config only:
+
+```bash
+just infra-check
+```
 
 ### End-to-end tests
 
@@ -56,7 +80,7 @@ pnpm test:e2e
 
 ### Git hooks
 
-Pre-commit hooks (via [lefthook](https://github.com/evilmartians/lefthook)) run Biome and targeted cspell on staged files plus ruff/ty on `tools/**`. A pre-push hook runs the full `pnpm run verify` pipeline so regressions never reach `origin`.
+Pre-commit hooks (via [lefthook](https://github.com/evilmartians/lefthook)) keep staged frontend files formatted and spell-checked, and run `ruff` on staged `tools/**` Python files. The pre-push hook runs frontend typechecking only; full validation stays explicit via `just verify` or `just verify-full`.
 
 ## 🐳 Self-hosting with Docker
 
@@ -76,10 +100,13 @@ just up-tunnel
 
 ## 🤖 CI
 
-GitHub Actions runs on every pull request and push to `main`:
+GitHub Actions stays intentionally cheap for a solo-maintained repo:
 
-1. **`Validate`** — install, typecheck, changed-file spellcheck on PRs, full spellcheck on manual dispatch, biome, Vitest, production build.
-2. **`e2e`** — Playwright against the built bundle (chromium, with browser cache).
+1. **`Validate`** — app checks on pull requests and pushes to `main` for frontend/runtime changes.
+2. **`Tools Validate`** — Python tooling checks only when `tools/**` changes.
+3. **`Infra Validate`** — Docker/Compose/Caddy validation only when deployment or CI infrastructure changes.
+4. **`Security`** — dependency-file pull requests and manual dependency audits.
+5. **`E2E`** — pushes to `main` and manual dispatch only, so Playwright does not run on every pull request.
 
 Dependabot opens grouped weekly PRs for npm, GitHub Actions, Docker, and the `tools/` uv environment.
 
