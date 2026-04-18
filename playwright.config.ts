@@ -4,7 +4,7 @@ import process from 'node:process';
 import { defineConfig, devices } from '@playwright/test';
 
 const PORT = 4173;
-const HOST = '127.0.0.1';
+const HOST = 'localhost';
 const BASE_URL = `http://${HOST}:${PORT}`;
 const smokeTag = /@smoke/;
 // biome-ignore lint/style/noProcessEnv: Playwright config reads CI from Node's process env.

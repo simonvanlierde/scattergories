@@ -9,6 +9,7 @@ import {
   useMemo,
   useRef,
   useState,
+  useSyncExternalStore,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -25,6 +26,7 @@ import {
 } from '../game/constants';
 import { clampInt, shuffleFisherYates } from '../game/utils';
 import { ensureLanguageLoaded, persistLanguage } from '../i18n/config';
+import { getPackCategories } from '../lib/categoryPacks';
 import { useKeyboardShortcuts } from './useKeyboardShortcuts';
 import { useRound } from './useRound';
 import { useSettings } from './useSettings';
@@ -33,6 +35,7 @@ const SCATTERGORIES_PRELOAD_ERROR_EVENTS = [
   'vite:preloadError',
   'scattergories:chunk-error',
 ] as const;
+const MOBILE_PROMPT_DECK_QUERY = '(max-width: 52rem)';
 
 type NumericFieldName = 'durationInput' | 'catCountInput' | 'totalRoundsInput';
 
@@ -60,16 +63,22 @@ const NUMERIC_FIELDS: Record<NumericFieldName, NumericFieldConfig> = {
   },
 };
 
-function getAvailableCategories(categoryMode: string, customCategories: string[]): string[] {
+function getAvailableCategories(
+  categoryMode: string,
+  activePack: string,
+  customCategories: string[],
+): string[] {
+  const packCategories = getPackCategories(activePack, categories);
+
   if (categoryMode === 'default') {
-    return [...categories];
+    return packCategories;
   }
 
   if (categoryMode === 'custom') {
     return [...customCategories];
   }
 
-  return Array.from(new Set([...categories, ...customCategories]));
+  return Array.from(new Set([...packCategories, ...customCategories]));
 }
 
 function getNormalizedCategoryCount(categoryCount: number, availableCount: number): number {
@@ -81,6 +90,7 @@ const howToPlayModalLoaders = import.meta.glob('../components/HowToPlayModal.tsx
 function useSessionNumbers(settings: {
   catCountInput: string;
   categoryMode: 'default' | 'custom' | 'mixed';
+  activePack: string;
   customCategories: string[];
   durationInput: string;
   totalRoundsInput: string;
@@ -89,8 +99,9 @@ function useSessionNumbers(settings: {
   const categoryCount = clampInt(settings.catCountInput, catCountMin, catCountMax, catCountDefault);
   const totalRounds = clampInt(settings.totalRoundsInput, roundsMin, roundsMax, roundsDefault);
   const availableCategories = useMemo(
-    () => getAvailableCategories(settings.categoryMode, settings.customCategories),
-    [settings.categoryMode, settings.customCategories],
+    () =>
+      getAvailableCategories(settings.categoryMode, settings.activePack, settings.customCategories),
+    [settings.categoryMode, settings.activePack, settings.customCategories],
   );
   const normalizedCategoryCount = useMemo(
     () => getNormalizedCategoryCount(categoryCount, availableCategories.length),
@@ -173,6 +184,42 @@ function useLanguageSwitcher(
   );
 }
 
+function getCompactLayoutSnapshot() {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+    return false;
+  }
+
+  return window.matchMedia(MOBILE_PROMPT_DECK_QUERY).matches;
+}
+
+function subscribeCompactLayout(onStoreChange: () => void) {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+    return () => undefined;
+  }
+
+  const mediaQuery = window.matchMedia(MOBILE_PROMPT_DECK_QUERY);
+  const handleChange = () => onStoreChange();
+
+  mediaQuery.addEventListener('change', handleChange);
+
+  return () => mediaQuery.removeEventListener('change', handleChange);
+}
+
+function useIsCompactLayout() {
+  return useSyncExternalStore(subscribeCompactLayout, getCompactLayoutSnapshot, () => false);
+}
+
+function getPromptDeckOpenState(
+  preference: 'auto' | 'open' | 'collapsed',
+  isCompactLayout: boolean,
+) {
+  if (preference === 'auto') {
+    return !isCompactLayout;
+  }
+
+  return preference === 'open';
+}
+
 function useCategoryBoard(params: {
   availableCategories: string[];
   normalizedCategoryCount: number;
@@ -218,40 +265,66 @@ function useSessionControls(params: {
     catCountInput: string;
     durationInput: string;
     isMuted: boolean;
+    promptDeckPreference: 'auto' | 'open' | 'collapsed';
     theme: 'light' | 'dark';
     totalRoundsInput: string;
   };
   update: ReturnType<typeof useSettings>['update'];
+  isPromptDeckOpen: boolean;
 }) {
   const [newCategoryInput, setNewCategoryInput] = useState('');
   const [hasChunkError, setHasChunkError] = useState(false);
   const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
   const [isLanguagePending, setIsLanguagePending] = useState(false);
+  const [shouldFocusPromptInput, setShouldFocusPromptInput] = useState(false);
   const newCategoryInputRef = useRef<HTMLInputElement>(null);
+  const { update } = params;
 
   const sanitizeNumericField = useMemo(
-    () => createNumericFieldSanitizer(params.settings, params.update),
-    [params.settings, params.update],
+    () => createNumericFieldSanitizer(params.settings, update),
+    [params.settings, update],
   );
   const handleAddCustomCategory = useMemo(
     () =>
       createCustomCategoryHandler(params.addCustomCategory, setNewCategoryInput, newCategoryInput),
     [newCategoryInput, params.addCustomCategory],
   );
-  const focusNewCategoryInput = useCallback(() => {
-    newCategoryInputRef.current?.focus();
-  }, []);
   const handleReloadAfterChunkError = useMemo(() => createReloadHandler(), []);
   const handleLanguageChange = useLanguageSwitcher(
     params.i18n,
     setIsLanguagePending,
     setHasChunkError,
   );
+  const setPromptDeckPreference = useCallback(
+    (nextOpen: boolean) => {
+      update('promptDeckPreference', nextOpen ? 'open' : 'collapsed');
+    },
+    [update],
+  );
+  const togglePromptDeck = useCallback(() => {
+    setPromptDeckPreference(!params.isPromptDeckOpen);
+  }, [params.isPromptDeckOpen, setPromptDeckPreference]);
+  const revealPromptDeck = useCallback(() => {
+    if (!params.isPromptDeckOpen) {
+      setPromptDeckPreference(true);
+    }
+  }, [params.isPromptDeckOpen, setPromptDeckPreference]);
+
+  useEffect(() => {
+    if (!(shouldFocusPromptInput && params.isPromptDeckOpen && newCategoryInputRef.current)) {
+      return;
+    }
+
+    newCategoryInputRef.current.focus();
+    setShouldFocusPromptInput(false);
+  }, [params.isPromptDeckOpen, shouldFocusPromptInput]);
 
   useChunkErrorListener(setHasChunkError);
 
   return {
-    focusNewCategoryInput,
+    focusNewCategoryInput: () => {
+      setShouldFocusPromptInput(true);
+    },
     handleAddCustomCategory,
     handleLanguageChange,
     handleReloadAfterChunkError,
@@ -260,31 +333,39 @@ function useSessionControls(params: {
     isLanguagePending,
     newCategoryInput,
     newCategoryInputRef,
+    revealPromptDeck,
     sanitizeNumericField,
     setIsHowToPlayOpen,
     setNewCategoryInput,
+    togglePromptDeck,
   };
 }
 
 function useSessionKeyboardShortcuts(params: {
-  focusNewCategoryInput: () => void;
   handleNewGame: () => void;
-  redrawCategories: () => void;
+  revealPromptDeck: () => void;
   round: ReturnType<typeof useRound>;
+  togglePromptDeck: () => void;
+  focusPromptDeckInput: () => void;
 }) {
   useKeyboardShortcuts({
     onSpace: params.round.startRound,
     onR: params.round.rerollLetter,
     onN: params.handleNewGame,
     onP: params.round.togglePause,
-    onC: params.redrawCategories,
-    onA: params.focusNewCategoryInput,
+    onC: params.togglePromptDeck,
+    onA: () => {
+      params.revealPromptDeck();
+      params.focusPromptDeckInput();
+    },
   });
 }
 
 function buildCategoriesModel(params: {
   availableCount: number;
   drawnCategories: string[];
+  isCompactLayout: boolean;
+  isPromptDeckOpen: boolean;
   newCategoryInput: string;
   normalizedCategoryCount: number;
   setNewCategoryInput: (value: string) => void;
@@ -293,6 +374,8 @@ function buildCategoriesModel(params: {
   return {
     availableCount: params.availableCount,
     drawnCategories: params.drawnCategories,
+    isCompactLayout: params.isCompactLayout,
+    isPromptDeckOpen: params.isPromptDeckOpen,
     newCategoryInput: params.newCategoryInput,
     normalizedCategoryCount: params.normalizedCategoryCount,
     setNewCategoryInput: params.setNewCategoryInput,
@@ -307,10 +390,12 @@ function buildControlsModel(params: {
   handleReloadAfterChunkError: () => void;
   handleRedrawCategories: () => void;
   handleRemoveCustomCategory: (category: string) => void;
+  handleTogglePromptDeck: () => void;
   round: ReturnType<typeof useRound>;
   setIsHowToPlayOpen: Dispatch<SetStateAction<boolean>>;
   settings: {
     isMuted: boolean;
+    promptDeckPreference: 'auto' | 'open' | 'collapsed';
     theme: 'light' | 'dark';
   };
   update: ReturnType<typeof useSettings>['update'];
@@ -318,6 +403,7 @@ function buildControlsModel(params: {
 }) {
   return {
     onAddCustomCategory: params.handleAddCustomCategory,
+    onActivePackChange: (packId: string) => params.update('activePack', packId),
     onBlurNumericField: params.sanitizeNumericField,
     onCategoryModeChange: (mode: 'default' | 'custom' | 'mixed') =>
       params.update('categoryMode', mode),
@@ -331,6 +417,7 @@ function buildControlsModel(params: {
     onToggleHowToPlay: () => params.setIsHowToPlayOpen((current) => !current),
     onToggleMute: () => params.update('isMuted', !params.settings.isMuted),
     onTogglePause: params.round.togglePause,
+    onTogglePromptDeck: params.handleTogglePromptDeck,
     onToggleTheme: () =>
       params.update('theme', params.settings.theme === 'light' ? 'dark' : 'light'),
     onUpdateField: params.update,
@@ -341,8 +428,10 @@ function buildControlsModel(params: {
 function buildFlagsModel(params: {
   hasChunkError: boolean;
   hasMoreRounds: boolean;
+  isCompactLayout: boolean;
   isHowToPlayOpen: boolean;
   isLanguagePending: boolean;
+  isPromptDeckOpen: boolean;
 }) {
   return params;
 }
@@ -359,6 +448,7 @@ function buildRoundModel(round: ReturnType<typeof useRound>) {
     secondsLeft: round.secondsLeft,
     statusKey: round.statusKey,
     usedLetters: round.usedLetters,
+    playToggle: round.playToggle,
   };
 }
 
@@ -366,9 +456,11 @@ function buildSettingsModel(
   settings: {
     catCountInput: string;
     categoryMode: 'default' | 'custom' | 'mixed';
+    activePack: string;
     customCategories: string[];
     durationInput: string;
     isMuted: boolean;
+    promptDeckPreference: 'auto' | 'open' | 'collapsed';
     theme: 'light' | 'dark';
     totalRoundsInput: string;
   },
@@ -431,6 +523,8 @@ const HowToPlayDialog = lazy(async () => {
 function useGameSession() {
   const { settings, update, addCustomCategory, removeCustomCategory } = useSettings();
   const { i18n } = useTranslation();
+  const isCompactLayout = useIsCompactLayout();
+  const isPromptDeckOpen = getPromptDeckOpenState(settings.promptDeckPreference, isCompactLayout);
   const numbers = useSessionNumbers(settings);
   const round = useRound({
     gameSeconds: numbers.gameSeconds,
@@ -449,19 +543,23 @@ function useGameSession() {
     round,
     settings,
     update,
+    isPromptDeckOpen,
   });
 
   useSessionKeyboardShortcuts({
-    focusNewCategoryInput: controls.focusNewCategoryInput,
+    focusPromptDeckInput: controls.focusNewCategoryInput,
     handleNewGame: board.handleNewGame,
-    redrawCategories: board.redrawCategories,
+    revealPromptDeck: controls.revealPromptDeck,
     round,
+    togglePromptDeck: controls.togglePromptDeck,
   });
 
   return {
     categories: buildCategoriesModel({
       availableCount: numbers.availableCategories.length,
       drawnCategories: board.drawnCategories,
+      isCompactLayout,
+      isPromptDeckOpen,
       newCategoryInput: controls.newCategoryInput,
       normalizedCategoryCount: numbers.normalizedCategoryCount,
       setNewCategoryInput: controls.setNewCategoryInput,
@@ -474,6 +572,7 @@ function useGameSession() {
       handleReloadAfterChunkError: controls.handleReloadAfterChunkError,
       handleRedrawCategories: board.redrawCategories,
       handleRemoveCustomCategory: removeCustomCategory,
+      handleTogglePromptDeck: controls.togglePromptDeck,
       round,
       sanitizeNumericField: controls.sanitizeNumericField,
       setIsHowToPlayOpen: controls.setIsHowToPlayOpen,
@@ -483,8 +582,10 @@ function useGameSession() {
     flags: buildFlagsModel({
       hasChunkError: controls.hasChunkError,
       hasMoreRounds: round.hasMoreRounds,
+      isCompactLayout,
       isHowToPlayOpen: controls.isHowToPlayOpen,
       isLanguagePending: controls.isLanguagePending,
+      isPromptDeckOpen,
     }),
     round: buildRoundModel(round),
     settings: buildSettingsModel(settings, numbers.totalRounds, numbers.gameSeconds),

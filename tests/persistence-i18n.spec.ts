@@ -1,4 +1,5 @@
-import { expect, test } from './fixtures';
+import { expect } from '@playwright/test';
+import { test } from './fixtures';
 
 test('@smoke persists the timer setting across reload', async ({ app, page }) => {
   await expect(page.getByLabel('Timer', { exact: true })).toHaveValue('90');

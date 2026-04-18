@@ -1,115 +1,83 @@
-# 🎲 Scattergories Helper
+# Scattergories
 
-[![CI](https://github.com/simonvanlierde/scattergories/actions/workflows/ci.yml/badge.svg)](https://github.com/simonvanlierde/scattergories/actions/workflows/ci.yml)
-[![Tools Validate](https://github.com/simonvanlierde/scattergories/actions/workflows/tools.yml/badge.svg)](https://github.com/simonvanlierde/scattergories/actions/workflows/tools.yml)
+Scattergories is a browser-based companion for playing Scattergories without the physical timer, die, or category cards. It runs as a single-page React app and is designed for quick setup on a phone, tablet, or laptop at the table.
 
-A beautiful, responsive, digital companion for the classic game of Scattergories. This app completely replaces the physical 20-sided letter die, the sand timer, and the paper category cards, letting you play effortlessly with just paper and a pen.
+The app picks a letter, draws categories, tracks the round timer, and keeps custom category lists in the browser. Nothing needs a backend.
 
-## 🌟 Features
+## What It Does
 
-- **Draw 12 Mechanics**: Generates a perfect standard 12-category round by default.
-- **Smart Randomization**: A satisfying animated letter roller that uses natural language frequency weights. You'll get playable letters more often, but every letter (A-Z) is still possible! It uses a perfect Fisher-Yates shuffle under the hood to ensure you never roll the same letter twice in a game.
-- **Configurable Timer**: An urgent, pulsing timer with an alarm built right in.
-- **Progressive Round Engine**: Click "Next Round" to automatically increment the round, reroll the letter, and preserve your existing categories!
-- **Fully Responsive & Local**: Works seamlessly on mobile and desktop, stores all custom data privately locally via `localStorage`, and functions fully offline if installed as a PWA.
+- Draws a standard round with 12 categories by default
+- Rolls letters with locale-aware weighting so common, playable letters appear more often
+- Supports multiple rounds while keeping the current category selection
+- Lets players switch between built-in and custom categories
+- Works in 9 interface languages: English, German, Greek, Spanish, French, Italian, Dutch, Polish, and Portuguese
+- Stores settings and custom categories locally in the browser
+- Includes unit and end-to-end test coverage for the main gameplay flow
 
-## 🛠️ Tech Stack
+## Stack
 
-- **Framework:** React 19 + TypeScript + Vite 8
-- **Package manager:** pnpm
-- **Lint & format:** Biome
-- **Unit tests:** Vitest
-- **E2E tests:** Playwright (chromium, against the built `vite preview` bundle)
-- **Runtime image:** Caddy serving a static SPA bundle
+- React 19
+- TypeScript
+- Vite
+- i18next
+- Biome
+- Vitest
+- Playwright
+- Docker + Caddy for self-hosting
 
-## 🚀 Getting started
+## Requirements
 
-Requirements: **Node 24.x**, **pnpm 10.x**, and **Python 3.14** for `tools/`. [`just`](https://github.com/casey/just) is recommended as a thin command runner, and [`mise`](https://mise.jdx.dev/) is the preferred way to keep the toolchain aligned.
+- Node 24 or newer
+- pnpm 10 or newer
+- Python 3.14 or newer for the optional `tools/` utilities
 
-### Install toolchain
+[`just`](https://github.com/casey/just) is optional, but convenient if you want shortcut commands.
 
-Preferred:
-
-```bash
-mise install
-```
-
-Fallback: install Node 24, pnpm 10, and Python 3.14 manually.
-
-### Local development
+## Local Development
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-Open <http://localhost:5173> in your browser.
+The Vite dev server starts on <http://localhost:5173>.
 
-### Local quality gate
-
-Run the standard app-only pipeline in one command:
+## Common Commands
 
 ```bash
-just verify   # or: pnpm run verify
+pnpm build          # Type-check and build the production bundle
+pnpm check          # Type-check, spell-check, and lint
+pnpm test           # Run unit tests
+pnpm test:coverage  # Run unit tests with coverage
+pnpm test:e2e       # Run Playwright tests against the built app
 ```
 
-This runs typecheck → full spellcheck → biome → unit tests → production build.
-Use `just spellcheck` for the app-focused spelling pass, or `just spellcheck-changed <files...>` for a targeted run.
+If you use `just`, the matching shortcuts live in [`justfile`](./justfile).
 
-For higher-risk changes that touch CI, Docker, or Python tooling, run the full local validation pass:
+## Self-Hosting
+
+The repository includes a Docker setup that builds the static app and serves it with Caddy.
 
 ```bash
-just verify-full
+just up
+just logs
+just down
 ```
 
-This runs app checks, `tools/` checks, and infrastructure validation.
+By default, the app is available on <http://localhost:8080>.
 
-To validate deployment-related config only:
+## Project Layout
 
-```bash
-just infra-check
+```text
+src/
+  components/   React UI
+  game/         Round logic, constants, and utility functions
+  hooks/        State, audio, keyboard, and animation hooks
+  i18n/         Locale config, translations, and letter data
+tests/          Playwright end-to-end tests
+tools/          Python utilities for translation and letter-frequency generation
 ```
 
-### End-to-end tests
+## Privacy
 
-Playwright boots `vite preview` against the production build and exercises the app in chromium:
-
-```bash
-pnpm test:e2e
-```
-
-### Git hooks
-
-Pre-commit hooks (via [lefthook](https://github.com/evilmartians/lefthook)) keep staged frontend files formatted and spell-checked, and run `ruff` on staged `tools/**` Python files. The pre-push hook runs frontend typechecking only; full validation stays explicit via `just verify` or `just verify-full`.
-
-## 🐳 Self-hosting with Docker
-
-No registry image is published — build locally and run. The runtime image is Caddy serving the static bundle with SPA fallback, long-cache headers on hashed assets, and a hardened runtime (read-only filesystem, no new privileges, all caps dropped).
-
-```bash
-just up       # build and start (http://localhost:8080)
-just logs     # tail logs
-just down     # stop
-```
-
-To expose the app over a Cloudflare Tunnel, set `TUNNEL_TOKEN` in a `.env` file next to `docker-compose.yml` and run:
-
-```bash
-just up-tunnel
-```
-
-## 🤖 CI
-
-GitHub Actions stays intentionally cheap for a solo-maintained repo:
-
-1. **`Validate`** — app checks on pull requests and pushes to `main` for frontend/runtime changes.
-2. **`Tools Validate`** — Python tooling checks only when `tools/**` changes.
-3. **`Infra Validate`** — Docker/Compose/Caddy validation only when deployment or CI infrastructure changes.
-4. **`Security`** — dependency-file pull requests and manual dependency audits.
-5. **`E2E`** — pushes to `main` and manual dispatch only, so Playwright does not run on every pull request.
-
-Dependabot opens grouped weekly PRs for npm, GitHub Actions, Docker, and the `tools/` uv environment.
-
-## 🔒 Privacy
-
-Custom categories are stored entirely in your browser's `localStorage`. Nothing ever leaves the device.
+Custom categories and settings are stored in `localStorage` in the user's browser. The app does not require an account or a server to function.

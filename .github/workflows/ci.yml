@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - 'biome.json'
-      - 'cspell.yml'
+      - '.cspell.yml'
       - 'index.html'
       - 'justfile'
       - 'lefthook.yml'
@@ -23,7 +23,7 @@ on:
     branches: [main]
     paths:
       - 'biome.json'
-      - 'cspell.yml'
+      - '.cspell.yml'
       - 'index.html'
       - 'lefthook.yml'
       - 'package.json'

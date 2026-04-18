@@ -1,5 +1,14 @@
 {
   "title": "Scattergories",
+  "hero": {
+    "description": "Losuj literę, kontroluj czas i graj bez zbędnego bałaganu.",
+    "statsLabel": "Statystyki"
+  },
+  "round": {
+    "panelEyebrow": "Panel rundy",
+    "letterLabel": "Aktualna litera",
+    "timerLabel": "Zegar rundy"
+  },
   "roundCounter": "Runda {{current}} z {{total}}",
   "buttons": {
     "startRound": "Rozpocznij Rundę",
@@ -22,6 +31,7 @@
     "closeTooltip": "Zamknij to okno"
   },
   "timer": {
+    "ready": "Gotowe",
     "timeUp": "Czas minął!",
     "getReady": "Przygotuj się...",
     "go": "Start!",
@@ -45,16 +55,24 @@
     "custom": "Własne",
     "mixed": "Mieszane",
     "noCustom": "Nie dodano jeszcze własnych kategorii.",
-    "minimumRequired": "Dodaj co najmniej jedną kategorię, aby użyć trybu Własne."
+    "minimumRequired": "Dodaj co najmniej jedną kategorię, aby użyć trybu Własne.",
+    "availableSummary": "{{count}} haseł gotowych",
+    "customListLabel": "Własne kategorie",
+    "drawnListLabel": "Tablica kategorii",
+    "showDeck": "Otwórz hasła",
+    "hideDeck": "Ukryj hasła",
+    "summaryMode": "Źródło: {{mode}}",
+    "summaryDraw": "Losowanie: {{count}}"
   },
   "usedLetters": "Użyte litery: {{letters}}{{empty}}",
   "usedLettersEmpty": "Brak",
-  "shortcuts": "Skróty: Spacja następna runda, R pomiń literę, P pauza, N nowa gra, C kategorie, A dodaj kategorię",
+  "shortcuts": "Skróty: Spacja start, R pomiń literę, P pauza, N nowa gra, C pokaż hasła, A dodaj kategorię",
   "footer": {
     "howToPlay": "Jak grać",
     "officialGame": "Oficjalna Gra",
     "sourceCode": "Kod źródłowy",
-    "privacy": "Ta aplikacja używa localStorage, aby zapisywać Twoje ustawienia i kategorie lokalnie w przeglądarce. Żadne dane nie są wysyłane na serwer."
+    "privacy": "Ta aplikacja zapisuje ustawienia i kategorie wyłącznie w Twojej przeglądarce.",
+    "label": "Stopka aplikacji"
   },
   "modal": {
     "title": "Jak grać w Scattergories",
@@ -91,6 +109,9 @@
   },
   "theme": {
     "toggle": "Zmień motyw",
-    "toggleTooltip": "Przełącz między jasnym a ciemnym motywem"
+    "toggleTooltip": "Przełącz między jasnym a ciemnym motywem",
+    "toggleLabel": "Motyw",
+    "dark": "Ciemny",
+    "light": "Jasny"
   }
 }

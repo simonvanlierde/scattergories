@@ -2,11 +2,12 @@
   "title": "Scattergories",
   "hero": {
     "eyebrow": "Party game companion",
-    "description": "Spin a locale-aware letter, draw a fresh deck of prompts, and keep every round moving.",
-    "metaLabel": "Game pace"
+    "description": "Run the letter, keep the clock moving, and play without the clutter.",
+    "metaLabel": "Game pace",
+    "statsLabel": "Game stats"
   },
   "round": {
-    "panelEyebrow": "Round control room",
+    "panelEyebrow": "Round console",
     "letterLabel": "Current letter",
     "timerLabel": "Round clock"
   },
@@ -39,6 +40,7 @@
     "closeTooltip": "Close this window"
   },
   "timer": {
+    "ready": "Ready",
     "timeUp": "Time's up!",
     "getReady": "Get ready...",
     "go": "Go!",
@@ -54,29 +56,161 @@
     "categorySource": "Source",
     "categoryDraw": "Draw",
     "addCustom": "Add custom category",
-    "placeholder": "e.g. Programming Languages"
+    "placeholder": "e.g. Programming Languages",
+    "sheetTitle": "Settings",
+    "openLabel": "Settings",
+    "sessionTitle": "Round pace",
+    "lockedHint": "Finish or reset the round to edit"
+  },
+  "packs": {
+    "sectionTitle": "Category pack",
+    "classic": {
+      "label": "Classic",
+      "description": "Every category — the full deck."
+    },
+    "foodie": {
+      "label": "Foodie",
+      "description": "Dishes, drinks, ingredients, and kitchens."
+    },
+    "popCulture": {
+      "label": "Pop Culture",
+      "description": "Movies, TV, music, celebrities, books."
+    },
+    "travel": {
+      "label": "Travel",
+      "description": "Places, transport, and everything in a suitcase."
+    },
+    "kids": {
+      "label": "Kids",
+      "description": "Friendly categories for younger players."
+    },
+    "household": {
+      "label": "Around the House",
+      "description": "Rooms, tools, furniture, and gadgets."
+    }
+  },
+  "playmat": {
+    "label": "Game board"
+  },
+  "pause": {
+    "title": "Paused",
+    "hint": "Tap anywhere to resume",
+    "resumeLabel": "Paused — tap to resume"
+  },
+  "settings.achievementsTitle": "Achievements",
+  "achievements": {
+    "unlocked": "Achievement unlocked",
+    "firstRound": {
+      "label": "First round",
+      "description": "Played your very first round."
+    },
+    "fullSweep": {
+      "label": "Full sweep",
+      "description": "Marked every category in a round."
+    },
+    "weekWarrior": {
+      "label": "Week warrior",
+      "description": "Played on 7 consecutive days."
+    },
+    "alphabetHunter": {
+      "label": "Alphabet hunter",
+      "description": "Seen all 26 letters at least once."
+    },
+    "veteran": {
+      "label": "Veteran",
+      "description": "Completed 25 games."
+    }
+  },
+  "rail": {
+    "label": "Side rail",
+    "stats": {
+      "title": "Your stats",
+      "games": "Games",
+      "streak": "Streak",
+      "best": "Best marks"
+    },
+    "achievements": {
+      "title": "Achievements"
+    },
+    "shortcuts": {
+      "title": "Keyboard shortcuts",
+      "hint": "Keyboard shortcuts · ?",
+      "space": "Start or advance a round",
+      "r": "Re-roll the current letter",
+      "p": "Pause or resume",
+      "n": "New game — re-draw categories",
+      "c": "Toggle the categories panel",
+      "a": "Add a custom category",
+      "help": "Open this shortcut list"
+    }
+  },
+  "onboarding": {
+    "label": "Getting started",
+    "title": "Welcome to Scattergories",
+    "body": "Hit Start to roll a letter, beat the clock to fill each category, and tap items to check them off as you go.",
+    "dismiss": "Got it",
+    "next": "Next",
+    "letsPlay": "Let's play",
+    "progress": "Progress",
+    "steps": {
+      "roll": {
+        "title": "Roll a letter",
+        "body": "Hit Start to spin up a random letter for the round."
+      },
+      "beat": {
+        "title": "Beat the clock",
+        "body": "Call out an answer for each category before time runs out."
+      },
+      "mark": {
+        "title": "Mark what you got",
+        "body": "Tap a category to strike it through as you go."
+      }
+    }
+  },
+  "roundEnd": {
+    "label": "Round summary",
+    "title": "Time's up!",
+    "gameComplete": "Game complete!",
+    "letterWas": "Letter was",
+    "roundSummary": "Round {{current}} of {{total}}",
+    "nextRound": "Next round",
+    "playAgain": "Play again",
+    "stats": {
+      "marked": "Marked",
+      "round": "Round",
+      "streak": "Streak"
+    },
+    "share": "Share",
+    "shareCopied": "Copied!",
+    "shareBody": "Scattergories — letter {{letter}}, {{struck}}/{{total}} marked."
   },
   "categories": {
     "title": "Categories",
-    "eyebrow": "Prompt deck",
-    "description": "Mix official and custom prompts, then reshuffle a fresh board whenever the table needs a reset.",
+    "description": "Mix official and custom categories, then reshuffle whenever the table needs a reset.",
     "default": "Default",
     "custom": "Custom",
     "mixed": "Mixed",
     "noCustom": "No custom categories yet.",
     "minimumRequired": "Add at least one custom category to use Custom mode.",
-    "availableSummary": "{{count}} prompts ready",
+    "availableSummary": "{{count}} categories ready",
     "customListLabel": "Custom categories",
-    "drawnListLabel": "Category board"
+    "drawnListLabel": "Category board",
+    "showDeck": "Open categories",
+    "hideDeck": "Hide categories",
+    "summaryMode": "Source: {{mode}}",
+    "summaryDraw": "Draw: {{count}}",
+    "customize": "Customize deck",
+    "customizeTitle": "Customize deck"
   },
   "usedLetters": "Used letters: {{letters}}{{empty}}",
   "usedLettersEmpty": "None yet",
-  "shortcuts": "Shortcuts: Space next round, R skip letter, P pause, N new game, C categories, A add custom",
+  "shortcuts": "Shortcuts: Space start, R skip letter, P pause, N new game, C toggle categories, A add custom",
   "footer": {
     "howToPlay": "How to Play",
     "officialGame": "Official Game",
     "sourceCode": "Source Code",
-    "privacy": "This app uses localStorage to save your settings and custom categories locally in your browser. No data is sent to any server."
+    "privacy": "This app stores settings and custom categories in your browser only.",
+    "label": "App footer"
   },
   "modal": {
     "title": "How to Play Scattergories",
@@ -116,8 +250,9 @@
     "toggle": "Toggle theme",
     "toggleTooltip": "Switch between light and dark theme",
     "toggleLabel": "Theme",
-    "dark": "Dark",
-    "light": "Light"
+    "sectionTitle": "Appearance",
+    "dark": "Dark mode",
+    "light": "Light mode"
   },
   "errors": {
     "chunkTitle": "A fresh app version is ready.",

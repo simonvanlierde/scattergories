@@ -25,6 +25,8 @@ vi.mock('./useLetterRoller');
 describe('useRound', () => {
   const mockPlayTick = vi.fn();
   const mockPlayAlarm = vi.fn();
+  const mockPlayLetterLand = vi.fn();
+  const mockPlayToggle = vi.fn();
   const mockSpinTo = vi.fn();
   const mockResetRoller = vi.fn();
 
@@ -32,11 +34,15 @@ describe('useRound', () => {
     vi.useFakeTimers();
     mockPlayTick.mockClear();
     mockPlayAlarm.mockClear();
+    mockPlayLetterLand.mockClear();
+    mockPlayToggle.mockClear();
     mockSpinTo.mockClear();
     mockResetRoller.mockClear();
     vi.mocked(useAudio).mockReturnValue({
       playTick: mockPlayTick,
       playAlarm: mockPlayAlarm,
+      playLetterLand: mockPlayLetterLand,
+      playToggle: mockPlayToggle,
     } satisfies ReturnType<typeof useAudio>);
     vi.mocked(useLetterRoller).mockReturnValue({
       letter: '?',

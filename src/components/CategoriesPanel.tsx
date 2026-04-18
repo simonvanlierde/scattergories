@@ -1,14 +1,21 @@
+import { Plus, Shuffle, SlidersHorizontal, Trash2 } from 'lucide-react';
 import type { RefObject } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { catCountMax, catCountMin } from '../game/constants';
 import type { CategoryMode } from '../hooks/useSettings';
+import { Button } from './ui/Button';
+import { Field } from './ui/Field';
+import { Icon } from './ui/Icon';
+import { IconButton } from './ui/IconButton';
+import { Sheet } from './ui/Sheet';
 
 interface CategoriesState {
   mode: CategoryMode;
   catCountInput: string;
   customCategories: string[];
-  drawnCategories: string[];
   availableCount: number;
-  usedLetters: string[];
+  isPromptDeckOpen: boolean;
   newCategoryInput: string;
 }
 
@@ -20,36 +27,14 @@ interface CategoriesActions {
   onAddCustom: () => void;
   onRemoveCustom: (category: string) => void;
   onNewCategoryInputChange: (value: string) => void;
+  onTogglePromptDeck: () => void;
 }
 
 interface CategoriesPanelProps {
   categories: CategoriesState;
   actions: CategoriesActions;
   inputRef: RefObject<HTMLInputElement | null>;
-}
-
-function CategoriesMeta({
-  availableCount,
-  usedLetters,
-}: Pick<CategoriesState, 'availableCount' | 'usedLetters'>) {
-  const { t } = useTranslation();
-
-  return (
-    <div className="categories-meta">
-      <p className="used-letters" aria-live="polite">
-        {t('usedLetters', {
-          letters: usedLetters.length > 0 ? usedLetters.join(', ') : '',
-          empty: usedLetters.length > 0 ? '' : t('usedLettersEmpty'),
-        })}
-      </p>
-      <p className="category-count">
-        {t('categories.availableSummary', {
-          defaultValue: '{{count}} prompts ready',
-          count: availableCount,
-        })}
-      </p>
-    </div>
-  );
+  isCompactLayout: boolean;
 }
 
 function CategoryToolbar({
@@ -62,11 +47,12 @@ function CategoryToolbar({
   const { t } = useTranslation();
 
   return (
-    <div className="category-toolbar card-surface">
-      <div className="source-controls">
-        <label htmlFor="categoryMode">{t('settings.categorySource')}</label>
+    <div className="category-toolbar">
+      <label className="field-shell" htmlFor="categoryMode">
+        <span>{t('settings.categorySource')}</span>
         <select
           id="categoryMode"
+          aria-label={t('settings.categorySource')}
           value={mode}
           onChange={(event) => actions.onCategoryModeChange(event.target.value as CategoryMode)}
         >
@@ -74,27 +60,25 @@ function CategoryToolbar({
           <option value="custom">{t('categories.custom')}</option>
           <option value="mixed">{t('categories.mixed')}</option>
         </select>
-      </div>
-      <div className="cat-controls">
-        <label htmlFor="catCount">{t('settings.categoryDraw')}</label>
-        <input
-          type="number"
-          id="catCount"
-          min={1}
-          max={25}
-          value={catCountInput}
-          onChange={(event) => actions.onCatCountChange(event.target.value)}
-          onBlur={actions.onCatCountBlur}
-        />
-        <button
-          id="catBtn"
-          type="button"
-          className="btn-secondary cat-shuffle"
-          onClick={actions.onShuffle}
-        >
-          {t('buttons.shuffle')}
-        </button>
-      </div>
+      </label>
+      <Field
+        id="catCount"
+        label={t('settings.categoryDraw')}
+        type="number"
+        inputMode="numeric"
+        min={catCountMin}
+        max={catCountMax}
+        value={catCountInput}
+        onChange={(event) => actions.onCatCountChange(event.target.value)}
+        onBlur={actions.onCatCountBlur}
+      />
+      <Button
+        variant="secondary"
+        onClick={actions.onShuffle}
+        leadingIcon={<Icon icon={Shuffle} size={18} />}
+      >
+        {t('buttons.shuffle')}
+      </Button>
     </div>
   );
 }
@@ -113,14 +97,17 @@ function CustomCategories({
   const { t } = useTranslation();
 
   return (
-    <div className="custom-categories card-surface">
-      <label htmlFor="newCategory">{t('settings.addCustom')}</label>
+    <div className="custom-categories">
+      <label htmlFor="newCategory" className="section-label">
+        {t('settings.addCustom')}
+      </label>
       <div className="custom-category-input-row">
         <input
           ref={inputRef}
           id="newCategory"
           type="text"
           value={newCategoryInput}
+          aria-label={t('settings.addCustom')}
           maxLength={50}
           placeholder={t('settings.placeholder')}
           onChange={(event) => actions.onNewCategoryInputChange(event.target.value)}
@@ -131,14 +118,14 @@ function CustomCategories({
             }
           }}
         />
-        <button
-          type="button"
-          className="btn-secondary add-category-btn"
+        <Button
+          variant="primary"
           onClick={actions.onAddCustom}
+          leadingIcon={<Icon icon={Plus} size={18} />}
           title={t('buttons.addTooltip', { defaultValue: t('buttons.add') })}
         >
           {t('buttons.add')}
-        </button>
+        </Button>
       </div>
       {customCategories.length > 0 ? (
         <ul
@@ -148,14 +135,11 @@ function CustomCategories({
           {customCategories.map((category) => (
             <li key={category}>
               <span>{category}</span>
-              <button
-                type="button"
-                className="remove-btn"
-                aria-label={`${t('buttons.remove')} ${category}`}
+              <IconButton
+                label={`${t('buttons.remove')} ${category}`}
+                icon={<Icon icon={Trash2} size={18} />}
                 onClick={() => actions.onRemoveCustom(category)}
-              >
-                {t('buttons.remove')}
-              </button>
+              />
             </li>
           ))}
         </ul>
@@ -166,72 +150,145 @@ function CustomCategories({
   );
 }
 
-function DrawnCategories({
+function PromptSummary({
+  catCountInput,
+  mode,
   availableCount,
-  drawnCategories,
-}: Pick<CategoriesState, 'availableCount' | 'drawnCategories'>) {
+}: Pick<CategoriesState, 'catCountInput' | 'mode' | 'availableCount'>) {
   const { t } = useTranslation();
+  return (
+    <div className="prompt-summary" id="prompt-deck-content">
+      <span>
+        {t('categories.summaryMode', {
+          defaultValue: 'Source: {{mode}}',
+          mode: t(`categories.${mode}`),
+        })}
+      </span>
+      <span>
+        {t('categories.summaryDraw', {
+          defaultValue: 'Draw: {{count}}',
+          count: catCountInput,
+        })}
+      </span>
+      <span>
+        {t('categories.availableSummary', {
+          defaultValue: '{{count}} prompts ready',
+          count: availableCount,
+        })}
+      </span>
+    </div>
+  );
+}
+
+interface CustomizeSheetBlockProps {
+  actions: CategoriesActions;
+  catCountInput: string;
+  mode: CategoryMode;
+  customCategories: string[];
+  newCategoryInput: string;
+  inputRef: RefObject<HTMLInputElement | null>;
+}
+
+function CustomizeSheetBlock({
+  actions,
+  catCountInput,
+  mode,
+  customCategories,
+  newCategoryInput,
+  inputRef,
+}: CustomizeSheetBlockProps) {
+  const { t } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      {availableCount === 0 ? (
-        <p className="empty-state">{t('categories.minimumRequired')}</p>
-      ) : null}
-
-      <ul
-        className="category-list"
-        aria-label={t('categories.drawnListLabel', { defaultValue: 'Category board' })}
+      <Button
+        variant="secondary"
+        fullWidth={true}
+        onClick={() => setIsOpen(true)}
+        leadingIcon={<Icon icon={SlidersHorizontal} size={18} />}
+        className="categories-card__customize"
       >
-        {drawnCategories.map((category, index) => (
-          <li key={category}>
-            <span className="cat-index">{`${index + 1}.`}</span>
-            <span>{t(category, { ns: 'categories' })}</span>
-          </li>
-        ))}
-      </ul>
+        {t('categories.customize', { defaultValue: 'Customize deck' })}
+      </Button>
+      <Sheet
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        title={t('categories.customizeTitle', { defaultValue: 'Customize deck' })}
+        closeLabel={t('buttons.closeTooltip', { defaultValue: 'Close' })}
+      >
+        <CategoryToolbar actions={actions} catCountInput={catCountInput} mode={mode} />
+        <CustomCategories
+          actions={actions}
+          customCategories={customCategories}
+          inputRef={inputRef}
+          newCategoryInput={newCategoryInput}
+        />
+      </Sheet>
     </>
   );
 }
 
-function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps) {
+function CategoriesPanel({ categories, actions, inputRef, isCompactLayout }: CategoriesPanelProps) {
   const { t } = useTranslation();
   const {
     mode,
     catCountInput,
     customCategories,
-    drawnCategories,
     availableCount,
-    usedLetters,
+    isPromptDeckOpen,
     newCategoryInput,
   } = categories;
+  const deckButtonLabel = isPromptDeckOpen
+    ? t('categories.hideDeck', { defaultValue: 'Hide prompts' })
+    : t('categories.showDeck', { defaultValue: 'Open prompts' });
+
+  const showInline = isPromptDeckOpen && !isCompactLayout;
+  const showCompactCustomize = isPromptDeckOpen && isCompactLayout;
 
   return (
-    <section className="categories-card" aria-labelledby="categories-panel-title">
-      <div className="panel-heading">
-        <div>
-          <p className="eyebrow">{t('categories.eyebrow', { defaultValue: 'Prompt deck' })}</p>
-          <h2 id="categories-panel-title">{t('categories.title')}</h2>
-        </div>
-        <p>
-          {t('categories.description', {
-            defaultValue:
-              'Mix official and custom prompts, then reshuffle a fresh board whenever the table needs a reset.',
-          })}
-        </p>
+    <section
+      className={`categories-card${isPromptDeckOpen ? '' : ' categories-card--collapsed'}`}
+      aria-labelledby="categories-panel-title"
+      data-open={isPromptDeckOpen ? 'true' : 'false'}
+    >
+      <div className="categories-card__header">
+        <h2 id="categories-panel-title">{t('categories.title')}</h2>
+        <button
+          type="button"
+          className="btn-secondary panel-action"
+          aria-controls="prompt-deck-content"
+          aria-expanded={isPromptDeckOpen}
+          onClick={actions.onTogglePromptDeck}
+        >
+          {deckButtonLabel}
+        </button>
       </div>
 
-      <CategoriesMeta availableCount={availableCount} usedLetters={usedLetters} />
+      {showInline ? (
+        <div className="categories-card__content" id="prompt-deck-content">
+          <CategoryToolbar actions={actions} catCountInput={catCountInput} mode={mode} />
+          <CustomCategories
+            actions={actions}
+            customCategories={customCategories}
+            inputRef={inputRef}
+            newCategoryInput={newCategoryInput}
+          />
+        </div>
+      ) : (
+        <PromptSummary catCountInput={catCountInput} mode={mode} availableCount={availableCount} />
+      )}
 
-      <CategoryToolbar actions={actions} catCountInput={catCountInput} mode={mode} />
-
-      <CustomCategories
-        actions={actions}
-        customCategories={customCategories}
-        inputRef={inputRef}
-        newCategoryInput={newCategoryInput}
-      />
-
-      <DrawnCategories availableCount={availableCount} drawnCategories={drawnCategories} />
+      {showCompactCustomize ? (
+        <CustomizeSheetBlock
+          actions={actions}
+          catCountInput={catCountInput}
+          mode={mode}
+          customCategories={customCategories}
+          newCategoryInput={newCategoryInput}
+          inputRef={inputRef}
+        />
+      ) : null}
     </section>
   );
 }

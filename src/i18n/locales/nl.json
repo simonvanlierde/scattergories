@@ -1,5 +1,14 @@
 {
   "title": "Scattergories",
+  "hero": {
+    "description": "Rol de letter, houd het tempo vast en speel zonder overbodige rommel.",
+    "statsLabel": "Spelstatistieken"
+  },
+  "round": {
+    "panelEyebrow": "Rondeconsole",
+    "letterLabel": "Huidige letter",
+    "timerLabel": "Rondeklok"
+  },
   "roundCounter": "Ronde {{current}} van {{total}}",
   "buttons": {
     "startRound": "Start Ronde",
@@ -22,6 +31,7 @@
     "closeTooltip": "Sluit dit venster"
   },
   "timer": {
+    "ready": "Klaar",
     "timeUp": "Tijd om!",
     "getReady": "Maak je klaar...",
     "go": "Gaan!",
@@ -45,16 +55,24 @@
     "custom": "Eigen",
     "mixed": "Gemengd",
     "noCustom": "Nog geen eigen categorieën toegevoegd.",
-    "minimumRequired": "Voeg minimaal één categorie toe om de 'Eigen' modus te gebruiken."
+    "minimumRequired": "Voeg minimaal één categorie toe om de 'Eigen' modus te gebruiken.",
+    "availableSummary": "{{count}} categorieën beschikbaar",
+    "customListLabel": "Eigen categorieën",
+    "drawnListLabel": "Categoriebord",
+    "showDeck": "Categorieën openen",
+    "hideDeck": "Categorieën verbergen",
+    "summaryMode": "Bron: {{mode}}",
+    "summaryDraw": "Loting: {{count}}"
   },
   "usedLetters": "Gebruikte letters: {{letters}}{{empty}}",
   "usedLettersEmpty": "Geen",
-  "shortcuts": "Sneltoetsen: Spatie volgende ronde, R nieuwe letter, P pauze, N nieuw spel, C categorieën, A categorie toevoegen",
+  "shortcuts": "Sneltoetsen: Spatie starten, R nieuwe letter, P pauze, N nieuw spel, C categorieën tonen, A categorie toevoegen",
   "footer": {
     "howToPlay": "Hoe te spelen",
     "officialGame": "Officieel Spel",
     "sourceCode": "Broncode",
-    "privacy": "Deze app gebruikt localStorage om je instellingen en categorieën lokaal op te slaan in je browser. Er worden geen gegevens naar een server verzonden."
+    "privacy": "Deze app bewaart instellingen en categorieën alleen in je browser.",
+    "label": "Voettekst"
   },
   "modal": {
     "title": "Hoe speel je Scattergories",
@@ -91,6 +109,9 @@
   },
   "theme": {
     "toggle": "Thema wisselen",
-    "toggleTooltip": "Wisselen tussen licht en donker thema"
+    "toggleTooltip": "Wisselen tussen licht en donker thema",
+    "toggleLabel": "Thema",
+    "dark": "Donker",
+    "light": "Licht"
   }
 }

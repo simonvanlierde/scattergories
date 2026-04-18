@@ -189,6 +189,7 @@ function useBeginRoundAction(params: {
     drawn: string[];
   };
   gameSeconds: number;
+  playLetterLand: () => void;
   roller: ReturnType<typeof useLetterRoller>;
   state: RoundState;
   totalRounds: number;
@@ -198,6 +199,7 @@ function useBeginRoundAction(params: {
     dispatch,
     drawNextLetterForLocale,
     gameSeconds,
+    playLetterLand,
     roller,
     state,
     totalRounds,
@@ -225,10 +227,20 @@ function useBeginRoundAction(params: {
       });
 
       roller.spinTo(chosen, () => {
+        playLetterLand();
         dispatch({ type: 'LETTER_LANDED' });
       });
     },
-    [clearAlarmTimeout, dispatch, drawNextLetterForLocale, gameSeconds, roller, state, totalRounds],
+    [
+      clearAlarmTimeout,
+      dispatch,
+      drawNextLetterForLocale,
+      gameSeconds,
+      playLetterLand,
+      roller,
+      state,
+      totalRounds,
+    ],
   );
 }
 
@@ -311,12 +323,21 @@ function useRoundRuntime() {
   };
 }
 
-function createRoundResult(
-  state: RoundState,
-  roller: ReturnType<typeof useLetterRoller>,
-  actions: RoundActions & { beginRound: (incrementRound: boolean) => void },
-  totalRounds: number,
-) {
+interface CreateRoundResultOptions {
+  state: RoundState;
+  roller: ReturnType<typeof useLetterRoller>;
+  actions: RoundActions & { beginRound: (incrementRound: boolean) => void };
+  totalRounds: number;
+  playToggle: () => void;
+}
+
+function createRoundResult({
+  state,
+  roller,
+  actions,
+  totalRounds,
+  playToggle,
+}: CreateRoundResultOptions) {
   return {
     phase: state.phase,
     secondsLeft: state.secondsLeft,
@@ -334,13 +355,14 @@ function createRoundResult(
     togglePause: actions.togglePause,
     resetRound: actions.resetRound,
     newGame: actions.newGame,
+    playToggle,
   };
 }
 
 export function useRound({ gameSeconds, totalRounds, isMuted, locale }: UseRoundOptions) {
   const [state, dispatch] = useReducer(roundReducer, initialRoundState);
   const roller = useLetterRoller(locale);
-  const { playTick, playAlarm } = useAudio(isMuted);
+  const { playTick, playAlarm, playLetterLand, playToggle } = useAudio(isMuted);
   const { alarmTimeoutRef, clearAlarmTimeout, tickedSecondRef } = useRoundRuntime();
   const resetRoller = roller.reset;
   const drawNextLetterForLocale = useCallback(
@@ -364,6 +386,7 @@ export function useRound({ gameSeconds, totalRounds, isMuted, locale }: UseRound
     dispatch,
     drawNextLetterForLocale,
     gameSeconds,
+    playLetterLand,
     roller,
     state,
     totalRounds,
@@ -391,5 +414,5 @@ export function useRound({ gameSeconds, totalRounds, isMuted, locale }: UseRound
     togglePause,
   } satisfies RoundActions & { beginRound: (incrementRound: boolean) => void };
 
-  return createRoundResult(state, roller, actions, totalRounds);
+  return createRoundResult({ state, roller, actions, totalRounds, playToggle });
 }

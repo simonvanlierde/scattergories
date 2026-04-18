@@ -1,5 +1,14 @@
 {
   "title": "Scattergories",
+  "hero": {
+    "description": "Estrai la lettera, tieni il ritmo e gioca senza ingombri.",
+    "statsLabel": "Statistiche"
+  },
+  "round": {
+    "panelEyebrow": "Console del round",
+    "letterLabel": "Lettera attuale",
+    "timerLabel": "Timer del round"
+  },
   "roundCounter": "Round {{current}} di {{total}}",
   "buttons": {
     "startRound": "Inizia Round",
@@ -22,6 +31,7 @@
     "closeTooltip": "Chiudi questa finestra"
   },
   "timer": {
+    "ready": "Pronto",
     "timeUp": "Tempo scaduto!",
     "getReady": "Preparati...",
     "go": "Via!",
@@ -45,16 +55,24 @@
     "custom": "Personali",
     "mixed": "Miste",
     "noCustom": "Nessuna categoria personalizzata ancora.",
-    "minimumRequired": "Aggiungi almeno una categoria per usare la modalità Personalizzata."
+    "minimumRequired": "Aggiungi almeno una categoria per usare la modalità Personalizzata.",
+    "availableSummary": "{{count}} prompt pronti",
+    "customListLabel": "Categorie personali",
+    "drawnListLabel": "Elenco categorie",
+    "showDeck": "Apri prompt",
+    "hideDeck": "Nascondi prompt",
+    "summaryMode": "Fonte: {{mode}}",
+    "summaryDraw": "Sorteggio: {{count}}"
   },
   "usedLetters": "Lettere usate: {{letters}}{{empty}}",
   "usedLettersEmpty": "Nessuna",
-  "shortcuts": "Scorciatoie: Spazio prossimo round, R salta lettera, P pausa, N nuova partita, C categorie, A aggiungi categoria",
+  "shortcuts": "Scorciatoie: Spazio avvia, R salta lettera, P pausa, N nuova partita, C mostra prompt, A aggiungi categoria",
   "footer": {
     "howToPlay": "Come Giocare",
     "officialGame": "Gioco Ufficiale",
     "sourceCode": "Codice Sorgente",
-    "privacy": "Questa app usa il localStorage per salvare le impostazioni e le categorie localmente nel browser. Nessun dato viene inviato a server esterni."
+    "privacy": "Questa app salva impostazioni e categorie solo nel tuo browser.",
+    "label": "Piè di pagina dell'app"
   },
   "modal": {
     "title": "Come giocare a Scattergories",
@@ -91,6 +109,9 @@
   },
   "theme": {
     "toggle": "Cambia tema",
-    "toggleTooltip": "Passa dal tema chiaro a quello scuro e viceversa"
+    "toggleTooltip": "Passa dal tema chiaro a quello scuro e viceversa",
+    "toggleLabel": "Tema",
+    "dark": "Scuro",
+    "light": "Chiaro"
   }
 }

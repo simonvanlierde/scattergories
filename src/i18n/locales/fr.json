@@ -1,5 +1,14 @@
 {
   "title": "Scattergories",
+  "hero": {
+    "description": "Lancez la lettre, gardez le rythme et jouez sans interface envahissante.",
+    "statsLabel": "Statistiques"
+  },
+  "round": {
+    "panelEyebrow": "Console de manche",
+    "letterLabel": "Lettre actuelle",
+    "timerLabel": "Chrono de manche"
+  },
   "roundCounter": "Manche {{current}} sur {{total}}",
   "buttons": {
     "startRound": "Démarrer la manche",
@@ -22,6 +31,7 @@
     "closeTooltip": "Fermer cette fenêtre"
   },
   "timer": {
+    "ready": "Prêt",
     "timeUp": "Temps écoulé !",
     "getReady": "Préparez-vous...",
     "go": "C'est parti !",
@@ -45,16 +55,24 @@
     "custom": "Perso",
     "mixed": "Mélangées",
     "noCustom": "Aucune catégorie personnalisée.",
-    "minimumRequired": "Ajoutez au moins une catégorie pour utiliser le mode Perso."
+    "minimumRequired": "Ajoutez au moins une catégorie pour utiliser le mode Perso.",
+    "availableSummary": "{{count}} thèmes prêts",
+    "customListLabel": "Catégories personnalisées",
+    "drawnListLabel": "Liste des catégories",
+    "showDeck": "Ouvrir les thèmes",
+    "hideDeck": "Masquer les thèmes",
+    "summaryMode": "Source : {{mode}}",
+    "summaryDraw": "Tirage : {{count}}"
   },
   "usedLetters": "Lettres utilisées : {{letters}}{{empty}}",
   "usedLettersEmpty": "Aucune pour l'instant",
-  "shortcuts": "Raccourcis : Espace manche suivante, R passer lettre, P pause, N nouvelle partie, C catégories, A ajouter catégorie",
+  "shortcuts": "Raccourcis : Espace démarrer, R passer lettre, P pause, N nouvelle partie, C afficher les thèmes, A ajouter catégorie",
   "footer": {
     "howToPlay": "Comment jouer",
     "officialGame": "Jeu Officiel",
     "sourceCode": "Code Source",
-    "privacy": "Cette application utilise le localStorage pour enregistrer vos paramètres localement dans votre navigateur. Aucune donnée n'est envoyée à un serveur."
+    "privacy": "Cette application enregistre les réglages et catégories uniquement dans votre navigateur.",
+    "label": "Pied de page de l'application"
   },
   "modal": {
     "title": "Comment jouer au Scattergories",
@@ -91,6 +109,9 @@
   },
   "theme": {
     "toggle": "Changer le thème",
-    "toggleTooltip": "Basculer entre le thème clair et sombre"
+    "toggleTooltip": "Basculer entre le thème clair et sombre",
+    "toggleLabel": "Thème",
+    "dark": "Sombre",
+    "light": "Clair"
   }
 }

@@ -1,5 +1,14 @@
 {
   "title": "Scattergories",
+  "hero": {
+    "description": "Zieh den Buchstaben, behalte die Zeit im Blick und spiel ohne unnötigen Ballast.",
+    "statsLabel": "Spielwerte"
+  },
+  "round": {
+    "panelEyebrow": "Rundenkonsole",
+    "letterLabel": "Aktueller Buchstabe",
+    "timerLabel": "Rundenuhr"
+  },
   "roundCounter": "Runde {{current}} von {{total}}",
   "buttons": {
     "startRound": "Runde Starten",
@@ -22,6 +31,7 @@
     "closeTooltip": "Dieses Fenster schließen"
   },
   "timer": {
+    "ready": "Bereit",
     "timeUp": "Zeit abgelaufen!",
     "getReady": "Bereit machen...",
     "go": "Los!",
@@ -45,16 +55,24 @@
     "custom": "Eigene",
     "mixed": "Gemischt",
     "noCustom": "Noch keine eigenen Kategorien vorhanden.",
-    "minimumRequired": "Füge mindestens eine Kategorie hinzu, um den Modus 'Eigene' zu nutzen."
+    "minimumRequired": "Füge mindestens eine Kategorie hinzu, um den Modus 'Eigene' zu nutzen.",
+    "availableSummary": "{{count}} Prompts bereit",
+    "customListLabel": "Eigene Kategorien",
+    "drawnListLabel": "Kategorienliste",
+    "showDeck": "Prompts öffnen",
+    "hideDeck": "Prompts ausblenden",
+    "summaryMode": "Quelle: {{mode}}",
+    "summaryDraw": "Ziehung: {{count}}"
   },
   "usedLetters": "Benutzte Buchstaben: {{letters}}{{empty}}",
   "usedLettersEmpty": "Keine",
-  "shortcuts": "Shortcuts: Leertaste Nächste Runde, R Buchstabe überspringen, P Pause, N Neues Spiel, C Kategorien, A Kategorie hinzufügen",
+  "shortcuts": "Shortcuts: Leertaste Start, R Buchstabe überspringen, P Pause, N Neues Spiel, C Prompts umschalten, A Kategorie hinzufügen",
   "footer": {
     "howToPlay": "Spielanleitung",
     "officialGame": "Offizielles Spiel",
     "sourceCode": "Quellcode",
-    "privacy": "Diese App nutzt localStorage, um Einstellungen und Kategorien lokal im Browser zu speichern. Es werden keine Daten an Server übertragen."
+    "privacy": "Diese App speichert Einstellungen und Kategorien nur lokal im Browser.",
+    "label": "App-Fußzeile"
   },
   "modal": {
     "title": "So spielst du Scattergories",
@@ -91,6 +109,9 @@
   },
   "theme": {
     "toggle": "Design umschalten",
-    "toggleTooltip": "Zwischen hellem und dunklem Design wechseln"
+    "toggleTooltip": "Zwischen hellem und dunklem Design wechseln",
+    "toggleLabel": "Design",
+    "dark": "Dunkel",
+    "light": "Hell"
   }
 }

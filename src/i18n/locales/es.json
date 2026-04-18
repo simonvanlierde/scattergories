@@ -1,5 +1,14 @@
 {
   "title": "Scattergories",
+  "hero": {
+    "description": "Haz girar la letra, controla el tiempo y juega sin distracciones.",
+    "statsLabel": "Estadísticas"
+  },
+  "round": {
+    "panelEyebrow": "Panel de ronda",
+    "letterLabel": "Letra actual",
+    "timerLabel": "Reloj de ronda"
+  },
   "roundCounter": "Ronda {{current}} de {{total}}",
   "buttons": {
     "startRound": "Empezar Ronda",
@@ -22,6 +31,7 @@
     "closeTooltip": "Cerrar esta ventana"
   },
   "timer": {
+    "ready": "Listo",
     "timeUp": "¡Tiempo agotado!",
     "getReady": "Prepárate...",
     "go": "¡Ya!",
@@ -45,16 +55,24 @@
     "custom": "Propias",
     "mixed": "Mezcladas",
     "noCustom": "No hay categorías propias todavía.",
-    "minimumRequired": "Añade al menos una categoría propia para usar el modo Personalizado."
+    "minimumRequired": "Añade al menos una categoría propia para usar el modo Personalizado.",
+    "availableSummary": "{{count}} temas listos",
+    "customListLabel": "Categorías propias",
+    "drawnListLabel": "Tablero de categorías",
+    "showDeck": "Abrir temas",
+    "hideDeck": "Ocultar temas",
+    "summaryMode": "Fuente: {{mode}}",
+    "summaryDraw": "Sorteo: {{count}}"
   },
   "usedLetters": "Letras usadas: {{letters}}{{empty}}",
   "usedLettersEmpty": "Ninguna",
-  "shortcuts": "Atajos: Espacio siguiente ronda, R saltar letra, P pausa, N nueva partida, C categorías, A añadir propia",
+  "shortcuts": "Atajos: Espacio empezar, R saltar letra, P pausa, N nueva partida, C mostrar temas, A añadir propia",
   "footer": {
     "howToPlay": "Cómo Jugar",
     "officialGame": "Juego Oficial",
     "sourceCode": "Código Fuente",
-    "privacy": "Esta aplicación usa localStorage para guardar tus preferencias y categorías localmente en tu navegador. No se envían datos a ningún servidor."
+    "privacy": "Esta aplicación guarda los ajustes y categorías solo en tu navegador.",
+    "label": "Pie de la aplicación"
   },
   "modal": {
     "title": "Cómo jugar a Scattergories",
@@ -91,6 +109,9 @@
   },
   "theme": {
     "toggle": "Cambiar tema",
-    "toggleTooltip": "Alternar entre el tema claro y oscuro"
+    "toggleTooltip": "Alternar entre el tema claro y oscuro",
+    "toggleLabel": "Tema",
+    "dark": "Oscuro",
+    "light": "Claro"
   }
 }

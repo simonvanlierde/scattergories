@@ -6,5 +6,5 @@ import {
 const SettingsProvider = SettingsProviderValue;
 const useSettings = useSettingsValue;
 
-export type { CategoryMode, Settings, Theme } from '../settings/schema';
+export type { CategoryMode, PromptDeckPreference, Settings, Theme } from '../settings/schema';
 export { SettingsProvider, useSettings };

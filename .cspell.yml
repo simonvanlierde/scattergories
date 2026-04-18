@@ -57,13 +57,15 @@ words:
   - Wikitext
   # Fonts
   - Avenir
+  - grotesk
   # Biome rule name
   - Filenaming
-  # HTTP / infra terms
+  # Common technical terms
   - CICD
   - geolocation
   - htmlcov
   - nosniff
+  - playmat
   - tmpfs
   - unmute
   - zstd
@@ -107,6 +109,7 @@ words:
   # Greek letters used in locale registry
   - ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ
   # Words not in the above dictionaries but used in the app or tests
+  - Kategorienliste
   - Souvenirshop
   - Spielebegriffe
   - Celebryci

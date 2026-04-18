@@ -1,6 +1,8 @@
 import { catCountDefault, durationDefault, roundsDefault } from '../game/constants';
+import { CLASSIC_PACK_ID, isValidPackId } from '../lib/categoryPacks';
 
 type CategoryMode = 'default' | 'custom' | 'mixed';
+type PromptDeckPreference = 'auto' | 'open' | 'collapsed';
 type Theme = 'light' | 'dark';
 
 interface Settings {
@@ -8,9 +10,11 @@ interface Settings {
   catCountInput: string;
   totalRoundsInput: string;
   categoryMode: CategoryMode;
+  activePack: string;
   customCategories: string[];
   isMuted: boolean;
   theme: Theme;
+  promptDeckPreference: PromptDeckPreference;
 }
 
 const SETTINGS_STORAGE_KEY = 'scattergories.settings.v1';
@@ -29,9 +33,11 @@ function getDefaultSettings(): Settings {
     catCountInput: String(catCountDefault),
     totalRoundsInput: String(roundsDefault),
     categoryMode: 'default',
+    activePack: CLASSIC_PACK_ID,
     customCategories: [],
     isMuted: false,
     theme: getPreferredTheme(),
+    promptDeckPreference: 'auto',
   };
 }
 
@@ -69,9 +75,19 @@ function sanitizeSettings(raw: unknown): Settings {
       parsed.categoryMode === 'mixed'
         ? parsed.categoryMode
         : fallback.categoryMode,
+    activePack:
+      typeof parsed.activePack === 'string' && isValidPackId(parsed.activePack)
+        ? parsed.activePack
+        : fallback.activePack,
     customCategories: sanitizeCustomCategories(parsed.customCategories),
     isMuted: typeof parsed.isMuted === 'boolean' ? parsed.isMuted : fallback.isMuted,
     theme: parsed.theme === 'light' || parsed.theme === 'dark' ? parsed.theme : fallback.theme,
+    promptDeckPreference:
+      parsed.promptDeckPreference === 'open' ||
+      parsed.promptDeckPreference === 'collapsed' ||
+      parsed.promptDeckPreference === 'auto'
+        ? parsed.promptDeckPreference
+        : fallback.promptDeckPreference,
   };
 }
 
@@ -99,7 +115,7 @@ function serializeSettings(settings: Settings): string {
   return JSON.stringify(settings);
 }
 
-export type { CategoryMode, Settings, Theme };
+export type { CategoryMode, PromptDeckPreference, Settings, Theme };
 export {
   getDefaultSettings,
   getPreferredTheme,

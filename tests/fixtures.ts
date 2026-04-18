@@ -2,11 +2,14 @@ import { test as base, expect, type Locator, type Page } from '@playwright/test'
 import { HEADING_LEVEL, SCATTERGORIES_HEADING } from '../src/test/constants';
 
 type RoundButtonLabel = RegExp | string;
+const START_OR_NEXT_ROUND_BUTTON_LABEL = /Start Round|Next Round/;
+const MUTE_BUTTON_LABEL = /Mute|Unmute/;
 
 interface AppFixture {
   currentLetter: Locator;
   languageSelect: Locator;
   page: Page;
+  promptToggle: Locator;
   readyHeading: Locator;
   roundClock: Locator;
   roundStatus: Locator;
@@ -31,8 +34,9 @@ function createAppFixture(page: Page): AppFixture {
 
   return {
     currentLetter: page.getByTestId('current-letter'),
-    languageSelect: page.locator('footer').getByRole('combobox'),
+    languageSelect: page.locator('.utility-rail select'),
     page,
+    promptToggle: page.locator('button[aria-controls="prompt-deck-content"]'),
     readyHeading,
     roundClock: page.getByTestId('round-clock'),
     roundStatus: page.getByTestId('round-status'),
@@ -42,14 +46,14 @@ function createAppFixture(page: Page): AppFixture {
     async setTimer(value: string) {
       await fillNumericField(page.getByLabel('Timer', { exact: true }), value);
     },
-    async startRound(label: RoundButtonLabel = /Start Round|Next Round/) {
+    async startRound(label: RoundButtonLabel = START_OR_NEXT_ROUND_BUTTON_LABEL) {
       await page.getByRole('button', { name: label }).click();
     },
     async switchLanguage(language: string) {
       await this.languageSelect.selectOption(language);
     },
     async toggleMute() {
-      await page.getByRole('button', { name: /Mute|Unmute/ }).click();
+      await page.getByRole('button', { name: MUTE_BUTTON_LABEL }).click();
     },
     async waitUntilReady() {
       await expect(readyHeading).toBeVisible();
@@ -68,5 +72,3 @@ export const test = base.extend<{ app: AppFixture }>({
     { box: true },
   ],
 });
-
-export { expect } from '@playwright/test';

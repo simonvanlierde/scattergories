@@ -8,6 +8,16 @@ const TICK_GAIN = 0.03;
 const TICK_DECAY_GAIN = 0.001;
 const TICK_DURATION_S = 0.08;
 
+// Letter-land sound — soft low thud when the letter reveals
+const LETTER_LAND_FREQ_HZ = 220;
+const LETTER_LAND_GAIN = 0.12;
+const LETTER_LAND_DURATION_S = 0.22;
+
+// Category-toggle click — crisp tap used when the user marks a category
+const TOGGLE_FREQ_HZ = 820;
+const TOGGLE_GAIN = 0.04;
+const TOGGLE_DURATION_S = 0.05;
+
 // Alarm sound (round over) — three descending tones
 const ALARM_START_1_S = 0.0;
 const ALARM_START_2_S = 0.4;
@@ -68,6 +78,28 @@ function playTickSound(context: AudioContext) {
   });
 }
 
+function playLetterLandSound(context: AudioContext) {
+  playTone(context, {
+    type: 'sine',
+    startTime: context.currentTime,
+    frequency: LETTER_LAND_FREQ_HZ,
+    duration: LETTER_LAND_DURATION_S,
+    gainValue: LETTER_LAND_GAIN,
+    decayGain: TICK_DECAY_GAIN,
+  });
+}
+
+function playToggleSound(context: AudioContext) {
+  playTone(context, {
+    type: 'triangle',
+    startTime: context.currentTime,
+    frequency: TOGGLE_FREQ_HZ,
+    duration: TOGGLE_DURATION_S,
+    gainValue: TOGGLE_GAIN,
+    decayGain: TICK_DECAY_GAIN,
+  });
+}
+
 function playAlarmSound(context: AudioContext) {
   for (const [time, frequency, duration] of ALARM_TONES) {
     playTone(context, {
@@ -81,51 +113,37 @@ function playAlarmSound(context: AudioContext) {
   }
 }
 
-export function useAudio(isMuted: boolean) {
+function useSoundPlayer(
+  isMuted: boolean,
+  getContext: () => AudioContext | null,
+  playFn: (context: AudioContext) => void,
+) {
+  return useCallback(() => {
+    if (isMuted) {
+      return;
+    }
+    const context = getContext();
+    if (!context) {
+      return;
+    }
+    playFn(context);
+  }, [getContext, isMuted, playFn]);
+}
+
+function useAudioContext() {
   const contextRef = useRef<AudioContext | null>(null);
 
   const getContext = useCallback((): AudioContext | null => {
     const Ctor = resolveAudioCtor();
-
     if (!Ctor) {
       return null;
     }
-
     if (!contextRef.current) {
       contextRef.current = new Ctor();
     }
-
     contextRef.current.resume().catch(() => undefined);
     return contextRef.current;
   }, []);
-
-  const playTick = useCallback(() => {
-    if (isMuted) {
-      return;
-    }
-
-    const context = getContext();
-
-    if (!context) {
-      return;
-    }
-
-    playTickSound(context);
-  }, [getContext, isMuted]);
-
-  const playAlarm = useCallback(() => {
-    if (isMuted) {
-      return;
-    }
-
-    const context = getContext();
-
-    if (!context) {
-      return;
-    }
-
-    playAlarmSound(context);
-  }, [getContext, isMuted]);
 
   useEffect(
     () => () => {
@@ -135,5 +153,14 @@ export function useAudio(isMuted: boolean) {
     [],
   );
 
-  return { playTick, playAlarm };
+  return getContext;
+}
+
+export function useAudio(isMuted: boolean) {
+  const getContext = useAudioContext();
+  const playTick = useSoundPlayer(isMuted, getContext, playTickSound);
+  const playAlarm = useSoundPlayer(isMuted, getContext, playAlarmSound);
+  const playLetterLand = useSoundPlayer(isMuted, getContext, playLetterLandSound);
+  const playToggle = useSoundPlayer(isMuted, getContext, playToggleSound);
+  return { playTick, playAlarm, playLetterLand, playToggle };
 }

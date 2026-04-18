@@ -1,8 +1,11 @@
+import { expect } from '@playwright/test';
 import { APP_MIN_TIMER_SECONDS, GAME_OVER, ROUND_MESSAGE_TIMEOUT_MS } from '../src/test/constants';
-import { expect, test } from './fixtures';
+import { test } from './fixtures';
+
+const SINGLE_ROUND_TIMEOUT_MS = 25_000;
 
 test('runs a full single-round game to completion', async ({ app, page }) => {
-  test.setTimeout(25_000);
+  test.setTimeout(SINGLE_ROUND_TIMEOUT_MS);
 
   await app.setRounds('1');
   await app.setTimer(APP_MIN_TIMER_SECONDS);

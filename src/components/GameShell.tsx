@@ -1,52 +1,77 @@
-import { Suspense } from 'react';
+import { Award, HelpCircle, Settings as SettingsIcon } from 'lucide-react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { useGameSession } from '../hooks/useGameSession';
-import { getEnabledLocales, isLocaleEnabled } from '../i18n/localeHealth';
-import { getNativeName, SUPPORTED_LOCALES } from '../i18n/localeRegistry';
+import { useIsDesktopLayout } from '../hooks/useIsDesktopLayout';
+import { useOnboarding } from '../hooks/useOnboarding';
+import { getAchievementById } from '../lib/achievements';
 import { AppFooter } from './AppFooter';
+import { AppRail } from './AppRail';
 import { CategoriesPanel } from './CategoriesPanel';
-import { TimerPanel } from './TimerPanel';
+import { OnboardingBanner } from './OnboardingBanner';
+import { PauseOverlay } from './PauseOverlay';
+import { Playmat } from './Playmat';
+import { SettingsSheet } from './SettingsSheet';
+import { ShortcutsSheet } from './ShortcutsSheet';
+import { BrandMark } from './ui/BrandMark';
+import { Icon } from './ui/Icon';
+import { IconButton } from './ui/IconButton';
+import { type ToastItem, ToastRegion } from './ui/Toast';
 
-// spell-checker: ignore lede
+type SettingsScrollTarget = 'achievements';
+
+function useShortcutKey(onToggle: () => void) {
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key !== '?' || event.defaultPrevented) {
+        return;
+      }
+      const target = event.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)
+      ) {
+        return;
+      }
+      event.preventDefault();
+      onToggle();
+    }
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [onToggle]);
+}
 
 interface GameShellProps {
   session: ReturnType<typeof useGameSession>;
   startupLocaleWarning: string | null;
 }
 
-function HeroSection({ session }: Pick<GameShellProps, 'session'>) {
+interface TopBarProps {
+  session: ReturnType<typeof useGameSession>;
+  onOpenSettings: () => void;
+}
+
+function TopBar({ session, onOpenSettings }: TopBarProps) {
   const { t } = useTranslation();
 
   return (
-    <header className="hero">
-      <div className="hero__copy">
-        <p className="eyebrow">{t('hero.eyebrow', { defaultValue: 'Party game companion' })}</p>
+    <header className="topbar">
+      <div className="topbar__brand">
+        <BrandMark />
         <h1>{t('title')}</h1>
-        <p className="hero__lede">
-          {t('hero.description', {
-            defaultValue:
-              'Spin a locale-aware letter, draw a fresh deck of prompts, and keep every round moving.',
-          })}
-        </p>
       </div>
-      <div className="hero__meta">
-        <div className="hero-stat">
-          <span>{t('settings.duration')}</span>
-          <strong>
-            {t('hero.timerValue', {
-              defaultValue: '{{count}}s',
-              count: session.settings.gameSeconds,
-            })}
-          </strong>
-        </div>
-        <div className="hero-stat">
-          <span>{t('settings.rounds')}</span>
-          <strong>{session.settings.totalRounds}</strong>
-        </div>
-        <div className="hero-stat">
-          <span>{t('settings.categoryDraw')}</span>
-          <strong>{session.categories.normalizedCategoryCount}</strong>
-        </div>
+
+      <div className="topbar__actions">
+        <IconButton
+          label={t('settings.openLabel', { defaultValue: 'Settings' })}
+          icon={<Icon icon={SettingsIcon} size={20} />}
+          onClick={onOpenSettings}
+        />
+        <IconButton
+          label={t('footer.howToPlay')}
+          icon={<Icon icon={HelpCircle} size={20} />}
+          onClick={session.controls.onToggleHowToPlay}
+        />
       </div>
     </header>
   );
@@ -85,32 +110,19 @@ function ChunkErrorBanner({ onReload }: { onReload: () => void }) {
   );
 }
 
-function PlayGrid({ session }: Pick<GameShellProps, 'session'>) {
+interface PlayGridProps {
+  session: GameShellProps['session'];
+  onOpenSettings: () => void;
+  onAchievementsUnlocked: (ids: string[]) => void;
+}
+
+function PlayGrid({ session, onOpenSettings, onAchievementsUnlocked }: PlayGridProps) {
   return (
     <section className="play-grid">
-      <TimerPanel
-        round={{
-          ...session.round,
-          hasMoreRounds: session.flags.hasMoreRounds,
-        }}
-        settings={{
-          durationInput: session.settings.durationInput,
-          isMuted: session.settings.isMuted,
-          totalRounds: session.settings.totalRounds,
-          totalRoundsInput: session.settings.totalRoundsInput,
-        }}
-        actions={{
-          onDurationBlur: () => session.controls.onBlurNumericField('durationInput'),
-          onDurationChange: (value) => session.controls.onUpdateField('durationInput', value),
-          onNewGame: session.controls.onNewGame,
-          onPause: session.controls.onTogglePause,
-          onReset: session.controls.onResetRound,
-          onSkip: session.controls.onSkipLetter,
-          onStart: session.controls.onStartRound,
-          onToggleMute: session.controls.onToggleMute,
-          onTotalRoundsBlur: () => session.controls.onBlurNumericField('totalRoundsInput'),
-          onTotalRoundsChange: (value) => session.controls.onUpdateField('totalRoundsInput', value),
-        }}
+      <Playmat
+        session={session}
+        onOpenSettings={onOpenSettings}
+        onAchievementsUnlocked={onAchievementsUnlocked}
       />
 
       <CategoriesPanel
@@ -118,12 +130,12 @@ function PlayGrid({ session }: Pick<GameShellProps, 'session'>) {
           availableCount: session.categories.availableCount,
           catCountInput: session.settings.catCountInput,
           customCategories: session.settings.customCategories,
-          drawnCategories: session.categories.drawnCategories,
+          isPromptDeckOpen: session.flags.isPromptDeckOpen,
           mode: session.settings.categoryMode,
           newCategoryInput: session.categories.newCategoryInput,
-          usedLetters: session.round.usedLetters,
         }}
         inputRef={session.categories.inputRef}
+        isCompactLayout={session.flags.isCompactLayout}
         actions={{
           onAddCustom: session.controls.onAddCustomCategory,
           onCategoryModeChange: session.controls.onCategoryModeChange,
@@ -132,35 +144,89 @@ function PlayGrid({ session }: Pick<GameShellProps, 'session'>) {
           onNewCategoryInputChange: session.categories.setNewCategoryInput,
           onRemoveCustom: session.controls.onRemoveCustomCategory,
           onShuffle: session.controls.onRedrawCategories,
+          onTogglePromptDeck: session.controls.onTogglePromptDeck,
         }}
       />
     </section>
   );
 }
 
-function FooterSection({ session }: Pick<GameShellProps, 'session'>) {
-  const { i18n } = useTranslation();
-  const enabledLocales = getEnabledLocales();
+function useAchievementToasts() {
+  const { t } = useTranslation();
+  const [toasts, setToasts] = useState<ToastItem[]>([]);
 
-  return (
-    <AppFooter
-      currentLanguage={i18n.resolvedLanguage ?? i18n.language}
-      isLanguagePending={session.flags.isLanguagePending}
-      languageOptions={SUPPORTED_LOCALES.map((code) => ({
-        code,
-        isDisabled: !(enabledLocales.includes(code) && isLocaleEnabled(code)),
-        nativeName: getNativeName(code),
-      }))}
-      theme={session.settings.theme}
-      onLanguageChange={session.controls.onLanguageChange}
-      onShowHowToPlay={session.controls.onToggleHowToPlay}
-      onToggleTheme={session.controls.onToggleTheme}
-    />
+  const dismiss = useCallback((id: string) => {
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
+  }, []);
+
+  const onUnlocked = useCallback(
+    (ids: string[]) => {
+      const nowMs = Date.now();
+      const next: ToastItem[] = ids.flatMap((id) => {
+        const achievement = getAchievementById(id);
+        if (!achievement) {
+          return [];
+        }
+        return [
+          {
+            id: `${achievement.id}-${nowMs}`,
+            title: t('achievements.unlocked', { defaultValue: 'Achievement unlocked' }),
+            description: t(achievement.labelKey, { defaultValue: achievement.fallbackLabel }),
+            icon: <Icon icon={Award} size={18} />,
+            tone: 'accent' as const,
+          },
+        ];
+      });
+      if (next.length > 0) {
+        setToasts((prev) => [...prev, ...next]);
+      }
+    },
+    [t],
   );
+
+  return { toasts, dismiss, onUnlocked };
+}
+
+function useShellState() {
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [settingsScrollTo, setSettingsScrollTo] = useState<SettingsScrollTarget | undefined>(
+    undefined,
+  );
+  const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
+
+  const openSettings = useCallback((target?: SettingsScrollTarget) => {
+    setSettingsScrollTo(target);
+    setIsSettingsOpen(true);
+  }, []);
+  const closeSettings = useCallback(() => {
+    setIsSettingsOpen(false);
+    setSettingsScrollTo(undefined);
+  }, []);
+  const toggleShortcuts = useCallback(() => {
+    setIsShortcutsOpen((open) => !open);
+  }, []);
+  const closeShortcuts = useCallback(() => setIsShortcutsOpen(false), []);
+
+  useShortcutKey(toggleShortcuts);
+
+  return {
+    isSettingsOpen,
+    settingsScrollTo,
+    isShortcutsOpen,
+    openSettings,
+    closeSettings,
+    toggleShortcuts,
+    closeShortcuts,
+  };
 }
 
 function GameShell({ session, startupLocaleWarning }: GameShellProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const shell = useShellState();
+  const achievementToasts = useAchievementToasts();
+  const onboarding = useOnboarding();
+  const isDesktopLayout = useIsDesktopLayout();
+  const canEditSession = session.round.phase === 'idle' || session.round.phase === 'done';
 
   return (
     <main
@@ -168,8 +234,16 @@ function GameShell({ session, startupLocaleWarning }: GameShellProps) {
       data-theme={session.settings.theme}
     >
       <div className="app-shell__bg" aria-hidden="true" />
+      {isDesktopLayout ? (
+        <AppRail
+          onOpenSettings={() => shell.openSettings()}
+          onOpenAchievements={() => shell.openSettings('achievements')}
+          onToggleHowToPlay={session.controls.onToggleHowToPlay}
+          onOpenShortcuts={shell.toggleShortcuts}
+        />
+      ) : null}
       <div className="app">
-        <HeroSection session={session} />
+        <TopBar session={session} onOpenSettings={() => shell.openSettings()} />
 
         {startupLocaleWarning ? <WarningBanner message={startupLocaleWarning} /> : null}
 
@@ -177,10 +251,36 @@ function GameShell({ session, startupLocaleWarning }: GameShellProps) {
           <ChunkErrorBanner onReload={session.controls.onReloadAfterChunkError} />
         ) : null}
 
-        <PlayGrid session={session} />
+        {onboarding.isOnboarded ? null : <OnboardingBanner onDismiss={onboarding.dismiss} />}
 
-        <FooterSection session={session} />
+        <PlayGrid
+          session={session}
+          onOpenSettings={() => shell.openSettings()}
+          onAchievementsUnlocked={achievementToasts.onUnlocked}
+        />
+
+        <AppFooter />
       </div>
+
+      <SettingsSheet
+        open={shell.isSettingsOpen}
+        onClose={shell.closeSettings}
+        language={i18n.resolvedLanguage ?? i18n.language}
+        isLanguagePending={session.flags.isLanguagePending}
+        theme={session.settings.theme}
+        canEditSession={canEditSession}
+        durationInput={session.settings.durationInput}
+        totalRoundsInput={session.settings.totalRoundsInput}
+        activePack={session.settings.activePack}
+        scrollTo={shell.settingsScrollTo}
+        onLanguageChange={session.controls.onLanguageChange}
+        onToggleTheme={session.controls.onToggleTheme}
+        onUpdateSessionField={session.controls.onUpdateField}
+        onBlurSessionField={session.controls.onBlurNumericField}
+        onActivePackChange={session.controls.onActivePackChange}
+      />
+
+      <ShortcutsSheet open={shell.isShortcutsOpen} onClose={shell.closeShortcuts} />
 
       {session.flags.isHowToPlayOpen ? (
         <Suspense
@@ -193,6 +293,13 @@ function GameShell({ session, startupLocaleWarning }: GameShellProps) {
           <session.howToPlayDialog onClose={session.controls.onToggleHowToPlay} />
         </Suspense>
       ) : null}
+
+      {session.round.isPaused &&
+      (session.round.phase === 'running' || session.round.phase === 'buffer') ? (
+        <PauseOverlay onResume={session.controls.onTogglePause} />
+      ) : null}
+
+      <ToastRegion toasts={achievementToasts.toasts} onDismiss={achievementToasts.dismiss} />
     </main>
   );
 }
