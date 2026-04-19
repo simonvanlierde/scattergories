@@ -102,7 +102,8 @@ export function AppRail({
   return (
     <aside className="app-rail" aria-label={t('rail.label', { defaultValue: 'Side rail' })}>
       <div className="app-rail__brand">
-        <BrandMark />
+        <BrandMark size={32} title={t('title')} />
+        <span className="app-rail__brand-wordmark">{t('title')}</span>
       </div>
 
       <RailStats />

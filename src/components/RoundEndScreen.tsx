@@ -1,4 +1,4 @@
-import { ArrowRight, Flame, Share2, Trophy } from 'lucide-react';
+import { ArrowRight, Flame, Share2 } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { recordNewlyUnlocked } from '../lib/achievements';
@@ -13,23 +13,6 @@ import {
 } from '../lib/stats';
 import { Button } from './ui/Button';
 import { Icon } from './ui/Icon';
-
-const CONFETTI_COUNT = 14;
-const CONFETTI_PALETTE = ['lime', 'violet', 'magenta', 'lime', 'magenta', 'violet'] as const;
-
-/* Deterministic fan-out pattern — golden angle gives natural-looking spread. */
-const GOLDEN_ANGLE_DEG = 137.5;
-const FULL_CIRCLE_DEG = 360;
-const HALF_CIRCLE_DEG = 180;
-const DEG_TO_RAD = Math.PI / HALF_CIRCLE_DEG;
-const CONFETTI_BASE_DIST_PX = 72;
-const CONFETTI_DIST_JITTER_PX = 56;
-const CONFETTI_DIST_STEP = 31;
-const CONFETTI_Y_OFFSET_PX = 12;
-const CONFETTI_ROT_STEP_DEG = 71;
-const CONFETTI_ROT_MOD = 540;
-const CONFETTI_DELAY_STEP_MS = 22;
-const CONFETTI_DELAY_BUCKETS = 5;
 
 interface RoundEndScreenProps {
   letter: string;
@@ -48,55 +31,11 @@ interface StatProps {
   emphasis?: boolean;
 }
 
-interface ConfettiPiece {
-  id: string;
-  color: (typeof CONFETTI_PALETTE)[number];
-  style: React.CSSProperties;
-}
-
-function buildConfettiStyle(i: number): React.CSSProperties {
-  const angleRad = ((i * GOLDEN_ANGLE_DEG) % FULL_CIRCLE_DEG) * DEG_TO_RAD;
-  const dist = CONFETTI_BASE_DIST_PX + ((i * CONFETTI_DIST_STEP) % CONFETTI_DIST_JITTER_PX);
-  const tx = Math.cos(angleRad) * dist;
-  const ty = Math.sin(angleRad) * dist - CONFETTI_Y_OFFSET_PX;
-  const rot = (i * CONFETTI_ROT_STEP_DEG) % CONFETTI_ROT_MOD;
-  const delay = (i % CONFETTI_DELAY_BUCKETS) * CONFETTI_DELAY_STEP_MS;
-  return {
-    '--confetti-tx': `${tx.toFixed(1)}px`,
-    '--confetti-ty': `${ty.toFixed(1)}px`,
-    '--confetti-rot': `${rot}deg`,
-    '--confetti-delay': `${delay}ms`,
-  } as React.CSSProperties;
-}
-
-const CONFETTI_PIECES: readonly ConfettiPiece[] = Array.from(
-  { length: CONFETTI_COUNT },
-  (_, i) => ({
-    id: `confetti-${i}`,
-    color: CONFETTI_PALETTE[i % CONFETTI_PALETTE.length],
-    style: buildConfettiStyle(i),
-  }),
-);
-
 function Stat({ label, value, emphasis }: StatProps) {
   return (
     <div className={emphasis ? 'round-end__stat round-end__stat--emphasis' : 'round-end__stat'}>
       <span className="round-end__stat-label">{label}</span>
       <span className="round-end__stat-value">{value}</span>
-    </div>
-  );
-}
-
-function ConfettiBurst() {
-  return (
-    <div className="round-end__confetti" aria-hidden="true">
-      {CONFETTI_PIECES.map((piece) => (
-        <span
-          key={piece.id}
-          className={`round-end__confetti-piece round-end__confetti-piece--${piece.color}`}
-          style={piece.style}
-        />
-      ))}
     </div>
   );
 }
@@ -207,14 +146,10 @@ export function RoundEndScreen({
       aria-label={t('roundEnd.label', { defaultValue: 'Round summary' })}
       data-testid="round-end-screen"
     >
-      <ConfettiBurst />
-      <div className="round-end__trophy" aria-hidden="true">
-        <Icon icon={Trophy} size={32} />
-      </div>
       <h2 className="round-end__title">
         {isGameComplete
-          ? t('roundEnd.gameComplete', { defaultValue: 'Game complete!' })
-          : t('roundEnd.title', { defaultValue: "Time's up!" })}
+          ? t('roundEnd.gameComplete', { defaultValue: 'Game complete' })
+          : t('roundEnd.title', { defaultValue: 'Time is up' })}
       </h2>
       <div className="round-end__letter">{letter}</div>
       <div className="round-end__stats">
@@ -251,7 +186,7 @@ export function RoundEndScreen({
         </Button>
         <ShareButton
           label={t('roundEnd.share', { defaultValue: 'Share' })}
-          copiedLabel={t('roundEnd.shareCopied', { defaultValue: 'Copied!' })}
+          copiedLabel={t('roundEnd.shareCopied', { defaultValue: 'Copied' })}
           body={t('roundEnd.shareBody', {
             defaultValue: 'Scattergories — letter {{letter}}, {{struck}}/{{total}} marked.',
             letter,

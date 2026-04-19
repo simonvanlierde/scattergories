@@ -190,11 +190,11 @@ function ThemeSection({ theme, onToggleTheme }: ThemeSectionProps) {
         variant="secondary"
         onClick={onToggleTheme}
         aria-pressed={isDark}
-        leadingIcon={<Icon icon={isDark ? Sun : Moon} size={18} />}
+        leadingIcon={<Icon icon={isDark ? Moon : Sun} size={18} />}
       >
         {isDark
-          ? t('theme.light', { defaultValue: 'Light mode' })
-          : t('theme.dark', { defaultValue: 'Dark mode' })}
+          ? t('theme.dark', { defaultValue: 'Dark mode' })
+          : t('theme.light', { defaultValue: 'Light mode' })}
       </Button>
     </section>
   );
