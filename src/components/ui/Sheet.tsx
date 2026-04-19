@@ -1,6 +1,7 @@
 import { X } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useEffect, useId, useRef } from 'react';
+import { useReturnFocus } from '../../hooks/useReturnFocus';
 import { Icon } from './Icon';
 import { IconButton } from './IconButton';
 
@@ -15,6 +16,8 @@ interface SheetProps {
 export function Sheet({ open, onClose, title, closeLabel = 'Close', children }: SheetProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
+
+  useReturnFocus(open);
 
   useEffect(() => {
     const dialog = dialogRef.current;

@@ -1,5 +1,4 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
-import { forwardRef } from 'react';
+import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
 type Size = 'sm' | 'md' | 'lg';
@@ -10,26 +9,25 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   leadingIcon?: ReactNode;
   trailingIcon?: ReactNode;
   fullWidth?: boolean;
+  ref?: Ref<HTMLButtonElement>;
 }
 
 function joinClassNames(...tokens: Array<string | false | null | undefined>): string {
   return tokens.filter(Boolean).join(' ');
 }
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  {
-    variant = 'primary',
-    size = 'md',
-    leadingIcon,
-    trailingIcon,
-    fullWidth = false,
-    className,
-    type,
-    children,
-    ...rest
-  },
+export function Button({
+  variant = 'primary',
+  size = 'md',
+  leadingIcon,
+  trailingIcon,
+  fullWidth = false,
+  className,
+  type,
+  children,
   ref,
-) {
+  ...rest
+}: ButtonProps) {
   return (
     <button
       ref={ref}
@@ -49,4 +47,4 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       {trailingIcon ? <span className="ds-button__icon">{trailingIcon}</span> : null}
     </button>
   );
-});
+}

@@ -1,20 +1,22 @@
 import type { ErrorInfo, ReactNode } from 'react';
 import { Component } from 'react';
 
+type Fallback = ReactNode | ((error: Error) => ReactNode);
+
 interface Props {
   children: ReactNode;
-  fallback?: ReactNode;
+  fallback?: Fallback;
 }
 
 interface State {
-  hasError: boolean;
+  error: Error | null;
 }
 
 export class ErrorBoundary extends Component<Props, State> {
-  override state: State = { hasError: false };
+  override state: State = { error: null };
 
-  static getDerivedStateFromError(): State {
-    return { hasError: true };
+  static getDerivedStateFromError(error: Error): State {
+    return { error };
   }
 
   override componentDidCatch(error: Error, info: ErrorInfo) {
@@ -23,9 +25,11 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   override render() {
-    if (this.state.hasError) {
-      return this.props.fallback ?? null;
+    const { error } = this.state;
+    const { fallback, children } = this.props;
+    if (error) {
+      return typeof fallback === 'function' ? fallback(error) : (fallback ?? null);
     }
-    return this.props.children;
+    return children;
   }
 }

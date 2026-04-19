@@ -1,15 +1,20 @@
 import type { LucideIcon, LucideProps } from 'lucide-react';
-import { forwardRef } from 'react';
+import type { Ref } from 'react';
 
 interface IconProps extends Omit<LucideProps, 'ref'> {
   icon: LucideIcon;
   label?: string;
+  ref?: Ref<SVGSVGElement>;
 }
 
-export const Icon = forwardRef<SVGSVGElement, IconProps>(function Icon(
-  { icon: LucideComponent, label, size = 20, strokeWidth = 2, ...rest },
+export function Icon({
+  icon: LucideComponent,
+  label,
+  size = 20,
+  strokeWidth = 2,
   ref,
-) {
+  ...rest
+}: IconProps) {
   const ariaProps = label ? { 'aria-label': label, role: 'img' as const } : { 'aria-hidden': true };
 
   return (
@@ -22,4 +27,4 @@ export const Icon = forwardRef<SVGSVGElement, IconProps>(function Icon(
       {...rest}
     />
   );
-});
+}

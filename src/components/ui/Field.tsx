@@ -1,11 +1,12 @@
-import type { InputHTMLAttributes, ReactNode } from 'react';
-import { forwardRef, useId } from 'react';
+import type { InputHTMLAttributes, ReactNode, Ref } from 'react';
+import { useId } from 'react';
 
 interface FieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   helper?: string;
   error?: string;
   suffix?: ReactNode;
+  ref?: Ref<HTMLInputElement>;
 }
 
 function joinClassNames(...tokens: (string | false | null | undefined)[]): string {
@@ -34,10 +35,7 @@ function renderHelper(
   return null;
 }
 
-export const Field = forwardRef<HTMLInputElement, FieldProps>(function Field(
-  { label, helper, error, suffix, id, className, ...rest },
-  ref,
-) {
+export function Field({ label, helper, error, suffix, id, className, ref, ...rest }: FieldProps) {
   const autoId = useId();
   const inputId = id ?? autoId;
   const helperId = `${inputId}-helper`;
@@ -72,4 +70,4 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(function Field(
       {renderHelper(error, helper, helperId)}
     </div>
   );
-});
+}

@@ -5,46 +5,40 @@ interface UseCategoryStrikesOptions {
   resetSignal: number;
 }
 
-const EMPTY_STRUCK: ReadonlySet<string> = new Set();
-
 export function useCategoryStrikes({ drawnCategories, resetSignal }: UseCategoryStrikesOptions) {
-  const [struckBySignal, setStruckBySignal] = useState(() => new Map<number, Set<string>>());
-  const currentStruck = struckBySignal.get(resetSignal) ?? EMPTY_STRUCK;
-  const normalizedStruck = useMemo(() => {
-    if (currentStruck.size === 0) {
-      return currentStruck;
-    }
+  const [struck, setStruck] = useState<ReadonlySet<string>>(() => new Set());
+  const [lastResetSignal, setLastResetSignal] = useState(resetSignal);
 
+  if (lastResetSignal !== resetSignal) {
+    setLastResetSignal(resetSignal);
+    setStruck(new Set());
+  }
+
+  const normalizedStruck = useMemo(() => {
+    if (struck.size === 0) {
+      return struck;
+    }
     const drawnSet = new Set(drawnCategories);
-    let changed = false;
     const next = new Set<string>();
-    for (const item of currentStruck) {
+    for (const item of struck) {
       if (drawnSet.has(item)) {
         next.add(item);
-      } else {
-        changed = true;
       }
     }
+    return next.size === struck.size ? struck : next;
+  }, [struck, drawnCategories]);
 
-    return changed ? next : currentStruck;
-  }, [currentStruck, drawnCategories]);
-
-  const toggle = useCallback(
-    (category: string) => {
-      setStruckBySignal((current) => {
-        const next = new Map(current);
-        const currentSet = new Set(next.get(resetSignal) ?? []);
-        if (currentSet.has(category)) {
-          currentSet.delete(category);
-        } else {
-          currentSet.add(category);
-        }
-        next.set(resetSignal, currentSet);
-        return next;
-      });
-    },
-    [resetSignal],
-  );
+  const toggle = useCallback((category: string) => {
+    setStruck((current) => {
+      const next = new Set(current);
+      if (next.has(category)) {
+        next.delete(category);
+      } else {
+        next.add(category);
+      }
+      return next;
+    });
+  }, []);
 
   const isStruck = useCallback(
     (category: string) => normalizedStruck.has(category),
@@ -52,12 +46,8 @@ export function useCategoryStrikes({ drawnCategories, resetSignal }: UseCategory
   );
 
   const clear = useCallback(() => {
-    setStruckBySignal((current) => {
-      const next = new Map(current);
-      next.set(resetSignal, new Set());
-      return next;
-    });
-  }, [resetSignal]);
+    setStruck(new Set());
+  }, []);
 
   return { isStruck, toggle, clear, struckCount: normalizedStruck.size };
 }

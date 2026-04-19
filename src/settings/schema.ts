@@ -1,4 +1,15 @@
-import { catCountDefault, durationDefault, roundsDefault } from '../game/constants';
+import {
+  catCountDefault,
+  catCountMax,
+  catCountMin,
+  durationDefault,
+  durationMax,
+  durationMin,
+  roundsDefault,
+  roundsMax,
+  roundsMin,
+} from '../game/constants';
+import { clampInt } from '../game/utils';
 import { CLASSIC_PACK_ID, isValidPackId } from '../lib/categoryPacks';
 
 type CategoryMode = 'default' | 'custom' | 'mixed';
@@ -18,6 +29,22 @@ interface Settings {
 }
 
 const SETTINGS_STORAGE_KEY = 'scattergories.settings.v1';
+
+type NumericFieldName = 'durationInput' | 'catCountInput' | 'totalRoundsInput';
+
+const NUMERIC_FIELD_BOUNDS: Record<
+  NumericFieldName,
+  { min: number; max: number; fallback: number }
+> = {
+  durationInput: { min: durationMin, max: durationMax, fallback: durationDefault },
+  catCountInput: { min: catCountMin, max: catCountMax, fallback: catCountDefault },
+  totalRoundsInput: { min: roundsMin, max: roundsMax, fallback: roundsDefault },
+};
+
+function sanitizeNumericField(field: NumericFieldName, value: string): string {
+  const { min, max, fallback } = NUMERIC_FIELD_BOUNDS[field];
+  return String(clampInt(value, min, max, fallback));
+}
 
 function getPreferredTheme(): Theme {
   if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
@@ -115,7 +142,7 @@ function serializeSettings(settings: Settings): string {
   return JSON.stringify(settings);
 }
 
-export type { CategoryMode, PromptDeckPreference, Settings, Theme };
+export type { CategoryMode, NumericFieldName, PromptDeckPreference, Settings, Theme };
 export {
   getDefaultSettings,
   getPreferredTheme,
@@ -123,6 +150,7 @@ export {
   readStoredSettings,
   SETTINGS_STORAGE_KEY,
   sanitizeCustomCategories,
+  sanitizeNumericField,
   sanitizeSettings,
   serializeSettings,
 };

@@ -9,10 +9,6 @@ import { i18n, initI18n, startupLocaleWarning } from './i18n/config';
 
 initI18n().catch(() => undefined);
 
-const BOOTSTRAP_ERROR_EYEBROW = 'Recovery mode';
-const BOOTSTRAP_ERROR_TITLE = "We couldn't start the app.";
-const BOOTSTRAP_ERROR_ACTION = 'Reload app';
-
 interface ErrorViewProps {
   eyebrow: string;
   title: string;
@@ -32,6 +28,17 @@ function ErrorView({ eyebrow, title, message, actionLabel }: ErrorViewProps) {
         </button>
       </section>
     </main>
+  );
+}
+
+function BootstrapErrorFallback({ error }: { error: Error }) {
+  return (
+    <ErrorView
+      eyebrow="Recovery mode"
+      title="We couldn't start the app."
+      message={error.message}
+      actionLabel="Reload app"
+    />
   );
 }
 
@@ -77,22 +84,20 @@ function AppBootstrap() {
   useEffect(() => {
     let isMounted = true;
 
-    async function initializeApp() {
-      try {
-        await initI18n();
+    initI18n().then(
+      () => {
         if (isMounted) {
           setIsReady(true);
         }
-      } catch (error: unknown) {
+      },
+      (error: unknown) => {
         if (isMounted) {
           setBootstrapError(
             error instanceof Error ? error : new Error('Unable to initialize i18n'),
           );
         }
-      }
-    }
-
-    initializeApp().catch(() => undefined);
+      },
+    );
 
     return () => {
       isMounted = false;
@@ -100,14 +105,7 @@ function AppBootstrap() {
   }, []);
 
   if (bootstrapError) {
-    return (
-      <ErrorView
-        eyebrow={BOOTSTRAP_ERROR_EYEBROW}
-        title={BOOTSTRAP_ERROR_TITLE}
-        message={bootstrapError.message}
-        actionLabel={BOOTSTRAP_ERROR_ACTION}
-      />
-    );
+    return <BootstrapErrorFallback error={bootstrapError} />;
   }
 
   if (!isReady) {

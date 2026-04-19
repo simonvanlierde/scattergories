@@ -6,8 +6,7 @@ interface LocaleHealth {
   locale: string;
   normalizedLocale: string;
   isSupported: boolean;
-  hasLocalePayload: boolean;
-  hasCategoryPayload: boolean;
+  hasResources: boolean;
   hasLetterWeights: boolean;
   isComplete: boolean;
   disabledReason: string | null;
@@ -16,18 +15,15 @@ interface LocaleHealth {
 function buildHealth(locale: string): LocaleHealth {
   const normalizedLocale = normalizeLocale(locale);
   const isSupported = SUPPORTED_LOCALES.includes(normalizedLocale);
-  const hasLocalePayload = hasLocaleResources(normalizedLocale);
-  const hasCategoryPayload = hasLocaleResources(normalizedLocale);
+  const hasResources = hasLocaleResources(normalizedLocale);
   const hasLetterWeights = Boolean(getLocaleWeightManifest(normalizedLocale).hasWeights);
-  const isComplete = isSupported && hasLocalePayload && hasCategoryPayload && hasLetterWeights;
+  const isComplete = isSupported && hasResources && hasLetterWeights;
   let disabledReason: string | null = null;
 
   if (!isSupported) {
     disabledReason = `Unsupported locale: ${locale}`;
-  } else if (!hasLocalePayload) {
-    disabledReason = `Missing locale payload for ${normalizedLocale}`;
-  } else if (!hasCategoryPayload) {
-    disabledReason = `Missing categories payload for ${normalizedLocale}`;
+  } else if (!hasResources) {
+    disabledReason = `Missing resources for ${normalizedLocale}`;
   } else if (!hasLetterWeights) {
     disabledReason = `Missing letter weights for ${normalizedLocale}`;
   }
@@ -36,8 +32,7 @@ function buildHealth(locale: string): LocaleHealth {
     locale,
     normalizedLocale,
     isSupported,
-    hasLocalePayload,
-    hasCategoryPayload,
+    hasResources,
     hasLetterWeights,
     isComplete,
     disabledReason,

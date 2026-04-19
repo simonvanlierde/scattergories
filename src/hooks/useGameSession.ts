@@ -1,5 +1,5 @@
 import type { i18n as I18nInstance } from 'i18next';
-import type { Dispatch, RefObject, SetStateAction } from 'react';
+import type { RefObject } from 'react';
 import {
   type ComponentType,
   lazy,
@@ -27,6 +27,7 @@ import {
 import { clampInt, shuffleFisherYates } from '../game/utils';
 import { ensureLanguageLoaded, persistLanguage } from '../i18n/config';
 import { getPackCategories } from '../lib/categoryPacks';
+import { type NumericFieldName, sanitizeNumericField } from '../settings/schema';
 import { useKeyboardShortcuts } from './useKeyboardShortcuts';
 import { useRound } from './useRound';
 import { useSettings } from './useSettings';
@@ -36,32 +37,6 @@ const SCATTERGORIES_PRELOAD_ERROR_EVENTS = [
   'scattergories:chunk-error',
 ] as const;
 const MOBILE_PROMPT_DECK_QUERY = '(max-width: 52rem)';
-
-type NumericFieldName = 'durationInput' | 'catCountInput' | 'totalRoundsInput';
-
-interface NumericFieldConfig {
-  fallback: number;
-  max: number;
-  min: number;
-}
-
-const NUMERIC_FIELDS: Record<NumericFieldName, NumericFieldConfig> = {
-  durationInput: {
-    min: durationMin,
-    max: durationMax,
-    fallback: durationDefault,
-  },
-  catCountInput: {
-    min: catCountMin,
-    max: catCountMax,
-    fallback: catCountDefault,
-  },
-  totalRoundsInput: {
-    min: roundsMin,
-    max: roundsMax,
-    fallback: roundsDefault,
-  },
-};
 
 function getAvailableCategories(
   categoryMode: string,
@@ -114,26 +89,6 @@ function useSessionNumbers(settings: {
     gameSeconds,
     normalizedCategoryCount,
     totalRounds,
-  };
-}
-
-function sanitizeSettingsField(
-  settings: Record<NumericFieldName, string>,
-  field: NumericFieldName,
-): string {
-  const config = NUMERIC_FIELDS[field];
-  return String(clampInt(settings[field], config.min, config.max, config.fallback));
-}
-
-function getNumericSettings(settings: {
-  durationInput: string;
-  catCountInput: string;
-  totalRoundsInput: string;
-}): Record<NumericFieldName, string> {
-  return {
-    durationInput: settings.durationInput,
-    catCountInput: settings.catCountInput,
-    totalRoundsInput: settings.totalRoundsInput,
   };
 }
 
@@ -240,10 +195,10 @@ function useCategoryBoard(params: {
     });
   }, [params.availableCategories, params.normalizedCategoryCount]);
 
-  const handleNewGame = useMemo(
-    () => createNewGameHandler(redrawCategories, params.round),
-    [params.round, redrawCategories],
-  );
+  const handleNewGame = useCallback(() => {
+    redrawCategories();
+    params.round.newGame();
+  }, [params.round, redrawCategories]);
 
   useEffect(() => {
     redrawCategories();
@@ -260,13 +215,9 @@ function useCategoryBoard(params: {
 function useSessionControls(params: {
   addCustomCategory: (value: string) => void;
   i18n: I18nInstance;
-  round: ReturnType<typeof useRound>;
   settings: {
     catCountInput: string;
     durationInput: string;
-    isMuted: boolean;
-    promptDeckPreference: 'auto' | 'open' | 'collapsed';
-    theme: 'light' | 'dark';
     totalRoundsInput: string;
   };
   update: ReturnType<typeof useSettings>['update'];
@@ -278,18 +229,18 @@ function useSessionControls(params: {
   const [isLanguagePending, setIsLanguagePending] = useState(false);
   const [shouldFocusPromptInput, setShouldFocusPromptInput] = useState(false);
   const newCategoryInputRef = useRef<HTMLInputElement>(null);
-  const { update } = params;
+  const { update, addCustomCategory, isPromptDeckOpen, settings } = params;
 
-  const sanitizeNumericField = useMemo(
-    () => createNumericFieldSanitizer(params.settings, update),
-    [params.settings, update],
+  const blurNumericField = useCallback(
+    (field: NumericFieldName) => {
+      update(field, sanitizeNumericField(field, settings[field]));
+    },
+    [settings, update],
   );
-  const handleAddCustomCategory = useMemo(
-    () =>
-      createCustomCategoryHandler(params.addCustomCategory, setNewCategoryInput, newCategoryInput),
-    [newCategoryInput, params.addCustomCategory],
-  );
-  const handleReloadAfterChunkError = useMemo(() => createReloadHandler(), []);
+  const handleAddCustomCategory = useCallback(() => {
+    addCustomCategory(newCategoryInput);
+    setNewCategoryInput('');
+  }, [addCustomCategory, newCategoryInput]);
   const handleLanguageChange = useLanguageSwitcher(
     params.i18n,
     setIsLanguagePending,
@@ -302,22 +253,22 @@ function useSessionControls(params: {
     [update],
   );
   const togglePromptDeck = useCallback(() => {
-    setPromptDeckPreference(!params.isPromptDeckOpen);
-  }, [params.isPromptDeckOpen, setPromptDeckPreference]);
+    setPromptDeckPreference(!isPromptDeckOpen);
+  }, [isPromptDeckOpen, setPromptDeckPreference]);
   const revealPromptDeck = useCallback(() => {
-    if (!params.isPromptDeckOpen) {
+    if (!isPromptDeckOpen) {
       setPromptDeckPreference(true);
     }
-  }, [params.isPromptDeckOpen, setPromptDeckPreference]);
+  }, [isPromptDeckOpen, setPromptDeckPreference]);
 
   useEffect(() => {
-    if (!(shouldFocusPromptInput && params.isPromptDeckOpen && newCategoryInputRef.current)) {
+    if (!(shouldFocusPromptInput && isPromptDeckOpen && newCategoryInputRef.current)) {
       return;
     }
 
     newCategoryInputRef.current.focus();
     setShouldFocusPromptInput(false);
-  }, [params.isPromptDeckOpen, shouldFocusPromptInput]);
+  }, [isPromptDeckOpen, shouldFocusPromptInput]);
 
   useChunkErrorListener(setHasChunkError);
 
@@ -325,16 +276,15 @@ function useSessionControls(params: {
     focusNewCategoryInput: () => {
       setShouldFocusPromptInput(true);
     },
+    blurNumericField,
     handleAddCustomCategory,
     handleLanguageChange,
-    handleReloadAfterChunkError,
     hasChunkError,
     isHowToPlayOpen,
     isLanguagePending,
     newCategoryInput,
     newCategoryInputRef,
     revealPromptDeck,
-    sanitizeNumericField,
     setIsHowToPlayOpen,
     setNewCategoryInput,
     togglePromptDeck,
@@ -359,154 +309,6 @@ function useSessionKeyboardShortcuts(params: {
       params.focusPromptDeckInput();
     },
   });
-}
-
-function buildCategoriesModel(params: {
-  availableCount: number;
-  drawnCategories: string[];
-  isCompactLayout: boolean;
-  isPromptDeckOpen: boolean;
-  newCategoryInput: string;
-  normalizedCategoryCount: number;
-  setNewCategoryInput: (value: string) => void;
-  inputRef: RefObject<HTMLInputElement | null>;
-}) {
-  return {
-    availableCount: params.availableCount,
-    drawnCategories: params.drawnCategories,
-    isCompactLayout: params.isCompactLayout,
-    isPromptDeckOpen: params.isPromptDeckOpen,
-    newCategoryInput: params.newCategoryInput,
-    normalizedCategoryCount: params.normalizedCategoryCount,
-    setNewCategoryInput: params.setNewCategoryInput,
-    inputRef: params.inputRef,
-  };
-}
-
-function buildControlsModel(params: {
-  handleAddCustomCategory: () => void;
-  handleLanguageChange: (language: string) => void;
-  handleNewGame: () => void;
-  handleReloadAfterChunkError: () => void;
-  handleRedrawCategories: () => void;
-  handleRemoveCustomCategory: (category: string) => void;
-  handleTogglePromptDeck: () => void;
-  round: ReturnType<typeof useRound>;
-  setIsHowToPlayOpen: Dispatch<SetStateAction<boolean>>;
-  settings: {
-    isMuted: boolean;
-    promptDeckPreference: 'auto' | 'open' | 'collapsed';
-    theme: 'light' | 'dark';
-  };
-  update: ReturnType<typeof useSettings>['update'];
-  sanitizeNumericField: (field: NumericFieldName) => void;
-}) {
-  return {
-    onAddCustomCategory: params.handleAddCustomCategory,
-    onActivePackChange: (packId: string) => params.update('activePack', packId),
-    onBlurNumericField: params.sanitizeNumericField,
-    onCategoryModeChange: (mode: 'default' | 'custom' | 'mixed') =>
-      params.update('categoryMode', mode),
-    onLanguageChange: params.handleLanguageChange,
-    onNewGame: params.handleNewGame,
-    onReloadAfterChunkError: params.handleReloadAfterChunkError,
-    onRemoveCustomCategory: params.handleRemoveCustomCategory,
-    onRedrawCategories: params.handleRedrawCategories,
-    onResetRound: params.round.resetRound,
-    onStartRound: params.round.startRound,
-    onToggleHowToPlay: () => params.setIsHowToPlayOpen((current) => !current),
-    onToggleMute: () => params.update('isMuted', !params.settings.isMuted),
-    onTogglePause: params.round.togglePause,
-    onTogglePromptDeck: params.handleTogglePromptDeck,
-    onToggleTheme: () =>
-      params.update('theme', params.settings.theme === 'light' ? 'dark' : 'light'),
-    onUpdateField: params.update,
-    onSkipLetter: params.round.rerollLetter,
-  };
-}
-
-function buildFlagsModel(params: {
-  hasChunkError: boolean;
-  hasMoreRounds: boolean;
-  isCompactLayout: boolean;
-  isHowToPlayOpen: boolean;
-  isLanguagePending: boolean;
-  isPromptDeckOpen: boolean;
-}) {
-  return params;
-}
-
-function buildRoundModel(round: ReturnType<typeof useRound>) {
-  return {
-    alarmOn: round.alarmOn,
-    isPaused: round.isPaused,
-    letter: round.letter,
-    letterLanding: round.letterLanding,
-    letterVisible: round.letterVisible,
-    phase: round.phase,
-    roundCount: round.roundCount,
-    secondsLeft: round.secondsLeft,
-    statusKey: round.statusKey,
-    usedLetters: round.usedLetters,
-    playToggle: round.playToggle,
-  };
-}
-
-function buildSettingsModel(
-  settings: {
-    catCountInput: string;
-    categoryMode: 'default' | 'custom' | 'mixed';
-    activePack: string;
-    customCategories: string[];
-    durationInput: string;
-    isMuted: boolean;
-    promptDeckPreference: 'auto' | 'open' | 'collapsed';
-    theme: 'light' | 'dark';
-    totalRoundsInput: string;
-  },
-  totalRounds: number,
-  gameSeconds: number,
-) {
-  return {
-    ...settings,
-    totalRounds,
-    gameSeconds,
-  };
-}
-
-function createNumericFieldSanitizer(
-  settings: {
-    durationInput: string;
-    catCountInput: string;
-    totalRoundsInput: string;
-  },
-  update: ReturnType<typeof useSettings>['update'],
-) {
-  return (field: NumericFieldName) => {
-    update(field, sanitizeSettingsField(getNumericSettings(settings), field));
-  };
-}
-
-function createCustomCategoryHandler(
-  addCustomCategory: (value: string) => void,
-  setNewCategoryInput: (value: string) => void,
-  newCategoryInput: string,
-) {
-  return () => {
-    addCustomCategory(newCategoryInput);
-    setNewCategoryInput('');
-  };
-}
-
-function createNewGameHandler(redrawCategories: () => void, round: ReturnType<typeof useRound>) {
-  return () => {
-    redrawCategories();
-    round.newGame();
-  };
-}
-
-function createReloadHandler() {
-  return () => window.location.reload();
 }
 
 const HowToPlayDialog = lazy(async () => {
@@ -540,7 +342,6 @@ function useGameSession() {
   const controls = useSessionControls({
     addCustomCategory,
     i18n,
-    round,
     settings,
     update,
     isPromptDeckOpen,
@@ -555,7 +356,7 @@ function useGameSession() {
   });
 
   return {
-    categories: buildCategoriesModel({
+    categories: {
       availableCount: numbers.availableCategories.length,
       drawnCategories: board.drawnCategories,
       isCompactLayout,
@@ -564,31 +365,53 @@ function useGameSession() {
       normalizedCategoryCount: numbers.normalizedCategoryCount,
       setNewCategoryInput: controls.setNewCategoryInput,
       inputRef: controls.newCategoryInputRef as RefObject<HTMLInputElement>,
-    }),
-    controls: buildControlsModel({
-      handleAddCustomCategory: controls.handleAddCustomCategory,
-      handleLanguageChange: controls.handleLanguageChange,
-      handleNewGame: board.handleNewGame,
-      handleReloadAfterChunkError: controls.handleReloadAfterChunkError,
-      handleRedrawCategories: board.redrawCategories,
-      handleRemoveCustomCategory: removeCustomCategory,
-      handleTogglePromptDeck: controls.togglePromptDeck,
-      round,
-      sanitizeNumericField: controls.sanitizeNumericField,
-      setIsHowToPlayOpen: controls.setIsHowToPlayOpen,
-      settings,
-      update,
-    }),
-    flags: buildFlagsModel({
+    },
+    controls: {
+      onAddCustomCategory: controls.handleAddCustomCategory,
+      onActivePackChange: (packId: string) => update('activePack', packId),
+      onBlurNumericField: controls.blurNumericField,
+      onCategoryModeChange: (mode: 'default' | 'custom' | 'mixed') => update('categoryMode', mode),
+      onLanguageChange: controls.handleLanguageChange,
+      onNewGame: board.handleNewGame,
+      onReloadAfterChunkError: () => window.location.reload(),
+      onRemoveCustomCategory: removeCustomCategory,
+      onRedrawCategories: board.redrawCategories,
+      onResetRound: round.resetRound,
+      onStartRound: round.startRound,
+      onToggleHowToPlay: () => controls.setIsHowToPlayOpen((current) => !current),
+      onToggleMute: () => update('isMuted', !settings.isMuted),
+      onTogglePause: round.togglePause,
+      onTogglePromptDeck: controls.togglePromptDeck,
+      onToggleTheme: () => update('theme', settings.theme === 'light' ? 'dark' : 'light'),
+      onUpdateField: update,
+      onSkipLetter: round.rerollLetter,
+    },
+    flags: {
       hasChunkError: controls.hasChunkError,
       hasMoreRounds: round.hasMoreRounds,
       isCompactLayout,
       isHowToPlayOpen: controls.isHowToPlayOpen,
       isLanguagePending: controls.isLanguagePending,
       isPromptDeckOpen,
-    }),
-    round: buildRoundModel(round),
-    settings: buildSettingsModel(settings, numbers.totalRounds, numbers.gameSeconds),
+    },
+    round: {
+      alarmOn: round.alarmOn,
+      isPaused: round.isPaused,
+      letter: round.letter,
+      letterLanding: round.letterLanding,
+      letterVisible: round.letterVisible,
+      phase: round.phase,
+      roundCount: round.roundCount,
+      secondsLeft: round.secondsLeft,
+      statusKey: round.statusKey,
+      usedLetters: round.usedLetters,
+      playToggle: round.playToggle,
+    },
+    settings: {
+      ...settings,
+      totalRounds: numbers.totalRounds,
+      gameSeconds: numbers.gameSeconds,
+    },
     howToPlayDialog: HowToPlayDialog,
   };
 }
