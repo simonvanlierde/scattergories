@@ -3,8 +3,8 @@
   "hero": {
     "eyebrow": "Party game companion",
     "description": "Run the letter, keep the clock moving, and play without the clutter.",
-    "metaLabel": "Game pace",
-    "statsLabel": "Game stats"
+    "metaLabel": "Session pace",
+    "statsLabel": "Session stats"
   },
   "round": {
     "panelEyebrow": "Round console",
@@ -18,7 +18,7 @@
     "group": "Round controls",
     "settingsLegend": "Session settings"
   },
-  "roundCounter": "Round {{current}} of {{total}}",
+  "roundCounter": "Session round {{current}} of {{total}}",
   "buttons": {
     "startRound": "Start Round",
     "nextRound": "Next Round",
@@ -28,6 +28,7 @@
     "pause": "Pause",
     "resume": "Resume",
     "newGame": "New Game",
+    "newSession": "New Session",
     "mute": "Mute",
     "unmute": "Unmute",
     "skipLetterTooltip": "Get a different random letter for this round",
@@ -45,7 +46,7 @@
     "getReady": "Get ready...",
     "go": "Go!",
     "roundOver": "Round over!",
-    "gameCompleteRound": "Round over! Game complete."
+    "gameCompleteRound": "Round over! Session complete."
   },
   "status": {
     "seconds": "seconds"
@@ -105,8 +106,8 @@
       "description": "Played your very first round."
     },
     "fullSweep": {
-      "label": "Full sweep",
-      "description": "Marked every category in a round."
+      "label": "Session finisher",
+      "description": "Finished a full session."
     },
     "weekWarrior": {
       "label": "Week warrior",
@@ -118,7 +119,7 @@
     },
     "veteran": {
       "label": "Veteran",
-      "description": "Completed 25 games."
+      "description": "Completed 25 sessions."
     }
   },
   "rail": {
@@ -126,8 +127,10 @@
     "stats": {
       "title": "Your stats",
       "games": "Games",
+      "sessions": "Sessions",
       "streak": "Streak",
-      "best": "Best marks"
+      "best": "Best marks",
+      "rounds": "Rounds"
     },
     "achievements": {
       "title": "Achievements"
@@ -138,7 +141,7 @@
       "space": "Start or advance a round",
       "r": "Re-roll the current letter",
       "p": "Pause or resume",
-      "n": "New game — re-draw categories",
+      "n": "New session — re-draw categories",
       "c": "Toggle the categories panel",
       "a": "Add a custom category",
       "help": "Open this shortcut list"
@@ -147,7 +150,7 @@
   "onboarding": {
     "label": "Getting started",
     "title": "Welcome to Scattergories",
-    "body": "Hit Start to roll a letter, beat the clock to fill each category, and tap items to check them off as you go.",
+    "body": "Hit Start to roll a letter, beat the clock, and work through the drawn categories with as little app clutter as possible.",
     "dismiss": "Got it",
     "next": "Next",
     "letsPlay": "Let's play",
@@ -162,27 +165,27 @@
         "body": "Call out an answer for each category before time runs out."
       },
       "mark": {
-        "title": "Mark what you got",
-        "body": "Tap a category to strike it through as you go."
+        "title": "Keep the prompts steady",
+        "body": "Stay on the same category list for the full session, then redraw when you want a reset."
       }
     }
   },
   "roundEnd": {
     "label": "Round summary",
     "title": "Time's up!",
-    "gameComplete": "Game complete!",
+    "gameComplete": "Session complete!",
     "letterWas": "Letter was",
     "roundSummary": "Round {{current}} of {{total}}",
     "nextRound": "Next round",
-    "playAgain": "Play again",
+    "playAgain": "New session",
     "stats": {
-      "marked": "Marked",
       "round": "Round",
+      "sessions": "Sessions",
       "streak": "Streak"
     },
     "share": "Share",
     "shareCopied": "Copied!",
-    "shareBody": "Scattergories — letter {{letter}}, {{struck}}/{{total}} marked."
+    "shareBody": "Scattergories — letter {{letter}}, round {{round}} of {{totalRounds}}."
   },
   "categories": {
     "title": "Categories",
@@ -194,7 +197,7 @@
     "minimumRequired": "Add at least one custom category to use Custom mode.",
     "availableSummary": "{{count}} categories ready",
     "customListLabel": "Custom categories",
-    "drawnListLabel": "Category board",
+    "drawnListLabel": "Selected categories",
     "showDeck": "Open categories",
     "hideDeck": "Hide categories",
     "summaryMode": "Source: {{mode}}",
@@ -204,7 +207,7 @@
   },
   "usedLetters": "Used letters: {{letters}}{{empty}}",
   "usedLettersEmpty": "None yet",
-  "shortcuts": "Shortcuts: Space start, R skip letter, P pause, N new game, C toggle categories, A add custom",
+  "shortcuts": "Shortcuts: Space start, R skip letter, P pause, N new session, C toggle categories, A add custom",
   "footer": {
     "howToPlay": "How to Play",
     "officialGame": "Official Game",
@@ -235,12 +238,12 @@
     "featuresList": [
       "Use the Skip Letter button (or press R) to get a new letter",
       "Toggle Pause (press P) during a round to think",
-      "Adjust timer duration and number of rounds in Settings",
+      "Adjust timer duration and rounds per session in Settings",
       "Mute sound if needed",
       "All settings are saved automatically"
     ],
     "loading": "Opening rules…",
-    "footer": "This is a helper tool to manage the letter and timer. Have fun with friends!"
+    "footer": "This is a lightweight session companion for letters, timing, and prompts. Have fun with friends!"
   },
   "language": {
     "label": "Language",

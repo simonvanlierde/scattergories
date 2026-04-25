@@ -258,13 +258,12 @@
   }
 
   .categories-card__customize {
-    margin-top: var(--space-2);
+    margin-top: 0;
   }
 
-  .prompt-summary {
-    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-    padding: var(--space-3);
-    color: var(--text-secondary);
+  .category-toolbar--setup {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
   }
 
   .custom-category-input-row {
@@ -328,6 +327,11 @@
 
   .footer-privacy {
     font-size: 0.92rem;
+  }
+
+  .categories-card__secondary {
+    display: grid;
+    gap: var(--space-3);
   }
 
   .modal-loading {

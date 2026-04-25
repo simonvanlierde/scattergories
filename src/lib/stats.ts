@@ -4,14 +4,11 @@ const ONE_DAY_MS = 86_400_000;
 
 interface LetterMastery {
   seen: number;
-  bestStruck: number;
 }
 
 interface Stats {
-  gamesPlayed: number;
+  sessionsPlayed: number;
   roundsPlayed: number;
-  bestStruckInRound: number;
-  totalCategoriesStruck: number;
   lastPlayedDate: string | null;
   currentStreakDays: number;
   longestStreakDays: number;
@@ -20,17 +17,13 @@ interface Stats {
 
 interface RoundRecord {
   letter: string;
-  struck: number;
-  total: number;
   playedAt?: Date;
 }
 
 function makeEmpty(): Stats {
   return {
-    gamesPlayed: 0,
+    sessionsPlayed: 0,
     roundsPlayed: 0,
-    bestStruckInRound: 0,
-    totalCategoriesStruck: 0,
     lastPlayedDate: null,
     currentStreakDays: 0,
     longestStreakDays: 0,
@@ -62,11 +55,17 @@ function parseStats(raw: string | null): Stats {
   try {
     const parsed = JSON.parse(raw) as Partial<Stats>;
     const empty = makeEmpty();
+    const parsedLetters =
+      parsed.letters && typeof parsed.letters === 'object'
+        ? (parsed.letters as Record<string, LetterMastery>)
+        : empty.letters;
     return {
-      gamesPlayed: Number(parsed.gamesPlayed) || empty.gamesPlayed,
+      sessionsPlayed:
+        Number(
+          (parsed as Partial<Stats> & { gamesPlayed?: number }).gamesPlayed ??
+            parsed.sessionsPlayed,
+        ) || empty.sessionsPlayed,
       roundsPlayed: Number(parsed.roundsPlayed) || empty.roundsPlayed,
-      bestStruckInRound: Number(parsed.bestStruckInRound) || empty.bestStruckInRound,
-      totalCategoriesStruck: Number(parsed.totalCategoriesStruck) || empty.totalCategoriesStruck,
       lastPlayedDate:
         typeof parsed.lastPlayedDate === 'string' &&
         parsed.lastPlayedDate.length === DATE_SLICE_LENGTH
@@ -74,10 +73,12 @@ function parseStats(raw: string | null): Stats {
           : empty.lastPlayedDate,
       currentStreakDays: Number(parsed.currentStreakDays) || empty.currentStreakDays,
       longestStreakDays: Number(parsed.longestStreakDays) || empty.longestStreakDays,
-      letters:
-        parsed.letters && typeof parsed.letters === 'object'
-          ? (parsed.letters as Record<string, LetterMastery>)
-          : empty.letters,
+      letters: Object.fromEntries(
+        Object.entries(parsedLetters).map(([letter, mastery]) => [
+          letter,
+          { seen: Number(mastery?.seen) || 0 },
+        ]),
+      ),
     };
   } catch {
     return makeEmpty();
@@ -128,50 +129,46 @@ function advanceStreak(
 function upsertLetter(
   letters: Record<string, LetterMastery>,
   letter: string,
-  struck: number,
 ): Record<string, LetterMastery> {
   const normalized = letter.toUpperCase();
   if (!normalized) {
     return letters;
   }
-  const existing = letters[normalized] ?? { seen: 0, bestStruck: 0 };
+  const existing = letters[normalized] ?? { seen: 0 };
   return {
     ...letters,
     [normalized]: {
       seen: existing.seen + 1,
-      bestStruck: Math.max(existing.bestStruck, struck),
     },
   };
 }
 
-function projectNextStats(previous: Stats, record: RoundRecord, completedGame: boolean): Stats {
+function projectNextStats(previous: Stats, record: RoundRecord, completedSession: boolean): Stats {
   const today = getLocalDate(record.playedAt ?? new Date());
   const streak = advanceStreak(previous, today);
   const afterRound: Stats = {
-    gamesPlayed: previous.gamesPlayed,
+    sessionsPlayed: previous.sessionsPlayed,
     roundsPlayed: previous.roundsPlayed + 1,
-    bestStruckInRound: Math.max(previous.bestStruckInRound, record.struck),
-    totalCategoriesStruck: previous.totalCategoriesStruck + record.struck,
     lastPlayedDate: today,
     currentStreakDays: streak.currentStreakDays,
     longestStreakDays: streak.longestStreakDays,
-    letters: upsertLetter(previous.letters, record.letter, record.struck),
+    letters: upsertLetter(previous.letters, record.letter),
   };
-  if (!completedGame) {
+  if (!completedSession) {
     return afterRound;
   }
-  return { ...afterRound, gamesPlayed: afterRound.gamesPlayed + 1 };
+  return { ...afterRound, sessionsPlayed: afterRound.sessionsPlayed + 1 };
 }
 
-function recordRound(record: RoundRecord): Stats {
-  const next = projectNextStats(readStats(), record, false);
+function recordRound(record: RoundRecord, completedSession = false): Stats {
+  const next = projectNextStats(readStats(), record, completedSession);
   writeStats(next);
   return next;
 }
 
-function recordGameComplete(): Stats {
+function recordSessionComplete(): Stats {
   const previous = readStats();
-  const next: Stats = { ...previous, gamesPlayed: previous.gamesPlayed + 1 };
+  const next: Stats = { ...previous, sessionsPlayed: previous.sessionsPlayed + 1 };
   writeStats(next);
   return next;
 }
@@ -192,7 +189,7 @@ export {
   parseStats,
   projectNextStats,
   readStats,
-  recordGameComplete,
   recordRound,
+  recordSessionComplete,
   STATS_STORAGE_KEY,
 };

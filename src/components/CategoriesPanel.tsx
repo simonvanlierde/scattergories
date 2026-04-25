@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { catCountMax, catCountMin } from '../game/constants';
 import type { CategoryMode } from '../hooks/useSettings';
+import { CategoryChecklist } from './CategoryChecklist';
 import { Button } from './ui/Button';
 import { Field } from './ui/Field';
 import { Icon } from './ui/Icon';
@@ -15,6 +16,7 @@ interface CategoriesState {
   catCountInput: string;
   customCategories: string[];
   availableCount: number;
+  drawnCategories: string[];
   isPromptDeckOpen: boolean;
   newCategoryInput: string;
 }
@@ -34,7 +36,6 @@ interface CategoriesPanelProps {
   categories: CategoriesState;
   actions: CategoriesActions;
   inputRef: RefObject<HTMLInputElement | null>;
-  isCompactLayout: boolean;
 }
 
 function CategoryToolbar({
@@ -47,7 +48,7 @@ function CategoryToolbar({
   const { t } = useTranslation();
 
   return (
-    <div className="category-toolbar">
+    <div className="category-toolbar category-toolbar--setup">
       <label className="field-shell" htmlFor="categoryMode">
         <span>{t('settings.categorySource')}</span>
         <select
@@ -72,13 +73,6 @@ function CategoryToolbar({
         onChange={(event) => actions.onCatCountChange(event.target.value)}
         onBlur={actions.onCatCountBlur}
       />
-      <Button
-        variant="secondary"
-        onClick={actions.onShuffle}
-        leadingIcon={<Icon icon={Shuffle} size={18} />}
-      >
-        {t('buttons.shuffle')}
-      </Button>
     </div>
   );
 }
@@ -150,36 +144,6 @@ function CustomCategories({
   );
 }
 
-function PromptSummary({
-  catCountInput,
-  mode,
-  availableCount,
-}: Pick<CategoriesState, 'catCountInput' | 'mode' | 'availableCount'>) {
-  const { t } = useTranslation();
-  return (
-    <div className="prompt-summary" id="prompt-deck-content">
-      <span>
-        {t('categories.summaryMode', {
-          defaultValue: 'Source: {{mode}}',
-          mode: t(`categories.${mode}`),
-        })}
-      </span>
-      <span>
-        {t('categories.summaryDraw', {
-          defaultValue: 'Draw: {{count}}',
-          count: catCountInput,
-        })}
-      </span>
-      <span>
-        {t('categories.availableSummary', {
-          defaultValue: '{{count}} prompts ready',
-          count: availableCount,
-        })}
-      </span>
-    </div>
-  );
-}
-
 interface CustomizeSheetBlockProps {
   actions: CategoriesActions;
   catCountInput: string;
@@ -229,22 +193,20 @@ function CustomizeSheetBlock({
   );
 }
 
-function CategoriesPanel({ categories, actions, inputRef, isCompactLayout }: CategoriesPanelProps) {
+function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps) {
   const { t } = useTranslation();
   const {
     mode,
     catCountInput,
     customCategories,
     availableCount,
+    drawnCategories,
     isPromptDeckOpen,
     newCategoryInput,
   } = categories;
   const deckButtonLabel = isPromptDeckOpen
     ? t('categories.hideDeck', { defaultValue: 'Hide prompts' })
     : t('categories.showDeck', { defaultValue: 'Open prompts' });
-
-  const showInline = isPromptDeckOpen && !isCompactLayout;
-  const showCompactCustomize = isPromptDeckOpen && isCompactLayout;
 
   return (
     <section
@@ -257,7 +219,7 @@ function CategoriesPanel({ categories, actions, inputRef, isCompactLayout }: Cat
         <button
           type="button"
           className="btn-secondary panel-action"
-          aria-controls="prompt-deck-content"
+          aria-controls="categories-panel-content"
           aria-expanded={isPromptDeckOpen}
           onClick={actions.onTogglePromptDeck}
         >
@@ -265,29 +227,30 @@ function CategoriesPanel({ categories, actions, inputRef, isCompactLayout }: Cat
         </button>
       </div>
 
-      {showInline ? (
-        <div className="categories-card__content" id="prompt-deck-content">
-          <CategoryToolbar actions={actions} catCountInput={catCountInput} mode={mode} />
-          <CustomCategories
-            actions={actions}
-            customCategories={customCategories}
-            inputRef={inputRef}
-            newCategoryInput={newCategoryInput}
-          />
-        </div>
-      ) : (
-        <PromptSummary catCountInput={catCountInput} mode={mode} availableCount={availableCount} />
-      )}
+      {isPromptDeckOpen ? (
+        <div className="categories-card__content categories-card__content--prompts-first">
+          <div className="drawn-categories" id="categories-panel-content">
+            <CategoryChecklist categories={drawnCategories} availableCount={availableCount} />
+          </div>
 
-      {showCompactCustomize ? (
-        <CustomizeSheetBlock
-          actions={actions}
-          catCountInput={catCountInput}
-          mode={mode}
-          customCategories={customCategories}
-          newCategoryInput={newCategoryInput}
-          inputRef={inputRef}
-        />
+          <div className="categories-card__actions">
+            <Button
+              variant="secondary"
+              onClick={actions.onShuffle}
+              leadingIcon={<Icon icon={Shuffle} size={18} />}
+            >
+              {t('buttons.shuffle')}
+            </Button>
+            <CustomizeSheetBlock
+              actions={actions}
+              catCountInput={catCountInput}
+              mode={mode}
+              customCategories={customCategories}
+              newCategoryInput={newCategoryInput}
+              inputRef={inputRef}
+            />
+          </div>
+        </div>
       ) : null}
     </section>
   );

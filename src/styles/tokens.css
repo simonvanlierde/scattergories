@@ -172,7 +172,7 @@
     /* Text — aliases point into the surface ramp */
     --text-primary: var(--surface-10);
     --text-secondary: var(--surface-8);
-    --text-muted: var(--surface-6);
+    --text-muted: var(--surface-7);
     --text-inverse: var(--surface-0);
     --text-on-accent: var(--accent-on);
 
@@ -205,7 +205,7 @@
     --paper-2: var(--surface-2);
     --ink-0: var(--surface-10);
     --ink-1: var(--surface-8);
-    --ink-2: var(--surface-6);
+    --ink-2: var(--surface-7);
     --rule: var(--surface-4);
 
     /* ─── Legacy semantic aliases (keep old components rendering) ─── */

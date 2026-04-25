@@ -15,7 +15,7 @@ interface ActionBarProps {
   onPause: () => void;
   onSkip: () => void;
   onReset: () => void;
-  onNewGame: () => void;
+  onNewSession: () => void;
   onToggleMute: () => void;
 }
 
@@ -29,7 +29,7 @@ export function ActionBar({
   onPause,
   onSkip,
   onReset,
-  onNewGame,
+  onNewSession,
   onToggleMute,
 }: ActionBarProps) {
   const { t } = useTranslation();
@@ -75,9 +75,9 @@ export function ActionBar({
           className="action-bar__destructive"
         />
         <IconButton
-          label={t('buttons.newGame')}
+          label={t('buttons.newSession', { defaultValue: 'New Session' })}
           icon={<Icon icon={Sparkles} size={20} />}
-          onClick={onNewGame}
+          onClick={onNewSession}
         />
         <IconButton
           label={muteLabel}

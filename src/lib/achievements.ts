@@ -6,9 +6,7 @@ const ALPHABET_HUNTER_LETTERS = 26;
 const VETERAN_GAMES = 25;
 
 interface RoundContext {
-  struck: number;
-  total: number;
-  isGameComplete: boolean;
+  isSessionComplete: boolean;
 }
 
 interface Achievement {
@@ -32,10 +30,10 @@ const ACHIEVEMENTS: readonly Achievement[] = Object.freeze([
   {
     id: 'full-sweep',
     labelKey: 'achievements.fullSweep.label',
-    fallbackLabel: 'Full sweep',
+    fallbackLabel: 'Session finisher',
     descriptionKey: 'achievements.fullSweep.description',
-    fallbackDescription: 'Marked every category in a round.',
-    predicate: (_stats, round) => round.total > 0 && round.struck >= round.total,
+    fallbackDescription: 'Finished a full session.',
+    predicate: (_stats, round) => round.isSessionComplete,
   },
   {
     id: 'week-warrior',
@@ -58,8 +56,8 @@ const ACHIEVEMENTS: readonly Achievement[] = Object.freeze([
     labelKey: 'achievements.veteran.label',
     fallbackLabel: 'Veteran',
     descriptionKey: 'achievements.veteran.description',
-    fallbackDescription: 'Completed 25 games.',
-    predicate: (stats) => stats.gamesPlayed >= VETERAN_GAMES,
+    fallbackDescription: 'Completed 25 sessions.',
+    predicate: (stats) => stats.sessionsPlayed >= VETERAN_GAMES,
   },
 ]);
 

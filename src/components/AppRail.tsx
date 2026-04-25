@@ -1,5 +1,12 @@
 import type { LucideIcon } from 'lucide-react';
-import { Award, Flame, Gamepad2, HelpCircle, Settings as SettingsIcon, Target } from 'lucide-react';
+import {
+  Award,
+  Flame,
+  Gamepad2,
+  HelpCircle,
+  RotateCcw,
+  Settings as SettingsIcon,
+} from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useStatsSnapshot } from '../hooks/useStatsSnapshot';
 import { useUnlockedAchievements } from '../hooks/useUnlockedAchievements';
@@ -11,7 +18,7 @@ import { IconButton } from './ui/IconButton';
 interface AppRailProps {
   onOpenSettings: () => void;
   onOpenAchievements: () => void;
-  onToggleHowToPlay: () => void;
+  onOpenHowToPlay: () => void;
   onOpenShortcuts: () => void;
 }
 
@@ -39,14 +46,14 @@ function RailStats() {
 
   return (
     <section className="app-rail__section" aria-labelledby="rail-stats-title">
-      <h3 id="rail-stats-title" className="app-rail__section-title">
+      <h2 id="rail-stats-title" className="app-rail__section-title">
         {t('rail.stats.title', { defaultValue: 'Your stats' })}
-      </h3>
+      </h2>
       <div className="app-rail__stats">
         <StatTile
           icon={Gamepad2}
-          label={t('rail.stats.games', { defaultValue: 'Games' })}
-          value={String(stats.gamesPlayed)}
+          label={t('rail.stats.sessions', { defaultValue: 'Sessions' })}
+          value={String(stats.sessionsPlayed)}
         />
         <StatTile
           icon={Flame}
@@ -54,9 +61,9 @@ function RailStats() {
           value={String(stats.currentStreakDays)}
         />
         <StatTile
-          icon={Target}
-          label={t('rail.stats.best', { defaultValue: 'Best marks' })}
-          value={String(stats.bestStruckInRound)}
+          icon={RotateCcw}
+          label={t('rail.stats.rounds', { defaultValue: 'Rounds' })}
+          value={String(stats.roundsPlayed)}
         />
       </div>
     </section>
@@ -94,7 +101,7 @@ function AchievementsTile({ onOpenAchievements }: AchievementsTileProps) {
 export function AppRail({
   onOpenSettings,
   onOpenAchievements,
-  onToggleHowToPlay,
+  onOpenHowToPlay,
   onOpenShortcuts,
 }: AppRailProps) {
   const { t } = useTranslation();
@@ -103,7 +110,7 @@ export function AppRail({
     <aside className="app-rail" aria-label={t('rail.label', { defaultValue: 'Side rail' })}>
       <div className="app-rail__brand">
         <BrandMark size={32} title={t('title')} />
-        <span className="app-rail__brand-wordmark">{t('title')}</span>
+        <h1 className="app-rail__brand-wordmark">{t('title')}</h1>
       </div>
 
       <RailStats />
@@ -119,7 +126,7 @@ export function AppRail({
         <IconButton
           label={t('footer.howToPlay', { defaultValue: 'How to Play' })}
           icon={<Icon icon={HelpCircle} size={20} />}
-          onClick={onToggleHowToPlay}
+          onClick={onOpenHowToPlay}
         />
       </div>
 

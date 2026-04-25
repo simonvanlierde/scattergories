@@ -70,7 +70,7 @@ function TopBar({ session, onOpenSettings }: TopBarProps) {
         <IconButton
           label={t('footer.howToPlay')}
           icon={<Icon icon={HelpCircle} size={20} />}
-          onClick={session.controls.onToggleHowToPlay}
+          onClick={session.controls.onOpenHowToPlay}
         />
       </div>
     </header>
@@ -130,12 +130,12 @@ function PlayGrid({ session, onOpenSettings, onAchievementsUnlocked }: PlayGridP
           availableCount: session.categories.availableCount,
           catCountInput: session.settings.catCountInput,
           customCategories: session.settings.customCategories,
+          drawnCategories: session.categories.drawnCategories,
           isPromptDeckOpen: session.flags.isPromptDeckOpen,
           mode: session.settings.categoryMode,
           newCategoryInput: session.categories.newCategoryInput,
         }}
         inputRef={session.categories.inputRef}
-        isCompactLayout={session.flags.isCompactLayout}
         actions={{
           onAddCustom: session.controls.onAddCustomCategory,
           onCategoryModeChange: session.controls.onCategoryModeChange,
@@ -238,7 +238,7 @@ function GameShell({ session, startupLocaleWarning }: GameShellProps) {
         <AppRail
           onOpenSettings={() => shell.openSettings()}
           onOpenAchievements={() => shell.openSettings('achievements')}
-          onToggleHowToPlay={session.controls.onToggleHowToPlay}
+          onOpenHowToPlay={session.controls.onOpenHowToPlay}
           onOpenShortcuts={shell.toggleShortcuts}
         />
       ) : null}
@@ -290,7 +290,7 @@ function GameShell({ session, startupLocaleWarning }: GameShellProps) {
             </div>
           }
         >
-          <session.howToPlayDialog onClose={session.controls.onToggleHowToPlay} />
+          <session.howToPlayDialog onClose={session.controls.onCloseHowToPlay} />
         </Suspense>
       ) : null}
 

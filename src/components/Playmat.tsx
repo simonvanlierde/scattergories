@@ -1,10 +1,7 @@
 import { Settings2 } from 'lucide-react';
-import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useCategoryStrikes } from '../hooks/useCategoryStrikes';
 import type { useGameSession } from '../hooks/useGameSession';
 import { ActionBar } from './ActionBar';
-import { CategoryChecklist } from './CategoryChecklist';
 import { LetterHero } from './LetterHero';
 import { RoundEndScreen } from './RoundEndScreen';
 import { TimerRing } from './TimerRing';
@@ -33,7 +30,11 @@ function PlaymatMeta({
   return (
     <header className="playmat__meta">
       <Badge tone="accent">
-        {t('roundCounter', { current: currentRound, total: totalRounds })}
+        {t('roundCounter', {
+          defaultValue: 'Session round {{current}} of {{total}}',
+          current: currentRound,
+          total: totalRounds,
+        })}
       </Badge>
       <p className="playmat__used-letters" aria-live="polite">
         {usedLettersText}
@@ -117,20 +118,14 @@ function PlaymatRoundContent({
   round,
   settings,
   controls,
-  categories,
   flags,
-  strikes,
-  onToggleCategory,
   onOpenSettings,
   onAchievementsUnlocked,
 }: {
   round: PlaymatProps['session']['round'];
   settings: PlaymatProps['session']['settings'];
   controls: PlaymatProps['session']['controls'];
-  categories: PlaymatProps['session']['categories'];
   flags: PlaymatProps['session']['flags'];
-  strikes: ReturnType<typeof useCategoryStrikes>;
-  onToggleCategory: (category: string) => void;
   onOpenSettings: () => void;
   onAchievementsUnlocked?: (ids: string[]) => void;
 }) {
@@ -142,8 +137,6 @@ function PlaymatRoundContent({
           roundCount={Math.min(settings.totalRounds, Math.max(1, round.roundCount || 1))}
           totalRounds={settings.totalRounds}
           hasMoreRounds={flags.hasMoreRounds}
-          categoriesStruck={strikes.struckCount}
-          categoriesTotal={categories.drawnCategories.length}
           onAdvance={controls.onStartRound}
           onAchievementsUnlocked={onAchievementsUnlocked}
         />
@@ -160,13 +153,6 @@ function PlaymatRoundContent({
 
       <PlaymatStatus phase={round.phase} statusKey={round.statusKey} />
 
-      <CategoryChecklist
-        categories={categories.drawnCategories}
-        availableCount={categories.availableCount}
-        isStruck={strikes.isStruck}
-        onToggle={onToggleCategory}
-      />
-
       <ActionBar
         phase={round.phase}
         isPaused={round.isPaused}
@@ -177,7 +163,7 @@ function PlaymatRoundContent({
         onPause={controls.onTogglePause}
         onSkip={controls.onSkipLetter}
         onReset={controls.onResetRound}
-        onNewGame={controls.onNewGame}
+        onNewSession={controls.onNewSession}
         onToggleMute={controls.onToggleMute}
       />
 
@@ -192,21 +178,7 @@ function PlaymatRoundContent({
 
 export function Playmat({ session, onOpenSettings, onAchievementsUnlocked }: PlaymatProps) {
   const { t } = useTranslation();
-  const { round, settings, controls, categories, flags } = session;
-
-  const strikes = useCategoryStrikes({
-    drawnCategories: categories.drawnCategories,
-    resetSignal: round.roundCount,
-  });
-  const { toggle: toggleStrike } = strikes;
-  const { playToggle } = round;
-  const handleToggle = useCallback(
-    (category: string) => {
-      toggleStrike(category);
-      playToggle();
-    },
-    [toggleStrike, playToggle],
-  );
+  const { round, settings, controls, flags } = session;
 
   const displayRound = Math.min(settings.totalRounds, Math.max(1, round.roundCount || 1));
   const usedLettersText =
@@ -235,10 +207,7 @@ export function Playmat({ session, onOpenSettings, onAchievementsUnlocked }: Pla
         round={round}
         settings={settings}
         controls={controls}
-        categories={categories}
         flags={flags}
-        strikes={strikes}
-        onToggleCategory={handleToggle}
         onOpenSettings={onOpenSettings}
         onAchievementsUnlocked={onAchievementsUnlocked}
       />

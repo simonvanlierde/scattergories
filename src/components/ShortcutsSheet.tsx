@@ -16,7 +16,7 @@ const SHORTCUTS: readonly ShortcutDefinition[] = Object.freeze([
   { keys: 'Space', labelKey: 'rail.shortcuts.space', fallbackLabel: 'Start or advance a round' },
   { keys: 'R', labelKey: 'rail.shortcuts.r', fallbackLabel: 'Re-roll the current letter' },
   { keys: 'P', labelKey: 'rail.shortcuts.p', fallbackLabel: 'Pause or resume' },
-  { keys: 'N', labelKey: 'rail.shortcuts.n', fallbackLabel: 'New game — re-draw categories' },
+  { keys: 'N', labelKey: 'rail.shortcuts.n', fallbackLabel: 'New session — re-draw categories' },
   { keys: 'C', labelKey: 'rail.shortcuts.c', fallbackLabel: 'Toggle the categories panel' },
   { keys: 'A', labelKey: 'rail.shortcuts.a', fallbackLabel: 'Add a custom category' },
   { keys: '?', labelKey: 'rail.shortcuts.help', fallbackLabel: 'Open this shortcut list' },

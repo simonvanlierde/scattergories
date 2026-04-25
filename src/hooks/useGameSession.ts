@@ -292,7 +292,7 @@ function useSessionControls(params: {
 }
 
 function useSessionKeyboardShortcuts(params: {
-  handleNewGame: () => void;
+  handleNewSession: () => void;
   revealPromptDeck: () => void;
   round: ReturnType<typeof useRound>;
   togglePromptDeck: () => void;
@@ -301,7 +301,7 @@ function useSessionKeyboardShortcuts(params: {
   useKeyboardShortcuts({
     onSpace: params.round.startRound,
     onR: params.round.rerollLetter,
-    onN: params.handleNewGame,
+    onN: params.handleNewSession,
     onP: params.round.togglePause,
     onC: params.togglePromptDeck,
     onA: () => {
@@ -349,7 +349,7 @@ function useGameSession() {
 
   useSessionKeyboardShortcuts({
     focusPromptDeckInput: controls.focusNewCategoryInput,
-    handleNewGame: board.handleNewGame,
+    handleNewSession: board.handleNewGame,
     revealPromptDeck: controls.revealPromptDeck,
     round,
     togglePromptDeck: controls.togglePromptDeck,
@@ -371,14 +371,15 @@ function useGameSession() {
       onActivePackChange: (packId: string) => update('activePack', packId),
       onBlurNumericField: controls.blurNumericField,
       onCategoryModeChange: (mode: 'default' | 'custom' | 'mixed') => update('categoryMode', mode),
+      onCloseHowToPlay: () => controls.setIsHowToPlayOpen(false),
       onLanguageChange: controls.handleLanguageChange,
-      onNewGame: board.handleNewGame,
+      onNewSession: board.handleNewGame,
+      onOpenHowToPlay: () => controls.setIsHowToPlayOpen(true),
       onReloadAfterChunkError: () => window.location.reload(),
       onRemoveCustomCategory: removeCustomCategory,
       onRedrawCategories: board.redrawCategories,
       onResetRound: round.resetRound,
       onStartRound: round.startRound,
-      onToggleHowToPlay: () => controls.setIsHowToPlayOpen((current) => !current),
       onToggleMute: () => update('isMuted', !settings.isMuted),
       onTogglePause: round.togglePause,
       onTogglePromptDeck: controls.togglePromptDeck,

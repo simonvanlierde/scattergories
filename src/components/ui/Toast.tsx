@@ -1,3 +1,4 @@
+import { X } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useEffect, useRef } from 'react';
 
@@ -63,7 +64,7 @@ function Toast({
         onClick={() => onDismiss(id)}
         aria-label={`Dismiss ${title}`}
       >
-        ×
+        <X size={16} aria-hidden="true" />
       </button>
     </div>
   );

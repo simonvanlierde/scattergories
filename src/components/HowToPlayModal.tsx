@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface HowToPlayModalProps {
@@ -21,10 +21,10 @@ export function HowToPlayModal({ onClose }: HowToPlayModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const lastFocusedRef = useRef<HTMLElement | null>(null);
 
-  function closeDialog() {
+  const requestClose = useCallback(() => {
     onClose();
     lastFocusedRef.current?.focus();
-  }
+  }, [onClose]);
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -36,29 +36,34 @@ export function HowToPlayModal({ onClose }: HowToPlayModalProps) {
 
     function onBackdropClick(event: MouseEvent) {
       if (event.target === dialog && dialog) {
-        dialog.close();
+        requestClose();
       }
     }
 
     dialog.addEventListener('click', onBackdropClick);
     return () => {
       dialog.removeEventListener('click', onBackdropClick);
-      dialog.close();
+      if (dialog.open) {
+        dialog.close();
+      }
     };
-  }, []);
+  }, [requestClose]);
 
   return (
     <dialog
       ref={dialogRef}
       className="modal-dialog"
       aria-labelledby="how-to-play-title"
-      onClose={closeDialog}
+      onCancel={(event) => {
+        event.preventDefault();
+        requestClose();
+      }}
     >
       <div className="modal-content">
         <button
           type="button"
           className="modal-close"
-          onClick={() => dialogRef.current?.close()}
+          onClick={requestClose}
           aria-label={t('buttons.close')}
           title={t('buttons.closeTooltip', { defaultValue: t('buttons.close') })}
         >

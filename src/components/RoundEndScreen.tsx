@@ -4,13 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { recordNewlyUnlocked } from '../lib/achievements';
 import { vibrate } from '../lib/haptics';
 import { shareScore } from '../lib/share';
-import {
-  projectNextStats,
-  readStats,
-  recordGameComplete,
-  recordRound,
-  type Stats,
-} from '../lib/stats';
+import { projectNextStats, readStats, recordRound, type Stats } from '../lib/stats';
 import { Button } from './ui/Button';
 import { Icon } from './ui/Icon';
 
@@ -19,8 +13,6 @@ interface RoundEndScreenProps {
   roundCount: number;
   totalRounds: number;
   hasMoreRounds: boolean;
-  categoriesStruck: number;
-  categoriesTotal: number;
   onAdvance: () => void;
   onAchievementsUnlocked?: (ids: string[]) => void;
 }
@@ -42,9 +34,7 @@ function Stat({ label, value, emphasis }: StatProps) {
 
 interface StatsRecordingOptions {
   letter: string;
-  struck: number;
-  total: number;
-  isGameComplete: boolean;
+  isSessionComplete: boolean;
   onAchievementsUnlocked?: (ids: string[]) => void;
 }
 
@@ -91,11 +81,11 @@ function ShareButton({ label, copiedLabel, body }: ShareButtonProps) {
 }
 
 function useStatsRecording(options: StatsRecordingOptions): Stats {
-  const { letter, struck, total, isGameComplete, onAchievementsUnlocked } = options;
+  const { letter, isSessionComplete, onAchievementsUnlocked } = options;
   /* Projection captured once on mount: shows the stats the just-played round
    * produces, without the strict-mode double-invoke problem of setState-in-effect. */
   const [displayStats] = useState<Stats>(() =>
-    projectNextStats(readStats(), { letter, struck, total }, isGameComplete),
+    projectNextStats(readStats(), { letter }, isSessionComplete),
   );
   const hasRecordedRef = useRef(false);
 
@@ -104,16 +94,13 @@ function useStatsRecording(options: StatsRecordingOptions): Stats {
       return;
     }
     hasRecordedRef.current = true;
-    vibrate(isGameComplete ? 'strong' : 'success');
-    let latest = recordRound({ letter, struck, total });
-    if (isGameComplete) {
-      latest = recordGameComplete();
-    }
-    const unlocked = recordNewlyUnlocked(latest, { struck, total, isGameComplete });
+    vibrate(isSessionComplete ? 'strong' : 'success');
+    const latest = recordRound({ letter }, isSessionComplete);
+    const unlocked = recordNewlyUnlocked(latest, { isSessionComplete });
     if (unlocked.length > 0 && onAchievementsUnlocked) {
       onAchievementsUnlocked(unlocked);
     }
-  }, [isGameComplete, letter, struck, total, onAchievementsUnlocked]);
+  }, [isSessionComplete, letter, onAchievementsUnlocked]);
 
   return displayStats;
 }
@@ -123,18 +110,14 @@ export function RoundEndScreen({
   roundCount,
   totalRounds,
   hasMoreRounds,
-  categoriesStruck,
-  categoriesTotal,
   onAdvance,
   onAchievementsUnlocked,
 }: RoundEndScreenProps) {
   const { t } = useTranslation();
-  const isGameComplete = !hasMoreRounds;
+  const isSessionComplete = !hasMoreRounds;
   const stats = useStatsRecording({
     letter,
-    struck: categoriesStruck,
-    total: categoriesTotal,
-    isGameComplete,
+    isSessionComplete,
     onAchievementsUnlocked,
   });
   const streak = stats.currentStreakDays;
@@ -142,25 +125,25 @@ export function RoundEndScreen({
   return (
     <section
       className="round-end"
-      data-complete={isGameComplete}
+      data-complete={isSessionComplete}
       aria-label={t('roundEnd.label', { defaultValue: 'Round summary' })}
       data-testid="round-end-screen"
     >
       <h2 className="round-end__title">
-        {isGameComplete
-          ? t('roundEnd.gameComplete', { defaultValue: 'Game complete' })
+        {isSessionComplete
+          ? t('roundEnd.gameComplete', { defaultValue: 'Session complete' })
           : t('roundEnd.title', { defaultValue: 'Time is up' })}
       </h2>
       <div className="round-end__letter">{letter}</div>
       <div className="round-end__stats">
         <Stat
-          label={t('roundEnd.stats.marked', { defaultValue: 'Marked' })}
-          value={`${categoriesStruck}/${categoriesTotal}`}
+          label={t('roundEnd.stats.round', { defaultValue: 'Round' })}
+          value={`${roundCount}/${totalRounds}`}
           emphasis={true}
         />
         <Stat
-          label={t('roundEnd.stats.round', { defaultValue: 'Round' })}
-          value={`${roundCount}/${totalRounds}`}
+          label={t('roundEnd.stats.sessions', { defaultValue: 'Sessions' })}
+          value={String(stats.sessionsPlayed)}
         />
         {streak > 1 ? (
           <div className="round-end__stat round-end__stat--streak">
@@ -180,18 +163,18 @@ export function RoundEndScreen({
           onClick={onAdvance}
           trailingIcon={<Icon icon={ArrowRight} size={20} />}
         >
-          {isGameComplete
-            ? t('roundEnd.playAgain', { defaultValue: 'Play again' })
+          {isSessionComplete
+            ? t('roundEnd.playAgain', { defaultValue: 'New session' })
             : t('roundEnd.nextRound', { defaultValue: 'Next round' })}
         </Button>
         <ShareButton
           label={t('roundEnd.share', { defaultValue: 'Share' })}
           copiedLabel={t('roundEnd.shareCopied', { defaultValue: 'Copied' })}
           body={t('roundEnd.shareBody', {
-            defaultValue: 'Scattergories — letter {{letter}}, {{struck}}/{{total}} marked.',
+            defaultValue: 'Scattergories — letter {{letter}}, round {{round}} of {{totalRounds}}.',
             letter,
-            struck: categoriesStruck,
-            total: categoriesTotal,
+            round: roundCount,
+            totalRounds,
           })}
         />
       </div>

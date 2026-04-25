@@ -25,7 +25,7 @@ test('@smoke has no detectable accessibility violations during an active round',
   await app.startRound();
   await expect(app.roundStatus).toHaveText(GO, { timeout: ROUND_STATE_TIMEOUT_MS });
   await page.getByRole('button', { name: 'Pause' }).click();
-  await expect(page.getByRole('button', { name: 'Resume' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Resume', exact: true })).toBeVisible();
 
   const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
 
