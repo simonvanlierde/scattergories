@@ -23,7 +23,7 @@ describe('locale startup validation', () => {
   it(
     'shows a startup warning and disables incomplete locales',
     async () => {
-      const { App } = await import('./App');
+      const { App } = await import('@/app/App');
       const user = userEvent.setup();
 
       await Promise.resolve();

@@ -9,7 +9,6 @@
     "letterLabel": "Aktueller Buchstabe",
     "timerLabel": "Rundenuhr"
   },
-  "roundCounter": "Runde {{current}} von {{total}}",
   "buttons": {
     "startRound": "Runde Starten",
     "nextRound": "Nächste Runde",
@@ -18,7 +17,6 @@
     "reset": "⟲ Zurücksetzen",
     "pause": "Pause",
     "resume": "Fortsetzen",
-    "newGame": "Neues Spiel",
     "mute": "Stumm",
     "unmute": "Ton an",
     "skipLetterTooltip": "Einen anderen zufälligen Buchstaben für diese Runde wählen",
@@ -35,15 +33,13 @@
     "timeUp": "Zeit abgelaufen!",
     "getReady": "Bereit machen...",
     "go": "Los!",
-    "roundOver": "Runde vorbei!",
-    "gameCompleteRound": "Runde vorbei! Spiel beendet."
+    "roundOver": "Runde vorbei!"
   },
   "status": {
     "seconds": "Sekunden"
   },
   "settings": {
     "duration": "Zeitlimit",
-    "rounds": "Rundenanzahl",
     "categorySource": "Quelle",
     "categoryDraw": "Auslosung",
     "addCustom": "Eigene Kategorie",
@@ -62,11 +58,13 @@
     "showDeck": "Prompts öffnen",
     "hideDeck": "Prompts ausblenden",
     "summaryMode": "Quelle: {{mode}}",
-    "summaryDraw": "Ziehung: {{count}}"
+    "summaryDraw": "Ziehung: {{count}}",
+    "pin": "Kategorien fixieren",
+    "unpin": "Kategorien lösen"
   },
   "usedLetters": "Benutzte Buchstaben: {{letters}}{{empty}}",
   "usedLettersEmpty": "Keine",
-  "shortcuts": "Shortcuts: Leertaste Start, R Buchstabe überspringen, P Pause, N Neues Spiel, C Prompts umschalten, A Kategorie hinzufügen",
+  "shortcuts": "Shortcuts: Leertaste Start, R Buchstabe überspringen, P Pause, C Prompts umschalten, A Kategorie hinzufügen",
   "footer": {
     "howToPlay": "Spielanleitung",
     "officialGame": "Offizielles Spiel",
@@ -97,7 +95,7 @@
     "featuresList": [
       "Nutze 'Anderer Buchstabe' (oder R), falls ein Buchstabe zu schwer ist",
       "Pausiere mit P, um kurz nachzudenken",
-      "Passe Zeit und Runden in den Einstellungen an",
+      "Passe das Zeitlimit in den Einstellungen an",
       "Du kannst den Ton jederzeit stummschalten",
       "Einstellungen werden automatisch gespeichert"
     ],

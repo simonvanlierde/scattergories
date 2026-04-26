@@ -29,11 +29,7 @@
 
   .section-kicker,
   .section-label,
-  .hero-stat span,
-  .field-shell > span,
-  .used-letters,
-  .category-count,
-  .round-hint {
+  .field-shell > span {
     color: var(--text-muted);
     font-size: 0.86rem;
     font-weight: 650;
@@ -44,61 +40,13 @@
     letter-spacing: 0.01em;
   }
 
-  .hero-stat,
-  .utility-pill,
   .field-shell,
-  .prompt-summary,
   .custom-categories,
-  .empty-state,
   .custom-empty,
   .modal-loading {
     border: 1px solid var(--border-soft);
     border-radius: var(--radius-md);
     background: var(--bg-elevated-strong);
-  }
-
-  .hero-stat {
-    padding: var(--space-3);
-    display: grid;
-    gap: var(--space-1);
-  }
-
-  .hero-stat strong {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    line-height: 1;
-  }
-
-  .utility-pill {
-    min-height: 2.75rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-2);
-    padding: 0.75rem 1rem;
-    color: var(--text-primary);
-    background: var(--bg-elevated-strong);
-  }
-
-  .utility-pill--split {
-    justify-content: space-between;
-  }
-
-  .utility-pill--split span,
-  .field-unit {
-    color: var(--text-muted);
-    font-size: 0.82rem;
-  }
-
-  .utility-pill--select {
-    padding: 0;
-    overflow: hidden;
-  }
-
-  .utility-pill--select select {
-    border: 0;
-    background: transparent;
-    min-height: 2.75rem;
   }
 
   .banner {
@@ -120,120 +68,18 @@
     color: var(--text-primary);
   }
 
-  .round-console__top {
-    align-items: start;
-  }
-
-  .round-counter {
-    display: inline-flex;
-    width: fit-content;
-    align-items: center;
-    padding: var(--space-1) 0;
-    font-family: var(--font-ui);
-    font-size: var(--text-xs);
-    font-weight: 600;
-    letter-spacing: var(--tracking-widest);
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
-  .round-hint {
-    max-width: 48ch;
-  }
-
-  .letter-stage {
-    display: grid;
-    align-content: start;
-    gap: var(--space-2);
-  }
-
-  .letter {
-    min-width: 2ch;
-    font-family: var(--font-display);
-    font-size: clamp(5rem, 18vw, 10rem);
-    line-height: 0.88;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    color: var(--text-primary);
-    font-feature-settings: "ss01" 1;
-  }
-
-  .hidden {
-    opacity: 0.18;
-  }
-
-  .letter.landing {
-    animation: letter-land var(--motion-slow) cubic-bezier(0.2, 1.1, 0.3, 1) both;
-  }
-
-  .round-timer {
-    display: grid;
-    gap: var(--space-2);
-    align-content: start;
-  }
-
-  .timer {
-    font-family: var(--font-numeric);
-    font-size: clamp(2.2rem, 7vw, 4rem);
-    line-height: 1;
-    font-weight: 500;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: var(--tracking-tight);
-  }
-
-  .timer.buffer {
-    color: var(--text-secondary);
-  }
-
-  .timer.running {
-    color: var(--text-primary);
-  }
-
-  .timer.done,
-  .status.done {
-    color: var(--accent-primary);
-    font-weight: 700;
-  }
-
-  .status {
-    font-size: 1rem;
-    font-weight: 700;
-    min-height: 1.5rem;
-  }
-
   .field-shell {
     display: grid;
     gap: var(--space-2);
     padding: var(--space-3);
   }
 
-  .session-settings {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .number-with-unit {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: var(--space-2);
-    align-items: center;
-  }
-
-  .primary-actions,
-  .secondary-actions {
-    grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
-  }
-
-  .button-primary,
   .btn-secondary,
   .footer-link,
   .modal-close {
     min-height: 2.75rem;
     padding: 0.8rem 1rem;
     font-weight: 700;
-  }
-
-  .button-primary {
-    width: 100%;
   }
 
   .btn-secondary {
@@ -272,8 +118,7 @@
     gap: var(--space-2);
   }
 
-  .custom-list,
-  .category-list {
+  .custom-list {
     display: grid;
     gap: var(--space-2);
     list-style: none;
@@ -281,10 +126,9 @@
     margin: 0;
   }
 
-  .custom-list li,
-  .category-list li {
+  .custom-list li {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: var(--space-3);
     padding: 0.85rem 0.95rem;
@@ -292,21 +136,6 @@
     background: var(--bg-soft);
   }
 
-  .custom-list li {
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-
-  .cat-index {
-    color: var(--accent-strong);
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .remove-btn {
-    padding-inline: 0.8rem;
-  }
-
-  .empty-state,
   .custom-empty,
   .modal-loading {
     padding: var(--space-3);
@@ -369,186 +198,6 @@
     pointer-events: none;
     background: color-mix(in srgb, var(--danger) 22%, transparent);
     animation: alarm-flash 520ms ease-in-out 4;
-  }
-
-  /* ─── App Rail (desktop left sidebar ≥ 64rem) ─────────────────── */
-  .app-rail {
-    position: relative;
-    z-index: 1;
-    display: none;
-    flex-direction: column;
-    gap: var(--space-6);
-    background: transparent;
-    overflow-y: auto;
-  }
-
-  @media (min-width: 64rem) {
-    .app-rail {
-      display: flex;
-    }
-  }
-
-  .app-rail__brand {
-    display: grid;
-    justify-items: start;
-    gap: var(--space-2);
-    padding: 0;
-    margin-bottom: var(--space-2);
-  }
-
-  .app-rail__brand-wordmark {
-    font-family: var(--font-display);
-    font-size: var(--text-md);
-    font-weight: 500;
-    letter-spacing: var(--tracking-widest);
-    text-transform: uppercase;
-    color: var(--text-primary);
-  }
-
-  .app-rail__section {
-    display: grid;
-    gap: var(--space-2);
-  }
-
-  .app-rail__section-title {
-    margin: 0;
-    font-size: var(--text-xs);
-    font-weight: 700;
-    letter-spacing: var(--tracking-widest);
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
-  .app-rail__stats {
-    display: grid;
-    gap: var(--space-2);
-  }
-
-  .rail-stat {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: baseline;
-    gap: var(--space-3);
-    padding: var(--space-3) 0;
-    border-radius: 0;
-    background: transparent;
-    border: 0;
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .rail-stat:last-child {
-    border-bottom: 0;
-  }
-
-  .rail-stat__icon {
-    display: grid;
-    place-items: center;
-    width: 1rem;
-    height: 1rem;
-    border-radius: 0;
-    background: transparent;
-    color: var(--text-muted);
-  }
-
-  .rail-stat__label {
-    font-size: var(--text-xs);
-    font-weight: 600;
-    color: var(--text-muted);
-    letter-spacing: var(--tracking-widest);
-    text-transform: uppercase;
-  }
-
-  .rail-stat__value {
-    font-family: var(--font-display);
-    font-variant-numeric: tabular-nums;
-    font-size: var(--text-xl);
-    font-weight: 500;
-    color: var(--text-primary);
-  }
-
-  .rail-tile {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    gap: var(--space-3);
-    padding: var(--space-2) 0;
-    border-radius: 0;
-    background: transparent;
-    border: 0;
-    color: var(--text-primary);
-    cursor: pointer;
-    font-family: inherit;
-    text-align: left;
-    transition: color var(--duration-fast) var(--ease-out);
-  }
-
-  .rail-tile:hover {
-    color: var(--accent-primary);
-  }
-
-  .rail-tile:focus-visible {
-    outline: 2px solid var(--accent-primary);
-    outline-offset: 2px;
-  }
-
-  .rail-tile__icon {
-    display: grid;
-    place-items: center;
-    width: 1rem;
-    height: 1rem;
-    border-radius: 0;
-    background: transparent;
-    color: var(--text-muted);
-  }
-
-  .rail-tile__label {
-    font-family: var(--font-display);
-    font-size: var(--text-md);
-    font-weight: 500;
-    letter-spacing: var(--tracking-tight);
-  }
-
-  .rail-tile__badge {
-    font-family: var(--font-numeric);
-    font-variant-numeric: tabular-nums;
-    font-size: var(--text-xs);
-    font-weight: 600;
-    color: var(--text-muted);
-    letter-spacing: var(--tracking-wide);
-  }
-
-  .app-rail__actions {
-    display: flex;
-    gap: var(--space-2);
-  }
-
-  .app-rail__actions > * {
-    flex: 1 1 auto;
-  }
-
-  .app-rail__shortcuts-trigger {
-    margin-top: auto;
-    padding: var(--space-2) var(--space-3);
-    border: 0;
-    background: transparent;
-    color: var(--text-muted);
-    font-size: var(--text-xs);
-    font-weight: 600;
-    letter-spacing: var(--tracking-wide);
-    text-align: left;
-    cursor: pointer;
-    border-radius: var(--radius-sm);
-    transition: background var(--duration-fast) var(--ease-out);
-  }
-
-  .app-rail__shortcuts-trigger:hover {
-    background: color-mix(in oklch, var(--text-primary) 6%, transparent);
-    color: var(--text-primary);
-  }
-
-  .app-rail__shortcuts-trigger:focus-visible {
-    outline: 2px solid var(--accent-primary);
-    outline-offset: 2px;
   }
 
   /* Shortcuts list inside the Sheet */
@@ -716,23 +365,11 @@
   }
 
   @media (max-width: 51.99rem) {
-    .topbar__copy p,
-    .round-hint,
     .footer-privacy,
     .app-footer {
       display: none;
     }
 
-    .hero-stat {
-      padding: var(--space-2);
-    }
-
-    .hero-stat strong {
-      font-size: 1.2rem;
-    }
-
-    .utility-pill,
-    .button-primary,
     .btn-secondary,
     .footer-link {
       min-height: 2.6rem;

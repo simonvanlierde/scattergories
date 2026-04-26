@@ -106,7 +106,6 @@
     --z-sticky: 20;
     --z-drawer: 40;
     --z-modal: 100;
-    --z-toast: 200;
     --z-max: 1000;
   }
 
@@ -134,30 +133,12 @@
     --surface-10: oklch(18% 0.015 255); /* primary ink */
     --surface-11: oklch(13% 0.013 255); /* deepest ink */
 
-    /* Accent — ink navy (single muted accent; all three slots collapse toward
-       the same hue so legacy gradient tokens degrade gracefully) */
+    /* Accent — ink navy */
     --accent-primary: oklch(34% 0.11 260); /* ink navy */
     --accent-strong: oklch(26% 0.13 260); /* hover / pressed */
     --accent-soft: oklch(94% 0.035 260); /* tinted paper for selected rows */
     --accent-muted: oklch(55% 0.09 260); /* lifted navy */
     --accent-on: oklch(98.5% 0.008 85); /* paper text on navy */
-
-    /* Gradient tokens flattened to solid accents — no neon hero, no
-       traffic-light timer. Components that read them render uniformly. */
-    --gradient-hero: var(--accent-primary);
-    --gradient-timer-calm-start: var(--surface-4);
-    --gradient-timer-calm-end: var(--surface-4);
-    --gradient-timer-urgent-start: var(--accent-primary);
-    --gradient-timer-urgent-end: var(--accent-primary);
-
-    /* Glow tokens neutralized — editorial uses hairlines, not halos */
-    --elevation-glow-accent: 0 0 0 transparent;
-    --elevation-glow-accent-3: 0 0 0 transparent;
-    --glow-accent: transparent;
-    --glow-accent-2: transparent;
-
-    /* Grain removed; paper surface is uniform */
-    --grain-url: none;
 
     /* Semantic (muted, editorial — not candy colors) */
     --success: oklch(48% 0.12 150);
@@ -216,7 +197,6 @@
     --bg-strong: var(--accent-primary);
     --accent: var(--accent-primary);
     --border-soft: var(--border-subtle);
-    --page-glow: transparent;
     --shadow-soft: var(--elevation-2);
     --shadow-strong: var(--elevation-4);
     --motion-fast: var(--duration-fast);
@@ -254,24 +234,6 @@
     --accent-soft: oklch(28% 0.07 258 / 0.5);
     --accent-muted: oklch(58% 0.1 258);
     --accent-on: oklch(14% 0.015 70);
-
-    --accent-2: oklch(72% 0.1 250);
-    --accent-2-soft: oklch(28% 0.06 250 / 0.5);
-    --accent-3: oklch(70% 0.1 265);
-    --accent-3-strong: oklch(80% 0.12 265);
-    --accent-3-soft: oklch(28% 0.06 265 / 0.5);
-    --accent-3-on: oklch(14% 0.015 70);
-
-    --gradient-hero: var(--accent-primary);
-    --gradient-timer-calm-start: var(--surface-4);
-    --gradient-timer-calm-end: var(--surface-4);
-    --gradient-timer-urgent-start: var(--accent-primary);
-    --gradient-timer-urgent-end: var(--accent-primary);
-
-    --elevation-glow-accent: 0 0 0 transparent;
-    --elevation-glow-accent-3: 0 0 0 transparent;
-    --glow-accent: transparent;
-    --glow-accent-2: transparent;
 
     --success: oklch(72% 0.13 150);
     --success-soft: oklch(28% 0.07 150 / 0.5);
@@ -324,6 +286,5 @@
     --bg-strong: var(--accent-primary);
     --accent: var(--accent-primary);
     --border-soft: var(--border-subtle);
-    --page-glow: transparent;
   }
 }

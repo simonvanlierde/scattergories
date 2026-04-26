@@ -1,6 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect } from '@playwright/test';
-import { GO, ROUND_STATE_TIMEOUT_MS } from '../src/test/constants';
 import { test } from './fixtures';
 
 const MINUTE_TO_MS = 60_000;
@@ -23,7 +22,7 @@ test('@smoke has no detectable accessibility violations during an active round',
 }) => {
   await app.toggleMute();
   await app.startRound();
-  await expect(app.roundStatus).toHaveText(GO, { timeout: ROUND_STATE_TIMEOUT_MS });
+  await app.expectRunning();
   await page.getByRole('button', { name: 'Pause' }).click();
   await expect(page.getByRole('button', { name: 'Resume', exact: true })).toBeVisible();
 
@@ -36,11 +35,7 @@ test('@smoke has no detectable accessibility violations with the prompt deck col
   app,
   page,
 }) => {
-  if ((await app.promptToggle.getAttribute('aria-expanded')) === 'true') {
-    await app.promptToggle.click();
-  }
-
-  await expect(app.promptToggle).toHaveAttribute('aria-expanded', 'false');
+  await app.collapseCategories();
 
   const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
 

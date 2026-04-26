@@ -1,10 +1,10 @@
 import { test as base, expect, type Locator, type Page } from '@playwright/test';
-import { SCATTERGORIES_HEADING } from '../src/test/constants';
+import { GO, ROUND_STATE_TIMEOUT_MS, SCATTERGORIES_HEADING } from '../src/test/constants';
 
 // spell-checker: ignore Configuración, Idioma
 
 type RoundButtonLabel = RegExp | string;
-const START_OR_NEXT_ROUND_BUTTON_LABEL = /Start Round|Next Round/;
+const START_OR_NEXT_ROUND_BUTTON_LABEL = /Start Round|Next letter/;
 const MUTE_BUTTON_LABEL = /Mute|Unmute/;
 const SETTINGS_DIALOG_NAME = /Settings|Configuración/i;
 const LANGUAGE_REGION_NAME = /Language|Idioma/i;
@@ -18,10 +18,13 @@ interface AppFixture {
   roundStatus: Locator;
   settingsDialog: Locator;
   closeSettings: () => Promise<void>;
+  collapseCategories: () => Promise<void>;
+  expectIdle: () => Promise<void>;
+  expectRunning: () => Promise<void>;
   openSettings: () => Promise<void>;
-  setRounds: (value: string) => Promise<void>;
   setTimer: (value: string) => Promise<void>;
   startRound: (label?: RoundButtonLabel) => Promise<void>;
+  startRoundSafely: (label?: RoundButtonLabel) => Promise<void>;
   switchLanguage: (language: string) => Promise<void>;
   toggleMute: () => Promise<void>;
   waitUntilReady: () => Promise<void>;
@@ -54,29 +57,39 @@ async function closeSettings(page: Page) {
 
 function createAppFixture(page: Page): AppFixture {
   const settingsDialog = page.getByRole('dialog', { name: SETTINGS_DIALOG_NAME });
-  const readyHeading = page
-    .locator('h1, .app-rail__brand-wordmark')
-    .filter({ hasText: SCATTERGORIES_HEADING })
-    .first();
+  const readyHeading = page.getByRole('heading', { name: SCATTERGORIES_HEADING });
+  const currentLetter = page.getByTestId('current-letter');
+  const promptToggle = page.locator('button[aria-controls="categories-panel-content"]');
+  const roundStatus = page.getByTestId('round-status');
 
   return {
-    currentLetter: page.getByTestId('current-letter'),
+    currentLetter,
     page,
-    promptToggle: page.locator('button[aria-controls="categories-panel-content"]'),
+    promptToggle,
     readyHeading,
     roundClock: page.getByTestId('round-clock'),
-    roundStatus: page.getByTestId('round-status'),
+    roundStatus,
     settingsDialog,
     async closeSettings() {
       await closeSettings(page);
     },
+    async collapseCategories() {
+      if ((await promptToggle.getAttribute('aria-expanded')) === 'true') {
+        await promptToggle.click();
+      }
+      await expect(promptToggle).toHaveAttribute('aria-expanded', 'false');
+    },
+    async expectIdle() {
+      await expect(
+        page.getByRole('button', { name: START_OR_NEXT_ROUND_BUTTON_LABEL }),
+      ).toBeVisible();
+    },
+    async expectRunning() {
+      await expect(roundStatus).toHaveText(GO, { timeout: ROUND_STATE_TIMEOUT_MS });
+      await expect(currentLetter).toBeVisible();
+    },
     async openSettings() {
       await openSettings(page);
-    },
-    async setRounds(value: string) {
-      await openSettings(page);
-      await fillNumericField(settingsDialog.getByLabel('Rounds', { exact: true }), value);
-      await closeSettings(page);
     },
     async setTimer(value: string) {
       await openSettings(page);
@@ -84,7 +97,14 @@ function createAppFixture(page: Page): AppFixture {
       await closeSettings(page);
     },
     async startRound(label: RoundButtonLabel = START_OR_NEXT_ROUND_BUTTON_LABEL) {
-      await page.getByRole('button', { name: label }).click();
+      const startButton = page.getByRole('button', { name: label });
+      await startButton.scrollIntoViewIfNeeded();
+      await startButton.click();
+    },
+    async startRoundSafely(label: RoundButtonLabel = START_OR_NEXT_ROUND_BUTTON_LABEL) {
+      const startButton = page.getByRole('button', { name: label });
+      await startButton.scrollIntoViewIfNeeded();
+      await startButton.click();
     },
     async switchLanguage(language: string) {
       await openSettings(page);

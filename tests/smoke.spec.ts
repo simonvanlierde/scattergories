@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { GO, ROUND_STATE_TIMEOUT_MS, TITLE } from '../src/test/constants';
+import { TITLE } from '../src/test/constants';
 import { test } from './fixtures';
 
 const MOBILE_VIEWPORT_MAX_WIDTH = 832;
@@ -16,7 +16,7 @@ test('@smoke loads with the correct title and primary controls', async ({ app, p
   await expect(page.getByRole('button', { name: 'How to Play' })).toBeVisible();
   await app.openSettings();
   await expect(app.settingsDialog.getByLabel('Timer', { exact: true })).toHaveValue('90');
-  await expect(app.settingsDialog.getByLabel('Rounds', { exact: true })).toHaveValue('3');
+  await expect(app.settingsDialog.getByLabel('Rounds', { exact: true })).toHaveCount(0);
   await app.closeSettings();
 });
 
@@ -48,6 +48,7 @@ test('@smoke keeps prompts in the categories panel and uses the expected prompt 
   }
 
   await expect(categoriesPanel.getByRole('button', { name: 'Shuffle' })).toBeVisible();
+  await expect(categoriesPanel.getByRole('button', { name: 'Pin categories' })).toBeVisible();
   await expect(categoriesPanel.getByRole('button', { name: 'Customize deck' })).toBeVisible();
   await expect(categoriesPanel.getByText(SOURCE_SUMMARY_PATTERN)).toHaveCount(0);
   await expect(categoriesPanel.getByText(DRAW_SUMMARY_PATTERN)).toHaveCount(0);
@@ -58,7 +59,6 @@ test('@smoke starts a round and reaches a stable running state', async ({ app })
   await app.toggleMute();
   await app.startRound();
 
-  await expect(app.roundStatus).toHaveText(GO, { timeout: ROUND_STATE_TIMEOUT_MS });
-  await expect(app.currentLetter).toBeVisible();
+  await app.expectRunning();
   await expect(app.roundClock).toHaveText(ROUND_CLOCK_PATTERN);
 });

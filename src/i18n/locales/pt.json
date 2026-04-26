@@ -9,7 +9,6 @@
     "letterLabel": "Letra atual",
     "timerLabel": "Relógio da rodada"
   },
-  "roundCounter": "Rodada {{current}} de {{total}}",
   "buttons": {
     "startRound": "Iniciar Rodada",
     "nextRound": "Próxima Rodada",
@@ -18,7 +17,6 @@
     "reset": "⟲ Reiniciar",
     "pause": "Pausa",
     "resume": "Retomar",
-    "newGame": "Novo Jogo",
     "mute": "Mudo",
     "unmute": "Ativar Som",
     "skipLetterTooltip": "Escolher uma letra aleatória diferente para esta rodada",
@@ -35,15 +33,13 @@
     "timeUp": "Tempo esgotado!",
     "getReady": "Prepare-se...",
     "go": "Vai!",
-    "roundOver": "Rodada encerrada!",
-    "gameCompleteRound": "Rodada encerrada! Jogo finalizado."
+    "roundOver": "Rodada encerrada!"
   },
   "status": {
     "seconds": "segundos"
   },
   "settings": {
     "duration": "Temporizador",
-    "rounds": "Número de rodadas",
     "categorySource": "Fonte",
     "categoryDraw": "Sorteio",
     "addCustom": "Categoria personalizada",
@@ -62,11 +58,13 @@
     "showDeck": "Abrir temas",
     "hideDeck": "Ocultar temas",
     "summaryMode": "Fonte: {{mode}}",
-    "summaryDraw": "Sorteio: {{count}}"
+    "summaryDraw": "Sorteio: {{count}}",
+    "pin": "Fixar categorias",
+    "unpin": "Desafixar categorias"
   },
   "usedLetters": "Letras usadas: {{letters}}{{empty}}",
   "usedLettersEmpty": "Nenhuma",
-  "shortcuts": "Atalhos: Espaço iniciar, R pular letra, P pausa, N novo jogo, C mostrar temas, A adicionar categoria",
+  "shortcuts": "Atalhos: Espaço iniciar, R pular letra, P pausa, C mostrar temas, A adicionar categoria",
   "footer": {
     "howToPlay": "Como Jogar",
     "officialGame": "Jogo Oficial",
@@ -97,7 +95,7 @@
     "featuresList": [
       "Use o botão Pular Letra (ou aperte R) se uma letra for muito difícil",
       "Ative a Pausa (aperte P) durante a rodada para pensar",
-      "Ajuste a duração e o número de rodadas nas Configurações",
+      "Ajuste a duração do temporizador nas configurações",
       "Silencie o som se desejar",
       "Todas as configurações são salvas automaticamente"
     ],

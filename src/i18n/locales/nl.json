@@ -9,7 +9,6 @@
     "letterLabel": "Huidige letter",
     "timerLabel": "Rondeklok"
   },
-  "roundCounter": "Ronde {{current}} van {{total}}",
   "buttons": {
     "startRound": "Start Ronde",
     "nextRound": "Volgende Ronde",
@@ -18,7 +17,6 @@
     "reset": "⟲ Resetten",
     "pause": "Pauze",
     "resume": "Hervatten",
-    "newGame": "Nieuw Spel",
     "mute": "Dempen",
     "unmute": "Geluid Aan",
     "skipLetterTooltip": "Kies een andere willekeurige letter voor deze ronde",
@@ -35,15 +33,13 @@
     "timeUp": "Tijd om!",
     "getReady": "Maak je klaar...",
     "go": "Gaan!",
-    "roundOver": "Ronde voorbij!",
-    "gameCompleteRound": "Ronde voorbij! Spel voltooid."
+    "roundOver": "Ronde voorbij!"
   },
   "status": {
     "seconds": "seconden"
   },
   "settings": {
     "duration": "Timer",
-    "rounds": "Aantal rondes",
     "categorySource": "Bron",
     "categoryDraw": "Loting",
     "addCustom": "Eigen categorie",
@@ -62,11 +58,13 @@
     "showDeck": "Categorieën openen",
     "hideDeck": "Categorieën verbergen",
     "summaryMode": "Bron: {{mode}}",
-    "summaryDraw": "Loting: {{count}}"
+    "summaryDraw": "Loting: {{count}}",
+    "pin": "Categorieën vastzetten",
+    "unpin": "Categorieën losmaken"
   },
   "usedLetters": "Gebruikte letters: {{letters}}{{empty}}",
   "usedLettersEmpty": "Geen",
-  "shortcuts": "Sneltoetsen: Spatie starten, R nieuwe letter, P pauze, N nieuw spel, C categorieën tonen, A categorie toevoegen",
+  "shortcuts": "Sneltoetsen: Spatie starten, R nieuwe letter, P pauze, C categorieën tonen, A categorie toevoegen",
   "footer": {
     "howToPlay": "Hoe te spelen",
     "officialGame": "Officieel Spel",
@@ -97,7 +95,7 @@
     "featuresList": [
       "Gebruik 'Andere Letter' (of druk op R) als een letter te moeilijk is",
       "Gebruik de Pauze (of druk op P) tijdens een ronde om na te denken",
-      "Pas de timer en het aantal rondes aan in de Instellingen",
+      "Pas de duur van de timer aan in Instellingen",
       "Je kunt het geluid op elk moment dempen",
       "Alle instellingen worden automatisch opgeslagen"
     ],

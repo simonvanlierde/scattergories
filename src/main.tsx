@@ -1,7 +1,7 @@
 import '@vitejs/plugin-react/preamble';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { App } from './App.tsx';
+import { App } from '@/app/App';
 import './index.css';
 
 const rootElement = document.getElementById('root');

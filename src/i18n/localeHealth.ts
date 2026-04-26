@@ -1,4 +1,4 @@
-import { getLocaleWeightManifest } from '../game/localeWeights';
+import { getLocaleWeightManifest } from '@/domain/game/localeWeights';
 import { FALLBACK_LOCALE, normalizeLocale, SUPPORTED_LOCALES } from './localeRegistry';
 import { hasLocaleResources } from './locales/resources';
 

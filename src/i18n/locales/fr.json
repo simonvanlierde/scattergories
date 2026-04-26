@@ -9,7 +9,6 @@
     "letterLabel": "Lettre actuelle",
     "timerLabel": "Chrono de manche"
   },
-  "roundCounter": "Manche {{current}} sur {{total}}",
   "buttons": {
     "startRound": "Démarrer la manche",
     "nextRound": "Manche suivante",
@@ -18,7 +17,6 @@
     "reset": "⟲ Réinitialiser",
     "pause": "Pause",
     "resume": "Reprendre",
-    "newGame": "Nouvelle partie",
     "mute": "Muet",
     "unmute": "Son activé",
     "skipLetterTooltip": "Obtenir une autre lettre aléatoire pour cette manche",
@@ -35,15 +33,13 @@
     "timeUp": "Temps écoulé !",
     "getReady": "Préparez-vous...",
     "go": "C'est parti !",
-    "roundOver": "Manche terminée !",
-    "gameCompleteRound": "Manche terminée ! Partie finie."
+    "roundOver": "Manche terminée !"
   },
   "status": {
     "seconds": "secondes"
   },
   "settings": {
     "duration": "Chronomètre",
-    "rounds": "Nombre de manches",
     "categorySource": "Source",
     "categoryDraw": "Tirage",
     "addCustom": "Ajouter une catégorie",
@@ -62,11 +58,13 @@
     "showDeck": "Ouvrir les thèmes",
     "hideDeck": "Masquer les thèmes",
     "summaryMode": "Source : {{mode}}",
-    "summaryDraw": "Tirage : {{count}}"
+    "summaryDraw": "Tirage : {{count}}",
+    "pin": "Épingler les catégories",
+    "unpin": "Désépingler les catégories"
   },
   "usedLetters": "Lettres utilisées : {{letters}}{{empty}}",
   "usedLettersEmpty": "Aucune pour l'instant",
-  "shortcuts": "Raccourcis : Espace démarrer, R passer lettre, P pause, N nouvelle partie, C afficher les thèmes, A ajouter catégorie",
+  "shortcuts": "Raccourcis : Espace démarrer, R passer lettre, P pause, C afficher les thèmes, A ajouter catégorie",
   "footer": {
     "howToPlay": "Comment jouer",
     "officialGame": "Jeu Officiel",
@@ -97,7 +95,7 @@
     "featuresList": [
       "Utilisez le bouton de changement de lettre (ou R) pour en obtenir une nouvelle",
       "Utilisez la Pause (ou P) pendant une manche pour réfléchir",
-      "Ajustez la durée et le nombre de manches dans les Paramètres",
+      "Ajustez la durée du minuteur dans les paramètres",
       "Coupez le son si nécessaire",
       "Tous les réglages sont sauvegardés automatiquement"
     ],

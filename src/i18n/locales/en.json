@@ -3,8 +3,8 @@
   "hero": {
     "eyebrow": "Party game companion",
     "description": "Run the letter, keep the clock moving, and play without the clutter.",
-    "metaLabel": "Session pace",
-    "statsLabel": "Session stats"
+    "metaLabel": "Round timer",
+    "statsLabel": "Round stats"
   },
   "round": {
     "panelEyebrow": "Round console",
@@ -16,19 +16,18 @@
     "title": "Keep the round moving",
     "body": "Start, pause, reroll, and tune pacing without leaving the board.",
     "group": "Round controls",
-    "settingsLegend": "Session settings"
+    "roundGroup": "Round controls",
+    "audioGroup": "Audio controls",
+    "settingsLegend": "Round settings"
   },
-  "roundCounter": "Session round {{current}} of {{total}}",
   "buttons": {
     "startRound": "Start Round",
-    "nextRound": "Next Round",
+    "nextRound": "Next letter",
     "spinning": "Spinning...",
     "skipLetter": "Skip Letter",
     "reset": "⟲ Reset",
     "pause": "Pause",
     "resume": "Resume",
-    "newGame": "New Game",
-    "newSession": "New Session",
     "mute": "Mute",
     "unmute": "Unmute",
     "skipLetterTooltip": "Get a different random letter for this round",
@@ -45,23 +44,21 @@
     "timeUp": "Time's up!",
     "getReady": "Get ready...",
     "go": "Go!",
-    "roundOver": "Round over!",
-    "gameCompleteRound": "Round over! Session complete."
+    "roundOver": "Round over!"
   },
   "status": {
     "seconds": "seconds"
   },
   "settings": {
     "duration": "Timer",
-    "rounds": "Rounds",
     "categorySource": "Source",
     "categoryDraw": "Draw",
     "addCustom": "Add custom category",
     "placeholder": "e.g. Programming Languages",
     "sheetTitle": "Settings",
     "openLabel": "Settings",
-    "sessionTitle": "Round pace",
-    "lockedHint": "Finish or reset the round to edit"
+    "lockedHint": "Finish or reset the round to edit",
+    "roundTimerTitle": "Round timer"
   },
   "packs": {
     "sectionTitle": "Category pack",
@@ -98,94 +95,30 @@
     "hint": "Tap anywhere to resume",
     "resumeLabel": "Paused — tap to resume"
   },
-  "settings.achievementsTitle": "Achievements",
-  "achievements": {
-    "unlocked": "Achievement unlocked",
-    "firstRound": {
-      "label": "First round",
-      "description": "Played your very first round."
-    },
-    "fullSweep": {
-      "label": "Session finisher",
-      "description": "Finished a full session."
-    },
-    "weekWarrior": {
-      "label": "Week warrior",
-      "description": "Played on 7 consecutive days."
-    },
-    "alphabetHunter": {
-      "label": "Alphabet hunter",
-      "description": "Seen all 26 letters at least once."
-    },
-    "veteran": {
-      "label": "Veteran",
-      "description": "Completed 25 sessions."
-    }
-  },
   "rail": {
-    "label": "Side rail",
-    "stats": {
-      "title": "Your stats",
-      "games": "Games",
-      "sessions": "Sessions",
-      "streak": "Streak",
-      "best": "Best marks",
-      "rounds": "Rounds"
-    },
-    "achievements": {
-      "title": "Achievements"
-    },
     "shortcuts": {
       "title": "Keyboard shortcuts",
       "hint": "Keyboard shortcuts · ?",
       "space": "Start or advance a round",
       "r": "Re-roll the current letter",
       "p": "Pause or resume",
-      "n": "New session — re-draw categories",
       "c": "Toggle the categories panel",
       "a": "Add a custom category",
       "help": "Open this shortcut list"
     }
   },
-  "onboarding": {
-    "label": "Getting started",
-    "title": "Welcome to Scattergories",
-    "body": "Hit Start to roll a letter, beat the clock, and work through the drawn categories with as little app clutter as possible.",
-    "dismiss": "Got it",
-    "next": "Next",
-    "letsPlay": "Let's play",
-    "progress": "Progress",
-    "steps": {
-      "roll": {
-        "title": "Roll a letter",
-        "body": "Hit Start to spin up a random letter for the round."
-      },
-      "beat": {
-        "title": "Beat the clock",
-        "body": "Call out an answer for each category before time runs out."
-      },
-      "mark": {
-        "title": "Keep the prompts steady",
-        "body": "Stay on the same category list for the full session, then redraw when you want a reset."
-      }
-    }
-  },
   "roundEnd": {
     "label": "Round summary",
     "title": "Time's up!",
-    "gameComplete": "Session complete!",
     "letterWas": "Letter was",
-    "roundSummary": "Round {{current}} of {{total}}",
-    "nextRound": "Next round",
-    "playAgain": "New session",
+    "nextRound": "Next letter",
     "stats": {
-      "round": "Round",
-      "sessions": "Sessions",
+      "rounds": "Rounds",
       "streak": "Streak"
     },
     "share": "Share",
     "shareCopied": "Copied!",
-    "shareBody": "Scattergories — letter {{letter}}, round {{round}} of {{totalRounds}}."
+    "shareBody": "Scattergories — letter {{letter}}."
   },
   "categories": {
     "title": "Categories",
@@ -203,11 +136,13 @@
     "summaryMode": "Source: {{mode}}",
     "summaryDraw": "Draw: {{count}}",
     "customize": "Customize deck",
-    "customizeTitle": "Customize deck"
+    "customizeTitle": "Customize deck",
+    "pin": "Pin categories",
+    "unpin": "Unpin categories"
   },
   "usedLetters": "Used letters: {{letters}}{{empty}}",
   "usedLettersEmpty": "None yet",
-  "shortcuts": "Shortcuts: Space start, R skip letter, P pause, N new session, C toggle categories, A add custom",
+  "shortcuts": "Shortcuts: Space start, R skip letter, P pause, C toggle categories, A add custom",
   "footer": {
     "howToPlay": "How to Play",
     "officialGame": "Official Game",
@@ -238,12 +173,12 @@
     "featuresList": [
       "Use the Skip Letter button (or press R) to get a new letter",
       "Toggle Pause (press P) during a round to think",
-      "Adjust timer duration and rounds per session in Settings",
+      "Adjust timer duration in Settings",
       "Mute sound if needed",
       "All settings are saved automatically"
     ],
     "loading": "Opening rules…",
-    "footer": "This is a lightweight session companion for letters, timing, and prompts. Have fun with friends!"
+    "footer": "This is a lightweight round companion for letters, timing, and prompts. Have fun with friends!"
   },
   "language": {
     "label": "Language",
@@ -262,7 +197,7 @@
     "chunkBody": "One of the interface chunks changed while the app was open. Reload to continue safely.",
     "boundaryEyebrow": "Recovery mode",
     "boundaryTitle": "Something went wrong.",
-    "boundaryBody": "Reload the app to reset the current session and continue playing.",
+    "boundaryBody": "Reload the app to reset the current round and continue playing.",
     "reload": "Reload app"
   }
 }

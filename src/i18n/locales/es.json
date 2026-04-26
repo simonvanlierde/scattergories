@@ -9,7 +9,6 @@
     "letterLabel": "Letra actual",
     "timerLabel": "Reloj de ronda"
   },
-  "roundCounter": "Ronda {{current}} de {{total}}",
   "buttons": {
     "startRound": "Empezar Ronda",
     "nextRound": "Siguiente Ronda",
@@ -18,7 +17,6 @@
     "reset": "⟲ Reiniciar",
     "pause": "Pausa",
     "resume": "Reanudar",
-    "newGame": "Nueva Partida",
     "mute": "Silenciar",
     "unmute": "Activar Sonido",
     "shuffle": "Mezclar",
@@ -35,15 +33,13 @@
     "timeUp": "¡Tiempo agotado!",
     "getReady": "Prepárate...",
     "go": "¡Ya!",
-    "roundOver": "¡Ronda terminada!",
-    "gameCompleteRound": "¡Ronda terminada! Partida completada."
+    "roundOver": "¡Ronda terminada!"
   },
   "status": {
     "seconds": "segundos"
   },
   "settings": {
     "duration": "Temporizador",
-    "rounds": "Número de rondas",
     "categorySource": "Fuente",
     "categoryDraw": "Sorteo",
     "addCustom": "Añadir categoría propia",
@@ -62,11 +58,13 @@
     "showDeck": "Abrir temas",
     "hideDeck": "Ocultar temas",
     "summaryMode": "Fuente: {{mode}}",
-    "summaryDraw": "Sorteo: {{count}}"
+    "summaryDraw": "Sorteo: {{count}}",
+    "pin": "Fijar categorías",
+    "unpin": "Desfijar categorías"
   },
   "usedLetters": "Letras usadas: {{letters}}{{empty}}",
   "usedLettersEmpty": "Ninguna",
-  "shortcuts": "Atajos: Espacio empezar, R saltar letra, P pausa, N nueva partida, C mostrar temas, A añadir propia",
+  "shortcuts": "Atajos: Espacio empezar, R saltar letra, P pausa, C mostrar temas, A añadir propia",
   "footer": {
     "howToPlay": "Cómo Jugar",
     "officialGame": "Juego Oficial",
@@ -97,7 +95,7 @@
     "featuresList": [
       "Usa el botón de Saltar Letra (o pulsa R) si una letra es muy difícil",
       "Activa la Pausa (pulsa P) durante la ronda para pensar",
-      "Ajusta la duración y el número de rondas en Configuración",
+      "Ajusta la duración del temporizador en Ajustes",
       "Silencia el sonido si es necesario",
       "Todos los ajustes se guardan automáticamente"
     ],

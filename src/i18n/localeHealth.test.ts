@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { LETTER_WEIGHTS_BY_LOCALE, LOCALE_WEIGHT_MANIFEST } from '../game/localeWeights';
+import { LETTER_WEIGHTS_BY_LOCALE, LOCALE_WEIGHT_MANIFEST } from '@/domain/game/localeWeights';
 import {
   getBootstrapLocaleWarning,
   getEnabledLocales,

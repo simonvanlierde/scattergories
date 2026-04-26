@@ -45,7 +45,6 @@
     align-items: center;
   }
 
-  .round-card,
   .categories-card {
     border: 1px solid var(--rule);
     border-radius: var(--radius-md);
@@ -79,22 +78,16 @@
     min-width: 0;
   }
 
-  .topbar__copy {
-    display: grid;
+  .topbar__actions {
+    display: flex;
+    align-items: center;
+    justify-content: end;
     gap: var(--space-2);
   }
 
-  .topbar__stats,
-  .utility-rail,
-  .categories-meta,
   .category-toolbar,
   .app-footer,
-  .app-footer__links,
-  .session-settings,
-  .primary-actions,
-  .secondary-actions,
-  .round-console__top,
-  .round-console__main {
+  .app-footer__links {
     display: grid;
     gap: var(--space-3);
   }
@@ -108,7 +101,6 @@
     overscroll-behavior: contain;
   }
 
-  .round-card,
   .categories-card {
     min-height: 0;
   }
@@ -150,17 +142,11 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .custom-list,
-  .category-list {
+  .custom-list {
     min-height: 0;
   }
 
   .custom-list {
-    overflow: auto;
-  }
-
-  .category-list {
-    height: 100%;
     overflow: auto;
   }
 
@@ -180,28 +166,13 @@
 
   @media (min-width: 64rem) {
     .app-shell {
-      display: grid;
-      grid-template-columns: 15rem minmax(0, 1fr);
-      align-items: stretch;
+      display: block;
     }
 
     .app {
-      grid-column: 2;
       width: min(100% - 2rem, 72rem);
       padding-left: max(env(safe-area-inset-left, 0px), 0px);
       padding-right: max(env(safe-area-inset-right, 0px), 0px);
-    }
-
-    .app-rail {
-      grid-column: 1;
-      grid-row: 1;
-      position: sticky;
-      top: 0;
-      max-height: 100dvh;
-      padding: calc(var(--space-6) + env(safe-area-inset-top, 0px)) var(--space-5)
-        calc(var(--space-6) + env(safe-area-inset-bottom, 0px))
-        calc(var(--space-5) + env(safe-area-inset-left, 0px));
-      border-right: 1px solid var(--rule);
     }
   }
 
@@ -213,48 +184,11 @@
 
     .topbar {
       grid-template-columns: minmax(0, 1.3fr) auto;
-      grid-template-areas:
-        "brand stats"
-        "brand utility";
-    }
-
-    .topbar__brand {
-      grid-area: brand;
-    }
-
-    .topbar__stats {
-      grid-area: stats;
-      grid-template-columns: repeat(3, minmax(6.5rem, 1fr));
-    }
-
-    .utility-rail {
-      grid-area: utility;
-      grid-auto-flow: column;
-      justify-content: end;
-      align-items: center;
-    }
-
-    /* On desktop, the rail owns the brand + navigation; drop the top bar */
-    @media (min-width: 64rem) {
-      .topbar {
-        display: none;
-      }
     }
 
     .play-grid {
       grid-template-columns: minmax(0, 1.2fr) minmax(22rem, 0.9fr);
       min-height: min(42rem, calc(100dvh - 18rem));
-    }
-
-    .round-card {
-      display: grid;
-      grid-template-rows: auto minmax(0, 1fr) auto auto auto;
-      gap: var(--space-4);
-    }
-
-    .round-console__main {
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: end;
     }
 
     .app-footer {
@@ -274,22 +208,6 @@
       gap: var(--space-3);
     }
 
-    .topbar__stats {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .utility-rail {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .utility-pill--select {
-      grid-column: 1 / -1;
-    }
-
-    .session-settings {
-      grid-template-columns: 1fr;
-    }
-
     .categories-card__content {
       max-height: min(28rem, 44dvh);
     }
@@ -300,20 +218,17 @@
 
     .play-grid {
       align-content: start;
+      grid-auto-rows: max-content;
       padding-right: 0.1rem;
     }
 
-    .round-card,
+    .playmat,
     .categories-card {
       position: relative;
     }
 
-    .round-card {
-      z-index: 1;
-    }
-
     .topbar,
-    .round-card,
+    .playmat,
     .categories-card,
     .app-footer {
       padding: var(--space-4);

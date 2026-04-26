@@ -9,7 +9,6 @@
     "letterLabel": "Lettera attuale",
     "timerLabel": "Timer del round"
   },
-  "roundCounter": "Round {{current}} di {{total}}",
   "buttons": {
     "startRound": "Inizia Round",
     "nextRound": "Prossimo Round",
@@ -18,7 +17,6 @@
     "reset": "⟲ Ripristina",
     "pause": "Pausa",
     "resume": "Riprendi",
-    "newGame": "Nuova Partita",
     "mute": "Muta",
     "unmute": "Attiva Audio",
     "skipLetterTooltip": "Scegli un'altra lettera casuale per questo round",
@@ -35,15 +33,13 @@
     "timeUp": "Tempo scaduto!",
     "getReady": "Preparati...",
     "go": "Via!",
-    "roundOver": "Round terminato!",
-    "gameCompleteRound": "Round terminato! Partita completata."
+    "roundOver": "Round terminato!"
   },
   "status": {
     "seconds": "secondi"
   },
   "settings": {
     "duration": "Timer",
-    "rounds": "Numero di round",
     "categorySource": "Fonte",
     "categoryDraw": "Sorteggio",
     "addCustom": "Aggiungi categoria",
@@ -62,11 +58,13 @@
     "showDeck": "Apri prompt",
     "hideDeck": "Nascondi prompt",
     "summaryMode": "Fonte: {{mode}}",
-    "summaryDraw": "Sorteggio: {{count}}"
+    "summaryDraw": "Sorteggio: {{count}}",
+    "pin": "Fissa categorie",
+    "unpin": "Sblocca categorie"
   },
   "usedLetters": "Lettere usate: {{letters}}{{empty}}",
   "usedLettersEmpty": "Nessuna",
-  "shortcuts": "Scorciatoie: Spazio avvia, R salta lettera, P pausa, N nuova partita, C mostra prompt, A aggiungi categoria",
+  "shortcuts": "Scorciatoie: Spazio avvia, R salta lettera, P pausa, C mostra prompt, A aggiungi categoria",
   "footer": {
     "howToPlay": "Come Giocare",
     "officialGame": "Gioco Ufficiale",
@@ -97,7 +95,7 @@
     "featuresList": [
       "Usa il tasto Salta Lettera (o premi R) se una lettera è troppo difficile",
       "Usa la Pausa (premi P) durante il round per pensare",
-      "Regola la durata e il numero di round nelle Impostazioni",
+      "Regola la durata del timer nelle impostazioni",
       "Disattiva l'audio se necessario",
       "Tutte le impostazioni vengono salvate automaticamente"
     ],
