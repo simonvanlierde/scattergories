@@ -1,7 +1,6 @@
 """Shared fixtures and builders for the tools test suite."""
 
 import json
-from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Protocol, cast
 
 import pytest
@@ -10,6 +9,7 @@ from typer.testing import CliRunner
 from scattergories_tools.shared.paths import RepoPaths
 from scattergories_tools.shared.registry import LocaleRegistry, load_locale_registry
 from scattergories_tools.weights.analyze import LetterRow, LocaleAnalysis, SampleAnalysis
+from tests.fakes import FakeProviderFactory, FakeTranslationProvider
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -22,37 +22,6 @@ class RegistryFixture(Protocol):
     """Typed helper that writes and loads a registry payload."""
 
     def __call__(self, payload: RegistryPayload | None = None) -> LocaleRegistry: ...  # noqa: D102 # Simple override of the full registry fixture interface
-
-
-class TranslationProviderLike(Protocol):
-    """Subset of the fake provider interface used by the tests."""
-
-    calls: list[tuple[str, str, str]]
-
-    def translate(self, from_locale: str, to_locale: str, text: str) -> str: ...  # noqa: D102 # Simple override of the full provider interface
-
-
-class FakeProviderFactory(Protocol):
-    """Factory that builds the fake translation provider used in tests."""
-
-    def __call__(  # noqa: D102 # Simple override of the full factory interface
-        self, translations: dict[tuple[str, str, str], str] | None = None
-    ) -> TranslationProviderLike: ...
-
-
-@dataclass
-class FakeTranslationProvider:
-    """Small fake translation provider that records calls."""
-
-    name: str = "fake"
-    translations: dict[tuple[str, str, str], str] = field(default_factory=dict)
-    calls: list[tuple[str, str, str]] = field(default_factory=list)
-
-    def translate(self, from_locale: str, to_locale: str, text: str) -> str:
-        """Record one translation call and return a deterministic value."""
-        key = (from_locale, to_locale, text)
-        self.calls.append(key)
-        return self.translations.get(key, f"{text}-{to_locale}")
 
 
 @pytest.fixture

@@ -3,6 +3,8 @@
 from typing import TYPE_CHECKING
 
 from scattergories_tools import cli
+from scattergories_tools.commands import weights
+from scattergories_tools.shared.context import AppContext
 from scattergories_tools.weights.analyze import LetterRow, LocaleAnalysis, SampleAnalysis
 
 if TYPE_CHECKING:
@@ -52,13 +54,14 @@ def test_weights_sample_preview(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Preview mode prints a stable sample summary without writes."""
-    monkeypatch.setattr(cli, "get_context", lambda: repo_context)
+    paths, registry = repo_context
+    monkeypatch.setattr(weights, "create_context", lambda: AppContext(paths, registry))
 
     def analyze_sample_dataset(dataset: str, *, hf_token: str | None = None) -> SampleAnalysis:
         del hf_token
         return _build_sample_analysis(sample_analysis_builder, dataset)
 
-    monkeypatch.setattr(cli, "analyze_sample_dataset", analyze_sample_dataset)
+    monkeypatch.setattr(weights, "analyze_sample_dataset", analyze_sample_dataset)
 
     result = runner.invoke(cli.app, ["weights", "sample"])
 
@@ -73,7 +76,8 @@ def test_weights_sample_rejects_unsupported_dataset(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Unknown datasets fail fast before analysis begins."""
-    monkeypatch.setattr(cli, "get_context", lambda: repo_context)
+    paths, registry = repo_context
+    monkeypatch.setattr(weights, "create_context", lambda: AppContext(paths, registry))
 
     result = runner.invoke(cli.app, ["weights", "sample", "--dataset", "unknown"])
 
@@ -88,14 +92,14 @@ def test_weights_sample_write_persists_ephemeral_outputs(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Write mode stores TSV and TypeScript outputs under the requested directory."""
-    paths, _registry = repo_context
-    monkeypatch.setattr(cli, "get_context", lambda: repo_context)
+    paths, registry = repo_context
+    monkeypatch.setattr(weights, "create_context", lambda: AppContext(paths, registry))
 
     def analyze_sample_dataset(dataset: str, *, hf_token: str | None = None) -> SampleAnalysis:
         del hf_token
         return _build_sample_analysis(sample_analysis_builder, dataset)
 
-    monkeypatch.setattr(cli, "analyze_sample_dataset", analyze_sample_dataset)
+    monkeypatch.setattr(weights, "analyze_sample_dataset", analyze_sample_dataset)
 
     result = runner.invoke(cli.app, ["weights", "sample", "--write"])
 
@@ -113,8 +117,9 @@ def test_weights_locales_preview_supports_multiple_locales(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Preview mode reports one summary block per selected locale."""
-    monkeypatch.setattr(cli, "get_context", lambda: repo_context)
-    monkeypatch.setattr(cli, "resolve_locales", _resolve_two_locales)
+    paths, registry = repo_context
+    monkeypatch.setattr(weights, "create_context", lambda: AppContext(paths, registry))
+    monkeypatch.setattr(weights, "resolve_locales", _resolve_two_locales)
 
     def analyze_locale(
         locale: str,
@@ -126,12 +131,12 @@ def test_weights_locales_preview_supports_multiple_locales(
         del registry, hf_token
         return _build_locale_analysis(locale_analysis_builder, locale, max_bytes)
 
-    monkeypatch.setattr(cli, "analyze_locale", analyze_locale)
+    monkeypatch.setattr(weights, "analyze_locale", analyze_locale)
 
     result = runner.invoke(cli.app, ["weights", "locales", "--locales", "en", "--locales", "es"])
 
     assert result.exit_code == 0
-    assert f"Source dataset: {cli.WIKIPEDIA_DATASET}" in result.stdout
+    assert f"Source dataset: {weights.WIKIPEDIA_DATASET}" in result.stdout
     assert "[en] total=4 rows=2 bytes=8" in result.stdout
     assert "[es] total=4 rows=2 bytes=8" in result.stdout
     assert "Preview only" in result.stdout
@@ -144,9 +149,9 @@ def test_weights_locales_write_updates_generated_app_file(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Write mode updates the generated letter-weight artifact."""
-    paths, _registry = repo_context
-    monkeypatch.setattr(cli, "get_context", lambda: repo_context)
-    monkeypatch.setattr(cli, "resolve_locales", _resolve_two_locales)
+    paths, registry = repo_context
+    monkeypatch.setattr(weights, "create_context", lambda: AppContext(paths, registry))
+    monkeypatch.setattr(weights, "resolve_locales", _resolve_two_locales)
 
     def analyze_locale(
         locale: str,
@@ -165,7 +170,7 @@ def test_weights_locales_write_updates_generated_app_file(
             max_bytes=max_bytes,
         )
 
-    monkeypatch.setattr(cli, "analyze_locale", analyze_locale)
+    monkeypatch.setattr(weights, "analyze_locale", analyze_locale)
 
     result = runner.invoke(
         cli.app,

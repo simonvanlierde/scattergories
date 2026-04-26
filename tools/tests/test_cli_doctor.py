@@ -3,6 +3,8 @@
 from typing import TYPE_CHECKING
 
 from scattergories_tools import cli
+from scattergories_tools.commands import doctor
+from scattergories_tools.shared.context import AppContext
 
 if TYPE_CHECKING:
     import pytest
@@ -11,7 +13,7 @@ if TYPE_CHECKING:
     from scattergories_tools.shared.paths import RepoPaths
     from scattergories_tools.shared.registry import LocaleRegistry
 
-    from .conftest import FakeProviderFactory
+    from .fakes import FakeProviderFactory
 
 
 def test_doctor_reports_missing_optional_bits(
@@ -20,14 +22,15 @@ def test_doctor_reports_missing_optional_bits(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Doctor exits non-zero when optional runtime pieces are missing."""
-    monkeypatch.setattr(cli, "get_context", lambda: repo_context)
+    paths, registry = repo_context
+    monkeypatch.setattr(doctor, "create_context", lambda: AppContext(paths, registry))
     monkeypatch.delenv("HF_TOKEN", raising=False)
 
     def fail_provider(_name: str) -> object:
         msg = "Argos missing for test"
         raise RuntimeError(msg)
 
-    monkeypatch.setattr(cli, "build_provider", fail_provider)
+    monkeypatch.setattr(doctor, "build_provider", fail_provider)
 
     result = runner.invoke(cli.app, ["doctor"])
 
@@ -44,8 +47,9 @@ def test_doctor_reports_healthy_environment(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Doctor succeeds when the repo layout and optional dependencies are ready."""
-    monkeypatch.setattr(cli, "get_context", lambda: repo_context)
-    monkeypatch.setattr(cli, "build_provider", lambda _name: fake_provider_factory())
+    paths, registry = repo_context
+    monkeypatch.setattr(doctor, "create_context", lambda: AppContext(paths, registry))
+    monkeypatch.setattr(doctor, "build_provider", lambda _name: fake_provider_factory())
     monkeypatch.setenv("HF_TOKEN", "token-for-test")
 
     result = runner.invoke(cli.app, ["doctor"])

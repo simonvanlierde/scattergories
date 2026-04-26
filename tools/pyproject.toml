@@ -1,6 +1,6 @@
 [build-system]
   build-backend = "uv_build"
-  requires      = ["uv_build>=0.11.7"]
+  requires      = ["uv_build>=0.11.7,<0.12"]
 
 [project]
   dependencies    = ['datasets>=4.8.4', 'tqdm>=4.67.0', 'typer>=0.16.0']
@@ -14,7 +14,7 @@
     sg-tools = 'scattergories_tools.cli:main'
 
 [dependency-groups]
-  dev         = ['pytest>=9.0.3', 'pytest-cov>=6.0.0', 'ruff>=0.15.10', 'ty>=0.0.29', "uv-build>=0.11.7"]
+  dev         = ['pytest>=9.0.3', 'pytest-cov>=6.0.0', 'ruff>=0.15.10', 'ty>=0.0.29', "uv-build>=0.11.7,<0.12"]
   translation = ['argostranslate>=1.9.6']
 
 [tool.pytest.ini_options]

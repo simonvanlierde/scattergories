@@ -1432,7 +1432,7 @@ dev = [
     { name = "pytest-cov", specifier = ">=6.0.0" },
     { name = "ruff", specifier = ">=0.15.10" },
     { name = "ty", specifier = ">=0.0.29" },
-    { name = "uv-build", specifier = ">=0.11.7" },
+    { name = "uv-build", specifier = ">=0.11.7,<0.12" },
 ]
 translation = [{ name = "argostranslate", specifier = ">=1.9.6" }]
 

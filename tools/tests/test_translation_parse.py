@@ -20,7 +20,7 @@ from scattergories_tools.translate.parse import (
 if TYPE_CHECKING:
     from pathlib import Path
 
-    from .conftest import FakeProviderFactory
+    from .fakes import FakeProviderFactory
 
 
 def test_load_category_names_uses_json_keys(tmp_path: Path) -> None:
