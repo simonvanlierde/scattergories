@@ -46,3 +46,4 @@ htmlcov/
 # Misc
 AGENTS.md
 .cspellcache
+.superpowers/

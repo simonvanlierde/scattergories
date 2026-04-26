@@ -19,6 +19,6 @@ pre-commit:
 
 pre-push:
   commands:
-    typecheck:
-      run: pnpm run typecheck
-      timeout: 1m
+    verify:
+      run: pnpm run verify
+      timeout: 10m

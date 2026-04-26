@@ -1,4 +1,5 @@
 // biome-ignore-all lint/style/noDefaultExport: Vite config must use the default export shape.
+
 import babel from '@rolldown/plugin-babel';
 import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import { configDefaults, defineConfig } from 'vitest/config';
@@ -11,6 +12,11 @@ export default defineConfig({
       presets: [reactCompilerPreset()],
     }),
   ],
+  resolve: {
+    alias: {
+      '@': new URL('./src', import.meta.url).pathname,
+    },
+  },
   build: {
     rolldownOptions: {
       output: {
@@ -37,7 +43,7 @@ export default defineConfig({
       include: ['src/**/*.ts', 'src/**/*.tsx'],
       exclude: ['src/main.tsx', 'src/vite-env.d.ts', 'src/setupTests.ts'],
       thresholds: {
-        'src/game/**/*.ts': {
+        'src/domain/game/**/*.ts': {
           lines: 95,
           functions: 100,
           branches: 90,

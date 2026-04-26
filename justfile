@@ -10,15 +10,13 @@ default:
 install:
     pnpm install --frozen-lockfile
 
-# Run the app verification pipeline (typecheck + spellcheck + lint + unit tests + build)
+# Run the app verification pipeline (check + unit tests + build + bundle budget)
 verify:
     pnpm run verify
 
-# Run app, tools, and infrastructure validation
-verify-full:
-    pnpm run verify
-    cd tools && just --justfile justfile check
-    pnpm run infra:check
+# Run the same local confidence suite as CI
+ci:
+    pnpm run ci
 
 # Audit dependencies for known security and adverse-status issues
 audit:
@@ -36,10 +34,6 @@ audit-all:
 # Run the full security audit suite
 security:
     just audit-all
-
-# Validate Docker/Compose/Caddy infrastructure locally
-infra-check:
-    pnpm run infra:check
 
 # Start the dev server
 dev:
@@ -110,23 +104,3 @@ tools-weights-locales:
 
 tools-translate-categories *locales:
     @just -f tools/justfile translate-categories {{ locales }}
-
-#----------------------
-# Docker deployment
-#----------------------
-
-# Start the docker deployment in the background (rebuilds if needed)
-up:
-    docker compose up -d --build
-
-# Start the docker deployment with the cloudflare tunnel profile
-up-tunnel:
-    docker compose --profile tunnel up -d --build
-
-# Stop the docker deployment (and the tunnel, if running)
-down:
-    docker compose --profile tunnel down
-
-# Tail the docker deployment logs
-logs:
-    docker compose logs -f

@@ -1,41 +1,13 @@
-name: Validate
+name: CI
 
 on:
   pull_request:
     branches: [main]
-    paths:
-      - 'biome.json'
-      - '.cspell.yml'
-      - 'index.html'
-      - 'justfile'
-      - 'lefthook.yml'
-      - 'README.md'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'public/**'
-      - 'scripts/ci/**'
-      - 'src/**'
-      - 'tests/**'
-      - 'tsconfig*.json'
-      - 'vite.config.*'
-      - '.github/workflows/ci.yml'
   push:
     branches: [main]
-    paths:
-      - 'biome.json'
-      - '.cspell.yml'
-      - 'index.html'
-      - 'lefthook.yml'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'public/**'
-      - 'scripts/ci/**'
-      - 'src/**'
-      - 'tests/**'
-      - 'tsconfig*.json'
-      - 'vite.config.*'
-      - '.github/workflows/ci.yml'
   workflow_dispatch:
+  schedule:
+    - cron: '24 4 * * 1'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -45,14 +17,12 @@ permissions:
   contents: read
 
 jobs:
-  ci:
-    name: Verify app
+  app:
+    name: App
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
 
       - uses: pnpm/action-setup@v6
 
@@ -62,31 +32,93 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
-      - name: Typecheck
-        run: pnpm run typecheck
+      - run: pnpm run typecheck
+      - run: pnpm run spellcheck
+      - run: pnpm run lint
+      - run: pnpm run test
+      - run: pnpm run build
+      - run: pnpm run budget
 
-      - name: Spellcheck changed files
-        if: github.event_name == 'pull_request'
-        shell: bash
-        run: |
-          mapfile -t changed_files < <(git diff --name-only --diff-filter=ACMRT "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}")
+  e2e-smoke:
+    name: E2E Smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: app
+    steps:
+      - uses: actions/checkout@v6
 
-          if [ "${#changed_files[@]}" -gt 0 ]; then
-            pnpm run spellcheck-changed -- "${changed_files[@]}"
-          fi
+      - uses: pnpm/action-setup@v6
 
-      - name: Spellcheck full repo
-        if: github.event_name != 'pull_request'
-        run: pnpm run spellcheck
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.13.0
+          cache: pnpm
 
-      - name: Lint
-        run: pnpm run lint
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
 
-      - name: Unit tests
-        run: pnpm run test
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
 
-      - name: Production build
-        run: pnpm run build
+      - name: Run smoke tests
+        run: pnpm run test:e2e:smoke
 
-      - name: Bundle budgets
-        run: pnpm run budget
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-report-smoke
+          path: playwright-report/
+          retention-days: 3
+
+  tools:
+    name: Tools
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: tools
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.14'
+          enable-cache: true
+          cache-dependency-glob: tools/uv.lock
+
+      - run: uv sync --locked
+      - run: uv run ruff check
+      - run: uv run ty check
+      - run: uv run pytest
+
+  full-e2e:
+    name: Full E2E
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    needs: app
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.13.0
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps
+
+      - name: Run full E2E suite
+        run: pnpm run test:e2e
+
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-report-full
+          path: playwright-report/
+          retention-days: 3

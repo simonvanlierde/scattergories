@@ -3,7 +3,6 @@ version: "0.2"
 language: en
 dictionaries:
   - cpp-compound-words
-  - docker
   - filetypes
   - npm
   - python-common

@@ -6,6 +6,17 @@
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
+    "paths": {
+      "@/*": ["src/*"],
+      "@/app/*": ["src/app/*"],
+      "@/domain/*": ["src/domain/*"],
+      "@/features/*": ["src/features/*"],
+      "@/i18n/*": ["src/i18n/*"],
+      "@/shared/*": ["src/shared/*"],
+      "@/test/*": ["src/test/*"]
+    },
     "noEmit": true,
     "skipLibCheck": true,
     "strict": true,

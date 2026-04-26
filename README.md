@@ -8,7 +8,7 @@ The app picks a letter, draws categories, tracks the round timer, and keeps cust
 
 - Draws a standard round with 12 categories by default
 - Rolls letters with locale-aware weighting so common, playable letters appear more often
-- Supports multiple rounds while keeping the current category selection
+- Redraws categories with each new letter by default, with an optional pinned category board
 - Lets players switch between built-in and custom categories
 - Works in 9 interface languages: English, German, Greek, Spanish, French, Italian, Dutch, Polish, and Portuguese
 - Stores settings and custom categories locally in the browser
@@ -23,7 +23,6 @@ The app picks a letter, draws categories, tracks the round timer, and keeps cust
 - Biome
 - Vitest
 - Playwright
-- Docker + Caddy for self-hosting
 
 ## Requirements
 
@@ -47,33 +46,35 @@ The Vite dev server starts on <http://localhost:5173>.
 ```bash
 pnpm build          # Type-check and build the production bundle
 pnpm check          # Type-check, spell-check, and lint
+pnpm verify         # Run the app pre-push suite
+pnpm run ci         # Run app and tools checks, matching CI confidence
 pnpm test           # Run unit tests
 pnpm test:coverage  # Run unit tests with coverage
 pnpm test:e2e       # Run Playwright tests against the built app
+pnpm test:e2e:smoke # Run the Chromium smoke E2E suite
 ```
 
 If you use `just`, the matching shortcuts live in [`justfile`](./justfile).
 
-## Self-Hosting
+## Static Hosting
 
-The repository includes a Docker setup that builds the static app and serves it with Caddy.
+The app builds to static files and does not need a server runtime.
 
 ```bash
-just up
-just logs
-just down
+pnpm build
 ```
 
-By default, the app is available on <http://localhost:8080>.
+Deploy the generated `dist/` directory with an SPA fallback to `index.html`.
 
 ## Project Layout
 
 ```text
 src/
-  components/   React UI
+  features/     Round, categories, and settings UI
+  shared/       Shared UI primitives and browser helpers
   game/         Round logic, constants, and utility functions
-  hooks/        State, audio, keyboard, and animation hooks
-  i18n/         Locale config, translations, and letter data
+  i18n/         Locale config, translations, and generated letter data
+  styles/       CSS tokens, layout, and component styles
 tests/          Playwright end-to-end tests
 tools/          Python utilities for translation and letter-frequency generation
 ```

@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@10.33.2",
   "engines": {
     "node": ">=24.0.0",
     "pnpm": ">=10.0.0"
@@ -19,13 +19,13 @@
     "spellcheck": "cspell lint . --config=.cspell.yml --no-config-search --cache --cache-strategy content",
     "spellcheck-changed": "cspell lint --config=.cspell.yml --no-config-search --cache --cache-strategy content --no-progress --no-must-find-files",
     "check": "pnpm typecheck && pnpm spellcheck && pnpm lint",
-    "verify": "pnpm check && pnpm test && pnpm build",
-    "infra:check": "bash ./scripts/ci/infra-check.sh",
+    "verify": "pnpm check && pnpm test && pnpm build && pnpm budget",
+    "ci": "pnpm verify && cd tools && uv sync --locked && uv run ruff check && uv run ty check && uv run pytest",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "test:e2e:chromium": "playwright test --project=chromium",
-    "test:e2e:smoke": "playwright test --grep @smoke"
+    "test:e2e:smoke": "playwright test --project=chromium --grep @smoke"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.2.9",
