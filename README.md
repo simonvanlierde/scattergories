@@ -1,84 +1,80 @@
-# 🎲 Scattergories Helper
+# Scattergories
 
-A beautiful, responsive, digital companion for the classic game of Scattergories. This app completely replaces the physical 20-sided letter die, the sand timer, and the paper category cards, letting you play effortlessly with just paper and a pen.
+[![CI](https://github.com/simonvanlierde/scattergories/actions/workflows/ci.yml/badge.svg)](https://github.com/simonvanlierde/scattergories/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/simonvanlierde/scattergories/branch/main/graph/badge.svg)](https://codecov.io/gh/simonvanlierde/scattergories)
+[![License: MIT](https://img.shields.io/github/license/simonvanlierde/scattergories)](LICENSE)
 
-## 🌟 Features
+A browser-based companion for playing Scattergories at the table — no physical timer, die, or category cards needed. Single-page React app, no backend.
 
-- **Draw 12 Mechanics**: Generates a perfect standard 12-category round by default.
-- **Anti-Duplication Letter Roller**: A satisfying animated letter roller that uses an actual Fisher-Yates shuffle under the hood to ensure you never roll the same letter twice in a game.
-- **Configurable Timer**: An urgent, pulsing timer with an alarm built right in.
-- **Progressive Round Engine**: Click "Next Round" to automatically increment the round, reroll the letter, and preserve your existing categories!
-- **Fully Responsive & Local**: Works seamlessly on mobile and desktop, stores all custom data privately locally via `localStorage`, and functions fully offline if installed as a PWA.
+![The home screen, ready to start a round, in light theme](docs/screenshots/home-light.png)
 
-## 🛠️ Tech Stack
+## Features
 
-- **Framework:** React 19 + TypeScript + Vite 8
-- **Package manager:** pnpm (via Corepack)
-- **Lint & format:** Biome
-- **Unit tests:** Vitest
-- **E2E tests:** Playwright (chromium, against the built `vite preview` bundle)
-- **Runtime image:** Caddy serving a static SPA bundle
+- Rolls a letter with locale-aware weighting, so common, playable letters come up more often
+- Draws a round of categories, with a built-in timer, pause, and end-of-round screen
+- Redraw categories on each new letter, or pin a fixed board
+- Built-in and custom category packs, persisted locally in the browser
+- 9 fully-translated languages: English, Spanish, French, German, Italian, Dutch, Polish, Portuguese, Greek
+- Installable as a PWA — no account or server required
 
-## 🚀 Getting started
+A round in progress (dark theme), and the settings panel:
 
-Requirements: **Node ≥ 24** and **pnpm ≥ 10** (Corepack handles pnpm automatically). [`just`](https://github.com/casey/just) is recommended as a thin command runner.
+| In a round | Settings |
+| --- | --- |
+| ![A round in progress in dark theme, showing the rolled letter, countdown, and category board](docs/screenshots/round-dark.png) | ![The settings panel with timer, category pack, language, and appearance controls](docs/screenshots/settings.png) |
 
-### Local development
+## Status
+
+Feature-complete as a play aid. It runs fully client-side and stores everything in the browser — local-first by design, so there's no backend to host and your settings and custom categories never leave your device. It's a companion for in-person play, so it deliberately doesn't track scores or validate answers.
+
+## Stack
+
+React 19 · TypeScript · Vite · i18next · Vitest · Playwright · Biome
+
+A separate Python (`uv` + Typer) tooling package in [`tools/`](tools/README.md) regenerates the
+locale assets (letter-frequency weights and translations) that the app ships.
+
+## Getting started
+
+Tool versions are pinned in [`mise.toml`](mise.toml) (Node 24.13.0, pnpm 10.33.2, Python 3.14). With [mise](https://mise.jdx.dev) installed:
 
 ```bash
+mise install     # provisions the pinned Node, pnpm, and Python
 pnpm install
-pnpm dev
+pnpm dev          # http://localhost:5173
+pnpm build        # static build to dist/
 ```
 
-Open <http://localhost:5173> in your browser.
+Without mise, install Node 24+ and pnpm 10+ yourself, then run the same `pnpm` commands.
 
-### Local quality gate
+Deploy `dist/` to any static host with an SPA fallback to `index.html`.
 
-The same checks CI runs, in one command:
+## Reproducibility & quality
+
+Every dependency is locked (`pnpm-lock.yaml`, [`tools/uv.lock`](tools/uv.lock)) and every tool
+version is pinned via [`mise.toml`](mise.toml), so a clean checkout builds identically. The same
+gates run locally, in pre-push hooks ([`lefthook.yml`](lefthook.yml)), and in
+[CI](.github/workflows/ci.yml):
 
 ```bash
-just ci   # or: pnpm ci
+pnpm check        # typecheck (tsc) + spellcheck (cspell) + lint (biome)
+pnpm test         # unit / component tests (vitest)
+pnpm test:e2e     # end-to-end tests (playwright)
+pnpm verify       # check + test + build + bundle-size budget
+pnpm ci           # verify, then the Python tools' ruff + ty + pytest
 ```
 
-This runs typecheck → spellcheck → biome → unit tests → production build.
+Quality is enforced, not just encouraged: the core game logic in `src/domain/game/` is held to
+95%+ line and 100% function coverage (see [`vite.config.ts`](vite.config.ts)), and the production
+bundle is capped at an 80 KiB gzip budget ([`scripts/check-bundle-budgets.mjs`](scripts/check-bundle-budgets.mjs)).
 
-### End-to-end tests
+## Project layout
 
-Playwright boots `vite preview` against the production build and exercises the app in chromium:
+- [`src/`](src/) — the React app: `domain/game/` (pure game logic), `features/` (round, categories, settings), `app/` (shell and controller hooks), `i18n/` (locales and registry)
+- [`tools/`](tools/README.md) — Python CLI (`sg-tools`) for inspecting and regenerating locale assets
+- [`tests/`](tests/) — Playwright end-to-end specs
+- [`AGENTS.md`](AGENTS.md) — architecture and contributor-facing design notes
 
-```bash
-pnpm test:e2e
-```
+## License
 
-### Git hooks
-
-Pre-commit hooks (via [lefthook](https://github.com/evilmartians/lefthook)) run Biome and cspell on staged files plus ruff/ty on `tools/**`. A pre-push hook runs the full `pnpm ci` pipeline so regressions never reach `origin`.
-
-## 🐳 Self-hosting with Docker
-
-No registry image is published — build locally and run. The runtime image is Caddy serving the static bundle with SPA fallback, long-cache headers on hashed assets, and a hardened runtime (read-only filesystem, no new privileges, all caps dropped).
-
-```bash
-just up       # build and start (http://localhost:8080)
-just logs     # tail logs
-just down     # stop
-```
-
-To expose the app over a Cloudflare Tunnel, set `TUNNEL_TOKEN` in a `.env` file next to `docker-compose.yml` and run:
-
-```bash
-just up-tunnel
-```
-
-## 🤖 CI
-
-GitHub Actions runs on every pull request and push to `main`:
-
-1. **`check`** — install, typecheck, spellcheck, biome, Vitest with coverage, production build.
-2. **`e2e`** — Playwright against the built bundle (chromium, with browser cache).
-
-Dependabot opens grouped weekly PRs for npm, GitHub Actions, Docker, and the `tools/` uv environment.
-
-## 🔒 Privacy
-
-Custom categories are stored entirely in your browser's `localStorage`. Nothing ever leaves the device.
+[MIT](LICENSE) © Simon van Lierde
