@@ -1,0 +1,115 @@
+{
+  "title": "Scattergories",
+  "hero": {
+    "description": "Losuj literę, kontroluj czas i graj bez zbędnego bałaganu.",
+    "statsLabel": "Statystyki"
+  },
+  "round": {
+    "panelEyebrow": "Panel rundy",
+    "letterLabel": "Aktualna litera",
+    "timerLabel": "Zegar rundy"
+  },
+  "buttons": {
+    "startRound": "Rozpocznij Rundę",
+    "nextRound": "Następna Runda",
+    "spinning": "Losowanie...",
+    "skipLetter": "Pomiń Literę",
+    "reset": "⟲ Resetuj",
+    "pause": "Pauza",
+    "resume": "Wznów",
+    "mute": "Wycisz",
+    "unmute": "Włącz Dźwięk",
+    "skipLetterTooltip": "Wybierz inną losową literę na tę rundę",
+    "resetTooltip": "Zrestartuj timer dla bieżącej rundy",
+    "shuffle": "Tasuj",
+    "add": "Dodaj",
+    "remove": "Usuń",
+    "close": "✕",
+    "addTooltip": "Dodaj tę kategorię do swojej własnej kolekcji",
+    "closeTooltip": "Zamknij to okno"
+  },
+  "timer": {
+    "ready": "Gotowe",
+    "timeUp": "Czas minął!",
+    "getReady": "Przygotuj się...",
+    "go": "Start!",
+    "roundOver": "Runda zakończona!"
+  },
+  "status": {
+    "seconds": "sekundy"
+  },
+  "settings": {
+    "duration": "Czasomierz",
+    "categorySource": "Źródło",
+    "categoryDraw": "Losowanie",
+    "addCustom": "Własna kategoria",
+    "placeholder": "np. Języki programowania"
+  },
+  "categories": {
+    "title": "Kategorie",
+    "default": "Standardowe",
+    "custom": "Własne",
+    "mixed": "Mieszane",
+    "noCustom": "Nie dodano jeszcze własnych kategorii.",
+    "minimumRequired": "Dodaj co najmniej jedną kategorię, aby użyć trybu Własne.",
+    "availableSummary": "{{count}} haseł gotowych",
+    "customListLabel": "Własne kategorie",
+    "drawnListLabel": "Tablica kategorii",
+    "showDeck": "Otwórz hasła",
+    "hideDeck": "Ukryj hasła",
+    "summaryMode": "Źródło: {{mode}}",
+    "summaryDraw": "Losowanie: {{count}}",
+    "pin": "Przypnij kategorie",
+    "unpin": "Odepnij kategorie"
+  },
+  "usedLetters": "Użyte litery: {{letters}}{{empty}}",
+  "usedLettersEmpty": "Brak",
+  "shortcuts": "Skróty: Spacja start, R pomiń literę, P pauza, C pokaż hasła, A dodaj kategorię",
+  "footer": {
+    "howToPlay": "Jak grać",
+    "officialGame": "Oficjalna Gra",
+    "sourceCode": "Kod źródłowy",
+    "privacy": "Ta aplikacja zapisuje ustawienia i kategorie wyłącznie w Twojej przeglądarce.",
+    "label": "Stopka aplikacji"
+  },
+  "modal": {
+    "title": "Jak grać w Scattergories",
+    "objective": "Cel gry",
+    "objectiveText": "Zdobywaj punkty, zapisując słowa, które zaczynają się na wylosowaną literę i pasują do wybranych kategorii.",
+    "gameplay": "Zasady",
+    "gameplayPoints": [
+      "Litera jest wybierana losowo i wyświetlana na ekranie",
+      "Masz ograniczony czas (domyślnie 90s) na znalezienie odpowiedzi",
+      "Wszystkie słowa muszą zaczynać się na wskazaną literę",
+      "Każda kategoria musi mieć unikalną odpowiedź (nie powtarzaj słów)"
+    ],
+    "scoring": "Punktacja (z innymi graczami)",
+    "scoringPoints": [
+      "1 punkt: Twoje słowo jest unikalne (nikt inny go nie zapisał)",
+      "0 punktów: Ktoś inny zapisał to samo słowo",
+      "Oryginalne i kreatywne odpowiedzi są zazwyczaj bezpieczniejsze!"
+    ],
+    "categories": "Kategorie",
+    "categoriesText": "To narzędzie korzysta z kategorii z oficjalnej gry. Możesz też tworzyć własne kategorie i mieszać je ze standardowymi.",
+    "features": "Funkcje",
+    "featuresList": [
+      "Użyj przycisku Pomiń Literę (lub R), jeśli litera jest za trudna",
+      "Włącz Pauzę (lub P) podczas rundy, aby zyskać chwilę na zastanowienie",
+      "Dostosuj czas rundy w Ustawieniach",
+      "Możesz w każdej chwili wyciszyć dźwięk",
+      "Wszystkie ustawienia zapisują się automatycznie"
+    ],
+    "footer": "To jest narzędzie pomocnicze do zarządzania literami i czasem. Miłej zabawy ze znajomymi!"
+  },
+  "language": {
+    "label": "Język",
+    "nativeName": "Polski"
+  },
+  "theme": {
+    "toggle": "Zmień motyw",
+    "toggleTooltip": "Przełącz między jasnym a ciemnym motywem",
+    "toggleLabel": "Motyw",
+    "dark": "Ciemny",
+    "light": "Jasny"
+  }
+}

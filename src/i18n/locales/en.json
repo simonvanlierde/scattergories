@@ -1,57 +1,154 @@
 {
   "title": "Scattergories",
-  "roundCounter": "Round {{current}} of {{total}}",
+  "hero": {
+    "eyebrow": "Party game companion",
+    "description": "Run the letter, keep the clock moving, and play without the clutter.",
+    "metaLabel": "Round timer",
+    "statsLabel": "Round stats"
+  },
+  "round": {
+    "panelEyebrow": "Round console",
+    "letterLabel": "Current letter",
+    "timerLabel": "Round clock"
+  },
+  "controls": {
+    "eyebrow": "Controls",
+    "title": "Keep the round moving",
+    "body": "Start, pause, reroll, and tune pacing without leaving the board.",
+    "group": "Round controls",
+    "roundGroup": "Round controls",
+    "audioGroup": "Audio controls",
+    "settingsLegend": "Round settings"
+  },
   "buttons": {
     "startRound": "Start Round",
-    "nextRound": "Next Round",
+    "nextRound": "Next letter",
     "spinning": "Spinning...",
     "skipLetter": "Skip Letter",
     "reset": "⟲ Reset",
     "pause": "Pause",
     "resume": "Resume",
-    "newGame": "New Game",
     "mute": "Mute",
     "unmute": "Unmute",
+    "skipLetterTooltip": "Get a different random letter for this round",
+    "resetTooltip": "Start the timer over from the beginning",
     "shuffle": "Shuffle",
     "add": "Add",
     "remove": "Remove",
-    "close": "✕"
+    "close": "✕",
+    "addTooltip": "Add this category to your custom collection",
+    "closeTooltip": "Close this window"
   },
   "timer": {
+    "ready": "Ready",
     "timeUp": "Time's up!",
     "getReady": "Get ready...",
     "go": "Go!",
-    "roundOver": "Round over!",
-    "gameComplete": "Game complete. Start a new game.",
-    "gameCompleteRound": "Round over! Game complete."
+    "roundOver": "Round over!"
   },
   "status": {
     "seconds": "seconds"
   },
   "settings": {
     "duration": "Timer",
-    "rounds": "Rounds",
     "categorySource": "Source",
     "categoryDraw": "Draw",
     "addCustom": "Add custom category",
-    "placeholder": "e.g. Programming Languages"
+    "placeholder": "e.g. Programming Languages",
+    "sheetTitle": "Settings",
+    "openLabel": "Settings",
+    "lockedHint": "Finish or reset the round to edit",
+    "roundTimerTitle": "Round timer"
+  },
+  "packs": {
+    "sectionTitle": "Category pack",
+    "classic": {
+      "label": "Classic",
+      "description": "Every category — the full deck."
+    },
+    "foodie": {
+      "label": "Foodie",
+      "description": "Dishes, drinks, ingredients, and kitchens."
+    },
+    "popCulture": {
+      "label": "Pop Culture",
+      "description": "Movies, TV, music, celebrities, books."
+    },
+    "travel": {
+      "label": "Travel",
+      "description": "Places, transport, and everything in a suitcase."
+    },
+    "kids": {
+      "label": "Kids",
+      "description": "Friendly categories for younger players."
+    },
+    "household": {
+      "label": "Around the House",
+      "description": "Rooms, tools, furniture, and gadgets."
+    }
+  },
+  "playmat": {
+    "label": "Game board"
+  },
+  "pause": {
+    "title": "Paused",
+    "hint": "Tap anywhere to resume",
+    "resumeLabel": "Paused — tap to resume"
+  },
+  "rail": {
+    "shortcuts": {
+      "title": "Keyboard shortcuts",
+      "hint": "Keyboard shortcuts · ?",
+      "space": "Start or advance a round",
+      "r": "Re-roll the current letter",
+      "p": "Pause or resume",
+      "c": "Toggle the categories panel",
+      "a": "Add a custom category",
+      "help": "Open this shortcut list"
+    }
+  },
+  "roundEnd": {
+    "label": "Round summary",
+    "title": "Time's up!",
+    "letterWas": "Letter was",
+    "nextRound": "Next letter",
+    "stats": {
+      "rounds": "Rounds",
+      "streak": "Streak"
+    },
+    "share": "Share",
+    "shareCopied": "Copied!",
+    "shareBody": "Scattergories — letter {{letter}}."
   },
   "categories": {
     "title": "Categories",
+    "description": "Mix official and custom categories, then reshuffle whenever the table needs a reset.",
     "default": "Default",
     "custom": "Custom",
     "mixed": "Mixed",
     "noCustom": "No custom categories yet.",
-    "minimumRequired": "Add at least one custom category to use Custom mode."
+    "minimumRequired": "Add at least one custom category to use Custom mode.",
+    "availableSummary": "{{count}} categories ready",
+    "customListLabel": "Custom categories",
+    "drawnListLabel": "Selected categories",
+    "showDeck": "Open categories",
+    "hideDeck": "Hide categories",
+    "summaryMode": "Source: {{mode}}",
+    "summaryDraw": "Draw: {{count}}",
+    "customize": "Customize deck",
+    "customizeTitle": "Customize deck",
+    "pin": "Pin categories",
+    "unpin": "Unpin categories"
   },
   "usedLetters": "Used letters: {{letters}}{{empty}}",
   "usedLettersEmpty": "None yet",
-  "shortcuts": "Shortcuts: Space next round, R skip letter, P pause, N new game, C categories, A add custom",
+  "shortcuts": "Shortcuts: Space start, R skip letter, P pause, C toggle categories, A add custom",
   "footer": {
     "howToPlay": "How to Play",
     "officialGame": "Official Game",
     "sourceCode": "Source Code",
-    "privacy": "This app uses localStorage to save your settings and custom categories locally in your browser. No data is sent to any server."
+    "privacy": "This app stores settings and custom categories in your browser only.",
+    "label": "App footer"
   },
   "modal": {
     "title": "How to Play Scattergories",
@@ -76,11 +173,31 @@
     "featuresList": [
       "Use the Skip Letter button (or press R) to get a new letter",
       "Toggle Pause (press P) during a round to think",
-      "Adjust timer duration and number of rounds in Settings",
+      "Adjust timer duration in Settings",
       "Mute sound if needed",
       "All settings are saved automatically"
     ],
-    "footer": "This is a helper tool to manage the letter and timer. Have fun with friends!"
+    "loading": "Opening rules…",
+    "footer": "This is a lightweight round companion for letters, timing, and prompts. Have fun with friends!"
   },
-  "language": "Language"
+  "language": {
+    "label": "Language",
+    "nativeName": "English"
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "toggleTooltip": "Switch between light and dark theme",
+    "toggleLabel": "Theme",
+    "sectionTitle": "Appearance",
+    "dark": "Dark mode",
+    "light": "Light mode"
+  },
+  "errors": {
+    "chunkTitle": "A fresh app version is ready.",
+    "chunkBody": "One of the interface chunks changed while the app was open. Reload to continue safely.",
+    "boundaryEyebrow": "Recovery mode",
+    "boundaryTitle": "Something went wrong.",
+    "boundaryBody": "Reload the app to reset the current round and continue playing.",
+    "reload": "Reload app"
+  }
 }

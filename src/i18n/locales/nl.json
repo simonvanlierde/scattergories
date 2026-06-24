@@ -1,0 +1,115 @@
+{
+  "title": "Scattergories",
+  "hero": {
+    "description": "Rol de letter, houd het tempo vast en speel zonder overbodige rommel.",
+    "statsLabel": "Spelstatistieken"
+  },
+  "round": {
+    "panelEyebrow": "Rondeconsole",
+    "letterLabel": "Huidige letter",
+    "timerLabel": "Rondeklok"
+  },
+  "buttons": {
+    "startRound": "Start Ronde",
+    "nextRound": "Volgende Ronde",
+    "spinning": "Draaien...",
+    "skipLetter": "Letter Overslaan",
+    "reset": "⟲ Resetten",
+    "pause": "Pauze",
+    "resume": "Hervatten",
+    "mute": "Dempen",
+    "unmute": "Geluid Aan",
+    "skipLetterTooltip": "Kies een andere willekeurige letter voor deze ronde",
+    "resetTooltip": "Start de timer opnieuw voor deze ronde",
+    "shuffle": "Schudden",
+    "add": "Toevoegen",
+    "remove": "Verwijderen",
+    "close": "✕",
+    "addTooltip": "Voeg deze categorie toe aan je eigen verzameling",
+    "closeTooltip": "Sluit dit venster"
+  },
+  "timer": {
+    "ready": "Klaar",
+    "timeUp": "Tijd om!",
+    "getReady": "Maak je klaar...",
+    "go": "Gaan!",
+    "roundOver": "Ronde voorbij!"
+  },
+  "status": {
+    "seconds": "seconden"
+  },
+  "settings": {
+    "duration": "Timer",
+    "categorySource": "Bron",
+    "categoryDraw": "Loting",
+    "addCustom": "Eigen categorie",
+    "placeholder": "bijv. Programmeertalen"
+  },
+  "categories": {
+    "title": "Categorieën",
+    "default": "Standaard",
+    "custom": "Eigen",
+    "mixed": "Gemengd",
+    "noCustom": "Nog geen eigen categorieën toegevoegd.",
+    "minimumRequired": "Voeg minimaal één categorie toe om de 'Eigen' modus te gebruiken.",
+    "availableSummary": "{{count}} categorieën beschikbaar",
+    "customListLabel": "Eigen categorieën",
+    "drawnListLabel": "Categoriebord",
+    "showDeck": "Categorieën openen",
+    "hideDeck": "Categorieën verbergen",
+    "summaryMode": "Bron: {{mode}}",
+    "summaryDraw": "Loting: {{count}}",
+    "pin": "Categorieën vastzetten",
+    "unpin": "Categorieën losmaken"
+  },
+  "usedLetters": "Gebruikte letters: {{letters}}{{empty}}",
+  "usedLettersEmpty": "Geen",
+  "shortcuts": "Sneltoetsen: Spatie starten, R nieuwe letter, P pauze, C categorieën tonen, A categorie toevoegen",
+  "footer": {
+    "howToPlay": "Hoe te spelen",
+    "officialGame": "Officieel Spel",
+    "sourceCode": "Broncode",
+    "privacy": "Deze app bewaart instellingen en categorieën alleen in je browser.",
+    "label": "Voettekst"
+  },
+  "modal": {
+    "title": "Hoe speel je Scattergories",
+    "objective": "Doel",
+    "objectiveText": "Verdien punten door woorden op te schrijven die beginnen met de gekozen letter en passen in de categorieën.",
+    "gameplay": "Spelregels",
+    "gameplayPoints": [
+      "Er wordt willekeurig een letter gekozen",
+      "Je hebt beperkte tijd (standaard 90 seconden) om antwoorden te vinden",
+      "Alle antwoorden moeten beginnen met de gekozen letter",
+      "Elke categorie moet een uniek antwoord hebben (geen dubbele woorden)"
+    ],
+    "scoring": "Puntentelling (met anderen)",
+    "scoringPoints": [
+      "1 punt: Je woord is uniek (niemand anders heeft het)",
+      "0 punten: Iemand anders heeft hetzelfde woord opgeschreven",
+      "Originele en creatieve antwoorden zijn vaak meer waard!"
+    ],
+    "categories": "Categorieën",
+    "categoriesText": "Deze tool gebruikt categorieën uit het officiële spel. Je kunt ook eigen categorieën maken en mixen met de rest.",
+    "features": "Functies",
+    "featuresList": [
+      "Gebruik 'Andere Letter' (of druk op R) als een letter te moeilijk is",
+      "Gebruik de Pauze (of druk op P) tijdens een ronde om na te denken",
+      "Pas de duur van de timer aan in Instellingen",
+      "Je kunt het geluid op elk moment dempen",
+      "Alle instellingen worden automatisch opgeslagen"
+    ],
+    "footer": "Dit is een hulpmiddel voor het beheren van letters en tijd. Veel plezier met je vrienden!"
+  },
+  "language": {
+    "label": "Taal",
+    "nativeName": "Nederlands"
+  },
+  "theme": {
+    "toggle": "Thema wisselen",
+    "toggleTooltip": "Wisselen tussen licht en donker thema",
+    "toggleLabel": "Thema",
+    "dark": "Donker",
+    "light": "Licht"
+  }
+}
