@@ -1,0 +1,9 @@
+{
+  "bufferSeconds": 5,
+  "durationMin": 10,
+  "durationMax": 600,
+  "durationDefault": 90,
+  "catCountMin": 1,
+  "catCountMax": 25,
+  "catCountDefault": 12
+}

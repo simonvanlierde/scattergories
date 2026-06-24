@@ -1,0 +1,408 @@
+@layer primitives {
+  /* ─────────────────────────────────────────────────────────────
+     Button primitive — used by <Button> and <IconButton>
+     ───────────────────────────────────────────────────────────── */
+  .ds-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-ui);
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition:
+      background var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-spring),
+      box-shadow var(--duration-fast) var(--ease-out);
+  }
+
+  .ds-button:where(:not(:disabled)):active {
+    transform: scale(0.97);
+  }
+
+  .ds-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .ds-button:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 3px;
+  }
+
+  /* Sizes */
+  .ds-button--sm {
+    min-height: 2.25rem;
+    padding-inline: var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  .ds-button--md {
+    min-height: 2.75rem;
+    padding-inline: var(--space-4);
+    font-size: var(--text-md);
+  }
+
+  .ds-button--lg {
+    min-height: 3.25rem;
+    padding-inline: var(--space-5);
+    font-size: var(--text-lg);
+  }
+
+  /* Variants */
+  .ds-button--primary {
+    background: var(--accent-primary);
+    color: var(--text-on-accent);
+  }
+
+  .ds-button--primary:where(:not(:disabled)):hover {
+    background: var(--accent-strong);
+  }
+
+  .ds-button--secondary {
+    background: transparent;
+    color: var(--text-primary);
+    border-color: var(--border-default);
+  }
+
+  .ds-button--secondary:where(:not(:disabled)):hover {
+    background: var(--bg-sunken);
+    border-color: var(--text-primary);
+  }
+
+  .ds-button--ghost {
+    background: transparent;
+    color: var(--text-primary);
+  }
+
+  .ds-button--ghost:where(:not(:disabled)):hover {
+    background: color-mix(in oklch, var(--text-primary) 6%, transparent);
+  }
+
+  .ds-button--danger {
+    background: var(--danger);
+    color: oklch(100% 0 0);
+    box-shadow: var(--elevation-1);
+  }
+
+  .ds-button--danger:where(:not(:disabled)):hover {
+    background: color-mix(in oklch, var(--danger) 88%, black);
+  }
+
+  /* Icon-only button — square, min 44×44 */
+  .ds-icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    padding: var(--space-2);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition:
+      background var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-spring);
+  }
+
+  .ds-icon-button:where(:not(:disabled)):hover {
+    background: color-mix(in oklch, var(--text-primary) 6%, transparent);
+    color: var(--text-primary);
+  }
+
+  .ds-icon-button:where(:not(:disabled)):active {
+    transform: scale(0.92);
+  }
+
+  .ds-icon-button:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+  }
+
+  .ds-icon-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .ds-icon-button--solid {
+    background: var(--bg-raised);
+    border-color: var(--border-default);
+    color: var(--text-primary);
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     Field primitive — label + input + helper
+     ───────────────────────────────────────────────────────────── */
+  .ds-field {
+    display: grid;
+    gap: var(--space-1-5);
+  }
+
+  .ds-field__label {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+  }
+
+  .ds-field__control {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: var(--text-md);
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      background var(--duration-fast) var(--ease-out);
+  }
+
+  .ds-field__control:focus-visible {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 2px color-mix(in oklch, var(--accent-primary) 22%, transparent);
+  }
+
+  .ds-field__control:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .ds-field__helper {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+  }
+
+  .ds-field__helper--error {
+    color: var(--danger);
+  }
+
+  .ds-field__inline {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .ds-field__suffix {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     Sheet primitive — bottom sheet on mobile, side drawer on wider
+     Uses <dialog> semantics.
+     ───────────────────────────────────────────────────────────── */
+  .ds-sheet {
+    position: fixed;
+    inset: auto 0 0 0;
+    width: 100%;
+    max-height: 92dvh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--bg-raised);
+    color: var(--text-primary);
+    border-top-left-radius: var(--radius-md);
+    border-top-right-radius: var(--radius-md);
+    box-shadow: var(--elevation-4);
+    overflow: hidden;
+  }
+
+  .ds-sheet::backdrop {
+    background: var(--scrim-default);
+  }
+
+  .ds-sheet[open] {
+    animation: ds-sheet-in var(--duration-slow) var(--ease-spring) both;
+  }
+
+  @starting-style {
+    .ds-sheet[open] {
+      transform: translateY(100%);
+    }
+  }
+
+  .ds-sheet__grip {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-2) 0 var(--space-1);
+  }
+
+  .ds-sheet__grip::before {
+    content: "";
+    width: 2rem;
+    height: 0.125rem;
+    border-radius: var(--radius-full);
+    background: var(--border-strong);
+    opacity: 0.5;
+  }
+
+  .ds-sheet__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-6) var(--space-4);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .ds-sheet__title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 500;
+    letter-spacing: var(--tracking-tight);
+    margin: 0;
+  }
+
+  .ds-sheet__body {
+    padding: var(--space-5);
+    overflow-y: auto;
+    max-height: calc(92dvh - 4.5rem);
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  @keyframes ds-sheet-in {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .ds-sheet {
+      inset: 0 0 0 auto;
+      width: min(30rem, 100%);
+      max-height: 100dvh;
+      border-radius: 0;
+    }
+
+    .ds-sheet[open] {
+      animation: ds-sheet-in-side var(--duration-slow) var(--ease-spring) both;
+    }
+
+    @starting-style {
+      .ds-sheet[open] {
+        transform: translateX(100%);
+      }
+    }
+
+    .ds-sheet__grip {
+      display: none;
+    }
+
+    .ds-sheet__body {
+      max-height: calc(100dvh - 4.5rem);
+    }
+  }
+
+  @keyframes ds-sheet-in-side {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     Settings Sheet sections
+     ───────────────────────────────────────────────────────────── */
+  .settings-section {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .settings-section__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  .settings-section__hint {
+    margin: 0;
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    line-height: var(--leading-snug);
+  }
+
+  .settings-section__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .settings-section__count {
+    font-family: var(--font-numeric);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-muted);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .settings-section__title {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .settings-select select {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: var(--text-md);
+  }
+
+  .settings-select select:focus-visible {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 2px color-mix(in oklch, var(--accent-primary) 22%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-sheet[open],
+    .ds-button,
+    .ds-icon-button {
+      animation: none;
+      transition: none;
+    }
+
+    .ds-button:where(:not(:disabled)):active,
+    .ds-icon-button:where(:not(:disabled)):active {
+      transform: none;
+    }
+  }
+}

@@ -1,0 +1,290 @@
+@layer tokens {
+  :root {
+    /* ───────────────────────────────────────────────────────
+       Typography — editorial: serif display + geometric sans UI
+       ─────────────────────────────────────────────────────── */
+    --font-display:
+      "Fraunces Variable", "Fraunces", "Iowan Old Style", "Apple Garamond", Georgia,
+      "Times New Roman", serif;
+    --font-ui: "Geist Variable", "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Geist Mono", monospace;
+    --font-numeric: "Geist Mono", ui-monospace, "SF Mono", "Cascadia Code", monospace;
+
+    /* Fluid type scale (minor third, mobile → desktop) */
+    --text-xs: clamp(0.75rem, 0.72rem + 0.12vw, 0.8125rem);
+    --text-sm: clamp(0.875rem, 0.85rem + 0.14vw, 0.9375rem);
+    --text-md: clamp(1rem, 0.96rem + 0.18vw, 1.0625rem);
+    --text-lg: clamp(1.125rem, 1.08rem + 0.22vw, 1.1875rem);
+    --text-xl: clamp(1.375rem, 1.3rem + 0.36vw, 1.5rem);
+    --text-2xl: clamp(1.75rem, 1.58rem + 0.82vw, 2rem);
+    --text-3xl: clamp(2.25rem, 1.94rem + 1.55vw, 2.75rem);
+    --text-4xl: clamp(3rem, 2.48rem + 2.6vw, 3.75rem);
+    --text-5xl: clamp(4.5rem, 3.6rem + 4.5vw, 6rem);
+    --text-hero: clamp(6rem, 15vw + 2rem, 15rem);
+
+    /* Line heights */
+    --leading-none: 1;
+    --leading-tight: 1.15;
+    --leading-snug: 1.3;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.65;
+
+    /* Letter spacing */
+    --tracking-tightest: -0.08em;
+    --tracking-tighter: -0.05em;
+    --tracking-tight: -0.02em;
+    --tracking-normal: 0;
+    --tracking-wide: 0.02em;
+    --tracking-wider: 0.06em;
+    --tracking-widest: 0.14em;
+
+    /* ───────────────────────────────────────────────────────
+       Spacing (4pt base)
+       ─────────────────────────────────────────────────────── */
+    --space-0: 0;
+    --space-0-5: 0.125rem;
+    --space-1: 0.25rem;
+    --space-1-5: 0.375rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-7: 2rem;
+    --space-8: 2.5rem;
+    --space-10: 3rem;
+    --space-12: 4rem;
+    --space-16: 5rem;
+    --space-20: 6rem;
+
+    /* ───────────────────────────────────────────────────────
+       Radii — softer, editorial (smaller radii feel more "paper")
+       ─────────────────────────────────────────────────────── */
+    --radius-xs: 0.125rem;
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-2xl: 1.25rem;
+    --radius-full: 9999px;
+
+    /* ───────────────────────────────────────────────────────
+       Motion — spring-physics easing via linear() (unchanged)
+       ─────────────────────────────────────────────────────── */
+    --duration-instant: 80ms;
+    --duration-exit-fast: 120ms;
+    --duration-fast: 140ms;
+    --duration-normal: 220ms;
+    --duration-slow: 360ms;
+    --duration-slower: 520ms;
+    --duration-hero: 640ms;
+
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-in: cubic-bezier(0.64, 0, 0.78, 0);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-snap: cubic-bezier(0.85, 0, 0.15, 1);
+    --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+    --ease-spring: linear(
+      0,
+      0.32 8%,
+      0.62 16%,
+      0.88 24%,
+      1.02 30%,
+      1.08 36%,
+      1.04 46%,
+      0.99 58%,
+      1 72%,
+      1
+    );
+    --ease-bounce: linear(0, 0.46 13%, 0.88 26%, 1 32%, 0.88 38%, 0.98 44%, 1.02 56%, 0.995 68%, 1);
+
+    /* ───────────────────────────────────────────────────────
+       Z-index scale
+       ─────────────────────────────────────────────────────── */
+    --z-base: 0;
+    --z-raised: 10;
+    --z-sticky: 20;
+    --z-drawer: 40;
+    --z-modal: 100;
+    --z-max: 1000;
+  }
+
+  /* ───────────────────────────────────────────────────────────
+     LIGHT THEME — warm cream paper + deep ink + navy accent
+     Surface ramp keeps its original indexing (0 = page, 11 = deepest ink)
+     so existing components resolve without edits; values are re-designed.
+     ─────────────────────────────────────────────────────────── */
+  .app-shell {
+    color-scheme: light;
+
+    /* Paper + rule (warm cream, hue 85 = warm yellow-orange) */
+    --surface-0: oklch(98.5% 0.008 85); /* page — warm cream */
+    --surface-1: oklch(96.5% 0.01 85); /* card */
+    --surface-2: oklch(93.5% 0.011 85); /* sunken */
+    --surface-3: oklch(90% 0.012 85); /* divider row */
+    --surface-4: oklch(85% 0.012 85); /* hairline rule */
+    --surface-5: oklch(75% 0.013 85); /* ghost hover */
+
+    /* Ink (hue 255 = cool blue, subtle chroma — gives warmth-vs-ink contrast) */
+    --surface-6: oklch(60% 0.018 255); /* muted meta / hint */
+    --surface-7: oklch(46% 0.02 255); /* tertiary text */
+    --surface-8: oklch(35% 0.02 255); /* secondary text */
+    --surface-9: oklch(26% 0.018 255); /* near-primary */
+    --surface-10: oklch(18% 0.015 255); /* primary ink */
+    --surface-11: oklch(13% 0.013 255); /* deepest ink */
+
+    /* Accent — ink navy */
+    --accent-primary: oklch(34% 0.11 260); /* ink navy */
+    --accent-strong: oklch(26% 0.13 260); /* hover / pressed */
+    --accent-soft: oklch(94% 0.035 260); /* tinted paper for selected rows */
+    --accent-muted: oklch(55% 0.09 260); /* lifted navy */
+    --accent-on: oklch(98.5% 0.008 85); /* paper text on navy */
+
+    /* Semantic (muted, editorial — not candy colors) */
+    --success: oklch(48% 0.12 150);
+    --success-soft: oklch(94% 0.04 150);
+    --warning: oklch(62% 0.14 70);
+    --warning-soft: oklch(95% 0.05 70);
+    --danger: oklch(45% 0.17 25);
+    --danger-soft: oklch(94% 0.06 25);
+    --info: var(--accent-primary);
+    --info-soft: var(--accent-soft);
+
+    /* Text — aliases point into the surface ramp */
+    --text-primary: var(--surface-10);
+    --text-secondary: var(--surface-8);
+    --text-muted: var(--surface-7);
+    --text-inverse: var(--surface-0);
+    --text-on-accent: var(--accent-on);
+
+    /* Borders — everything is hairline by default */
+    --border-subtle: var(--surface-4);
+    --border-default: var(--surface-4);
+    --border-strong: var(--surface-5);
+    --border-accent: color-mix(in oklch, var(--accent-primary) 65%, transparent);
+
+    /* Background */
+    --bg-base: var(--surface-0);
+    --bg-raised: var(--surface-1);
+    --bg-sunken: var(--surface-2);
+
+    /* Elevation — flat, paper-like. 1 = hairline, 5 = floated modal */
+    --elevation-1: 0 1px 0 var(--surface-4);
+    --elevation-2: 0 1px 2px oklch(0% 0 0 / 0.05);
+    --elevation-3: 0 6px 20px -6px oklch(0% 0 0 / 0.1), 0 1px 2px oklch(0% 0 0 / 0.04);
+    --elevation-4: 0 12px 36px -8px oklch(0% 0 0 / 0.12), 0 2px 4px oklch(0% 0 0 / 0.05);
+    --elevation-5: 0 24px 64px -12px oklch(0% 0 0 / 0.18), 0 4px 8px oklch(0% 0 0 / 0.06);
+
+    /* Scrims */
+    --scrim-subtle: oklch(15% 0.015 70 / 0.3);
+    --scrim-default: oklch(15% 0.015 70 / 0.5);
+    --scrim-strong: oklch(15% 0.015 70 / 0.7);
+
+    /* ─── Editorial-native token names (new surface for components) ─── */
+    --paper-0: var(--surface-0);
+    --paper-1: var(--surface-1);
+    --paper-2: var(--surface-2);
+    --ink-0: var(--surface-10);
+    --ink-1: var(--surface-8);
+    --ink-2: var(--surface-7);
+    --rule: var(--surface-4);
+
+    /* ─── Legacy semantic aliases (keep old components rendering) ─── */
+    --bg-page: var(--bg-base);
+    --bg-elevated: var(--bg-raised);
+    --bg-elevated-strong: var(--bg-raised);
+    --bg-soft: var(--surface-2);
+    --bg-strong: var(--accent-primary);
+    --accent: var(--accent-primary);
+    --border-soft: var(--border-subtle);
+    --shadow-soft: var(--elevation-2);
+    --shadow-strong: var(--elevation-4);
+    --motion-fast: var(--duration-fast);
+    --motion-normal: var(--duration-normal);
+    --motion-slow: var(--duration-slow);
+    --button-fg: var(--accent-on);
+  }
+
+  /* ───────────────────────────────────────────────────────────
+     DARK THEME — warm dark paper + warm off-white ink +
+     lifted periwinkle accent (designed, not inverted)
+     ─────────────────────────────────────────────────────────── */
+  .app-shell[data-theme="dark"] {
+    color-scheme: dark;
+
+    /* Warm dark paper (hue 70 = warm brown-orange) */
+    --surface-0: oklch(14% 0.015 70); /* page */
+    --surface-1: oklch(18% 0.015 70); /* card */
+    --surface-2: oklch(22% 0.017 70); /* sunken */
+    --surface-3: oklch(27% 0.015 70); /* divider */
+    --surface-4: oklch(32% 0.015 70); /* hairline rule */
+    --surface-5: oklch(42% 0.014 70); /* ghost hover */
+
+    /* Ink (warm off-white, hue 85) */
+    --surface-6: oklch(58% 0.015 85); /* muted */
+    --surface-7: oklch(70% 0.014 85); /* tertiary */
+    --surface-8: oklch(80% 0.013 85); /* secondary */
+    --surface-9: oklch(87% 0.012 85); /* near-primary */
+    --surface-10: oklch(93% 0.011 85); /* primary */
+    --surface-11: oklch(97% 0.008 85); /* brightest */
+
+    /* Accent — lifted periwinkle (same hue family, brighter for dark bg) */
+    --accent-primary: oklch(76% 0.11 258);
+    --accent-strong: oklch(84% 0.13 258);
+    --accent-soft: oklch(28% 0.07 258 / 0.5);
+    --accent-muted: oklch(58% 0.1 258);
+    --accent-on: oklch(14% 0.015 70);
+
+    --success: oklch(72% 0.13 150);
+    --success-soft: oklch(28% 0.07 150 / 0.5);
+    --warning: oklch(78% 0.13 70);
+    --warning-soft: oklch(30% 0.07 70 / 0.5);
+    --danger: oklch(70% 0.16 25);
+    --danger-soft: oklch(30% 0.08 25 / 0.5);
+    --info: var(--accent-primary);
+    --info-soft: var(--accent-soft);
+
+    --text-primary: var(--surface-10);
+    --text-secondary: var(--surface-8);
+    --text-muted: var(--surface-6);
+    --text-inverse: var(--surface-0);
+    --text-on-accent: var(--accent-on);
+
+    --border-subtle: var(--surface-4);
+    --border-default: var(--surface-4);
+    --border-strong: var(--surface-5);
+    --border-accent: color-mix(in oklch, var(--accent-primary) 50%, transparent);
+
+    --bg-base: var(--surface-0);
+    --bg-raised: var(--surface-1);
+    --bg-sunken: var(--surface-0);
+
+    --elevation-1: 0 1px 0 var(--surface-4);
+    --elevation-2: 0 1px 2px oklch(0% 0 0 / 0.4);
+    --elevation-3: 0 6px 20px -6px oklch(0% 0 0 / 0.5), 0 1px 2px oklch(0% 0 0 / 0.35);
+    --elevation-4: 0 12px 36px -8px oklch(0% 0 0 / 0.55), 0 2px 4px oklch(0% 0 0 / 0.4);
+    --elevation-5: 0 24px 64px -12px oklch(0% 0 0 / 0.65), 0 4px 8px oklch(0% 0 0 / 0.5);
+
+    --scrim-subtle: oklch(0% 0 0 / 0.4);
+    --scrim-default: oklch(0% 0 0 / 0.6);
+    --scrim-strong: oklch(0% 0 0 / 0.8);
+
+    /* Editorial-native */
+    --paper-0: var(--surface-0);
+    --paper-1: var(--surface-1);
+    --paper-2: var(--surface-2);
+    --ink-0: var(--surface-10);
+    --ink-1: var(--surface-8);
+    --ink-2: var(--surface-6);
+    --rule: var(--surface-4);
+
+    /* Legacy aliases */
+    --bg-page: var(--bg-base);
+    --bg-elevated: var(--bg-raised);
+    --bg-elevated-strong: var(--bg-raised);
+    --bg-soft: var(--surface-3);
+    --bg-strong: var(--accent-primary);
+    --accent: var(--accent-primary);
+    --border-soft: var(--border-subtle);
+  }
+}

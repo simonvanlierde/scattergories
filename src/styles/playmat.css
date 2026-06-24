@@ -1,0 +1,545 @@
+@layer components {
+  /* ─────────────────────────────────────────────────────────────
+     Playmat — core play surface
+     Editorial layout: vertical stack, hero-first on mobile,
+     two-column on wide. Paper + rules instead of cards + shadows.
+     ───────────────────────────────────────────────────────────── */
+  .playmat {
+    container-type: inline-size;
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-6);
+    background: var(--bg-raised);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-md);
+    box-shadow: none;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .playmat__meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .playmat__used-letters {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+  }
+
+  /* Hero = TimerRing container + LetterHero as drop-cap */
+  .playmat__hero {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    width: min(100%, 20rem);
+    margin: 0 auto;
+  }
+
+  .playmat__status {
+    margin: 0 auto;
+    width: max-content;
+    max-width: 100%;
+    min-height: 1.5rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    text-align: center;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--text-muted);
+    pointer-events: none;
+    transition: color var(--duration-normal) var(--ease-out);
+  }
+
+  .playmat__status:empty {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .playmat[data-phase="buffer"] .playmat__status {
+    color: var(--text-secondary);
+  }
+
+  .playmat[data-phase="running"] .playmat__status {
+    color: var(--accent-primary);
+  }
+
+  .playmat__status--done {
+    color: var(--accent-primary);
+    font-weight: 700;
+  }
+
+  /* ─── Round timer pill — ghost text link into Settings ──────── */
+  .round-timer-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    justify-self: center;
+    padding: var(--space-1) 0;
+    border-radius: 0;
+    background: transparent;
+    border: 0;
+    color: var(--text-muted);
+    font-family: var(--font-numeric);
+    font-size: var(--text-xs);
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    letter-spacing: var(--tracking-wider);
+    cursor: pointer;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .round-timer-pill:hover {
+    color: var(--text-primary);
+  }
+
+  .round-timer-pill:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+  }
+
+  .round-timer-pill__text {
+    color: inherit;
+  }
+
+  /* ─── Timer Ring — monochrome editorial ──────────────────────── */
+  .timer-ring {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+
+  .timer-ring__svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .timer-ring__track {
+    fill: none;
+    stroke: var(--rule);
+    stroke-width: 2;
+  }
+
+  .timer-ring__progress {
+    fill: none;
+    stroke: var(--text-secondary);
+    stroke-width: 2;
+    stroke-linecap: butt;
+    transition:
+      stroke-dashoffset var(--duration-slow) var(--ease-out),
+      stroke var(--duration-normal) var(--ease-out),
+      stroke-width var(--duration-normal) var(--ease-out);
+  }
+
+  .timer-ring--idle .timer-ring__progress {
+    stroke: var(--rule);
+  }
+
+  .timer-ring--urgent .timer-ring__progress {
+    stroke: var(--accent-primary);
+    stroke-width: 3;
+  }
+
+  .timer-ring--done .timer-ring__progress {
+    stroke: var(--accent-primary);
+    stroke-width: 4;
+  }
+
+  .timer-ring__readout {
+    position: absolute;
+    bottom: -0.5rem;
+    padding: var(--space-1) var(--space-3);
+    background: var(--bg-raised);
+    border: 0;
+    border-radius: 0;
+    font-family: var(--font-numeric);
+    font-size: var(--text-xl);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-primary);
+    min-width: 5rem;
+    text-align: center;
+    transition:
+      color var(--duration-normal) var(--ease-out),
+      font-weight var(--duration-normal) var(--ease-out);
+  }
+
+  .timer-ring--urgent .timer-ring__readout {
+    color: var(--accent-primary);
+  }
+
+  .timer-ring--done .timer-ring__readout {
+    color: var(--accent-primary);
+    font-weight: 700;
+  }
+
+  /* ─── Letter Hero — serif drop-cap ───────────────────────────── */
+  .letter-hero {
+    position: relative;
+    display: grid;
+    place-items: center;
+    isolation: isolate;
+  }
+
+  .letter-hero::before {
+    content: none;
+  }
+
+  .letter-hero__glyph {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(6rem, 32cqi, 11rem);
+    line-height: 0.85;
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-primary);
+    font-feature-settings: "ss01" 1;
+  }
+
+  .letter-hero__glyph--hidden {
+    opacity: 0.12;
+  }
+
+  .letter-hero__glyph--landing {
+    animation: letter-land var(--duration-hero) var(--ease-spring) both;
+  }
+
+  @keyframes letter-land {
+    0% {
+      transform: translateY(-4%) scale(0.85);
+      opacity: 0;
+    }
+    60% {
+      opacity: 1;
+      transform: translateY(0) scale(1.03);
+    }
+    100% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+
+  /* ─── Category Checklist — numbered rows, hairline separators ── */
+  .category-checklist {
+    min-height: 0;
+    min-width: 0;
+  }
+
+  .category-checklist--empty {
+    display: grid;
+    place-items: center;
+    padding: var(--space-8) var(--space-4);
+    border-radius: 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    background: transparent;
+    color: var(--text-muted);
+  }
+
+  .category-checklist__empty {
+    margin: 0;
+    text-align: center;
+    font-size: var(--text-sm);
+    font-style: italic;
+  }
+
+  .category-checklist__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .category-checklist__item {
+    min-width: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .category-checklist__row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--space-3);
+    min-height: 3rem;
+    padding: var(--space-3) var(--space-1);
+    color: var(--text-primary);
+    font-size: var(--text-md);
+  }
+
+  .category-checklist__mark {
+    display: grid;
+    place-items: center;
+    min-width: 2rem;
+    min-height: 2rem;
+    border-radius: 0;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--text-md);
+    font-variant-numeric: tabular-nums;
+    font-style: italic;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .category-checklist__label {
+    font-weight: 400;
+    letter-spacing: var(--tracking-normal);
+    line-height: var(--leading-snug);
+    text-decoration: none;
+  }
+
+  /* ─── Action Bar ─────────────────────────────────────────────── */
+  .action-bar {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .action-bar .ds-button--lg {
+    min-height: 3rem;
+    box-shadow: none;
+  }
+
+  .action-bar .ds-button--lg:where(:not(:disabled)):hover {
+    box-shadow: none;
+  }
+
+  .action-bar__groups {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .action-bar__group {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
+    flex: 0 0 auto;
+    min-height: 2.75rem;
+    padding: var(--space-0-5);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-sm);
+  }
+
+  .action-bar__destructive:where(:not(:disabled)):hover {
+    color: var(--danger);
+    background: transparent;
+  }
+
+  .action-bar__destructive:where(:not(:disabled)):active {
+    color: var(--danger);
+    background: transparent;
+  }
+
+  .action-bar__destructive:focus-visible {
+    outline-color: var(--danger);
+  }
+
+  /* ─── Container-query responsive ─────────────────────────────── */
+  @container (min-width: 40rem) {
+    .playmat {
+      justify-items: center;
+      gap: var(--space-6);
+      padding: var(--space-8);
+    }
+
+    .playmat__meta {
+      width: 100%;
+    }
+
+    .playmat__hero {
+      width: min(100%, 24rem);
+    }
+
+    .playmat__status {
+      width: min(100%, 22rem);
+    }
+
+    .action-bar {
+      width: min(100%, 32rem);
+    }
+
+    .round-timer-pill {
+      justify-self: center;
+    }
+  }
+
+  /* ─── Round End Screen — typographic celebration ─────────────── */
+  .round-end {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: var(--space-5);
+    padding: var(--space-8) var(--space-6);
+    background: transparent;
+    border: 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    border-radius: 0;
+    box-shadow: none;
+    text-align: center;
+    overflow: hidden;
+    animation: round-end-in var(--duration-slow) var(--ease-spring) both;
+  }
+
+  .round-end[data-complete="true"] {
+    background: transparent;
+    border-color: var(--rule);
+    box-shadow: none;
+  }
+
+  @starting-style {
+    .round-end {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+
+  @keyframes round-end-in {
+    0% {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .round-end__title {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .round-end__letter {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(4.5rem, 24cqi, 8rem);
+    line-height: 0.9;
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-primary);
+    font-feature-settings: "ss01" 1;
+  }
+
+  .round-end__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    gap: 0;
+    justify-content: center;
+    margin-top: var(--space-3);
+    width: 100%;
+    max-width: 32rem;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .round-end__stat {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-1);
+    padding: var(--space-4) var(--space-3);
+    border-radius: 0;
+    background: transparent;
+    border: 0;
+    border-right: 1px solid var(--rule);
+    min-width: 0;
+  }
+
+  .round-end__stat:last-child {
+    border-right: 0;
+  }
+
+  .round-end__stat--emphasis {
+    background: transparent;
+    border-color: var(--rule);
+  }
+
+  .round-end[data-complete="true"] .round-end__stat--emphasis {
+    background: transparent;
+    border-color: var(--rule);
+  }
+
+  .round-end__stat--streak {
+    background: transparent;
+    border-color: var(--rule);
+    color: inherit;
+  }
+
+  .round-end__stat-label {
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+  }
+
+  .round-end__stat-value {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
+  }
+
+  .round-end__stat--streak .round-end__stat-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--text-muted);
+  }
+
+  .round-end__stat--streak .round-end__stat-value {
+    color: var(--accent-primary);
+  }
+
+  .round-end__stat--emphasis .round-end__stat-value {
+    color: var(--accent-primary);
+  }
+
+  .round-end__actions {
+    display: grid;
+    gap: var(--space-2);
+    width: 100%;
+    max-width: 24rem;
+    margin-top: var(--space-2);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .timer-ring--urgent .timer-ring__progress {
+      animation: none;
+    }
+    .letter-hero__glyph--landing {
+      animation: none;
+    }
+    .round-end {
+      animation: none;
+    }
+  }
+}
