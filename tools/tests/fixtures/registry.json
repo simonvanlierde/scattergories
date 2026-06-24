@@ -1,0 +1,14 @@
+{
+  "fallbackLocale": "en",
+  "locales": ["en", "es", "el"],
+  "lettersByLocale": {
+    "en": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    "es": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    "el": "ΑΒΓ"
+  },
+  "nativeNames": {
+    "en": "English",
+    "es": "Español",
+    "el": "Ελληνικά"
+  }
+}

@@ -1,1 +1,1 @@
-"""Tests for the letter-frequency package."""
+"""Tests for Scattergories Python tools."""

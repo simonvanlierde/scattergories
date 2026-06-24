@@ -1,142 +1,131 @@
-# Tools
+# Scattergories Tools
 
-This folder contains small Python tools for Scattergories data workflows:
+The `tools/` workspace contains the Python CLI used to inspect, preview, and regenerate
+Scattergories locale assets.
 
-- letter frequency derivation for letter weights
-- category translation from `src/game/constants.ts` using Argos Translate
-
-It also includes a Python helper that downloads Wikitext-2 and Wikitext-103 from Hugging Face and writes recreated local artifacts under a gitignored folder.
-
-## What it computes
-
-- Input: all files under a corpus directory
-- Match rule: first letter of each word (`\b[a-z]`, lowercased)
-- Output columns:
-  1. `LETTER`
-  2. `RELATIVE_FREQUENCY` (0 to 1)
-  3. `COUNT`
-
-## Quick start
-
-From this folder:
+## Install
 
 ```bash
-chmod +x frequencies.sh
-./frequencies.sh ../../texts
-./frequencies.sh --ts ../../texts
+cd tools
+uv sync --locked
 ```
 
-## Recreate Wikitext frequencies locally
-
-### Quick start (small dataset, ~13 MB)
+Optional offline translation support:
 
 ```bash
-uv sync
-uv run python letter-frequency/wikitext_frequencies.py
+uv sync --group translation --locked
 ```
 
-This downloads **Wikitext-2** and writes outputs to `data/wikitext-2-raw-v1/`:
+## CLI
 
-- `frequencies.tsv`
-- `letter_weights.ts`
-
-### Larger dataset (~540 MB)
-
-To use **Wikitext-103** instead:
+All workflows go through one command:
 
 ```bash
-uv run python letter-frequency/wikitext_frequencies.py --large
+uv run sg-tools --help
 ```
 
-To preview the selected dataset and output path without downloading anything:
+Supported commands:
+
+- `sg-tools doctor`
+- `sg-tools weights sample`
+- `sg-tools weights locales`
+- `sg-tools translate categories`
+- `sg-tools translate locales`
+
+By default commands are preview-safe. Writing back to the app requires explicit flags:
+
+- `--write` for ephemeral output under `tools/out/`
+- `--write-app-file` for locale weight generation
+- `--write-app-files` for translated app JSON files
+
+## Common workflows
+
+Preview environment and dependency health:
 
 ```bash
-uv run python letter-frequency/wikitext_frequencies.py --dry-run
+uv run sg-tools doctor
 ```
 
-### Using just recipes
+Preview sample corpus weights:
 
 ```bash
-just generate-weights      # Download Wikitext-2 (default)
-just generate-weights large  # Download Wikitext-103
-just dry-run               # Preview dataset and output path
-just dry-run large         # Preview Wikitext-103 dataset and output path
-just show-weights          # Display top letters
-just show-weights large    # Display Wikitext-103 weights
+uv run sg-tools weights sample --dataset wikitext-2
 ```
 
-## Translate categories
-
-Install Argos dependencies once:
+Write sample corpus output to `tools/out/weights/`:
 
 ```bash
-just install-translation
+uv run sg-tools weights sample --dataset wikitext-103 --write
 ```
 
-Preview run (no downloads, no translation):
+Preview locale weights:
 
 ```bash
-just translate-categories-dry-run
+uv run sg-tools weights locales --locales en fr de
 ```
 
-Translate categories to Spanish (default):
+Write locale weights into the app:
 
 ```bash
-just translate-categories
+uv run sg-tools weights locales --locales en es fr de it nl pl pt el --write-app-file
 ```
 
-Translate categories to multiple locales:
+Preview category translation:
 
 ```bash
-just translate-categories "es fr de"
+uv run --group translation sg-tools translate categories --target-locales es fr
 ```
 
-Outputs are written to `translation/data/categories.<locale>.json`.
-
-Translate locale JSON payloads from `src/i18n/locales/en.json`:
+Write translated category files into `src/i18n/locales/`:
 
 ```bash
-just translate-locales "es fr de"
+uv run --group translation sg-tools translate categories --target-locales es fr --write-app-files
 ```
 
-Dry run for locale payload translation:
+Preview locale payload translation:
 
 ```bash
-just translate-locales-dry-run "es fr de"
+uv run --group translation sg-tools translate locales --target-locales es fr
 ```
 
-Locale outputs are written to `translation/data/locale.<locale>.json`.
-
-Normal runs suppress noisy Hugging Face and HTTP client logs so only the script's own output is shown. Use `--verbose` for extra detail from this script.
-
-## TypeScript output for LETTER_WEIGHTS
-
-To print a paste-ready object for `src/App.tsx`:
+Write translated locale payloads into `src/i18n/locales/`:
 
 ```bash
-./frequencies.sh --ts ../../texts
+uv run --group translation sg-tools translate locales --target-locales es fr --write-app-files
 ```
 
-This emits:
+## Task runner
 
-```ts
-const LETTER_WEIGHTS: Record<string, number> = {
-  A: 0.00000000,
-  ...
-  Z: 0.00000000,
-};
-```
-
-## One-liner (no script)
+From the repo root:
 
 ```bash
-find texts -type f -print0 \
-  | xargs -0 rg -o -i --no-filename '\\b[a-z]' \
-  | tr '[:upper:]' '[:lower:]' \
-  | awk '{c[$1]++; t++} END {for (l in c) printf "%s\t%.8f\t%d\\n", toupper(l), c[l]/t, c[l]}' \
-  | sort -k2,2nr
+just tools-install
+just tools-check
+just tools-doctor
+just tools-weights-locales
+just tools-translate-categories es fr
 ```
 
-## Note
+From `tools/`:
 
-If you pipe to `head`, you may see a harmless `xargs: cat: terminated with signal 13` message due to downstream early exit.
+```bash
+just check
+just doctor
+just weights-locales
+just translate-categories es fr
+```
+
+## Artifacts
+
+- Ephemeral outputs live in `tools/out/`
+- Runtime caches live in `tools/.cache/`
+- App-consumed generated files live in `src/i18n/__generated__/` and `src/i18n/locales/`
+
+Coverage output is reported in the terminal/CI and is not written into tracked workspace files.
+
+## Test suite notes
+
+- Prefer fast unit tests and narrow seam-based fakes over broader integration setups.
+- Prioritize branch coverage on orchestration-heavy modules like the CLI and provider adapters.
+- When behavior matters, prefer reusable fakes over ad hoc mocks and inline anonymous stubs.
+- Favor one assertion-rich behavior test over several shallow smoke tests for the same path.
