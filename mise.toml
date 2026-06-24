@@ -1,0 +1,7 @@
+[settings]
+# Node version is single-sourced from `.node-version` (also read by setup-node in CI).
+idiomatic_version_file_enable_tools = ['node']
+
+[tools]
+pnpm = '10.33.2'
+python = '3.14'
