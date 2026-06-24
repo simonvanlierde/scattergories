@@ -28,20 +28,6 @@ updates:
         patterns:
           - "*"
 
-  - package-ecosystem: docker
-    directory: /
-    schedule:
-      interval: weekly
-      day: monday
-    open-pull-requests-limit: 5
-    labels:
-      - dependencies
-      - docker
-    groups:
-      docker-dependencies:
-        patterns:
-          - "*"
-
   - package-ecosystem: uv
     directory: /tools
     schedule:

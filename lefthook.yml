@@ -10,19 +10,15 @@ pre-commit:
       stage_fixed: true
 
     spellcheck:
-      run: pnpm exec cspell lint --config=cspell.yaml --no-progress --no-must-find-files {staged_files}
+      run: pnpm run spellcheck-changed -- {staged_files}
 
     python-lint:
       root: "tools"
       glob: "tools/**/*.py"
       run: uv run --quiet ruff check {staged_files}
 
-    python-typecheck:
-      root: "tools"
-      glob: "tools/**/*.py"
-      run: uv run --quiet ty check
-
 pre-push:
   commands:
-    full-ci:
-      run: pnpm run ci
+    verify:
+      run: pnpm run verify
+      timeout: 10m
