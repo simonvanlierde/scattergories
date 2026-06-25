@@ -87,7 +87,6 @@ words:
   - huggingface
   - justfile
   - monkeypatch
-  - scattegories
   - testpaths
   - toupper
   - tqdm
