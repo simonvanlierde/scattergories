@@ -73,7 +73,6 @@ bundle is capped at an 80 KiB gzip budget ([`scripts/check-bundle-budgets.mjs`](
 - [`src/`](src/) — the React app: `domain/game/` (pure game logic), `features/` (round, categories, settings), `app/` (shell and controller hooks), `i18n/` (locales and registry)
 - [`tools/`](tools/README.md) — Python CLI (`sg-tools`) for inspecting and regenerating locale assets
 - [`tests/`](tests/) — Playwright end-to-end specs
-- [`AGENTS.md`](AGENTS.md) — architecture and contributor-facing design notes
 
 ## License
 
