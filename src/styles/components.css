@@ -74,6 +74,13 @@
     padding: var(--space-3);
   }
 
+  .field-shell--toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
   .btn-secondary,
   .footer-link,
   .modal-close {
@@ -98,13 +105,9 @@
 
   .categories-card__header {
     display: flex;
-    align-items: start;
+    align-items: center;
     justify-content: space-between;
     gap: var(--space-3);
-  }
-
-  .categories-card__customize {
-    margin-top: 0;
   }
 
   .category-toolbar--setup {

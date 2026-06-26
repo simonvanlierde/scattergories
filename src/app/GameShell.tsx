@@ -1,9 +1,9 @@
-import { HelpCircle, Settings as SettingsIcon } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
 import { Suspense, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CategoriesPanel } from '@/features/categories/CategoriesPanel';
 import { Playmat } from '@/features/round/Playmat';
-import { SettingsSheet } from '@/features/settings/SettingsSheet';
+import { SettingsCluster } from '@/features/settings/SettingsCluster';
 import { BrandMark } from '@/shared/ui/BrandMark';
 import { Icon } from '@/shared/ui/Icon';
 import { IconButton } from '@/shared/ui/IconButton';
@@ -37,13 +37,9 @@ interface GameShellProps {
   startupLocaleWarning: string | null;
 }
 
-interface TopBarProps {
-  game: GameController;
-  onOpenSettings: () => void;
-}
-
-function TopBar({ game, onOpenSettings }: TopBarProps) {
-  const { t } = useTranslation();
+function TopBar({ game }: { game: GameController }) {
+  const { t, i18n } = useTranslation();
+  const canEditRoundSettings = game.round.phase === 'idle' || game.round.phase === 'done';
 
   return (
     <header className="topbar">
@@ -53,10 +49,16 @@ function TopBar({ game, onOpenSettings }: TopBarProps) {
       </div>
 
       <div className="topbar__actions">
-        <IconButton
-          label={t('settings.openLabel', { defaultValue: 'Settings' })}
-          icon={<Icon icon={SettingsIcon} size={20} />}
-          onClick={onOpenSettings}
+        <SettingsCluster
+          language={i18n.resolvedLanguage ?? i18n.language}
+          isLanguagePending={game.flags.isLanguagePending}
+          theme={game.settings.theme}
+          canEditRoundSettings={canEditRoundSettings}
+          durationInput={game.settings.durationInput}
+          onLanguageChange={game.controls.onLanguageChange}
+          onToggleTheme={game.controls.onToggleTheme}
+          onUpdateTimingField={game.controls.onUpdateField}
+          onBlurTimingField={game.controls.onBlurNumericField}
         />
         <IconButton
           label={t('footer.howToPlay')}
@@ -103,13 +105,14 @@ function ChunkErrorBanner({ onReload }: { onReload: () => void }) {
 
 interface PlayGridProps {
   game: GameShellProps['game'];
-  onOpenSettings: () => void;
 }
 
-function PlayGrid({ game, onOpenSettings }: PlayGridProps) {
+function PlayGrid({ game }: PlayGridProps) {
+  const canEditRoundSettings = game.round.phase === 'idle' || game.round.phase === 'done';
+
   return (
     <section className="play-grid">
-      <Playmat game={game} onOpenSettings={onOpenSettings} />
+      <Playmat game={game} />
 
       <CategoriesPanel
         categories={{
@@ -117,22 +120,27 @@ function PlayGrid({ game, onOpenSettings }: PlayGridProps) {
           catCountInput: game.settings.catCountInput,
           customCategories: game.settings.customCategories,
           drawnCategories: game.categories.drawnCategories,
+          customCount: game.categories.customCount,
+          isLanding: game.categories.isLanding,
           isPromptDeckOpen: game.flags.isPromptDeckOpen,
-          mode: game.settings.categoryMode,
+          includePackCategories: game.settings.includePackCategories,
           refreshMode: game.settings.categoryRefreshMode,
           newCategoryInput: game.categories.newCategoryInput,
+          activePack: game.settings.activePack,
+          canEditRoundSettings,
         }}
         inputRef={game.categories.inputRef}
         actions={{
           onAddCustom: game.controls.onAddCustomCategory,
-          onCategoryModeChange: game.controls.onCategoryModeChange,
+          onIncludePackChange: game.controls.onIncludePackChange,
           onCategoryRefreshModeChange: game.controls.onCategoryRefreshModeChange,
           onCatCountBlur: () => game.controls.onBlurNumericField('catCountInput'),
           onCatCountChange: (value) => game.controls.onUpdateField('catCountInput', value),
           onNewCategoryInputChange: game.categories.setNewCategoryInput,
           onRemoveCustom: game.controls.onRemoveCustomCategory,
-          onShuffle: game.controls.onRedrawCategories,
+          onRedraw: game.controls.onRedrawCategories,
           onTogglePromptDeck: game.controls.onTogglePromptDeck,
+          onActivePackChange: game.controls.onActivePackChange,
         }}
       />
     </section>
@@ -140,15 +148,8 @@ function PlayGrid({ game, onOpenSettings }: PlayGridProps) {
 }
 
 function useShellState() {
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
 
-  const openSettings = useCallback(() => {
-    setIsSettingsOpen(true);
-  }, []);
-  const closeSettings = useCallback(() => {
-    setIsSettingsOpen(false);
-  }, []);
   const toggleShortcuts = useCallback(() => {
     setIsShortcutsOpen((open) => !open);
   }, []);
@@ -157,19 +158,15 @@ function useShellState() {
   useShortcutKey(toggleShortcuts);
 
   return {
-    isSettingsOpen,
     isShortcutsOpen,
-    openSettings,
-    closeSettings,
     toggleShortcuts,
     closeShortcuts,
   };
 }
 
 function GameShell({ game, startupLocaleWarning }: GameShellProps) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const shell = useShellState();
-  const canEditRoundSettings = game.round.phase === 'idle' || game.round.phase === 'done';
 
   return (
     <main
@@ -178,7 +175,7 @@ function GameShell({ game, startupLocaleWarning }: GameShellProps) {
     >
       <div className="app-shell__bg" aria-hidden="true" />
       <div className="app">
-        <TopBar game={game} onOpenSettings={() => shell.openSettings()} />
+        <TopBar game={game} />
 
         {startupLocaleWarning ? <WarningBanner message={startupLocaleWarning} /> : null}
 
@@ -186,26 +183,10 @@ function GameShell({ game, startupLocaleWarning }: GameShellProps) {
           <ChunkErrorBanner onReload={game.controls.onReloadAfterChunkError} />
         ) : null}
 
-        <PlayGrid game={game} onOpenSettings={() => shell.openSettings()} />
+        <PlayGrid game={game} />
 
         <AppFooter />
       </div>
-
-      <SettingsSheet
-        open={shell.isSettingsOpen}
-        onClose={shell.closeSettings}
-        language={i18n.resolvedLanguage ?? i18n.language}
-        isLanguagePending={game.flags.isLanguagePending}
-        theme={game.settings.theme}
-        canEditRoundSettings={canEditRoundSettings}
-        durationInput={game.settings.durationInput}
-        activePack={game.settings.activePack}
-        onLanguageChange={game.controls.onLanguageChange}
-        onToggleTheme={game.controls.onToggleTheme}
-        onUpdateTimingField={game.controls.onUpdateField}
-        onBlurTimingField={game.controls.onBlurNumericField}
-        onActivePackChange={game.controls.onActivePackChange}
-      />
 
       <ShortcutsSheet open={shell.isShortcutsOpen} onClose={shell.closeShortcuts} />
 

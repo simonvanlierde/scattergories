@@ -4,11 +4,7 @@ import { useTranslation } from 'react-i18next';
 import type { Phase, StatusKey } from '@/domain/game/roundReducer';
 import { useRound } from '@/features/round/useRound';
 import { useSettings } from '@/features/settings/SettingsProvider';
-import type {
-  CategoryMode,
-  CategoryRefreshMode,
-  NumericFieldName,
-} from '@/features/settings/schema';
+import type { CategoryRefreshMode, NumericFieldName } from '@/features/settings/schema';
 import { useAppControls } from './useAppControls';
 import { useCategoryBoard } from './useCategoryBoard';
 import { useKeyboardShortcuts } from './useKeyboardShortcuts';
@@ -21,6 +17,8 @@ interface GameController {
   categories: {
     availableCount: number;
     drawnCategories: string[];
+    customCount: number;
+    isLanding: boolean;
     isCompactLayout: boolean;
     isPromptDeckOpen: boolean;
     newCategoryInput: string;
@@ -32,7 +30,7 @@ interface GameController {
     onAddCustomCategory: () => void;
     onActivePackChange: (packId: string) => void;
     onBlurNumericField: (field: NumericFieldName) => void;
-    onCategoryModeChange: (mode: CategoryMode) => void;
+    onIncludePackChange: (value: boolean) => void;
     onCategoryRefreshModeChange: (mode: CategoryRefreshMode) => void;
     onCloseHowToPlay: () => void;
     onLanguageChange: (language: string) => void;
@@ -40,7 +38,6 @@ interface GameController {
     onReloadAfterChunkError: () => void;
     onRemoveCustomCategory: (category: string) => void;
     onRedrawCategories: () => void;
-    onResetRound: () => void;
     onStartRound: () => void;
     onToggleMute: () => void;
     onTogglePause: () => void;
@@ -108,8 +105,10 @@ function useGameController(): GameController {
   const promptDeck = usePromptDeckState(settings.promptDeckPreference, update);
   const roundSetup = useRoundSetup(settings);
   const board = useCategoryBoard({
-    availableCategories: roundSetup.availableCategories,
-    normalizedCategoryCount: roundSetup.normalizedCategoryCount,
+    pinnedCategories: roundSetup.customCategories,
+    poolCategories: roundSetup.packCategories,
+    count: roundSetup.normalizedCategoryCount,
+    includePack: roundSetup.includePackCategories,
   });
   const round = useRound({
     gameSeconds: roundSetup.gameSeconds,
@@ -117,7 +116,9 @@ function useGameController(): GameController {
     locale: i18n.resolvedLanguage ?? i18n.language,
     categoryRefreshMode: settings.categoryRefreshMode,
     onLetterPicked:
-      settings.categoryRefreshMode === 'auto' ? board.redrawCategories : () => undefined,
+      settings.categoryRefreshMode === 'auto'
+        ? () => board.redrawCategories(true)
+        : () => undefined,
   });
   const controls = useAppControls({
     addCustomCategory,
@@ -136,8 +137,10 @@ function useGameController(): GameController {
 
   return {
     categories: {
-      availableCount: roundSetup.availableCategories.length,
+      availableCount: roundSetup.availableCount,
       drawnCategories: board.drawnCategories,
+      customCount: board.customCount,
+      isLanding: board.landing,
       isCompactLayout: promptDeck.isCompactLayout,
       isPromptDeckOpen: promptDeck.isPromptDeckOpen,
       newCategoryInput: controls.newCategoryInput,
@@ -149,7 +152,7 @@ function useGameController(): GameController {
       onAddCustomCategory: controls.handleAddCustomCategory,
       onActivePackChange: (packId: string) => update('activePack', packId),
       onBlurNumericField: controls.blurNumericField,
-      onCategoryModeChange: (mode) => update('categoryMode', mode),
+      onIncludePackChange: (value) => update('includePackCategories', value),
       onCategoryRefreshModeChange: (mode) => update('categoryRefreshMode', mode),
       onCloseHowToPlay: () => controls.setIsHowToPlayOpen(false),
       onLanguageChange: controls.handleLanguageChange,

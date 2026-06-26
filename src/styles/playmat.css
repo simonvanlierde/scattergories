@@ -307,6 +307,25 @@
     text-decoration: none;
   }
 
+  .category-checklist__label--landing {
+    animation: category-land var(--duration-hero) var(--ease-spring) both;
+  }
+
+  @keyframes category-land {
+    0% {
+      transform: translateY(-30%);
+      opacity: 0;
+    }
+    60% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
   /* ─── Action Bar ─────────────────────────────────────────────── */
   .action-bar {
     display: flex;
