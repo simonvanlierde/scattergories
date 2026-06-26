@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { FIVE, ONE, TEN, THIRTY, TWO, ZERO } from '@/test/constants';
 import { BUFFER_SECONDS, DEFAULT_TIMER_SECONDS } from '@/test/gameConstants';
+import type { RoundAction } from './roundReducer';
 import { initialRoundState, roundReducer } from './roundReducer';
 
 const startSpin = (overrides: { autoStart?: boolean; bufferSeconds?: number } = {}) => ({
@@ -183,5 +184,27 @@ describe('roundReducer', () => {
     const kept = roundReducer(running, { type: 'SET_GAME_SECONDS', gameSeconds: THIRTY });
     expect(kept.secondsLeft).toBe(TEN);
     expect(kept.gameSeconds).toBe(THIRTY);
+  });
+
+  it('SET_GAME_SECONDS resets the clock while ready', () => {
+    const ready = { ...initialRoundState, phase: 'ready' as const, secondsLeft: TEN };
+    const next = roundReducer(ready, { type: 'SET_GAME_SECONDS', gameSeconds: THIRTY });
+    expect(next.secondsLeft).toBe(THIRTY);
+    expect(next.gameSeconds).toBe(THIRTY);
+  });
+
+  it('BEGIN_COUNTDOWN is a no-op outside ready', () => {
+    const next = roundReducer(initialRoundState, { type: 'BEGIN_COUNTDOWN' });
+    expect(next).toBe(initialRoundState);
+  });
+
+  it('TICK is a no-op outside buffer/running', () => {
+    const next = roundReducer(initialRoundState, { type: 'TICK' });
+    expect(next).toBe(initialRoundState);
+  });
+
+  it('returns the current state for unknown actions', () => {
+    const next = roundReducer(initialRoundState, { type: 'NOPE' } as unknown as RoundAction);
+    expect(next).toBe(initialRoundState);
   });
 });
