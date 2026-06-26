@@ -8,7 +8,8 @@ interface PopoverProps {
   icon: LucideIcon;
   label: string;
   title?: string;
-  children: ReactNode;
+  /** ReactNode, or a render function receiving a `close` callback (e.g. to dismiss on select). */
+  children: ReactNode | ((close: () => void) => ReactNode);
 }
 
 /**
@@ -58,7 +59,7 @@ export function Popover({ icon, label, title, children }: PopoverProps) {
       />
       {open ? (
         <div className="ds-popover__panel" id={panelId} role="dialog" aria-label={label}>
-          {children}
+          {typeof children === 'function' ? children(() => setOpen(false)) : children}
         </div>
       ) : null}
     </div>

@@ -1,4 +1,4 @@
-import { Globe, Moon, Sun, Timer, Volume2, VolumeX } from 'lucide-react';
+import { Check, Globe, Moon, Sun, Timer, Volume2, VolumeX } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import {
   bufferSecondsMax,
@@ -29,34 +29,42 @@ interface SettingsClusterProps {
   onBlurTimingField: (field: TimingField) => void;
 }
 
-function LanguagePicker({
+function LanguageMenu({
   language,
   isLanguagePending,
-  onLanguageChange,
-}: Pick<SettingsClusterProps, 'language' | 'isLanguagePending' | 'onLanguageChange'>) {
+  onSelect,
+}: Pick<SettingsClusterProps, 'language' | 'isLanguagePending'> & {
+  onSelect: (code: string) => void;
+}) {
   const { t } = useTranslation();
   const enabledLocales = getEnabledLocales();
 
   return (
-    <label className="settings-select">
-      <span>{t('language.label', { defaultValue: 'Language' })}</span>
-      <select
-        aria-label={t('language.label', { defaultValue: 'Language' })}
-        value={language}
-        disabled={isLanguagePending}
-        onChange={(event) => onLanguageChange(event.target.value)}
-      >
-        {SUPPORTED_LOCALES.map((code) => (
-          <option
+    <div
+      className="lang-menu"
+      role="menu"
+      aria-label={t('language.label', { defaultValue: 'Language' })}
+    >
+      {SUPPORTED_LOCALES.map((code) => {
+        const available = enabledLocales.includes(code) && isLocaleEnabled(code);
+        const selected = code === language;
+        return (
+          <button
             key={code}
-            value={code}
-            disabled={!(enabledLocales.includes(code) && isLocaleEnabled(code))}
+            type="button"
+            role="menuitemradio"
+            aria-checked={selected}
+            data-locale={code}
+            className="lang-menu__item"
+            disabled={!available || isLanguagePending}
+            onClick={() => onSelect(code)}
           >
-            {getNativeName(code)}
-          </option>
-        ))}
-      </select>
-    </label>
+            <span>{getNativeName(code)}</span>
+            {selected ? <Icon icon={Check} size={16} /> : null}
+          </button>
+        );
+      })}
+    </div>
   );
 }
 
@@ -74,6 +82,7 @@ function TimingFields({
   return (
     <div className="timing-fields">
       <Field
+        className="ds-field--inline"
         id="duration"
         label={t('settings.duration')}
         type="number"
@@ -81,11 +90,12 @@ function TimingFields({
         value={durationInput}
         min={durationMin}
         max={durationMax}
-        suffix={t('status.seconds')}
+        suffix="s"
         onChange={(event) => onUpdateTimingField('durationInput', event.target.value)}
         onBlur={() => onBlurTimingField('durationInput')}
       />
       <Field
+        className="ds-field--inline"
         id="getReady"
         label={t('settings.getReady', { defaultValue: 'Get ready' })}
         type="number"
@@ -93,7 +103,7 @@ function TimingFields({
         value={bufferSecondsInput}
         min={bufferSecondsMin}
         max={bufferSecondsMax}
-        suffix={t('status.seconds')}
+        suffix="s"
         onChange={(event) => onUpdateTimingField('bufferSecondsInput', event.target.value)}
         onBlur={() => onBlurTimingField('bufferSecondsInput')}
       />
@@ -137,11 +147,16 @@ export function SettingsCluster({
         label={t('language.label', { defaultValue: 'Language' })}
         title={getNativeName(language)}
       >
-        <LanguagePicker
-          language={language}
-          isLanguagePending={isLanguagePending}
-          onLanguageChange={onLanguageChange}
-        />
+        {(close) => (
+          <LanguageMenu
+            language={language}
+            isLanguagePending={isLanguagePending}
+            onSelect={(code) => {
+              onLanguageChange(code);
+              close();
+            }}
+          />
+        )}
       </Popover>
 
       <IconButton

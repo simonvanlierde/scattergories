@@ -53,8 +53,8 @@
     "seconds": "seconds"
   },
   "settings": {
-    "duration": "Round duration",
-    "getReady": "Get ready time",
+    "duration": "Round",
+    "getReady": "Get ready",
     "categoryDraw": "Draw",
     "addCustom": "Add custom category",
     "placeholder": "e.g. Programming Languages",

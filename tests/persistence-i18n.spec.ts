@@ -22,7 +22,10 @@ test('@smoke persists a non-English language selection across reload', async ({ 
   await expect(page.getByRole('button', { name: 'Empezar Ronda' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Cómo Jugar' })).toBeVisible();
   await app.openLanguage();
-  await expect(app.languagePopover.getByRole('combobox')).toHaveValue('es');
+  await expect(app.languagePopover.locator('[data-locale="es"]')).toHaveAttribute(
+    'aria-checked',
+    'true',
+  );
   await app.closePopover();
 
   await page.reload();
@@ -31,6 +34,9 @@ test('@smoke persists a non-English language selection across reload', async ({ 
 
   await expect(page.getByRole('button', { name: 'Empezar Ronda' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Cómo Jugar' })).toBeVisible();
-  await expect(app.languagePopover.getByRole('combobox')).toHaveValue('es');
+  await expect(app.languagePopover.locator('[data-locale="es"]')).toHaveAttribute(
+    'aria-checked',
+    'true',
+  );
   await app.closePopover();
 });

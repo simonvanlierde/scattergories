@@ -32,13 +32,13 @@ describe('locale startup validation', () => {
       await screen.findByRole('button', { name: 'Language' });
       await user.click(screen.getByRole('button', { name: 'Language' }));
 
-      const languageSelector = await screen.findByRole('combobox', { name: 'Language' });
+      const languageMenu = await screen.findByRole('menu', { name: 'Language' });
       expect(screen.getByRole('alert')).toHaveTextContent('Missing letter weights for fr');
-      expect(languageSelector).toBeInTheDocument();
-      const frOption = screen
-        .getAllByRole('option')
-        .find((option) => option.getAttribute('value') === 'fr');
-      expect(frOption).toBeDisabled();
+      expect(languageMenu).toBeInTheDocument();
+      const frItem = screen
+        .getAllByRole('menuitemradio')
+        .find((item) => item.getAttribute('data-locale') === 'fr');
+      expect(frItem).toBeDisabled();
     },
     LOCALE_VALIDATION_TIMEOUT_MS,
   );

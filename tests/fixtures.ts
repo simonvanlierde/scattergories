@@ -107,8 +107,8 @@ function createAppFixture(page: Page): AppFixture {
     },
     async switchLanguage(language: string) {
       await openPopover(page, languagePopover, LANGUAGE_NAME);
-      await languagePopover.getByRole('combobox').selectOption(language);
-      await closePopover(page);
+      // Selecting a language applies it and closes the popover.
+      await languagePopover.locator(`[data-locale="${language}"]`).click();
     },
     async toggleMute() {
       await page
