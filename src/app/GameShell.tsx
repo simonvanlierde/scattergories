@@ -8,7 +8,6 @@ import { SettingsCluster } from '@/features/settings/SettingsCluster';
 import { BrandMark } from '@/shared/ui/BrandMark';
 import { Icon } from '@/shared/ui/Icon';
 import { IconButton } from '@/shared/ui/IconButton';
-import { AppFooter } from './AppFooter';
 import { ShortcutsSheet } from './ShortcutsSheet';
 import type { GameController } from './useGameController';
 
@@ -63,7 +62,7 @@ function TopBar({ game }: { game: GameController }) {
           onBlurTimingField={game.controls.onBlurNumericField}
         />
         <IconButton
-          label={t('footer.howToPlay')}
+          label={t('buttons.howToPlay')}
           icon={<Icon icon={HelpCircle} size={20} />}
           onClick={game.controls.onOpenHowToPlay}
         />
@@ -124,7 +123,6 @@ function PlayGrid({ game }: PlayGridProps) {
           deckBuiltins: game.settings.deckBuiltins,
           pinned: game.settings.pinned,
           drawnCategories: game.categories.drawnCategories,
-          pinnedCount: game.categories.pinnedCount,
           isLanding: game.categories.isLanding,
           isPromptDeckOpen: game.flags.isPromptDeckOpen,
           canEdit,
@@ -186,8 +184,6 @@ function GameShell({ game, startupLocaleWarning }: GameShellProps) {
         ) : null}
 
         <PlayGrid game={game} />
-
-        <AppFooter />
       </div>
 
       <ShortcutsSheet open={shell.isShortcutsOpen} onClose={shell.closeShortcuts} />

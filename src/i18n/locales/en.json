@@ -38,7 +38,8 @@
     "remove": "Remove",
     "close": "✕",
     "addTooltip": "Add this category to your custom collection",
-    "closeTooltip": "Close this window"
+    "closeTooltip": "Close this window",
+    "howToPlay": "How to Play"
   },
   "timer": {
     "ready": "Ready",
@@ -52,8 +53,8 @@
     "seconds": "seconds"
   },
   "settings": {
-    "duration": "Timer",
-    "getReady": "Get ready",
+    "duration": "Round duration",
+    "getReady": "Get ready time",
     "categoryDraw": "Draw",
     "addCustom": "Add custom category",
     "placeholder": "e.g. Programming Languages",
@@ -125,15 +126,8 @@
   "usedLetters": "Used letters: {{letters}}{{empty}}",
   "usedLettersEmpty": "None yet",
   "shortcuts": "Shortcuts: Space start, R skip letter, P pause, C toggle categories, A add custom",
-  "footer": {
-    "howToPlay": "How to Play",
-    "officialGame": "Official Game",
-    "sourceCode": "Source Code",
-    "privacy": "This app stores settings and custom categories in your browser only.",
-    "label": "App footer"
-  },
   "modal": {
-    "title": "How to Play Scattergories",
+    "title": "About & How to Play",
     "objective": "Objective",
     "objectiveText": "Score points by writing down words that start with a given letter and fit the categories.",
     "gameplay": "Gameplay",
@@ -160,7 +154,13 @@
       "All settings are saved automatically"
     ],
     "loading": "Opening rules…",
-    "footer": "This is a lightweight round companion for letters, timing, and prompts. Have fun with friends!"
+    "footer": "This is a lightweight round companion for letters, timing, and prompts. Have fun with friends!",
+    "about": "About",
+    "officialGame": "Official Game",
+    "sourceCode": "Source Code",
+    "privacy": "This app stores settings and custom categories in your browser only.",
+    "version": "Version {{version}}",
+    "opensInNewTab": "(opens in new tab)"
   },
   "language": {
     "label": "Language",

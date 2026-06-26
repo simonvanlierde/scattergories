@@ -26,7 +26,8 @@
     "remove": "Usuń",
     "close": "✕",
     "addTooltip": "Dodaj tę kategorię do swojej własnej kolekcji",
-    "closeTooltip": "Zamknij to okno"
+    "closeTooltip": "Zamknij to okno",
+    "howToPlay": "Jak grać"
   },
   "timer": {
     "ready": "Gotowe",
@@ -65,15 +66,8 @@
   "usedLetters": "Użyte litery: {{letters}}{{empty}}",
   "usedLettersEmpty": "Brak",
   "shortcuts": "Skróty: Spacja start, R pomiń literę, P pauza, C pokaż hasła, A dodaj kategorię",
-  "footer": {
-    "howToPlay": "Jak grać",
-    "officialGame": "Oficjalna Gra",
-    "sourceCode": "Kod źródłowy",
-    "privacy": "Ta aplikacja zapisuje ustawienia i kategorie wyłącznie w Twojej przeglądarce.",
-    "label": "Stopka aplikacji"
-  },
   "modal": {
-    "title": "Jak grać w Scattergories",
+    "title": "O aplikacji & Jak grać",
     "objective": "Cel gry",
     "objectiveText": "Zdobywaj punkty, zapisując słowa, które zaczynają się na wylosowaną literę i pasują do wybranych kategorii.",
     "gameplay": "Zasady",
@@ -99,7 +93,13 @@
       "Możesz w każdej chwili wyciszyć dźwięk",
       "Wszystkie ustawienia zapisują się automatycznie"
     ],
-    "footer": "To jest narzędzie pomocnicze do zarządzania literami i czasem. Miłej zabawy ze znajomymi!"
+    "footer": "To jest narzędzie pomocnicze do zarządzania literami i czasem. Miłej zabawy ze znajomymi!",
+    "about": "O aplikacji",
+    "officialGame": "Oficjalna Gra",
+    "sourceCode": "Kod źródłowy",
+    "privacy": "Ta aplikacja zapisuje ustawienia i kategorie wyłącznie w Twojej przeglądarce.",
+    "version": "Wersja {{version}}",
+    "opensInNewTab": "(otwiera się w nowej karcie)"
   },
   "language": {
     "label": "Język",

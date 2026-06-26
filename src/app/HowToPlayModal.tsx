@@ -1,4 +1,6 @@
+import { ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Icon } from '@/shared/ui/Icon';
 import { Sheet } from '@/shared/ui/Sheet';
 
 interface HowToPlayModalProps {
@@ -52,6 +54,36 @@ export function HowToPlayModal({ onClose }: HowToPlayModalProps) {
           <li key={feature}>{feature}</li>
         ))}
       </ul>
+
+      <h3>{t('modal.about')}</h3>
+      <ul className="about-links">
+        <li>
+          <a
+            href="https://hasbrogames.com/scattergories"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="about-link"
+          >
+            <Icon icon={ExternalLink} size={16} />
+            {t('modal.officialGame')}
+            <span className="sr-only"> {t('modal.opensInNewTab')}</span>
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://github.com/simonvanlierde/scattergories"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="about-link"
+          >
+            <Icon icon={ExternalLink} size={16} />
+            {t('modal.sourceCode')}
+            <span className="sr-only"> {t('modal.opensInNewTab')}</span>
+          </a>
+        </li>
+      </ul>
+      <p className="modal-privacy">{t('modal.privacy')}</p>
+      <p className="modal-version">{t('modal.version', { version: __APP_VERSION__ })}</p>
 
       <p className="modal-footer-text">{t('modal.footer')}</p>
     </Sheet>

@@ -20,7 +20,6 @@
   }
 
   .topbar__copy p,
-  .footer-privacy,
   .app-loading p,
   .app-error p,
   .banner p {
@@ -82,8 +81,7 @@
     gap: var(--space-3);
   }
 
-  .btn-secondary,
-  .footer-link {
+  .btn-secondary {
     min-height: 2.75rem;
     padding: 0.8rem 1rem;
     font-weight: 700;
@@ -241,20 +239,37 @@
     color: var(--text-secondary);
   }
 
-  .footer-link {
+  .about-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .about-link {
     display: inline-flex;
     align-items: center;
+    gap: var(--space-2);
     text-decoration: none;
     color: var(--text-primary);
+    font-weight: 600;
   }
 
-  .footer-link--text {
-    padding: 0;
-    min-height: auto;
+  .about-link:hover {
+    color: var(--accent);
+    text-decoration: underline;
   }
 
-  .footer-privacy {
+  .modal-privacy {
     font-size: 0.92rem;
+    color: var(--text-secondary);
+  }
+
+  .modal-version {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    font-family: var(--font-numeric);
   }
 
   .categories-card__secondary {
@@ -359,13 +374,7 @@
   }
 
   @media (max-width: 51.99rem) {
-    .footer-privacy,
-    .app-footer {
-      display: none;
-    }
-
-    .btn-secondary,
-    .footer-link {
+    .btn-secondary {
       min-height: 2.6rem;
       padding-block: 0.7rem;
     }

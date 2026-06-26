@@ -26,7 +26,8 @@
     "remove": "Rimuovi",
     "close": "✕",
     "addTooltip": "Aggiungi questa categoria alla tua collezione personalizzata",
-    "closeTooltip": "Chiudi questa finestra"
+    "closeTooltip": "Chiudi questa finestra",
+    "howToPlay": "Come Giocare"
   },
   "timer": {
     "ready": "Pronto",
@@ -65,15 +66,8 @@
   "usedLetters": "Lettere usate: {{letters}}{{empty}}",
   "usedLettersEmpty": "Nessuna",
   "shortcuts": "Scorciatoie: Spazio avvia, R salta lettera, P pausa, C mostra prompt, A aggiungi categoria",
-  "footer": {
-    "howToPlay": "Come Giocare",
-    "officialGame": "Gioco Ufficiale",
-    "sourceCode": "Codice Sorgente",
-    "privacy": "Questa app salva impostazioni e categorie solo nel tuo browser.",
-    "label": "Piè di pagina dell'app"
-  },
   "modal": {
-    "title": "Come giocare a Scattergories",
+    "title": "Informazioni & Come Giocare",
     "objective": "Obiettivo",
     "objectiveText": "Guadagna punti scrivendo parole che iniziano con la lettera data e rientrano nelle categorie selezionate.",
     "gameplay": "Regole del Gioco",
@@ -99,7 +93,13 @@
       "Disattiva l'audio se necessario",
       "Tutte le impostazioni vengono salvate automaticamente"
     ],
-    "footer": "Questo è uno strumento di supporto per gestire lettere e tempo. Buon divertimento con gli amici!"
+    "footer": "Questo è uno strumento di supporto per gestire lettere e tempo. Buon divertimento con gli amici!",
+    "about": "Informazioni",
+    "officialGame": "Gioco Ufficiale",
+    "sourceCode": "Codice Sorgente",
+    "privacy": "Questa app salva impostazioni e categorie solo nel tuo browser.",
+    "version": "Versione {{version}}",
+    "opensInNewTab": "(si apre in una nuova scheda)"
   },
   "language": {
     "label": "Lingua",

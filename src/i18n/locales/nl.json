@@ -26,7 +26,8 @@
     "remove": "Verwijderen",
     "close": "✕",
     "addTooltip": "Voeg deze categorie toe aan je eigen verzameling",
-    "closeTooltip": "Sluit dit venster"
+    "closeTooltip": "Sluit dit venster",
+    "howToPlay": "Hoe te spelen"
   },
   "timer": {
     "ready": "Klaar",
@@ -65,15 +66,8 @@
   "usedLetters": "Gebruikte letters: {{letters}}{{empty}}",
   "usedLettersEmpty": "Geen",
   "shortcuts": "Sneltoetsen: Spatie starten, R nieuwe letter, P pauze, C categorieën tonen, A categorie toevoegen",
-  "footer": {
-    "howToPlay": "Hoe te spelen",
-    "officialGame": "Officieel Spel",
-    "sourceCode": "Broncode",
-    "privacy": "Deze app bewaart instellingen en categorieën alleen in je browser.",
-    "label": "Voettekst"
-  },
   "modal": {
-    "title": "Hoe speel je Scattergories",
+    "title": "Over & Hoe te spelen",
     "objective": "Doel",
     "objectiveText": "Verdien punten door woorden op te schrijven die beginnen met de gekozen letter en passen in de categorieën.",
     "gameplay": "Spelregels",
@@ -99,7 +93,13 @@
       "Je kunt het geluid op elk moment dempen",
       "Alle instellingen worden automatisch opgeslagen"
     ],
-    "footer": "Dit is een hulpmiddel voor het beheren van letters en tijd. Veel plezier met je vrienden!"
+    "footer": "Dit is een hulpmiddel voor het beheren van letters en tijd. Veel plezier met je vrienden!",
+    "about": "Over",
+    "officialGame": "Officieel Spel",
+    "sourceCode": "Broncode",
+    "privacy": "Deze app bewaart instellingen en categorieën alleen in je browser.",
+    "version": "Versie {{version}}",
+    "opensInNewTab": "(opent in een nieuw tabblad)"
   },
   "language": {
     "label": "Taal",

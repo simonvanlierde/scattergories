@@ -26,7 +26,8 @@
     "remove": "Entfernen",
     "close": "✕",
     "addTooltip": "Diese Kategorie zu deiner Sammlung hinzufügen",
-    "closeTooltip": "Dieses Fenster schließen"
+    "closeTooltip": "Dieses Fenster schließen",
+    "howToPlay": "Spielanleitung"
   },
   "timer": {
     "ready": "Bereit",
@@ -65,15 +66,8 @@
   "usedLetters": "Benutzte Buchstaben: {{letters}}{{empty}}",
   "usedLettersEmpty": "Keine",
   "shortcuts": "Shortcuts: Leertaste Start, R Buchstabe überspringen, P Pause, C Prompts umschalten, A Kategorie hinzufügen",
-  "footer": {
-    "howToPlay": "Spielanleitung",
-    "officialGame": "Offizielles Spiel",
-    "sourceCode": "Quellcode",
-    "privacy": "Diese App speichert Einstellungen und Kategorien nur lokal im Browser.",
-    "label": "App-Fußzeile"
-  },
   "modal": {
-    "title": "So spielst du Scattergories",
+    "title": "Über & Spielanleitung",
     "objective": "Ziel des Spiels",
     "objectiveText": "Sammle Punkte, indem du Begriffe aufschreibst, die mit dem gewählten Buchstaben beginnen und in die jeweilige Kategorie passen.",
     "gameplay": "Ablauf",
@@ -99,7 +93,13 @@
       "Du kannst den Ton jederzeit stummschalten",
       "Einstellungen werden automatisch gespeichert"
     ],
-    "footer": "Dies ist ein Hilfstool für Buchstaben und Zeit. Viel Spaß beim Spielen!"
+    "footer": "Dies ist ein Hilfstool für Buchstaben und Zeit. Viel Spaß beim Spielen!",
+    "about": "Über",
+    "officialGame": "Offizielles Spiel",
+    "sourceCode": "Quellcode",
+    "privacy": "Diese App speichert Einstellungen und Kategorien nur lokal im Browser.",
+    "version": "Version {{version}}",
+    "opensInNewTab": "(öffnet in neuem Tab)"
   },
   "language": {
     "label": "Sprache",

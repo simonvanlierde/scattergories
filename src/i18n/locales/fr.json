@@ -26,7 +26,8 @@
     "remove": "Supprimer",
     "close": "✕",
     "addTooltip": "Ajouter cette catégorie à votre collection personnalisée",
-    "closeTooltip": "Fermer cette fenêtre"
+    "closeTooltip": "Fermer cette fenêtre",
+    "howToPlay": "Comment jouer"
   },
   "timer": {
     "ready": "Prêt",
@@ -65,15 +66,8 @@
   "usedLetters": "Lettres utilisées : {{letters}}{{empty}}",
   "usedLettersEmpty": "Aucune pour l'instant",
   "shortcuts": "Raccourcis : Espace démarrer, R passer lettre, P pause, C afficher les thèmes, A ajouter catégorie",
-  "footer": {
-    "howToPlay": "Comment jouer",
-    "officialGame": "Jeu Officiel",
-    "sourceCode": "Code Source",
-    "privacy": "Cette application enregistre les réglages et catégories uniquement dans votre navigateur.",
-    "label": "Pied de page de l'application"
-  },
   "modal": {
-    "title": "Comment jouer au Scattergories",
+    "title": "À propos & Comment jouer",
     "objective": "Objectif",
     "objectiveText": "Marquez des points en écrivant des mots qui commencent par la lettre donnée et correspondent aux catégories.",
     "gameplay": "Déroulement",
@@ -99,7 +93,13 @@
       "Coupez le son si nécessaire",
       "Tous les réglages sont sauvegardés automatiquement"
     ],
-    "footer": "Ceci est un outil d'aide pour gérer les lettres et le temps. Amusez-vous bien !"
+    "footer": "Ceci est un outil d'aide pour gérer les lettres et le temps. Amusez-vous bien !",
+    "about": "À propos",
+    "officialGame": "Jeu Officiel",
+    "sourceCode": "Code Source",
+    "privacy": "Cette application enregistre les réglages et catégories uniquement dans votre navigateur.",
+    "version": "Version {{version}}",
+    "opensInNewTab": "(s'ouvre dans un nouvel onglet)"
   },
   "language": {
     "label": "Langue",
