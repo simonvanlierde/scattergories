@@ -383,14 +383,14 @@
 
   .ds-popover__panel {
     position: absolute;
-    top: calc(100% + var(--space-2));
+    bottom: calc(100% + var(--space-2));
     right: 0;
     z-index: var(--z-modal);
     min-width: 15rem;
     padding: var(--space-4);
-    background: var(--bg-raised);
+    background: var(--surface-2);
     color: var(--text-primary);
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--border-strong);
     border-radius: var(--radius-md);
     box-shadow: var(--elevation-4);
     display: grid;

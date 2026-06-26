@@ -45,42 +45,6 @@
     margin: 0 auto;
   }
 
-  .playmat__status {
-    margin: 0 auto;
-    width: max-content;
-    max-width: 100%;
-    min-height: 1.5rem;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    text-align: center;
-    font-size: var(--text-xs);
-    font-weight: 600;
-    letter-spacing: var(--tracking-widest);
-    text-transform: uppercase;
-    color: var(--text-muted);
-    pointer-events: none;
-    transition: color var(--duration-normal) var(--ease-out);
-  }
-
-  .playmat__status:empty {
-    visibility: hidden;
-    pointer-events: none;
-  }
-
-  .playmat[data-phase="buffer"] .playmat__status {
-    color: var(--text-secondary);
-  }
-
-  .playmat[data-phase="running"] .playmat__status {
-    color: var(--accent-primary);
-  }
-
-  .playmat__status--done {
-    color: var(--accent-primary);
-    font-weight: 700;
-  }
-
   /* ─── Timer Ring — monochrome editorial ──────────────────────── */
   .timer-ring {
     position: absolute;
@@ -99,13 +63,13 @@
   .timer-ring__track {
     fill: none;
     stroke: var(--rule);
-    stroke-width: 2;
+    stroke-width: 3;
   }
 
   .timer-ring__progress {
     fill: none;
     stroke: var(--text-secondary);
-    stroke-width: 2;
+    stroke-width: 3;
     stroke-linecap: butt;
     transition:
       stroke-dashoffset var(--duration-slow) var(--ease-out),
@@ -118,8 +82,13 @@
   }
 
   .timer-ring--urgent .timer-ring__progress {
-    stroke: var(--accent-primary);
-    stroke-width: 3;
+    stroke: var(--warning);
+    stroke-width: 4;
+  }
+
+  .timer-ring--critical .timer-ring__progress {
+    stroke: var(--danger);
+    stroke-width: 5;
   }
 
   .timer-ring--done .timer-ring__progress {
@@ -135,8 +104,8 @@
     border: 0;
     border-radius: 0;
     font-family: var(--font-numeric);
-    font-size: var(--text-xl);
-    font-weight: 500;
+    font-size: var(--text-3xl);
+    font-weight: 600;
     font-variant-numeric: tabular-nums;
     letter-spacing: var(--tracking-tight);
     color: var(--text-primary);
@@ -148,7 +117,12 @@
   }
 
   .timer-ring--urgent .timer-ring__readout {
-    color: var(--accent-primary);
+    color: var(--warning);
+  }
+
+  .timer-ring--critical .timer-ring__readout {
+    color: var(--danger);
+    font-weight: 700;
   }
 
   .timer-ring--done .timer-ring__readout {
@@ -245,7 +219,7 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    column-width: min(100%, 13rem);
+    column-width: 13rem;
     column-gap: var(--space-2);
   }
 
@@ -416,10 +390,6 @@
 
     .playmat__hero {
       width: min(100%, 24rem);
-    }
-
-    .playmat__status {
-      width: min(100%, 22rem);
     }
 
     .action-bar {

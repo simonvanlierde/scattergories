@@ -40,16 +40,11 @@ function PlaymatHero({
   );
 }
 
-function PlaymatStatus({ phase, statusKey }: { phase: RoundPhase; statusKey: string | null }) {
+function PlaymatStatus({ statusKey }: { statusKey: string | null }) {
   const { t } = useTranslation();
 
   return (
-    <p
-      data-testid="round-status"
-      className={`playmat__status${phase === 'done' ? ' playmat__status--done' : ''}`}
-      aria-live="polite"
-      aria-atomic="true"
-    >
+    <p data-testid="round-status" className="sr-only" aria-live="polite" aria-atomic="true">
       {statusKey ? t(statusKey) : ''}
     </p>
   );
@@ -76,7 +71,7 @@ function PlaymatRoundContent({
         letterLanding={round.letterLanding}
       />
 
-      <PlaymatStatus phase={round.phase} statusKey={round.statusKey} />
+      <PlaymatStatus statusKey={round.statusKey} />
 
       <ActionBar
         phase={round.phase}

@@ -37,11 +37,11 @@ interface GameShellProps {
   startupLocaleWarning: string | null;
 }
 
-function TopBar({ game }: { game: GameController }) {
+function ControlBar({ game }: { game: GameController }) {
   const { t, i18n } = useTranslation();
 
   return (
-    <header className="topbar">
+    <footer className="topbar">
       <div className="topbar__brand">
         <BrandMark />
         <h1>{t('title')}</h1>
@@ -67,7 +67,7 @@ function TopBar({ game }: { game: GameController }) {
           onClick={game.controls.onOpenHowToPlay}
         />
       </div>
-    </header>
+    </footer>
   );
 }
 
@@ -175,8 +175,6 @@ function GameShell({ game, startupLocaleWarning }: GameShellProps) {
     >
       <div className="app-shell__bg" aria-hidden="true" />
       <div className="app">
-        <TopBar game={game} />
-
         {startupLocaleWarning ? <WarningBanner message={startupLocaleWarning} /> : null}
 
         {game.flags.hasChunkError ? (
@@ -184,6 +182,8 @@ function GameShell({ game, startupLocaleWarning }: GameShellProps) {
         ) : null}
 
         <PlayGrid game={game} />
+
+        <ControlBar game={game} />
       </div>
 
       <ShortcutsSheet open={shell.isShortcutsOpen} onClose={shell.closeShortcuts} />

@@ -5,10 +5,11 @@ import { formatSeconds } from '@/domain/game/utils';
 import { vibrate } from '@/shared/lib/haptics';
 
 const URGENT_THRESHOLD_SECONDS = 15;
+const CRITICAL_THRESHOLD_SECONDS = 5;
 const RING_RADIUS = 86;
 const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
 
-type Stage = 'idle' | 'calm' | 'urgent' | 'done';
+type Stage = 'idle' | 'calm' | 'urgent' | 'critical' | 'done';
 
 interface TimerRingProps {
   phase: Phase;
@@ -21,11 +22,14 @@ function joinClassNames(...tokens: (string | false | null | undefined)[]): strin
   return tokens.filter(Boolean).join(' ');
 }
 
-function getTimerStage(phase: Phase, secondsLeft: number): Stage {
+export function getTimerStage(phase: Phase, secondsLeft: number): Stage {
   if (phase === 'done') {
     return 'done';
   }
   if (phase === 'buffer' || phase === 'running') {
+    if (secondsLeft <= CRITICAL_THRESHOLD_SECONDS) {
+      return 'critical';
+    }
     return secondsLeft <= URGENT_THRESHOLD_SECONDS ? 'urgent' : 'calm';
   }
   return 'idle';
@@ -54,6 +58,8 @@ function useStageHaptics(stage: Stage) {
       return;
     }
     if (stage === 'urgent' && lastStageRef.current === 'calm') {
+      vibrate('warning');
+    } else if (stage === 'critical') {
       vibrate('warning');
     } else if (stage === 'done') {
       vibrate('strong');
