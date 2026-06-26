@@ -1,9 +1,9 @@
 [build-system]
   build-backend = "uv_build"
-  requires      = ["uv_build>=0.11.7,<0.12"]
+  requires      = ["uv_build>=0.11.24,<0.12"]
 
 [project]
-  dependencies    = ['datasets>=4.8.4', 'tqdm>=4.67.0', 'typer>=0.16.0']
+  dependencies    = ['datasets>=5.0.0', 'tqdm>=4.68.3', 'typer>=0.26.7']
   description     = 'Internal Python tooling for Scattergories locale assets and data workflows'
   name            = 'scattergories-tools'
   readme          = 'README.md'
@@ -14,7 +14,7 @@
     sg-tools = 'scattergories_tools.cli:main'
 
 [dependency-groups]
-  dev         = ['pytest>=9.0.3', 'pytest-cov>=6.0.0', 'ruff>=0.15.10', 'ty>=0.0.29', "uv-build>=0.11.7,<0.12"]
+  dev         = ['pytest>=9.1.1', 'pytest-cov>=6.0.0', 'ruff>=0.15.19', 'ty>=0.0.53', "uv-build>=0.11.24,<0.12"]
   translation = ['argostranslate>=1.9.6']
 
 [tool.pytest.ini_options]
