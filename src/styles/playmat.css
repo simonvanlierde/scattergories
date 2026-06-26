@@ -7,8 +7,8 @@
   .playmat {
     container-type: inline-size;
     display: grid;
-    gap: var(--space-5);
-    padding: var(--space-6);
+    gap: var(--space-4);
+    padding: var(--space-5);
     background: var(--bg-raised);
     border: 1px solid var(--rule);
     border-radius: var(--radius-md);
@@ -366,8 +366,8 @@
   @container (min-width: 40rem) {
     .playmat {
       justify-items: center;
-      gap: var(--space-6);
-      padding: var(--space-8);
+      gap: var(--space-5);
+      padding: var(--space-7);
     }
 
     .playmat__meta {

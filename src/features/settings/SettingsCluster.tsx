@@ -1,4 +1,4 @@
-import { Globe, Moon, Sun, Timer } from 'lucide-react';
+import { Globe, Moon, Sun, Timer, Volume2, VolumeX } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { durationMax, durationMin } from '@/domain/game/constants';
 import { getEnabledLocales, isLocaleEnabled } from '@/i18n/localeHealth';
@@ -14,10 +14,11 @@ interface SettingsClusterProps {
   language: string;
   isLanguagePending: boolean;
   theme: 'light' | 'dark';
-  canEditRoundSettings: boolean;
+  isMuted: boolean;
   durationInput: string;
   onLanguageChange: (value: string) => void;
   onToggleTheme: () => void;
+  onToggleMute: () => void;
   onUpdateTimingField: (field: TimingField, value: string) => void;
   onBlurTimingField: (field: TimingField) => void;
 }
@@ -54,18 +55,11 @@ function LanguagePicker({
 }
 
 function TimerField({
-  canEditRoundSettings,
   durationInput,
   onUpdateTimingField,
   onBlurTimingField,
-}: Pick<
-  SettingsClusterProps,
-  'canEditRoundSettings' | 'durationInput' | 'onUpdateTimingField' | 'onBlurTimingField'
->) {
+}: Pick<SettingsClusterProps, 'durationInput' | 'onUpdateTimingField' | 'onBlurTimingField'>) {
   const { t } = useTranslation();
-  const lockedHint = canEditRoundSettings
-    ? undefined
-    : t('settings.lockedHint', { defaultValue: 'Finish or reset the round to edit' });
 
   return (
     <Field
@@ -76,9 +70,7 @@ function TimerField({
       value={durationInput}
       min={durationMin}
       max={durationMax}
-      disabled={!canEditRoundSettings}
       suffix={t('status.seconds')}
-      helper={lockedHint}
       onChange={(event) => onUpdateTimingField('durationInput', event.target.value)}
       onBlur={() => onBlurTimingField('durationInput')}
     />
@@ -89,10 +81,11 @@ export function SettingsCluster({
   language,
   isLanguagePending,
   theme,
-  canEditRoundSettings,
+  isMuted,
   durationInput,
   onLanguageChange,
   onToggleTheme,
+  onToggleMute,
   onUpdateTimingField,
   onBlurTimingField,
 }: SettingsClusterProps) {
@@ -107,7 +100,6 @@ export function SettingsCluster({
         title={t('settings.pace', { defaultValue: '{{seconds}}s', seconds: durationInput })}
       >
         <TimerField
-          canEditRoundSettings={canEditRoundSettings}
           durationInput={durationInput}
           onUpdateTimingField={onUpdateTimingField}
           onBlurTimingField={onBlurTimingField}
@@ -125,6 +117,13 @@ export function SettingsCluster({
           onLanguageChange={onLanguageChange}
         />
       </Popover>
+
+      <IconButton
+        label={isMuted ? t('buttons.unmute') : t('buttons.mute')}
+        icon={<Icon icon={isMuted ? VolumeX : Volume2} size={20} />}
+        aria-pressed={isMuted}
+        onClick={onToggleMute}
+      />
 
       <IconButton
         label={
