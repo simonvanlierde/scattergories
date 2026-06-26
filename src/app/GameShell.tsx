@@ -2,7 +2,6 @@ import { HelpCircle, Settings as SettingsIcon } from 'lucide-react';
 import { Suspense, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CategoriesPanel } from '@/features/categories/CategoriesPanel';
-import { PauseOverlay } from '@/features/round/PauseOverlay';
 import { Playmat } from '@/features/round/Playmat';
 import { SettingsSheet } from '@/features/settings/SettingsSheet';
 import { BrandMark } from '@/shared/ui/BrandMark';
@@ -220,10 +219,6 @@ function GameShell({ game, startupLocaleWarning }: GameShellProps) {
         >
           <game.howToPlayDialog onClose={game.controls.onCloseHowToPlay} />
         </Suspense>
-      ) : null}
-
-      {game.round.isPaused && (game.round.phase === 'running' || game.round.phase === 'buffer') ? (
-        <PauseOverlay onResume={game.controls.onTogglePause} />
       ) : null}
     </main>
   );
