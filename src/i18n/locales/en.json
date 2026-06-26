@@ -22,9 +22,10 @@
   },
   "buttons": {
     "startRound": "Start Round",
-    "nextRound": "Next letter",
+    "nextRound": "Next round",
     "spinning": "Spinning...",
     "skipLetter": "Skip Letter",
+    "newLetter": "New letter",
     "reset": "⟲ Reset",
     "pause": "Pause",
     "resume": "Resume",
@@ -41,6 +42,7 @@
   },
   "timer": {
     "ready": "Ready",
+    "paused": "Paused",
     "timeUp": "Time's up!",
     "getReady": "Get ready...",
     "go": "Go!",
@@ -51,14 +53,10 @@
   },
   "settings": {
     "duration": "Timer",
-    "audioTitle": "Audio",
-    "categorySource": "Source",
+    "getReady": "Get ready",
     "categoryDraw": "Draw",
     "addCustom": "Add custom category",
     "placeholder": "e.g. Programming Languages",
-    "sheetTitle": "Settings",
-    "openLabel": "Settings",
-    "lockedHint": "Finish or reset the round to edit",
     "roundTimerTitle": "Round timer"
   },
   "packs": {
@@ -103,28 +101,25 @@
       "help": "Open this shortcut list"
     }
   },
-  "roundEnd": {
-    "label": "Round summary",
-    "title": "Time's up!"
-  },
   "categories": {
     "title": "Categories",
     "description": "Mix official and custom categories, then reshuffle whenever the table needs a reset.",
-    "includePack": "Include pack categories",
-    "customAlwaysShown": "Custom categories always appear in the deck.",
-    "noCustom": "No custom categories yet.",
-    "minimumRequired": "Add at least one custom category to play.",
-    "availableSummary": "{{count}} categories ready",
-    "customListLabel": "Custom categories",
+    "minimumRequired": "Add categories to your deck to play.",
     "drawnListLabel": "Selected categories",
+    "deckLabel": "Category deck",
+    "deckCount": "{{custom}} custom / {{builtin}} built-in",
+    "emptyDeck": "The deck is empty. Add a pack or a custom category.",
     "showDeck": "Open categories",
     "hideDeck": "Hide categories",
-    "summaryMode": "Source: {{mode}}",
-    "summaryDraw": "Draw: {{count}}",
     "customize": "Customize deck",
     "customizeTitle": "Customize deck",
-    "pin": "Pin categories",
-    "unpin": "Unpin categories"
+    "addPack": "Add a category pack",
+    "addPackPlaceholder": "Add a pack…",
+    "removeAllCustom": "Remove custom",
+    "removeAllBuiltins": "Remove built-in",
+    "pinOne": "Pin {{name}}",
+    "unpinOne": "Unpin {{name}}",
+    "redrawOne": "Replace {{name}}"
   },
   "usedLetters": "Used letters: {{letters}}{{empty}}",
   "usedLettersEmpty": "None yet",
