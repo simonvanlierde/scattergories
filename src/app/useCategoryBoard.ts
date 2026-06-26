@@ -17,6 +17,12 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
   const [landing, setLanding] = useState(false);
   const spinIdRef = useRef(0);
 
+  // Pins are read through a ref so that toggling a pin doesn't recompose (and
+  // thus reorder) the drawn list. Explicit redraws and round starts still pick
+  // up the latest pins via this ref.
+  const pinnedRef = useRef(pinned);
+  pinnedRef.current = pinned;
+
   const redrawCategories = useCallback(
     (animate: boolean) => {
       const {
@@ -26,7 +32,7 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
       } = composeDeck({
         customCategories,
         deckBuiltins,
-        pinned,
+        pinned: pinnedRef.current,
         count,
       });
       setPinnedCount(pinned_);
@@ -57,7 +63,7 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
         spinIdRef,
       });
     },
-    [customCategories, deckBuiltins, pinned, count],
+    [customCategories, deckBuiltins, count],
   );
 
   // Compose instantly (no roll) whenever the deck inputs change — mount, deck
