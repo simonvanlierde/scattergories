@@ -238,17 +238,21 @@
     font-style: italic;
   }
 
+  /* Multi-column flow fills each column top-to-bottom, then moves right — so
+     1–6 land in the left column and 7–12 in the right (not row-major). Column
+     count stays responsive (~13rem each). */
   .category-checklist__list {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
-    gap: var(--space-2);
+    column-width: min(100%, 13rem);
+    column-gap: var(--space-2);
   }
 
   .category-checklist__item {
     min-width: 0;
+    break-inside: avoid;
+    margin-bottom: var(--space-2);
   }
 
   /* Each drawn category is a tap-to-pin chip. */
@@ -304,11 +308,11 @@
     font-style: italic;
   }
 
+  /* Wrap long names onto multiple lines instead of truncating — drawn
+     categories are essential to read, and hover tooltips don't work on touch. */
   .category-checklist__label {
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
     font-weight: 400;
     letter-spacing: var(--tracking-normal);
     line-height: var(--leading-snug);
