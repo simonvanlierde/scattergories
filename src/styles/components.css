@@ -1,5 +1,5 @@
 @layer components {
-  .topbar h1,
+  .controlbar h1,
   .app-error h1,
   .app-loading h1 {
     font-family: var(--font-display);
@@ -19,7 +19,7 @@
     user-select: none;
   }
 
-  .topbar__copy p,
+  .controlbar__copy p,
   .app-loading p,
   .app-error p,
   .banner p {
@@ -118,8 +118,12 @@
   /* ─── Customize deck sheet ───────────────────────────────────── */
   .deck-settings {
     display: grid;
-    grid-template-columns: minmax(0, 12rem);
     gap: var(--space-3);
+  }
+
+  /* Keep the numeric draw-count field compact; let the switch row span full width. */
+  .deck-settings .ds-field {
+    max-width: 12rem;
   }
 
   .deck-list {

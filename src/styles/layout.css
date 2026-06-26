@@ -26,20 +26,20 @@
     max-height: 100dvh;
     margin: 0 auto;
     padding: calc(var(--space-4) + env(safe-area-inset-top, 0px)) env(safe-area-inset-right, 0px)
-      calc(var(--space-4) + env(safe-area-inset-bottom, 0px)) env(safe-area-inset-left, 0px);
+      calc(var(--space-2) + env(safe-area-inset-bottom, 0px)) env(safe-area-inset-left, 0px);
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
     overflow: auto;
   }
 
-  .topbar {
+  .controlbar {
     border: 0;
     border-top: 1px solid var(--rule);
     border-radius: 0;
     background: transparent;
     box-shadow: none;
-    padding: var(--space-3) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+    padding: var(--space-2) var(--space-4);
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     gap: var(--space-3);
@@ -48,11 +48,11 @@
   }
 
   .categories-card {
-    border: 1px solid var(--rule);
-    border-radius: var(--radius-md);
-    background: var(--bg-raised);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
     box-shadow: none;
-    padding: var(--space-6);
+    padding: 0;
   }
 
   .banner,
@@ -64,14 +64,14 @@
     box-shadow: none;
   }
 
-  .topbar__brand {
+  .controlbar__brand {
     display: flex;
     align-items: center;
     gap: var(--space-3);
     min-width: 0;
   }
 
-  .topbar__actions {
+  .controlbar__actions {
     display: flex;
     align-items: center;
     justify-content: end;
@@ -171,13 +171,19 @@
       gap: var(--space-5);
     }
 
-    .topbar {
+    .controlbar {
       grid-template-columns: minmax(0, 1.3fr) auto;
     }
 
     .play-grid {
       grid-template-columns: minmax(0, 1fr) minmax(24rem, 1.25fr);
       min-height: min(42rem, calc(100dvh - 18rem));
+    }
+
+    /* Hairline rule separates the flattened hero and categories columns. */
+    .categories-card {
+      border-left: 1px solid var(--rule);
+      padding-left: var(--space-5);
     }
   }
 
@@ -187,12 +193,12 @@
       gap: var(--space-3);
     }
 
-    .topbar h1 {
+    .controlbar h1 {
       display: none;
     }
 
     .categories-card__content {
-      max-height: min(28rem, 44dvh);
+      max-height: min(30rem, 52dvh);
     }
 
     .play-grid {
@@ -206,14 +212,14 @@
       position: relative;
     }
 
-    .topbar,
-    .playmat,
-    .categories-card {
-      padding: var(--space-4);
+    .controlbar {
+      padding: var(--space-2) var(--space-4);
     }
 
-    .topbar {
-      padding-bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+    /* Stacked layout: hairline rule separates categories from the hero above. */
+    .categories-card {
+      border-top: 1px solid var(--rule);
+      padding-top: var(--space-4);
     }
   }
 }
