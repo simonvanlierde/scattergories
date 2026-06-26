@@ -181,7 +181,7 @@ it('auto mode avoids only the immediately previous letter', () => {
   driver.start();
   const first = mockSpinTo.mock.calls[0]?.[0];
   driver.landLetter();
-  act(() => driver.current.rerollLetter());
+  act(() => driver.current.skipLetter());
   const second = mockSpinTo.mock.calls[1]?.[0];
 
   expect(second).not.toBe(first);
@@ -194,7 +194,7 @@ it('pinned mode tracks used letters with the non-repeating bag', () => {
   driver.start();
   const first = mockSpinTo.mock.calls[0]?.[0];
   driver.landLetter();
-  act(() => driver.current.rerollLetter());
+  act(() => driver.current.skipLetter());
   const second = mockSpinTo.mock.calls[1]?.[0];
 
   expect(second).not.toBe(first);

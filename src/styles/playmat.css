@@ -309,25 +309,19 @@
 
   /* ─── Action Bar ─────────────────────────────────────────────── */
   .action-bar {
-    display: grid;
+    display: flex;
+    align-items: center;
     gap: var(--space-3);
   }
 
-  .action-bar .ds-button--lg {
+  .action-bar__primary {
+    flex: 1 1 auto;
     min-height: 3rem;
     box-shadow: none;
   }
 
-  .action-bar .ds-button--lg:where(:not(:disabled)):hover {
+  .action-bar__primary:where(:not(:disabled)):hover {
     box-shadow: none;
-  }
-
-  .action-bar__groups {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-3);
-    flex-wrap: wrap;
   }
 
   .action-bar__group {
@@ -340,20 +334,6 @@
     padding: var(--space-0-5);
     border: 1px solid var(--rule);
     border-radius: var(--radius-sm);
-  }
-
-  .action-bar__destructive:where(:not(:disabled)):hover {
-    color: var(--danger);
-    background: transparent;
-  }
-
-  .action-bar__destructive:where(:not(:disabled)):active {
-    color: var(--danger);
-    background: transparent;
-  }
-
-  .action-bar__destructive:focus-visible {
-    outline-color: var(--danger);
   }
 
   /* ─── Container-query responsive ─────────────────────────────── */

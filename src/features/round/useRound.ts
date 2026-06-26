@@ -26,7 +26,7 @@ interface UseRoundOptions {
 
 interface RoundActions {
   startRound: () => void;
-  rerollLetter: () => void;
+  skipLetter: () => void;
   togglePause: () => void;
   resetRound: () => void;
 }
@@ -191,7 +191,7 @@ function useRoundEffects(options: {
   useRoundCleanup(clearAlarmTimeout);
 }
 
-function useBeginRoundAction(params: {
+function useSpinActions(params: {
   clearAlarmTimeout: () => void;
   dispatch: Dispatch<RoundAction>;
   drawNextLetterForLocale: (
@@ -220,78 +220,57 @@ function useBeginRoundAction(params: {
     state,
   } = params;
 
-  return useCallback(() => {
-    if (!canBeginRound(state)) {
-      return;
-    }
-
-    clearAlarmTimeout();
-    const { chosen, remaining, drawn } = drawNextLetterForLocale(
-      state.remainingLetters,
-      state.drawnLetters,
-      roller.letter === '?' ? null : roller.letter,
-    );
-    onLetterPicked();
-
-    dispatch({
-      type: 'START_SPIN',
-      gameSeconds,
-      remainingLetters: remaining,
-      drawnLetters: drawn,
-    });
-
-    roller.spinTo(chosen, () => {
-      playLetterLand();
-      dispatch({ type: 'LETTER_LANDED' });
-    });
-  }, [
-    clearAlarmTimeout,
-    dispatch,
-    drawNextLetterForLocale,
-    gameSeconds,
-    onLetterPicked,
-    playLetterLand,
-    roller,
-    state,
-  ]);
-}
-
-function useRerollLetterAction(
-  params: {
-    dispatch: Dispatch<RoundAction>;
-    drawNextLetterForLocale: (
-      remaining: string[],
-      drawn: string[],
-      previousLetter: string | null,
-    ) => {
-      chosen: string;
-      remaining: string[];
-      drawn: string[];
-    };
-    onLetterPicked: () => void;
-    roller: ReturnType<typeof useLetterRoller>;
-    state: RoundState;
-  },
-  beginRound: () => void,
-) {
-  const { dispatch, drawNextLetterForLocale, onLetterPicked, roller, state } = params;
-
-  return useCallback(() => {
-    if (state.phase === 'buffer' || state.phase === 'running') {
+  // Starts a fresh round (resets the timer, draws a new letter, spins the roller).
+  // When keepCategories is true the category redraw is skipped, so the same deck
+  // carries into the new round — this powers the "skip letter" button.
+  const runSpin = useCallback(
+    (keepCategories: boolean) => {
+      clearAlarmTimeout();
       const { chosen, remaining, drawn } = drawNextLetterForLocale(
         state.remainingLetters,
         state.drawnLetters,
         roller.letter === '?' ? null : roller.letter,
       );
-      onLetterPicked();
+      if (!keepCategories) {
+        onLetterPicked();
+      }
 
-      roller.spinTo(chosen, () => undefined);
-      dispatch({ type: 'SYNC_BAGS', remainingLetters: remaining, drawnLetters: drawn });
+      dispatch({
+        type: 'START_SPIN',
+        gameSeconds,
+        remainingLetters: remaining,
+        drawnLetters: drawn,
+      });
+
+      roller.spinTo(chosen, () => {
+        playLetterLand();
+        dispatch({ type: 'LETTER_LANDED' });
+      });
+    },
+    [
+      clearAlarmTimeout,
+      dispatch,
+      drawNextLetterForLocale,
+      gameSeconds,
+      onLetterPicked,
+      playLetterLand,
+      roller,
+      state,
+    ],
+  );
+
+  const beginRound = useCallback(() => {
+    if (!canBeginRound(state)) {
       return;
     }
+    runSpin(false);
+  }, [runSpin, state]);
 
-    beginRound();
-  }, [beginRound, dispatch, drawNextLetterForLocale, onLetterPicked, roller, state]);
+  const skipLetter = useCallback(() => {
+    runSpin(true);
+  }, [runSpin]);
+
+  return { beginRound, skipLetter };
 }
 
 function useRoundControlActions(params: {
@@ -351,7 +330,7 @@ function createRoundResult({ state, roller, actions }: CreateRoundResultOptions)
     letterLanding: roller.landing,
     usedLetters: state.drawnLetters,
     startRound: actions.startRound,
-    rerollLetter: actions.rerollLetter,
+    skipLetter: actions.skipLetter,
     togglePause: actions.togglePause,
     resetRound: actions.resetRound,
   };
@@ -391,7 +370,7 @@ export function useRound({
     tickedSecondRef,
   });
 
-  const beginRound = useBeginRoundAction({
+  const { beginRound, skipLetter } = useSpinActions({
     clearAlarmTimeout,
     dispatch,
     drawNextLetterForLocale,
@@ -401,16 +380,6 @@ export function useRound({
     roller,
     state,
   });
-  const rerollLetter = useRerollLetterAction(
-    {
-      dispatch,
-      drawNextLetterForLocale,
-      onLetterPicked,
-      roller,
-      state,
-    },
-    beginRound,
-  );
   const { resetRound, togglePause } = useRoundControlActions({
     clearAlarmTimeout,
     dispatch,
@@ -418,7 +387,7 @@ export function useRound({
   });
   const actions = {
     beginRound,
-    rerollLetter,
+    skipLetter,
     resetRound,
     startRound: beginRound,
     togglePause,

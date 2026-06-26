@@ -81,7 +81,7 @@ function useGameKeyboardShortcuts(params: {
 }) {
   useKeyboardShortcuts({
     onSpace: params.round.startRound,
-    onR: params.round.rerollLetter,
+    onR: params.round.skipLetter,
     onP: params.round.togglePause,
     onC: params.togglePromptDeck,
     onA: () => {
@@ -156,15 +156,14 @@ function useGameController(): GameController {
       onOpenHowToPlay: () => controls.setIsHowToPlayOpen(true),
       onReloadAfterChunkError: () => window.location.reload(),
       onRemoveCustomCategory: removeCustomCategory,
-      onRedrawCategories: board.redrawCategories,
-      onResetRound: round.resetRound,
+      onRedrawCategories: () => board.redrawCategories(true),
       onStartRound: round.startRound,
       onToggleMute: () => update('isMuted', !settings.isMuted),
       onTogglePause: round.togglePause,
       onTogglePromptDeck: promptDeck.togglePromptDeck,
       onToggleTheme: () => update('theme', settings.theme === 'light' ? 'dark' : 'light'),
       onUpdateField: update,
-      onSkipLetter: round.rerollLetter,
+      onSkipLetter: round.skipLetter,
     },
     flags: {
       hasChunkError: controls.hasChunkError,

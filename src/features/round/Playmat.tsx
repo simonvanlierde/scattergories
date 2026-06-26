@@ -2,12 +2,10 @@ import { useTranslation } from 'react-i18next';
 import type { GameController } from '@/app/useGameController';
 import { ActionBar } from './ActionBar';
 import { LetterHero } from './LetterHero';
-import { RoundEndScreen } from './RoundEndScreen';
 import { TimerRing } from './TimerRing';
 
 interface PlaymatProps {
   game: GameController;
-  onOpenSettings: () => void;
 }
 
 type RoundPhase = PlaymatProps['game']['round']['phase'];
@@ -35,6 +33,21 @@ function PlaymatHero({
   );
 }
 
+function RoundEnd({ letter }: { letter: string }) {
+  const { t } = useTranslation();
+
+  return (
+    <section
+      className="round-end"
+      aria-label={t('roundEnd.label', { defaultValue: 'Round summary' })}
+      data-testid="round-end-screen"
+    >
+      <h2 className="round-end__title">{t('roundEnd.title', { defaultValue: 'Time is up' })}</h2>
+      <div className="round-end__letter">{letter}</div>
+    </section>
+  );
+}
+
 function PlaymatStatus({ phase, statusKey }: { phase: RoundPhase; statusKey: string | null }) {
   const { t } = useTranslation();
 
@@ -54,17 +67,15 @@ function PlaymatRoundContent({
   round,
   settings,
   controls,
-  onOpenSettings,
 }: {
   round: PlaymatProps['game']['round'];
   settings: PlaymatProps['game']['settings'];
   controls: PlaymatProps['game']['controls'];
-  onOpenSettings: () => void;
 }) {
   return (
     <>
       {round.phase === 'done' ? (
-        <RoundEndScreen letter={round.letter} onAdvance={controls.onStartRound} />
+        <RoundEnd letter={round.letter} />
       ) : (
         <PlaymatHero
           phase={round.phase}
@@ -82,19 +93,16 @@ function PlaymatRoundContent({
         phase={round.phase}
         isPaused={round.isPaused}
         isMuted={settings.isMuted}
-        durationSeconds={settings.gameSeconds}
         onStart={controls.onStartRound}
         onPause={controls.onTogglePause}
         onSkip={controls.onSkipLetter}
-        onReset={controls.onResetRound}
         onToggleMute={controls.onToggleMute}
-        onOpenSettings={onOpenSettings}
       />
     </>
   );
 }
 
-export function Playmat({ game, onOpenSettings }: PlaymatProps) {
+export function Playmat({ game }: PlaymatProps) {
   const { t } = useTranslation();
   const { round, settings, controls } = game;
 
@@ -117,12 +125,7 @@ export function Playmat({ game, onOpenSettings }: PlaymatProps) {
           </p>
         </header>
       ) : null}
-      <PlaymatRoundContent
-        round={round}
-        settings={settings}
-        controls={controls}
-        onOpenSettings={onOpenSettings}
-      />
+      <PlaymatRoundContent round={round} settings={settings} controls={controls} />
     </section>
   );
 }
