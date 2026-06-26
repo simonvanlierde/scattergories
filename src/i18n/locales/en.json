@@ -62,7 +62,7 @@
   "packs": {
     "sectionTitle": "Category pack",
     "classic": {
-      "label": "Classic",
+      "label": "All",
       "description": "Every category — the full deck."
     },
     "foodie": {
@@ -119,7 +119,8 @@
     "removeAllBuiltins": "Remove built-in",
     "pinOne": "Pin {{name}}",
     "unpinOne": "Unpin {{name}}",
-    "redrawOne": "Replace {{name}}"
+    "pinAll": "Pin all",
+    "unpinAll": "Unpin all"
   },
   "usedLetters": "Used letters: {{letters}}{{empty}}",
   "usedLettersEmpty": "None yet",

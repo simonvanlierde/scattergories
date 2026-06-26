@@ -1,7 +1,6 @@
-import { Pin, PinOff, Trash2 } from 'lucide-react';
+import { Pin, PinOff } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@/shared/ui/Icon';
-import { IconButton } from '@/shared/ui/IconButton';
 
 interface CategoryChecklistProps {
   categories: string[];
@@ -12,45 +11,6 @@ interface CategoryChecklistProps {
   pinnedSet?: Set<string>;
   customSet?: Set<string>;
   onTogglePin?: (name: string) => void;
-  onRedrawSlot?: (index: number) => void;
-}
-
-function ChecklistRowControls({
-  category,
-  label,
-  isPinned,
-  onTogglePin,
-  onRedrawSlot,
-  index,
-}: {
-  category: string;
-  label: string;
-  isPinned: boolean;
-  onTogglePin?: (name: string) => void;
-  onRedrawSlot?: (index: number) => void;
-  index: number;
-}) {
-  const { t } = useTranslation();
-  return (
-    <span className="category-checklist__actions">
-      <IconButton
-        label={
-          isPinned
-            ? t('categories.unpinOne', { defaultValue: 'Unpin {{name}}', name: label })
-            : t('categories.pinOne', { defaultValue: 'Pin {{name}}', name: label })
-        }
-        icon={<Icon icon={isPinned ? Pin : PinOff} size={16} />}
-        aria-pressed={isPinned}
-        onClick={() => onTogglePin?.(category)}
-      />
-      <IconButton
-        label={t('categories.redrawOne', { defaultValue: 'Replace {{name}}', name: label })}
-        icon={<Icon icon={Trash2} size={16} />}
-        disabled={isPinned}
-        onClick={() => onRedrawSlot?.(index)}
-      />
-    </span>
-  );
 }
 
 export function CategoryChecklist({
@@ -62,7 +22,6 @@ export function CategoryChecklist({
   pinnedSet,
   customSet,
   onTogglePin,
-  onRedrawSlot,
 }: CategoryChecklistProps) {
   const { t } = useTranslation();
 
@@ -79,8 +38,6 @@ export function CategoryChecklist({
       <ul
         className="category-checklist__list"
         aria-label={t('categories.drawnListLabel', { defaultValue: 'Selected categories' })}
-        // biome-ignore lint/a11y/noNoninteractiveTabindex: The desktop category list can become scrollable and needs a keyboard-focus target for Safari/axe.
-        tabIndex={0}
       >
         {categories.map((category, index) => {
           // Only unpinned fill slots (after the pinned ones) roll and land.
@@ -92,29 +49,34 @@ export function CategoryChecklist({
             landing && isFillSlot
               ? 'category-checklist__label category-checklist__label--landing'
               : 'category-checklist__label';
-          const itemClass = `category-checklist__item${isCustom ? ' category-checklist__item--custom' : ''}`;
           return (
             <li
               // biome-ignore lint/suspicious/noArrayIndexKey: Stable slot positions keep the roll animation in place while labels change.
               key={index}
-              className={itemClass}
+              className={`category-checklist__item${isPinned ? ' category-checklist__item--pinned' : ''}${isCustom ? ' category-checklist__item--custom' : ''}`}
             >
-              <div className="category-checklist__row">
+              <button
+                type="button"
+                className="category-checklist__chip"
+                aria-pressed={isPinned}
+                aria-label={
+                  isPinned
+                    ? t('categories.unpinOne', { defaultValue: 'Unpin {{name}}', name: label })
+                    : t('categories.pinOne', { defaultValue: 'Pin {{name}}', name: label })
+                }
+                disabled={!canEdit}
+                onClick={() => onTogglePin?.(category)}
+              >
                 <span className="category-checklist__mark" aria-hidden="true">
                   {index + 1}
                 </span>
                 <span className={labelClass}>{label}</span>
-                {canEdit ? (
-                  <ChecklistRowControls
-                    category={category}
-                    label={label}
-                    isPinned={isPinned}
-                    onTogglePin={onTogglePin}
-                    onRedrawSlot={onRedrawSlot}
-                    index={index}
-                  />
-                ) : null}
-              </div>
+                <Icon
+                  icon={isPinned ? Pin : PinOff}
+                  size={16}
+                  className="category-checklist__pin"
+                />
+              </button>
             </li>
           );
         })}

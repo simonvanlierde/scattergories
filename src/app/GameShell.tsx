@@ -55,6 +55,7 @@ function TopBar({ game }: { game: GameController }) {
           theme={game.settings.theme}
           isMuted={game.settings.isMuted}
           durationInput={game.settings.durationInput}
+          bufferSecondsInput={game.settings.bufferSecondsInput}
           onLanguageChange={game.controls.onLanguageChange}
           onToggleTheme={game.controls.onToggleTheme}
           onToggleMute={game.controls.onToggleMute}
@@ -119,7 +120,6 @@ function PlayGrid({ game }: PlayGridProps) {
         categories={{
           availableCount: game.categories.availableCount,
           catCountInput: game.settings.catCountInput,
-          bufferSecondsInput: game.settings.bufferSecondsInput,
           customCategories: game.settings.customCategories,
           deckBuiltins: game.settings.deckBuiltins,
           pinned: game.settings.pinned,
@@ -140,10 +140,8 @@ function PlayGrid({ game }: PlayGridProps) {
           onRemoveAllBuiltins: game.controls.onRemoveAllBuiltins,
           onCatCountBlur: () => game.controls.onBlurNumericField('catCountInput'),
           onCatCountChange: (value) => game.controls.onUpdateField('catCountInput', value),
-          onBufferBlur: () => game.controls.onBlurNumericField('bufferSecondsInput'),
-          onBufferChange: (value) => game.controls.onUpdateField('bufferSecondsInput', value),
           onRedraw: game.controls.onRedrawCategories,
-          onRedrawSlot: game.controls.onRedrawSlot,
+          onTogglePinAll: game.controls.onTogglePinAll,
           onTogglePromptDeck: game.controls.onTogglePromptDeck,
         }}
       />

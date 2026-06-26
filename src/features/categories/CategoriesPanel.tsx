@@ -11,12 +11,7 @@ import {
 import type { RefObject } from 'react';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  bufferSecondsMax,
-  bufferSecondsMin,
-  catCountMax,
-  catCountMin,
-} from '@/domain/game/constants';
+import { catCountMax, catCountMin } from '@/domain/game/constants';
 import { PACKS } from '@/shared/lib/categoryPacks';
 import { Button } from '@/shared/ui/Button';
 import { Field } from '@/shared/ui/Field';
@@ -34,7 +29,6 @@ interface CategoriesState {
   deckBuiltins: string[];
   pinned: string[];
   catCountInput: string;
-  bufferSecondsInput: string;
   isPromptDeckOpen: boolean;
   canEdit: boolean;
 }
@@ -49,10 +43,8 @@ interface CategoriesActions {
   onRemoveAllBuiltins: () => void;
   onCatCountChange: (value: string) => void;
   onCatCountBlur: () => void;
-  onBufferChange: (value: string) => void;
-  onBufferBlur: () => void;
   onRedraw: () => void;
-  onRedrawSlot: (index: number) => void;
+  onTogglePinAll: (names: string[]) => void;
   onTogglePromptDeck: () => void;
 }
 
@@ -64,9 +56,8 @@ interface CategoriesPanelProps {
 
 function DeckSettings({
   catCountInput,
-  bufferSecondsInput,
   actions,
-}: Pick<CategoriesState, 'catCountInput' | 'bufferSecondsInput'> & {
+}: Pick<CategoriesState, 'catCountInput'> & {
   actions: CategoriesActions;
 }) {
   const { t } = useTranslation();
@@ -82,18 +73,6 @@ function DeckSettings({
         value={catCountInput}
         onChange={(event) => actions.onCatCountChange(event.target.value)}
         onBlur={actions.onCatCountBlur}
-      />
-      <Field
-        id="getReady"
-        label={t('settings.getReady', { defaultValue: 'Get ready' })}
-        type="number"
-        inputMode="numeric"
-        min={bufferSecondsMin}
-        max={bufferSecondsMax}
-        suffix={t('status.seconds')}
-        value={bufferSecondsInput}
-        onChange={(event) => actions.onBufferChange(event.target.value)}
-        onBlur={actions.onBufferBlur}
       />
     </div>
   );
@@ -114,7 +93,7 @@ function AddCustomRow({
     setValue('');
   };
   return (
-    <div className="custom-category-input-row">
+    <li className="deck-list__add">
       <input
         ref={inputRef}
         id="newCategory"
@@ -139,15 +118,27 @@ function AddCustomRow({
       >
         {t('buttons.add')}
       </Button>
-    </div>
+    </li>
   );
 }
 
 function AddPackField({ actions }: { actions: CategoriesActions }) {
   const { t } = useTranslation();
+  const packs = useMemo(
+    () =>
+      [...PACKS]
+        .map((pack) => ({
+          id: pack.id,
+          label: t(pack.labelKey, { defaultValue: pack.fallbackLabel }),
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label)),
+    [t],
+  );
   return (
-    <label className="field-shell" htmlFor="addPack">
-      <span>{t('categories.addPack', { defaultValue: 'Add a category pack' })}</span>
+    <label className="settings-select deck-list__pack" htmlFor="addPack">
+      <span className="sr-only">
+        {t('categories.addPack', { defaultValue: 'Add a category pack' })}
+      </span>
       <select
         id="addPack"
         value=""
@@ -160,9 +151,9 @@ function AddPackField({ actions }: { actions: CategoriesActions }) {
         <option value="">
           {t('categories.addPackPlaceholder', { defaultValue: 'Add a pack…' })}
         </option>
-        {PACKS.map((pack) => (
+        {packs.map((pack) => (
           <option key={pack.id} value={pack.id}>
-            {t(pack.labelKey, { defaultValue: pack.fallbackLabel })}
+            {pack.label}
           </option>
         ))}
       </select>
@@ -181,24 +172,36 @@ function DeckList({
   deckBuiltins,
   pinned,
   actions,
+  inputRef,
 }: Pick<CategoriesState, 'customCategories' | 'deckBuiltins' | 'pinned'> & {
   actions: CategoriesActions;
+  inputRef: RefObject<HTMLInputElement | null>;
 }) {
   const { t } = useTranslation();
   const pinnedSet = useMemo(() => new Set(pinned), [pinned]);
   const rows = useMemo<DeckRow[]>(() => {
-    const customs = [...customCategories]
-      .sort((a, b) => a.localeCompare(b))
-      .map((name) => ({ name, label: name, isCustom: true }));
-    const builtins = [...deckBuiltins]
+    // Within each group: pinned first, then alphabetical.
+    const byPinThenLabel = (a: DeckRow, b: DeckRow) => {
+      const aPinned = pinnedSet.has(a.name);
+      const bPinned = pinnedSet.has(b.name);
+      if (aPinned !== bPinned) {
+        return aPinned ? -1 : 1;
+      }
+      return a.label.localeCompare(b.label);
+    };
+    const customs = customCategories
+      .map((name) => ({ name, label: name, isCustom: true }))
+      .sort(byPinThenLabel);
+    const builtins = deckBuiltins
       .map((name) => ({ name, label: t(name, { ns: 'categories' }), isCustom: false }))
-      .sort((a, b) => a.label.localeCompare(b.label));
+      .sort(byPinThenLabel);
     return [...customs, ...builtins];
-  }, [customCategories, deckBuiltins, t]);
+  }, [customCategories, deckBuiltins, pinnedSet, t]);
 
   return (
     <div className="deck-list">
       <div className="deck-list__toolbar">
+        <AddPackField actions={actions} />
         <span className="deck-list__count">
           {t('categories.deckCount', {
             defaultValue: '{{custom}} custom / {{builtin}} built-in',
@@ -215,18 +218,19 @@ function DeckList({
           </Button>
         </div>
       </div>
-      {rows.length === 0 ? (
-        <p className="custom-empty">
-          {t('categories.emptyDeck', {
-            defaultValue: 'The deck is empty. Add a pack or a custom category.',
-          })}
-        </p>
-      ) : (
-        <ul
-          className="deck-list__items"
-          aria-label={t('categories.deckLabel', { defaultValue: 'Category deck' })}
-        >
-          {rows.map((row) => {
+      <ul
+        className="deck-list__items"
+        aria-label={t('categories.deckLabel', { defaultValue: 'Category deck' })}
+      >
+        <AddCustomRow inputRef={inputRef} onAddCustom={actions.onAddCustom} />
+        {rows.length === 0 ? (
+          <li className="deck-list__empty">
+            {t('categories.emptyDeck', {
+              defaultValue: 'The deck is empty. Add a pack or a custom category.',
+            })}
+          </li>
+        ) : (
+          rows.map((row) => {
             const isPinned = pinnedSet.has(row.name);
             return (
               <li
@@ -260,9 +264,9 @@ function DeckList({
                 </span>
               </li>
             );
-          })}
-        </ul>
-      )}
+          })
+        )}
+      </ul>
     </div>
   );
 }
@@ -271,10 +275,12 @@ function CustomizeSheetBlock({
   categories,
   actions,
   inputRef,
+  disabled,
 }: {
   categories: CategoriesState;
   actions: CategoriesActions;
   inputRef: RefObject<HTMLInputElement | null>;
+  disabled: boolean;
 }) {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
@@ -284,6 +290,7 @@ function CustomizeSheetBlock({
       <IconButton
         label={t('categories.customize', { defaultValue: 'Customize deck' })}
         icon={<Icon icon={SlidersHorizontal} size={18} />}
+        disabled={disabled}
         onClick={() => setIsOpen(true)}
       />
       <Sheet
@@ -292,18 +299,13 @@ function CustomizeSheetBlock({
         title={t('categories.customizeTitle', { defaultValue: 'Customize deck' })}
         closeLabel={t('buttons.closeTooltip', { defaultValue: 'Close' })}
       >
-        <DeckSettings
-          catCountInput={categories.catCountInput}
-          bufferSecondsInput={categories.bufferSecondsInput}
-          actions={actions}
-        />
-        <AddCustomRow inputRef={inputRef} onAddCustom={actions.onAddCustom} />
-        <AddPackField actions={actions} />
+        <DeckSettings catCountInput={categories.catCountInput} actions={actions} />
         <DeckList
           customCategories={categories.customCategories}
           deckBuiltins={categories.deckBuiltins}
           pinned={categories.pinned}
           actions={actions}
+          inputRef={inputRef}
         />
       </Sheet>
     </>
@@ -312,7 +314,7 @@ function CustomizeSheetBlock({
 
 function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps) {
   const { t } = useTranslation();
-  const { isPromptDeckOpen, canEdit } = categories;
+  const { isPromptDeckOpen, canEdit, drawnCategories } = categories;
   const pinnedSet = useMemo(() => new Set(categories.pinned), [categories.pinned]);
   const customSet = useMemo(
     () => new Set(categories.customCategories),
@@ -321,6 +323,8 @@ function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps
   const deckToggleLabel = isPromptDeckOpen
     ? t('categories.hideDeck', { defaultValue: 'Hide categories' })
     : t('categories.showDeck', { defaultValue: 'Show categories' });
+  const allPinned =
+    drawnCategories.length > 0 && drawnCategories.every((name) => pinnedSet.has(name));
 
   return (
     <section
@@ -330,20 +334,49 @@ function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps
     >
       <div className="categories-card__header">
         <h2 id="categories-panel-title">{t('categories.title')}</h2>
-        <IconButton
-          label={deckToggleLabel}
-          icon={<Icon icon={isPromptDeckOpen ? ChevronUp : ChevronDown} size={20} />}
-          aria-controls="categories-panel-content"
-          aria-expanded={isPromptDeckOpen}
-          onClick={actions.onTogglePromptDeck}
-        />
+        <div className="categories-card__header-actions">
+          {isPromptDeckOpen ? (
+            <>
+              <IconButton
+                label={t('buttons.redraw', { defaultValue: 'Redraw' })}
+                icon={<Icon icon={RefreshCw} size={18} />}
+                disabled={!canEdit}
+                onClick={actions.onRedraw}
+              />
+              <CustomizeSheetBlock
+                categories={categories}
+                actions={actions}
+                inputRef={inputRef}
+                disabled={!canEdit}
+              />
+              <IconButton
+                label={
+                  allPinned
+                    ? t('categories.unpinAll', { defaultValue: 'Unpin all' })
+                    : t('categories.pinAll', { defaultValue: 'Pin all' })
+                }
+                icon={<Icon icon={allPinned ? Pin : PinOff} size={18} />}
+                aria-pressed={allPinned}
+                disabled={!canEdit}
+                onClick={() => actions.onTogglePinAll(drawnCategories)}
+              />
+            </>
+          ) : null}
+          <IconButton
+            label={deckToggleLabel}
+            icon={<Icon icon={isPromptDeckOpen ? ChevronUp : ChevronDown} size={20} />}
+            aria-controls="categories-panel-content"
+            aria-expanded={isPromptDeckOpen}
+            onClick={actions.onTogglePromptDeck}
+          />
+        </div>
       </div>
 
       {isPromptDeckOpen ? (
         <div className="categories-card__content categories-card__content--prompts-first">
           <div className="drawn-categories" id="categories-panel-content">
             <CategoryChecklist
-              categories={categories.drawnCategories}
+              categories={drawnCategories}
               availableCount={categories.availableCount}
               pinnedCount={categories.pinnedCount}
               landing={categories.isLanding}
@@ -351,20 +384,8 @@ function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps
               pinnedSet={pinnedSet}
               customSet={customSet}
               onTogglePin={actions.onTogglePin}
-              onRedrawSlot={actions.onRedrawSlot}
             />
           </div>
-
-          {canEdit ? (
-            <div className="categories-card__actions">
-              <IconButton
-                label={t('buttons.redraw', { defaultValue: 'Redraw' })}
-                icon={<Icon icon={RefreshCw} size={18} />}
-                onClick={actions.onRedraw}
-              />
-              <CustomizeSheetBlock categories={categories} actions={actions} inputRef={inputRef} />
-            </div>
-          ) : null}
         </div>
       ) : null}
     </section>

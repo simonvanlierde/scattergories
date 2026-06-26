@@ -1,6 +1,11 @@
 import { Globe, Moon, Sun, Timer, Volume2, VolumeX } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { durationMax, durationMin } from '@/domain/game/constants';
+import {
+  bufferSecondsMax,
+  bufferSecondsMin,
+  durationMax,
+  durationMin,
+} from '@/domain/game/constants';
 import { getEnabledLocales, isLocaleEnabled } from '@/i18n/localeHealth';
 import { getNativeName, SUPPORTED_LOCALES } from '@/i18n/localeRegistry';
 import { Field } from '@/shared/ui/Field';
@@ -8,7 +13,7 @@ import { Icon } from '@/shared/ui/Icon';
 import { IconButton } from '@/shared/ui/IconButton';
 import { Popover } from '@/shared/ui/Popover';
 
-type TimingField = 'durationInput';
+type TimingField = 'durationInput' | 'bufferSecondsInput';
 
 interface SettingsClusterProps {
   language: string;
@@ -16,6 +21,7 @@ interface SettingsClusterProps {
   theme: 'light' | 'dark';
   isMuted: boolean;
   durationInput: string;
+  bufferSecondsInput: string;
   onLanguageChange: (value: string) => void;
   onToggleTheme: () => void;
   onToggleMute: () => void;
@@ -54,26 +60,44 @@ function LanguagePicker({
   );
 }
 
-function TimerField({
+function TimingFields({
   durationInput,
+  bufferSecondsInput,
   onUpdateTimingField,
   onBlurTimingField,
-}: Pick<SettingsClusterProps, 'durationInput' | 'onUpdateTimingField' | 'onBlurTimingField'>) {
+}: Pick<
+  SettingsClusterProps,
+  'durationInput' | 'bufferSecondsInput' | 'onUpdateTimingField' | 'onBlurTimingField'
+>) {
   const { t } = useTranslation();
 
   return (
-    <Field
-      id="duration"
-      label={t('settings.duration')}
-      type="number"
-      inputMode="numeric"
-      value={durationInput}
-      min={durationMin}
-      max={durationMax}
-      suffix={t('status.seconds')}
-      onChange={(event) => onUpdateTimingField('durationInput', event.target.value)}
-      onBlur={() => onBlurTimingField('durationInput')}
-    />
+    <div className="timing-fields">
+      <Field
+        id="duration"
+        label={t('settings.duration')}
+        type="number"
+        inputMode="numeric"
+        value={durationInput}
+        min={durationMin}
+        max={durationMax}
+        suffix={t('status.seconds')}
+        onChange={(event) => onUpdateTimingField('durationInput', event.target.value)}
+        onBlur={() => onBlurTimingField('durationInput')}
+      />
+      <Field
+        id="getReady"
+        label={t('settings.getReady', { defaultValue: 'Get ready' })}
+        type="number"
+        inputMode="numeric"
+        value={bufferSecondsInput}
+        min={bufferSecondsMin}
+        max={bufferSecondsMax}
+        suffix={t('status.seconds')}
+        onChange={(event) => onUpdateTimingField('bufferSecondsInput', event.target.value)}
+        onBlur={() => onBlurTimingField('bufferSecondsInput')}
+      />
+    </div>
   );
 }
 
@@ -83,6 +107,7 @@ export function SettingsCluster({
   theme,
   isMuted,
   durationInput,
+  bufferSecondsInput,
   onLanguageChange,
   onToggleTheme,
   onToggleMute,
@@ -99,8 +124,9 @@ export function SettingsCluster({
         label={t('settings.roundTimerTitle', { defaultValue: 'Round timer' })}
         title={t('settings.pace', { defaultValue: '{{seconds}}s', seconds: durationInput })}
       >
-        <TimerField
+        <TimingFields
           durationInput={durationInput}
+          bufferSecondsInput={bufferSecondsInput}
           onUpdateTimingField={onUpdateTimingField}
           onBlurTimingField={onBlurTimingField}
         />

@@ -137,14 +137,10 @@
     overflow-y: auto;
   }
 
-  .categories-card__actions {
-    display: grid;
-    gap: var(--space-2);
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .categories-card__actions .ds-icon-button {
-    width: 100%;
+  .categories-card__header-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
   }
 
   .custom-list {
@@ -192,7 +188,7 @@
     }
 
     .play-grid {
-      grid-template-columns: minmax(0, 1.2fr) minmax(22rem, 0.9fr);
+      grid-template-columns: minmax(0, 1fr) minmax(24rem, 1.25fr);
       min-height: min(42rem, calc(100dvh - 18rem));
     }
 

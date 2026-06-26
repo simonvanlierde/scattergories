@@ -259,19 +259,27 @@
 
   .ds-sheet__header {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
-    gap: var(--space-3);
-    padding: var(--space-4) var(--space-6) var(--space-4);
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-5) var(--space-4);
     border-bottom: 1px solid var(--border-subtle);
   }
 
   .ds-sheet__title {
+    flex: 1 1 auto;
+    min-width: 0;
     font-family: var(--font-display);
     font-size: var(--text-2xl);
     font-weight: 500;
     letter-spacing: var(--tracking-tight);
     margin: 0;
+  }
+
+  .ds-sheet__header .ds-icon-button {
+    flex: none;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
   }
 
   .ds-sheet__body {
@@ -385,6 +393,11 @@
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-md);
     box-shadow: var(--elevation-4);
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .timing-fields {
     display: grid;
     gap: var(--space-3);
   }

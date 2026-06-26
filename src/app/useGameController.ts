@@ -28,6 +28,7 @@ interface GameController {
     onAddCustomCategory: (name: string) => void;
     onBlurNumericField: (field: NumericFieldName) => void;
     onTogglePin: (name: string) => void;
+    onTogglePinAll: (names: string[]) => void;
     onAddPack: (packId: string) => void;
     onRemoveBuiltin: (name: string) => void;
     onRemoveAllCustom: () => void;
@@ -38,7 +39,6 @@ interface GameController {
     onReloadAfterChunkError: () => void;
     onRemoveCustomCategory: (category: string) => void;
     onRedrawCategories: () => void;
-    onRedrawSlot: (index: number) => void;
     onStartRound: () => void;
     onToggleMute: () => void;
     onTogglePause: () => void;
@@ -108,6 +108,7 @@ function useGameController(): GameController {
     addCustom,
     removeCustom,
     togglePin,
+    togglePinAll,
     addPack,
     removeBuiltin,
     removeAllCustom,
@@ -158,6 +159,7 @@ function useGameController(): GameController {
       onAddCustomCategory: addCustom,
       onBlurNumericField: controls.blurNumericField,
       onTogglePin: togglePin,
+      onTogglePinAll: togglePinAll,
       onAddPack: addPack,
       onRemoveBuiltin: removeBuiltin,
       onRemoveAllCustom: removeAllCustom,
@@ -168,7 +170,6 @@ function useGameController(): GameController {
       onReloadAfterChunkError: () => window.location.reload(),
       onRemoveCustomCategory: removeCustom,
       onRedrawCategories: () => board.redrawCategories(true),
-      onRedrawSlot: board.redrawSlot,
       onStartRound: round.primaryAction,
       onToggleMute: () => update('isMuted', !settings.isMuted),
       onTogglePause: round.togglePause,

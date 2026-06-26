@@ -183,7 +183,7 @@ const PACKS: readonly CategoryPack[] = Object.freeze([
   {
     id: CLASSIC_PACK_ID,
     labelKey: 'packs.classic.label',
-    fallbackLabel: 'Classic',
+    fallbackLabel: 'All',
     descriptionKey: 'packs.classic.description',
     fallbackDescription: 'Every category — the full deck.',
     keys: [],

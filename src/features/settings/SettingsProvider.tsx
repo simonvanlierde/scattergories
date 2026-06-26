@@ -22,6 +22,7 @@ type SettingsAction =
   | { type: 'addCustom'; value: string }
   | { type: 'removeCustom'; value: string }
   | { type: 'togglePin'; name: string }
+  | { type: 'togglePinAll'; names: string[] }
   | { type: 'addPack'; packId: string }
   | { type: 'removeBuiltin'; name: string }
   | { type: 'removeAllCustom' }
@@ -33,6 +34,7 @@ interface SettingsContextValue {
   addCustom: (raw: string) => void;
   removeCustom: (category: string) => void;
   togglePin: (name: string) => void;
+  togglePinAll: (names: string[]) => void;
   addPack: (packId: string) => void;
   removeBuiltin: (name: string) => void;
   removeAllCustom: () => void;
@@ -40,6 +42,21 @@ interface SettingsContextValue {
 }
 
 const SettingsContext = createContext<SettingsContextValue | null>(null);
+
+/** Pin every drawn name, or unpin them all if they are already pinned. */
+function applyTogglePinAll(state: Settings, names: string[]): Settings {
+  const inDeck = names.filter(
+    (name) => state.customCategories.includes(name) || state.deckBuiltins.includes(name),
+  );
+  if (inDeck.length === 0) {
+    return state;
+  }
+  if (inDeck.every((name) => state.pinned.includes(name))) {
+    const removal = new Set(inDeck);
+    return { ...state, pinned: state.pinned.filter((entry) => !removal.has(entry)) };
+  }
+  return { ...state, pinned: [...new Set([...state.pinned, ...inDeck])] };
+}
 
 function settingsReducer(state: Settings, action: SettingsAction): Settings {
   switch (action.type) {
@@ -85,6 +102,9 @@ function settingsReducer(state: Settings, action: SettingsAction): Settings {
           : [...state.pinned, action.name],
       };
     }
+
+    case 'togglePinAll':
+      return applyTogglePinAll(state, action.names);
 
     case 'addPack': {
       const packKeys = getPackCategories(action.packId, categories);
@@ -167,6 +187,7 @@ function SettingsProvider({ children }: PropsWithChildren) {
       addCustom: (raw) => dispatch({ type: 'addCustom', value: raw }),
       removeCustom: (category) => dispatch({ type: 'removeCustom', value: category }),
       togglePin: (name) => dispatch({ type: 'togglePin', name }),
+      togglePinAll: (names) => dispatch({ type: 'togglePinAll', names }),
       addPack: (packId) => dispatch({ type: 'addPack', packId }),
       removeBuiltin: (name) => dispatch({ type: 'removeBuiltin', name }),
       removeAllCustom: () => dispatch({ type: 'removeAllCustom' }),
