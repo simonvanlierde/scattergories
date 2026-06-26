@@ -26,9 +26,14 @@ export async function openCustomizeDeck(user: ReturnType<typeof userEvent.setup>
   return screen.findByRole('dialog', { name: 'Customize deck' });
 }
 
-export async function openSettings(user: ReturnType<typeof userEvent.setup>) {
-  await user.click(screen.getByRole('button', { name: 'Settings' }));
-  return screen.findByRole('dialog', { name: 'Settings' });
+export async function openTimerPopover(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(screen.getByRole('button', { name: 'Round timer' }));
+  return screen.findByRole('dialog', { name: 'Round timer' });
+}
+
+export async function openLanguagePopover(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(screen.getByRole('button', { name: 'Language' }));
+  return screen.findByRole('dialog', { name: 'Language' });
 }
 
 export function selectedCategoryItems() {

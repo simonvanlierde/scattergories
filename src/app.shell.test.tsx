@@ -4,7 +4,7 @@ import { DEFAULT_DRAW_COUNT, DEFAULT_TIMER_SECONDS } from './test/gameConstants'
 import {
   DRAW_SUMMARY_PATTERN,
   openCustomizeDeck,
-  openSettings,
+  openTimerPopover,
   READY_SUMMARY_PATTERN,
   renderApp,
   resetAppTestState,
@@ -25,7 +25,7 @@ it('renders the core app shell and primary controls', async () => {
 });
 
 it('keeps the main surface lean and categories outside the playmat', async () => {
-  const { user } = await renderApp();
+  await renderApp();
 
   expect(screen.queryByTestId('onboarding-banner')).not.toBeInTheDocument();
 
@@ -42,30 +42,31 @@ it('keeps the main surface lean and categories outside the playmat', async () =>
   expect(within(categoriesPanel).queryByText(SOURCE_SUMMARY_PATTERN)).not.toBeInTheDocument();
   expect(within(categoriesPanel).queryByText(DRAW_SUMMARY_PATTERN)).not.toBeInTheDocument();
   expect(within(categoriesPanel).queryByText(READY_SUMMARY_PATTERN)).not.toBeInTheDocument();
-
-  const settingsDialog = await openSettings(user);
-  expect(within(settingsDialog).queryByText('Achievements')).not.toBeInTheDocument();
 });
 
 it('groups secondary play controls by intent', async () => {
-  await renderApp();
+  const { user } = await renderApp();
 
   const playmat = screen.getByRole('region', { name: 'Game board' });
 
-  expect(within(playmat).getByRole('group', { name: 'Round controls' })).toBeInTheDocument();
+  // Idle: only audio controls are shown; round controls appear once a round is in progress.
+  expect(within(playmat).getByRole('group', { name: 'Audio controls' })).toBeInTheDocument();
+  expect(within(playmat).queryByRole('group', { name: 'Round controls' })).not.toBeInTheDocument();
   expect(
     within(playmat).queryByRole('group', { name: 'Session controls' }),
   ).not.toBeInTheDocument();
-  expect(within(playmat).getByRole('group', { name: 'Audio controls' })).toBeInTheDocument();
   expect(within(playmat).queryByText(SESSION_ROUND_TEXT)).not.toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: 'Start Round' }));
+  expect(within(playmat).getByRole('group', { name: 'Round controls' })).toBeInTheDocument();
 });
 
 it('shows default editable settings in their owning dialogs', async () => {
   const { user } = await renderApp();
 
-  const settingsDialog = await openSettings(user);
-  expect(within(settingsDialog).getByLabelText('Timer')).toHaveValue(DEFAULT_TIMER_SECONDS);
-  expect(within(settingsDialog).queryByLabelText('Rounds')).not.toBeInTheDocument();
+  const timerPopover = await openTimerPopover(user);
+  expect(within(timerPopover).getByLabelText('Timer')).toHaveValue(DEFAULT_TIMER_SECONDS);
+  expect(within(timerPopover).queryByLabelText('Rounds')).not.toBeInTheDocument();
   await user.keyboard('{Escape}');
 
   const customizeDialog = await openCustomizeDeck(user);

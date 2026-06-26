@@ -32,7 +32,7 @@
     "unmute": "Unmute",
     "skipLetterTooltip": "Get a different random letter for this round",
     "resetTooltip": "Start the timer over from the beginning",
-    "shuffle": "Shuffle",
+    "redraw": "Redraw",
     "add": "Add",
     "remove": "Remove",
     "close": "✕",
@@ -51,6 +51,7 @@
   },
   "settings": {
     "duration": "Timer",
+    "audioTitle": "Audio",
     "categorySource": "Source",
     "categoryDraw": "Draw",
     "addCustom": "Add custom category",
@@ -90,11 +91,6 @@
   "playmat": {
     "label": "Game board"
   },
-  "pause": {
-    "title": "Paused",
-    "hint": "Tap anywhere to resume",
-    "resumeLabel": "Paused — tap to resume"
-  },
   "rail": {
     "shortcuts": {
       "title": "Keyboard shortcuts",
@@ -109,25 +105,15 @@
   },
   "roundEnd": {
     "label": "Round summary",
-    "title": "Time's up!",
-    "letterWas": "Letter was",
-    "nextRound": "Next letter",
-    "stats": {
-      "rounds": "Rounds",
-      "streak": "Streak"
-    },
-    "share": "Share",
-    "shareCopied": "Copied!",
-    "shareBody": "Scattergories — letter {{letter}}."
+    "title": "Time's up!"
   },
   "categories": {
     "title": "Categories",
     "description": "Mix official and custom categories, then reshuffle whenever the table needs a reset.",
-    "default": "Default",
-    "custom": "Custom",
-    "mixed": "Mixed",
+    "includePack": "Include pack categories",
+    "customAlwaysShown": "Custom categories always appear in the deck.",
     "noCustom": "No custom categories yet.",
-    "minimumRequired": "Add at least one custom category to use Custom mode.",
+    "minimumRequired": "Add at least one custom category to play.",
     "availableSummary": "{{count}} categories ready",
     "customListLabel": "Custom categories",
     "drawnListLabel": "Selected categories",
@@ -190,7 +176,9 @@
     "toggleLabel": "Theme",
     "sectionTitle": "Appearance",
     "dark": "Dark mode",
-    "light": "Light mode"
+    "light": "Light mode",
+    "switchToDark": "Switch to dark mode",
+    "switchToLight": "Switch to light mode"
   },
   "errors": {
     "chunkTitle": "A fresh app version is ready.",

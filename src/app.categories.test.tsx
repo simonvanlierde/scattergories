@@ -18,7 +18,6 @@ import {
   selectedCategoryItems,
 } from './test/renderApp';
 
-const MAX_DRAW_COUNT = 999;
 const MIN_VISIBLE_BOARD_ITEMS = 1;
 
 beforeEach(resetAppTestState);
@@ -41,11 +40,12 @@ it('adds and removes a custom category', async () => {
   expect(within(dialog).getByText(NO_CUSTOM_CATEGORIES)).toBeInTheDocument();
 });
 
-it('supports custom category entry and empty custom source feedback', async () => {
+it('shows guidance when the deck would be empty and accepts a custom entry', async () => {
   const { user } = await renderApp();
   const dialog = await openCustomizeDeck(user);
 
-  await user.selectOptions(within(dialog).getByRole('combobox', { name: 'Source' }), 'custom');
+  // With pack categories off and no customs yet, the deck is empty.
+  await user.click(within(dialog).getByRole('checkbox', { name: 'Include pack categories' }));
   expect(screen.getByText(ADD_AT_LEAST_ONE_CUSTOM_CATEGORY)).toBeInTheDocument();
 
   const input = within(dialog).getByRole('textbox', { name: 'Add custom category' });
@@ -56,10 +56,9 @@ it('supports custom category entry and empty custom source feedback', async () =
   );
 });
 
-it('switches between default, custom, and mixed category sources', async () => {
+it('always shows custom categories and lets pack categories be toggled off', async () => {
   const { user } = await renderApp();
   const dialog = await openCustomizeDeck(user);
-  const source = within(dialog).getByLabelText('Source');
 
   await user.type(
     within(dialog).getByRole('textbox', { name: 'Add custom category' }),
@@ -67,23 +66,21 @@ it('switches between default, custom, and mixed category sources', async () => {
   );
   await user.click(within(dialog).getByRole('button', { name: 'Add' }));
 
-  const drawInput = within(dialog).getAllByRole('spinbutton')[0];
-  await user.clear(drawInput);
-  await user.type(drawInput, String(MAX_DRAW_COUNT));
-  await user.tab();
-
-  await user.selectOptions(source, 'custom');
+  // The custom category always appears in the deck, alongside pack categories.
   const drawnList = screen.getByRole('list', { name: SELECTED_CATEGORIES });
+  expect(drawnList).toHaveTextContent(ONLY_CUSTOM_CATEGORY);
+  expect(within(drawnList).getAllByRole('listitem').length).toBeGreaterThan(
+    MIN_VISIBLE_BOARD_ITEMS,
+  );
+
+  // Turning off pack categories leaves only the custom one.
+  const includePack = within(dialog).getByRole('checkbox', { name: 'Include pack categories' });
+  await user.click(includePack);
   expect(within(drawnList).getAllByRole('listitem')).toHaveLength(MIN_VISIBLE_BOARD_ITEMS);
   expect(drawnList).toHaveTextContent(ONLY_CUSTOM_CATEGORY);
 
-  await user.selectOptions(source, 'default');
-  expect(selectedCategoryItems().length).toBeGreaterThan(MIN_VISIBLE_BOARD_ITEMS);
-  expect(screen.getByRole('list', { name: SELECTED_CATEGORIES })).not.toHaveTextContent(
-    ONLY_CUSTOM_CATEGORY,
-  );
-
-  await user.selectOptions(source, 'mixed');
+  // Turning it back on restores the pack fill.
+  await user.click(includePack);
   expect(selectedCategoryItems().length).toBeGreaterThan(MIN_VISIBLE_BOARD_ITEMS);
 });
 

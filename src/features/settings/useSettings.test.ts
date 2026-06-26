@@ -24,7 +24,7 @@ describe('useSettings', () => {
       const { settings } = result.current;
       expect(settings.durationInput).toBe('90');
       expect(settings.catCountInput).toBe('12');
-      expect(settings.categoryMode).toBe('default');
+      expect(settings.includePackCategories).toBe(true);
       expect(settings.categoryRefreshMode).toBe('auto');
       expect(settings.customCategories).toEqual([]);
       expect(settings.isMuted).toBe(false);

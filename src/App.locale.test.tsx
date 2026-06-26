@@ -29,8 +29,8 @@ describe('locale startup validation', () => {
       await Promise.resolve();
       render(<App />);
 
-      await screen.findByRole('button', { name: 'Settings' });
-      await user.click(screen.getByRole('button', { name: 'Settings' }));
+      await screen.findByRole('button', { name: 'Language' });
+      await user.click(screen.getByRole('button', { name: 'Language' }));
 
       const languageSelector = await screen.findByRole('combobox', { name: 'Language' });
       expect(screen.getByRole('alert')).toHaveTextContent('Missing letter weights for fr');
