@@ -5,7 +5,6 @@ import { Icon } from '@/shared/ui/Icon';
 interface CategoryChecklistProps {
   categories: string[];
   availableCount: number;
-  pinnedCount?: number;
   landing?: boolean;
   canEdit?: boolean;
   pinnedSet?: Set<string>;
@@ -16,7 +15,6 @@ interface CategoryChecklistProps {
 export function CategoryChecklist({
   categories,
   availableCount,
-  pinnedCount = 0,
   landing = false,
   canEdit = false,
   pinnedSet,
@@ -40,9 +38,9 @@ export function CategoryChecklist({
         aria-label={t('categories.drawnListLabel', { defaultValue: 'Selected categories' })}
       >
         {categories.map((category, index) => {
-          // Only unpinned fill slots (after the pinned ones) roll and land.
-          const isFillSlot = index >= pinnedCount;
           const isPinned = pinnedSet?.has(category) ?? false;
+          // Only unpinned slots roll and land; pinned slots hold still.
+          const isFillSlot = !isPinned;
           const isCustom = customSet?.has(category) ?? false;
           const label = isCustom ? category : t(category, { ns: 'categories' });
           const labelClass =

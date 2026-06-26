@@ -22,7 +22,6 @@ import { CategoryChecklist } from './CategoryChecklist';
 
 interface CategoriesState {
   drawnCategories: string[];
-  pinnedCount: number;
   isLanding: boolean;
   availableCount: number;
   customCategories: string[];
@@ -357,7 +356,7 @@ function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps
                   ? t('categories.unpinAll', { defaultValue: 'Unpin all' })
                   : t('categories.pinAll', { defaultValue: 'Pin all' })
               }
-              icon={<Icon icon={allPinned ? Pin : PinOff} size={18} />}
+              icon={<Icon icon={allPinned ? PinOff : Pin} size={18} />}
               aria-pressed={allPinned}
               disabled={!canEdit}
               onClick={() => actions.onTogglePinAll(drawnCategories)}
@@ -378,7 +377,6 @@ function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps
             <CategoryChecklist
               categories={drawnCategories}
               availableCount={categories.availableCount}
-              pinnedCount={categories.pinnedCount}
               landing={categories.isLanding}
               canEdit={canEdit}
               pinnedSet={pinnedSet}

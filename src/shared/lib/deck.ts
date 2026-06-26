@@ -5,32 +5,35 @@ interface ComposeDeckParams {
   deckBuiltins: string[];
   pinned: string[];
   count: number;
+  /** The currently displayed deck, so pinned categories keep their positions. */
+  previous?: string[];
 }
 
 interface ComposedDeck {
-  /** The drawn deck: pinned categories first (never rolled), then the random fill. */
+  /** The drawn deck: pinned categories hold their slots, the rest is random fill. */
   deck: string[];
-  /** Number of leading pinned slots (the boundary the roll animation respects). */
-  pinnedCount: number;
   /** Unpinned categories available to fill / reroll the remaining slots. */
   pool: string[];
 }
 
 /**
- * Builds a round's drawn deck: all pinned categories are always included
- * (customs first, then pinned built-ins), and the remaining slots up to
- * `count` are filled randomly from the unpinned pool. If pinned categories
- * already meet or exceed `count`, they are all shown with no fill.
+ * Builds a round's drawn deck. All pinned categories are always included, and
+ * each one keeps the slot it currently occupies in `previous` so a redraw never
+ * makes a pinned category hop to a new position. The remaining slots up to
+ * `count` are filled randomly from the unpinned pool.
  */
 function composeDeck({
   customCategories,
   deckBuiltins,
   pinned,
   count,
+  previous = [],
 }: ComposeDeckParams): ComposedDeck {
   const pinnedSet = new Set(pinned);
   const customSet = new Set(customCategories);
 
+  // Pinned categories actually present in the deck (customs first, then
+  // built-ins), in a stable order — used to seat pins that aren't already placed.
   const pinnedCustoms = customCategories.filter((name) => pinnedSet.has(name));
   const pinnedBuiltins = deckBuiltins.filter((name) => pinnedSet.has(name) && !customSet.has(name));
   const pinnedOrdered = [...pinnedCustoms, ...pinnedBuiltins];
@@ -41,12 +44,45 @@ function composeDeck({
   );
   const pool = [...unpinnedCustoms, ...unpinnedBuiltins];
 
-  if (pinnedOrdered.length >= count) {
-    return { deck: pinnedOrdered, pinnedCount: pinnedOrdered.length, pool: [] };
+  const slots: (string | null)[] = new Array(count).fill(null);
+  const placed = new Set<string>();
+
+  // 1. Keep pinned categories in the slots they already occupy.
+  const carryOver = Math.min(previous.length, count);
+  for (let i = 0; i < carryOver; i += 1) {
+    const name = previous[i];
+    if (pinnedSet.has(name) && !placed.has(name)) {
+      slots[i] = name;
+      placed.add(name);
+    }
   }
 
-  const fill = shuffleFisherYates(pool).slice(0, count - pinnedOrdered.length);
-  return { deck: [...pinnedOrdered, ...fill], pinnedCount: pinnedOrdered.length, pool };
+  // 2. Seat any remaining pinned categories (freshly pinned, or shifted in by a
+  //    smaller count) into the earliest free slots.
+  const remainingPinned = pinnedOrdered.filter((name) => !placed.has(name));
+  let nextPinned = 0;
+  for (let i = 0; i < count && nextPinned < remainingPinned.length; i += 1) {
+    if (slots[i] === null) {
+      slots[i] = remainingPinned[nextPinned];
+      nextPinned += 1;
+    }
+  }
+
+  // 3. Fill the rest with a random sample of the unpinned pool.
+  const emptySlots: number[] = [];
+  for (let i = 0; i < count; i += 1) {
+    if (slots[i] === null) {
+      emptySlots.push(i);
+    }
+  }
+  const fill = shuffleFisherYates(pool).slice(0, emptySlots.length);
+  for (let i = 0; i < fill.length; i += 1) {
+    slots[emptySlots[i]] = fill[i];
+  }
+
+  // Drop any slots the pool was too small to fill, preserving order.
+  const deck = slots.filter((name): name is string => name !== null);
+  return { deck, pool };
 }
 
 export type { ComposeDeckParams, ComposedDeck };

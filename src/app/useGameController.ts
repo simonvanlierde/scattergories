@@ -17,7 +17,6 @@ interface GameController {
   categories: {
     availableCount: number;
     drawnCategories: string[];
-    pinnedCount: number;
     isLanding: boolean;
     isCompactLayout: boolean;
     isPromptDeckOpen: boolean;
@@ -148,7 +147,6 @@ function useGameController(): GameController {
     categories: {
       availableCount: roundSetup.availableCount,
       drawnCategories: board.drawnCategories,
-      pinnedCount: board.pinnedCount,
       isLanding: board.landing,
       isCompactLayout: promptDeck.isCompactLayout,
       isPromptDeckOpen: promptDeck.isPromptDeckOpen,
