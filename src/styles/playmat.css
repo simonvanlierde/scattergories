@@ -156,6 +156,19 @@
     font-weight: 700;
   }
 
+  /* ─── Paused state — dim the ring, surface a "Paused" readout ── */
+  .timer-ring--paused {
+    opacity: 0.6;
+  }
+
+  .timer-ring--paused .timer-ring__progress {
+    filter: grayscale(0.7);
+  }
+
+  .timer-ring--paused .timer-ring__readout {
+    color: var(--text-secondary);
+  }
+
   /* ─── Letter Hero — serif drop-cap ───────────────────────────── */
   .letter-hero {
     position: relative;
@@ -320,6 +333,11 @@
     padding: var(--space-0-5);
     border: 1px solid var(--rule);
     border-radius: var(--radius-sm);
+  }
+
+  .action-bar__group--bare {
+    border: 0;
+    padding: 0;
   }
 
   /* ─── Container-query responsive ─────────────────────────────── */

@@ -12,6 +12,7 @@ type RoundPhase = PlaymatProps['game']['round']['phase'];
 
 function PlaymatHero({
   phase,
+  isPaused,
   secondsLeft,
   gameSeconds,
   letter,
@@ -19,6 +20,7 @@ function PlaymatHero({
   letterLanding,
 }: {
   phase: RoundPhase;
+  isPaused: boolean;
   secondsLeft: number;
   gameSeconds: number;
   letter: string;
@@ -27,24 +29,14 @@ function PlaymatHero({
 }) {
   return (
     <div className="playmat__hero">
-      <TimerRing phase={phase} secondsLeft={secondsLeft} gameSeconds={gameSeconds} />
+      <TimerRing
+        phase={phase}
+        isPaused={isPaused}
+        secondsLeft={secondsLeft}
+        gameSeconds={gameSeconds}
+      />
       <LetterHero letter={letter} visible={letterVisible} landing={letterLanding} />
     </div>
-  );
-}
-
-function RoundEnd({ letter }: { letter: string }) {
-  const { t } = useTranslation();
-
-  return (
-    <section
-      className="round-end"
-      aria-label={t('roundEnd.label', { defaultValue: 'Round summary' })}
-      data-testid="round-end-screen"
-    >
-      <h2 className="round-end__title">{t('roundEnd.title', { defaultValue: 'Time is up' })}</h2>
-      <div className="round-end__letter">{letter}</div>
-    </section>
   );
 }
 
@@ -74,29 +66,24 @@ function PlaymatRoundContent({
 }) {
   return (
     <>
-      {round.phase === 'done' ? (
-        <RoundEnd letter={round.letter} />
-      ) : (
-        <PlaymatHero
-          phase={round.phase}
-          secondsLeft={round.secondsLeft}
-          gameSeconds={settings.gameSeconds}
-          letter={round.letter}
-          letterVisible={round.letterVisible}
-          letterLanding={round.letterLanding}
-        />
-      )}
+      <PlaymatHero
+        phase={round.phase}
+        isPaused={round.isPaused}
+        secondsLeft={round.secondsLeft}
+        gameSeconds={settings.gameSeconds}
+        letter={round.letter}
+        letterVisible={round.letterVisible}
+        letterLanding={round.letterLanding}
+      />
 
       <PlaymatStatus phase={round.phase} statusKey={round.statusKey} />
 
       <ActionBar
         phase={round.phase}
         isPaused={round.isPaused}
-        isMuted={settings.isMuted}
-        onStart={controls.onStartRound}
-        onPause={controls.onTogglePause}
-        onSkip={controls.onSkipLetter}
-        onToggleMute={controls.onToggleMute}
+        onPrimary={controls.onStartRound}
+        onNewLetter={controls.onNewLetter}
+        onNextRound={controls.onNextRound}
       />
     </>
   );
@@ -106,25 +93,12 @@ export function Playmat({ game }: PlaymatProps) {
   const { t } = useTranslation();
   const { round, settings, controls } = game;
 
-  const showUsedLetters = settings.categoryRefreshMode === 'pinned';
-  const usedLettersText = t('usedLetters', {
-    letters: round.usedLetters.join(', '),
-    empty: round.usedLetters.length > 0 ? '' : t('usedLettersEmpty'),
-  });
-
   return (
     <section
       className="playmat"
       aria-label={t('playmat.label', { defaultValue: 'Game board' })}
       data-phase={round.phase}
     >
-      {showUsedLetters ? (
-        <header className="playmat__meta">
-          <p className="playmat__used-letters" aria-live="polite">
-            {usedLettersText}
-          </p>
-        </header>
-      ) : null}
       <PlaymatRoundContent round={round} settings={settings} controls={controls} />
     </section>
   );

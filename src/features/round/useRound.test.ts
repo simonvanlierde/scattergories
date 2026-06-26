@@ -46,9 +46,9 @@ function createRoundDriver(options: Partial<Parameters<typeof useRound>[0]> = {}
   const rendered = renderHook(() =>
     useRound({
       gameSeconds: SHORT_ROUND_SECONDS,
+      bufferSeconds: BUFFER_SECONDS,
       isMuted: false,
       locale: 'en',
-      categoryRefreshMode: 'auto',
       ...options,
     }),
   );
@@ -64,7 +64,7 @@ function createRoundDriver(options: Partial<Parameters<typeof useRound>[0]> = {}
       return rendered.result.current;
     },
     start() {
-      act(() => rendered.result.current.startRound());
+      act(() => rendered.result.current.primaryAction());
     },
     landLetter() {
       if (!landCallback) {
@@ -175,28 +175,28 @@ it('uses the plain round-over status when time runs out', () => {
   expect(driver.current.statusKey).toBe('timer.roundOver');
 });
 
-it('auto mode avoids only the immediately previous letter', () => {
-  const driver = createRoundDriver({ categoryRefreshMode: 'auto' });
+it('draws letters from a non-repeating bag and tracks used letters', () => {
+  const driver = createRoundDriver();
 
   driver.start();
   const first = mockSpinTo.mock.calls[0]?.[0];
   driver.landLetter();
-  act(() => driver.current.skipLetter());
-  const second = mockSpinTo.mock.calls[1]?.[0];
-
-  expect(second).not.toBe(first);
-  expect(driver.current.usedLetters).toEqual([]);
-});
-
-it('pinned mode tracks used letters with the non-repeating bag', () => {
-  const driver = createRoundDriver({ categoryRefreshMode: 'pinned' });
-
-  driver.start();
-  const first = mockSpinTo.mock.calls[0]?.[0];
-  driver.landLetter();
-  act(() => driver.current.skipLetter());
+  act(() => driver.current.nextRound());
   const second = mockSpinTo.mock.calls[1]?.[0];
 
   expect(second).not.toBe(first);
   expect(driver.current.usedLetters).toEqual([first, second]);
+});
+
+it('new letter rerolls into a ready state awaiting Start', () => {
+  const driver = createRoundDriver();
+
+  driver.start();
+  driver.landLetter();
+  // From buffer, reroll the letter — should re-spin then land in `ready`.
+  act(() => driver.current.newLetter());
+  expect(driver.current.phase).toBe('spinning');
+  driver.landLetter();
+  expect(driver.current.phase).toBe('ready');
+  expect(driver.current.secondsLeft).toBe(SHORT_ROUND_SECONDS);
 });

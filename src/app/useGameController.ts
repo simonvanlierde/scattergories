@@ -44,7 +44,8 @@ interface GameController {
     onTogglePromptDeck: () => void;
     onToggleTheme: () => void;
     onUpdateField: ReturnType<typeof useSettings>['update'];
-    onSkipLetter: () => void;
+    onNewLetter: () => void;
+    onNextRound: () => void;
   };
   flags: {
     hasChunkError: boolean;
@@ -77,8 +78,8 @@ function useGameKeyboardShortcuts(params: {
   focusPromptDeckInput: () => void;
 }) {
   useKeyboardShortcuts({
-    onSpace: params.round.startRound,
-    onR: params.round.skipLetter,
+    onSpace: params.round.primaryAction,
+    onR: params.round.newLetter,
     onP: params.round.togglePause,
     onC: params.togglePromptDeck,
     onA: () => {
@@ -112,13 +113,10 @@ function useGameController(): GameController {
   });
   const round = useRound({
     gameSeconds: roundSetup.gameSeconds,
+    bufferSeconds: roundSetup.bufferSeconds,
     isMuted: settings.isMuted,
     locale: i18n.resolvedLanguage ?? i18n.language,
-    categoryRefreshMode: settings.categoryRefreshMode,
-    onLetterPicked:
-      settings.categoryRefreshMode === 'auto'
-        ? () => board.redrawCategories(true)
-        : () => undefined,
+    onLetterPicked: () => board.redrawCategories(true),
   });
   const controls = useAppControls({
     addCustomCategory,
@@ -160,13 +158,15 @@ function useGameController(): GameController {
       onReloadAfterChunkError: () => window.location.reload(),
       onRemoveCustomCategory: removeCustomCategory,
       onRedrawCategories: () => board.redrawCategories(true),
-      onStartRound: round.startRound,
+      onRedrawSlot: board.redrawSlot,
+      onStartRound: round.primaryAction,
       onToggleMute: () => update('isMuted', !settings.isMuted),
       onTogglePause: round.togglePause,
       onTogglePromptDeck: promptDeck.togglePromptDeck,
       onToggleTheme: () => update('theme', settings.theme === 'light' ? 'dark' : 'light'),
       onUpdateField: update,
-      onSkipLetter: round.skipLetter,
+      onNewLetter: round.newLetter,
+      onNextRound: round.nextRound,
     },
     flags: {
       hasChunkError: controls.hasChunkError,

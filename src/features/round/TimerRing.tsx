@@ -12,6 +12,7 @@ type Stage = 'idle' | 'calm' | 'urgent' | 'done';
 
 interface TimerRingProps {
   phase: Phase;
+  isPaused: boolean;
   secondsLeft: number;
   gameSeconds: number;
 }
@@ -63,20 +64,21 @@ function useStageHaptics(stage: Stage) {
 
 function getLabel(
   t: ReturnType<typeof useTranslation>['t'],
-  phase: Phase,
-  isRunning: boolean,
-  secondsLeft: number,
+  o: { phase: Phase; isRunning: boolean; isPaused: boolean; secondsLeft: number },
 ): string {
-  if (phase === 'done') {
+  if (o.phase === 'done') {
     return t('timer.timeUp');
   }
-  if (isRunning) {
-    return formatSeconds(Math.max(0, secondsLeft));
+  if (o.isRunning && o.isPaused) {
+    return t('timer.paused', { defaultValue: 'Paused' });
+  }
+  if (o.isRunning) {
+    return formatSeconds(Math.max(0, o.secondsLeft));
   }
   return t('timer.ready', { defaultValue: 'Ready' });
 }
 
-export function TimerRing({ phase, secondsLeft, gameSeconds }: TimerRingProps) {
+export function TimerRing({ phase, isPaused, secondsLeft, gameSeconds }: TimerRingProps) {
   const { t } = useTranslation();
   const stage = getTimerStage(phase, secondsLeft);
   const isRunning = phase === 'buffer' || phase === 'running';
@@ -85,11 +87,15 @@ export function TimerRing({ phase, secondsLeft, gameSeconds }: TimerRingProps) {
 
   const fraction = computeFraction(phase, isRunning, secondsLeft, gameSeconds);
   const dashOffset = RING_CIRCUMFERENCE * (1 - fraction);
-  const label = getLabel(t, phase, isRunning, secondsLeft);
+  const label = getLabel(t, { phase, isRunning, isPaused, secondsLeft });
 
   return (
     <div
-      className={joinClassNames('timer-ring', `timer-ring--${stage}`)}
+      className={joinClassNames(
+        'timer-ring',
+        `timer-ring--${stage}`,
+        isRunning && isPaused && 'timer-ring--paused',
+      )}
       data-testid="round-clock"
       role="timer"
       aria-label={t('round.timerLabel', { defaultValue: 'Round clock' })}

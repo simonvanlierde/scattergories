@@ -3,9 +3,11 @@ import { FIVE, ONE, TEN, THIRTY, TWO, ZERO } from '@/test/constants';
 import { BUFFER_SECONDS, DEFAULT_TIMER_SECONDS } from '@/test/gameConstants';
 import { initialRoundState, roundReducer } from './roundReducer';
 
-const startSpin = () => ({
+const startSpin = (overrides: { autoStart?: boolean; bufferSeconds?: number } = {}) => ({
   type: 'START_SPIN' as const,
   gameSeconds: DEFAULT_TIMER_SECONDS,
+  bufferSeconds: overrides.bufferSeconds ?? BUFFER_SECONDS,
+  autoStart: overrides.autoStart ?? true,
   remainingLetters: ['A', 'B'],
   drawnLetters: ['C'],
 });
@@ -147,5 +149,39 @@ describe('roundReducer', () => {
   it('ALARM_OFF clears the alarm flag', () => {
     const ringing = { ...initialRoundState, alarmOn: true };
     expect(roundReducer(ringing, { type: 'ALARM_OFF' }).alarmOn).toBe(false);
+  });
+
+  it('LETTER_LANDED lands in ready (awaiting Start) when autoStart is false', () => {
+    const spinning = roundReducer(initialRoundState, startSpin({ autoStart: false }));
+    const ready = roundReducer(spinning, { type: 'LETTER_LANDED' });
+    expect(ready.phase).toBe('ready');
+    expect(ready.secondsLeft).toBe(DEFAULT_TIMER_SECONDS);
+    expect(ready.isPaused).toBe(false);
+  });
+
+  it('BEGIN_COUNTDOWN starts the get-ready buffer from ready', () => {
+    const ready = roundReducer(roundReducer(initialRoundState, startSpin({ autoStart: false })), {
+      type: 'LETTER_LANDED',
+    });
+    const buffer = roundReducer(ready, { type: 'BEGIN_COUNTDOWN' });
+    expect(buffer.phase).toBe('buffer');
+    expect(buffer.secondsLeft).toBe(BUFFER_SECONDS);
+  });
+
+  it('get-ready of 0 skips the buffer and runs immediately', () => {
+    const spinning = roundReducer(initialRoundState, startSpin({ bufferSeconds: ZERO }));
+    const running = roundReducer(spinning, { type: 'LETTER_LANDED' });
+    expect(running.phase).toBe('running');
+    expect(running.secondsLeft).toBe(DEFAULT_TIMER_SECONDS);
+    expect(running.statusKey).toBe('timer.go');
+  });
+
+  it('SET_GAME_SECONDS shrinks a running clock but never extends it', () => {
+    const running = { ...initialRoundState, phase: 'running' as const, secondsLeft: TEN };
+    const shrunk = roundReducer(running, { type: 'SET_GAME_SECONDS', gameSeconds: FIVE });
+    expect(shrunk.secondsLeft).toBe(FIVE);
+    const kept = roundReducer(running, { type: 'SET_GAME_SECONDS', gameSeconds: THIRTY });
+    expect(kept.secondsLeft).toBe(TEN);
+    expect(kept.gameSeconds).toBe(THIRTY);
   });
 });

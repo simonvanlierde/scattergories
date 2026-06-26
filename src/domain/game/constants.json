@@ -1,5 +1,7 @@
 {
-  "bufferSeconds": 5,
+  "bufferSecondsMin": 0,
+  "bufferSecondsMax": 30,
+  "bufferSecondsDefault": 3,
   "durationMin": 10,
   "durationMax": 600,
   "durationDefault": 90,
