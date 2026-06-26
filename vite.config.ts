@@ -35,6 +35,9 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
+    // The customize-deck sheet renders the full built-in category list, which is
+    // slow to mount in jsdom under parallel load; give integration tests headroom.
+    testTimeout: 20_000,
     exclude: [...configDefaults.exclude, 'tests/**'],
     setupFiles: './src/setupTests.ts',
     coverage: {

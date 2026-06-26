@@ -12,6 +12,6 @@ test('runs a full single-round game to completion', async ({ app, page }) => {
   await app.startRound();
 
   await expect(app.roundStatus).toHaveText(ROUND_OVER, { timeout: ROUND_MESSAGE_TIMEOUT_MS });
-  await expect(page.getByTestId('round-end-screen')).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Next letter' })).toBeVisible();
+  // No end-of-round screen — the primary button advances to the next round.
+  await expect(page.getByRole('button', { name: 'Next round' })).toBeVisible();
 });

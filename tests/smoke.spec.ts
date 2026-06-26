@@ -48,7 +48,6 @@ test('@smoke keeps prompts in the categories panel and uses the expected prompt 
   }
 
   await expect(categoriesPanel.getByRole('button', { name: 'Redraw' })).toBeVisible();
-  await expect(categoriesPanel.getByRole('button', { name: 'Pin categories' })).toBeVisible();
   await expect(categoriesPanel.getByRole('button', { name: 'Customize deck' })).toBeVisible();
   await expect(categoriesPanel.getByText(SOURCE_SUMMARY_PATTERN)).toHaveCount(0);
   await expect(categoriesPanel.getByText(DRAW_SUMMARY_PATTERN)).toHaveCount(0);

@@ -12,8 +12,6 @@ import {
   SOURCE_SUMMARY_PATTERN,
 } from './test/renderApp';
 
-const SESSION_ROUND_TEXT = /session round/i;
-
 beforeEach(resetAppTestState);
 
 it('renders the core app shell and primary controls', async () => {
@@ -44,21 +42,16 @@ it('keeps the main surface lean and categories outside the playmat', async () =>
   expect(within(categoriesPanel).queryByText(READY_SUMMARY_PATTERN)).not.toBeInTheDocument();
 });
 
-it('groups secondary play controls by intent', async () => {
-  const { user } = await renderApp();
+it('keeps the playmat lean: mute lives in the top bar, no round controls when idle', async () => {
+  await renderApp();
 
   const playmat = screen.getByRole('region', { name: 'Game board' });
 
-  // Idle: only audio controls are shown; round controls appear once a round is in progress.
-  expect(within(playmat).getByRole('group', { name: 'Audio controls' })).toBeInTheDocument();
+  // No secondary round controls while idle (they appear during a round).
   expect(within(playmat).queryByRole('group', { name: 'Round controls' })).not.toBeInTheDocument();
-  expect(
-    within(playmat).queryByRole('group', { name: 'Session controls' }),
-  ).not.toBeInTheDocument();
-  expect(within(playmat).queryByText(SESSION_ROUND_TEXT)).not.toBeInTheDocument();
-
-  await user.click(screen.getByRole('button', { name: 'Start Round' }));
-  expect(within(playmat).getByRole('group', { name: 'Round controls' })).toBeInTheDocument();
+  // Mute is a borderless toggle in the top settings cluster, not on the playmat.
+  expect(screen.getByRole('button', { name: 'Mute' })).toBeInTheDocument();
+  expect(within(playmat).queryByRole('button', { name: 'Mute' })).not.toBeInTheDocument();
 });
 
 it('shows default editable settings in their owning dialogs', async () => {

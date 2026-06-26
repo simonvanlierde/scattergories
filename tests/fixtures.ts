@@ -4,7 +4,7 @@ import { GO, ROUND_STATE_TIMEOUT_MS, SCATTERGORIES_HEADING } from '../src/test/c
 // spell-checker: ignore Configuración, Idioma
 
 type RoundButtonLabel = RegExp | string;
-const START_OR_NEXT_ROUND_BUTTON_LABEL = /Start Round|Next letter/;
+const START_OR_NEXT_ROUND_BUTTON_LABEL = /Start Round|Next round/;
 const MUTE_BUTTON_LABEL = /Mute|Unmute/;
 const TIMER_NAME = /Round timer/i;
 const LANGUAGE_NAME = /Language|Idioma/i;
