@@ -9,26 +9,7 @@ import {
   durationMin,
 } from '@/domain/game/constants';
 import { clampInt } from '@/domain/game/utils';
-import type { CategoryMode } from '@/features/settings/schema';
 import { getPackCategories } from '@/shared/lib/categoryPacks';
-
-function getAvailableCategories(
-  categoryMode: CategoryMode,
-  activePack: string,
-  customCategories: string[],
-): string[] {
-  const packCategories = getPackCategories(activePack, categories);
-
-  if (categoryMode === 'default') {
-    return packCategories;
-  }
-
-  if (categoryMode === 'custom') {
-    return [...customCategories];
-  }
-
-  return Array.from(new Set([...packCategories, ...customCategories]));
-}
 
 function getNormalizedCategoryCount(categoryCount: number, availableCount: number): number {
   return Math.min(categoryCount, Math.max(catCountMin, availableCount));
@@ -36,27 +17,34 @@ function getNormalizedCategoryCount(categoryCount: number, availableCount: numbe
 
 function useRoundSetup(settings: {
   catCountInput: string;
-  categoryMode: CategoryMode;
+  includePackCategories: boolean;
   activePack: string;
   customCategories: string[];
   durationInput: string;
 }) {
   const gameSeconds = clampInt(settings.durationInput, durationMin, durationMax, durationDefault);
   const categoryCount = clampInt(settings.catCountInput, catCountMin, catCountMax, catCountDefault);
-  const availableCategories = useMemo(
-    () =>
-      getAvailableCategories(settings.categoryMode, settings.activePack, settings.customCategories),
-    [settings.categoryMode, settings.activePack, settings.customCategories],
-  );
-  const normalizedCategoryCount = useMemo(
-    () => getNormalizedCategoryCount(categoryCount, availableCategories.length),
-    [availableCategories.length, categoryCount],
-  );
+
+  // Custom categories always appear in the deck; pack categories fill the rest.
+  // Exclude any pack entry that duplicates a custom one so a slot isn't shown twice.
+  const packCategories = useMemo(() => {
+    const customSet = new Set(settings.customCategories);
+    return getPackCategories(settings.activePack, categories).filter(
+      (name) => !customSet.has(name),
+    );
+  }, [settings.activePack, settings.customCategories]);
+
+  const availableCount =
+    settings.customCategories.length + (settings.includePackCategories ? packCategories.length : 0);
+  const normalizedCategoryCount = getNormalizedCategoryCount(categoryCount, availableCount);
 
   return {
-    availableCategories,
+    packCategories,
+    customCategories: settings.customCategories,
+    includePackCategories: settings.includePackCategories,
     gameSeconds,
     normalizedCategoryCount,
+    availableCount,
   };
 }
 

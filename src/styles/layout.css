@@ -134,12 +134,17 @@
 
   .drawn-categories {
     grid-template-rows: minmax(0, 1fr);
+    overflow-y: auto;
   }
 
   .categories-card__actions {
     display: grid;
-    gap: var(--space-3);
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .categories-card__actions .ds-icon-button {
+    width: 100%;
   }
 
   .custom-list {
@@ -210,10 +215,6 @@
 
     .categories-card__content {
       max-height: min(28rem, 44dvh);
-    }
-
-    .categories-card__actions {
-      grid-template-columns: 1fr;
     }
 
     .play-grid {

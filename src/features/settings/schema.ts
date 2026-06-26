@@ -9,7 +9,6 @@ import {
 import { clampInt } from '@/domain/game/utils';
 import { CLASSIC_PACK_ID, isValidPackId } from '@/shared/lib/categoryPacks';
 
-type CategoryMode = 'default' | 'custom' | 'mixed';
 type CategoryRefreshMode = 'auto' | 'pinned';
 type PromptDeckPreference = 'auto' | 'open' | 'collapsed';
 type Theme = 'light' | 'dark';
@@ -17,7 +16,7 @@ type Theme = 'light' | 'dark';
 interface Settings {
   durationInput: string;
   catCountInput: string;
-  categoryMode: CategoryMode;
+  includePackCategories: boolean;
   categoryRefreshMode: CategoryRefreshMode;
   activePack: string;
   customCategories: string[];
@@ -55,7 +54,7 @@ function getDefaultSettings(): Settings {
   return {
     durationInput: String(durationDefault),
     catCountInput: String(catCountDefault),
-    categoryMode: 'default',
+    includePackCategories: true,
     categoryRefreshMode: 'auto',
     activePack: CLASSIC_PACK_ID,
     customCategories: [],
@@ -89,12 +88,10 @@ function sanitizeSettings(raw: unknown): Settings {
       typeof parsed.durationInput === 'string' ? parsed.durationInput : fallback.durationInput,
     catCountInput:
       typeof parsed.catCountInput === 'string' ? parsed.catCountInput : fallback.catCountInput,
-    categoryMode:
-      parsed.categoryMode === 'default' ||
-      parsed.categoryMode === 'custom' ||
-      parsed.categoryMode === 'mixed'
-        ? parsed.categoryMode
-        : fallback.categoryMode,
+    includePackCategories:
+      typeof parsed.includePackCategories === 'boolean'
+        ? parsed.includePackCategories
+        : fallback.includePackCategories,
     categoryRefreshMode:
       parsed.categoryRefreshMode === 'auto' || parsed.categoryRefreshMode === 'pinned'
         ? parsed.categoryRefreshMode
@@ -139,14 +136,7 @@ function serializeSettings(settings: Settings): string {
   return JSON.stringify(settings);
 }
 
-export type {
-  CategoryMode,
-  CategoryRefreshMode,
-  NumericFieldName,
-  PromptDeckPreference,
-  Settings,
-  Theme,
-};
+export type { CategoryRefreshMode, NumericFieldName, PromptDeckPreference, Settings, Theme };
 export {
   getDefaultSettings,
   getPreferredTheme,
