@@ -1,15 +1,15 @@
-import { useMemo } from 'react';
 import {
+  bufferSecondsDefault,
+  bufferSecondsMax,
+  bufferSecondsMin,
   catCountDefault,
   catCountMax,
   catCountMin,
-  categories,
   durationDefault,
   durationMax,
   durationMin,
 } from '@/domain/game/constants';
 import { clampInt } from '@/domain/game/utils';
-import { getPackCategories } from '@/shared/lib/categoryPacks';
 
 function getNormalizedCategoryCount(categoryCount: number, availableCount: number): number {
   return Math.min(categoryCount, Math.max(catCountMin, availableCount));
@@ -17,32 +17,30 @@ function getNormalizedCategoryCount(categoryCount: number, availableCount: numbe
 
 function useRoundSetup(settings: {
   catCountInput: string;
-  includePackCategories: boolean;
-  activePack: string;
-  customCategories: string[];
   durationInput: string;
+  bufferSecondsInput: string;
+  deckBuiltins: string[];
+  customCategories: string[];
+  pinned: string[];
 }) {
   const gameSeconds = clampInt(settings.durationInput, durationMin, durationMax, durationDefault);
+  const bufferSeconds = clampInt(
+    settings.bufferSecondsInput,
+    bufferSecondsMin,
+    bufferSecondsMax,
+    bufferSecondsDefault,
+  );
   const categoryCount = clampInt(settings.catCountInput, catCountMin, catCountMax, catCountDefault);
 
-  // Custom categories always appear in the deck; pack categories fill the rest.
-  // Exclude any pack entry that duplicates a custom one so a slot isn't shown twice.
-  const packCategories = useMemo(() => {
-    const customSet = new Set(settings.customCategories);
-    return getPackCategories(settings.activePack, categories).filter(
-      (name) => !customSet.has(name),
-    );
-  }, [settings.activePack, settings.customCategories]);
-
-  const availableCount =
-    settings.customCategories.length + (settings.includePackCategories ? packCategories.length : 0);
+  const availableCount = new Set([...settings.customCategories, ...settings.deckBuiltins]).size;
   const normalizedCategoryCount = getNormalizedCategoryCount(categoryCount, availableCount);
 
   return {
-    packCategories,
+    deckBuiltins: settings.deckBuiltins,
     customCategories: settings.customCategories,
-    includePackCategories: settings.includePackCategories,
+    pinned: settings.pinned,
     gameSeconds,
+    bufferSeconds,
     normalizedCategoryCount,
     availableCount,
   };

@@ -6,6 +6,8 @@ import {
   useMemo,
   useReducer,
 } from 'react';
+import { categories } from '@/domain/game/constants';
+import { getPackCategories } from '@/shared/lib/categoryPacks';
 import {
   readStoredSettings,
   SETTINGS_STORAGE_KEY,
@@ -17,14 +19,24 @@ import {
 type SettingsAction =
   | { type: 'hydrate'; settings: Settings }
   | { type: 'update'; key: keyof Settings; value: Settings[keyof Settings] }
-  | { type: 'addCustomCategory'; value: string }
-  | { type: 'removeCustomCategory'; value: string };
+  | { type: 'addCustom'; value: string }
+  | { type: 'removeCustom'; value: string }
+  | { type: 'togglePin'; name: string }
+  | { type: 'addPack'; packId: string }
+  | { type: 'removeBuiltin'; name: string }
+  | { type: 'removeAllCustom' }
+  | { type: 'removeAllBuiltins' };
 
 interface SettingsContextValue {
   settings: Settings;
   update: <K extends keyof Settings>(key: K, value: Settings[K]) => void;
-  addCustomCategory: (raw: string) => void;
-  removeCustomCategory: (category: string) => void;
+  addCustom: (raw: string) => void;
+  removeCustom: (category: string) => void;
+  togglePin: (name: string) => void;
+  addPack: (packId: string) => void;
+  removeBuiltin: (name: string) => void;
+  removeAllCustom: () => void;
+  removeAllBuiltins: () => void;
 }
 
 const SettingsContext = createContext<SettingsContextValue | null>(null);
@@ -37,28 +49,73 @@ function settingsReducer(state: Settings, action: SettingsAction): Settings {
     case 'update':
       return { ...state, [action.key]: action.value };
 
-    case 'addCustomCategory': {
+    case 'addCustom': {
       const trimmed = action.value.trim();
-
       if (!trimmed) {
         return state;
       }
-
       if (state.customCategories.some((entry) => entry.toLowerCase() === trimmed.toLowerCase())) {
         return state;
       }
-
       return {
         ...state,
         customCategories: sanitizeCustomCategories([...state.customCategories, trimmed]),
+        // Custom categories are pinned by default.
+        pinned: state.pinned.includes(trimmed) ? state.pinned : [...state.pinned, trimmed],
       };
     }
 
-    case 'removeCustomCategory':
+    case 'removeCustom':
       return {
         ...state,
         customCategories: state.customCategories.filter((entry) => entry !== action.value),
+        pinned: state.pinned.filter((entry) => entry !== action.value),
       };
+
+    case 'togglePin': {
+      const inDeck =
+        state.customCategories.includes(action.name) || state.deckBuiltins.includes(action.name);
+      if (!inDeck) {
+        return state;
+      }
+      return {
+        ...state,
+        pinned: state.pinned.includes(action.name)
+          ? state.pinned.filter((entry) => entry !== action.name)
+          : [...state.pinned, action.name],
+      };
+    }
+
+    case 'addPack': {
+      const packKeys = getPackCategories(action.packId, categories);
+      const merged = Array.from(new Set([...state.deckBuiltins, ...packKeys]));
+      return { ...state, deckBuiltins: merged };
+    }
+
+    case 'removeBuiltin':
+      return {
+        ...state,
+        deckBuiltins: state.deckBuiltins.filter((entry) => entry !== action.name),
+        pinned: state.pinned.filter((entry) => entry !== action.name),
+      };
+
+    case 'removeAllCustom': {
+      const customSet = new Set(state.customCategories);
+      return {
+        ...state,
+        customCategories: [],
+        pinned: state.pinned.filter((entry) => !customSet.has(entry)),
+      };
+    }
+
+    case 'removeAllBuiltins': {
+      const builtinSet = new Set(state.deckBuiltins);
+      return {
+        ...state,
+        deckBuiltins: [],
+        pinned: state.pinned.filter((entry) => !builtinSet.has(entry)),
+      };
+    }
 
     default:
       return state;
@@ -107,12 +164,13 @@ function SettingsProvider({ children }: PropsWithChildren) {
       update: (key, actionValue) => {
         dispatch({ type: 'update', key, value: actionValue });
       },
-      addCustomCategory: (raw) => {
-        dispatch({ type: 'addCustomCategory', value: raw });
-      },
-      removeCustomCategory: (category) => {
-        dispatch({ type: 'removeCustomCategory', value: category });
-      },
+      addCustom: (raw) => dispatch({ type: 'addCustom', value: raw }),
+      removeCustom: (category) => dispatch({ type: 'removeCustom', value: category }),
+      togglePin: (name) => dispatch({ type: 'togglePin', name }),
+      addPack: (packId) => dispatch({ type: 'addPack', packId }),
+      removeBuiltin: (name) => dispatch({ type: 'removeBuiltin', name }),
+      removeAllCustom: () => dispatch({ type: 'removeAllCustom' }),
+      removeAllBuiltins: () => dispatch({ type: 'removeAllBuiltins' }),
     }),
     [settings],
   );

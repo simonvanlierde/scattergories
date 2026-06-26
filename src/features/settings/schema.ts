@@ -1,25 +1,31 @@
 import {
+  bufferSecondsDefault,
+  bufferSecondsMax,
+  bufferSecondsMin,
   catCountDefault,
   catCountMax,
   catCountMin,
+  categories,
   durationDefault,
   durationMax,
   durationMin,
 } from '@/domain/game/constants';
 import { clampInt } from '@/domain/game/utils';
-import { CLASSIC_PACK_ID, isValidPackId } from '@/shared/lib/categoryPacks';
+import { CLASSIC_PACK_ID, getPackCategories } from '@/shared/lib/categoryPacks';
 
-type CategoryRefreshMode = 'auto' | 'pinned';
 type PromptDeckPreference = 'auto' | 'open' | 'collapsed';
 type Theme = 'light' | 'dark';
 
 interface Settings {
   durationInput: string;
   catCountInput: string;
-  includePackCategories: boolean;
-  categoryRefreshMode: CategoryRefreshMode;
-  activePack: string;
+  bufferSecondsInput: string;
+  /** Built-in category keys currently in the deck. */
+  deckBuiltins: string[];
+  /** Custom categories — always in the deck, shown on top. */
   customCategories: string[];
+  /** Pinned category names (custom or built-in) — always drawn each round. */
+  pinned: string[];
   isMuted: boolean;
   theme: Theme;
   promptDeckPreference: PromptDeckPreference;
@@ -27,7 +33,7 @@ interface Settings {
 
 const SETTINGS_STORAGE_KEY = 'scattergories.settings.v1';
 
-type NumericFieldName = 'durationInput' | 'catCountInput';
+type NumericFieldName = 'durationInput' | 'catCountInput' | 'bufferSecondsInput';
 
 const NUMERIC_FIELD_BOUNDS: Record<
   NumericFieldName,
@@ -35,6 +41,11 @@ const NUMERIC_FIELD_BOUNDS: Record<
 > = {
   durationInput: { min: durationMin, max: durationMax, fallback: durationDefault },
   catCountInput: { min: catCountMin, max: catCountMax, fallback: catCountDefault },
+  bufferSecondsInput: {
+    min: bufferSecondsMin,
+    max: bufferSecondsMax,
+    fallback: bufferSecondsDefault,
+  },
 };
 
 function sanitizeNumericField(field: NumericFieldName, value: string): string {
@@ -54,17 +65,17 @@ function getDefaultSettings(): Settings {
   return {
     durationInput: String(durationDefault),
     catCountInput: String(catCountDefault),
-    includePackCategories: true,
-    categoryRefreshMode: 'auto',
-    activePack: CLASSIC_PACK_ID,
+    bufferSecondsInput: String(bufferSecondsDefault),
+    deckBuiltins: [...categories],
     customCategories: [],
+    pinned: [],
     isMuted: false,
     theme: getPreferredTheme(),
     promptDeckPreference: 'auto',
   };
 }
 
-function sanitizeCustomCategories(value: unknown): string[] {
+function sanitizeStrings(value: unknown): string[] {
   if (!Array.isArray(value)) {
     return [];
   }
@@ -74,6 +85,35 @@ function sanitizeCustomCategories(value: unknown): string[] {
   return Array.from(new Set(sanitized));
 }
 
+/** Back-compat alias used by SettingsProvider. */
+const sanitizeCustomCategories = sanitizeStrings;
+
+/** Keep only built-in keys that actually exist in the current category set. */
+function sanitizeBuiltins(value: unknown): string[] {
+  const known = new Set(categories);
+  return sanitizeStrings(value).filter((name) => known.has(name));
+}
+
+interface LegacySettings {
+  includePackCategories?: unknown;
+  activePack?: unknown;
+}
+
+function migrateDeckBuiltins(parsed: Partial<Settings> & LegacySettings): string[] {
+  if (Array.isArray(parsed.deckBuiltins)) {
+    return sanitizeBuiltins(parsed.deckBuiltins);
+  }
+  // Migrate from the old activePack + includePackCategories model.
+  if (typeof parsed.includePackCategories === 'boolean') {
+    if (!parsed.includePackCategories) {
+      return [];
+    }
+    const packId = typeof parsed.activePack === 'string' ? parsed.activePack : CLASSIC_PACK_ID;
+    return sanitizeBuiltins(getPackCategories(packId, categories));
+  }
+  return [...categories];
+}
+
 function sanitizeSettings(raw: unknown): Settings {
   const fallback = getDefaultSettings();
 
@@ -81,26 +121,27 @@ function sanitizeSettings(raw: unknown): Settings {
     return fallback;
   }
 
-  const parsed = raw as Partial<Settings>;
+  const parsed = raw as Partial<Settings> & LegacySettings;
+  const customCategories = sanitizeStrings(parsed.customCategories);
+  const deckBuiltins = migrateDeckBuiltins(parsed);
+  const inDeck = new Set<string>([...customCategories, ...deckBuiltins]);
+  // Old model pinned customs implicitly; new model persists an explicit pin list.
+  const pinned = (
+    Array.isArray(parsed.pinned) ? sanitizeStrings(parsed.pinned) : customCategories
+  ).filter((name) => inDeck.has(name));
 
   return {
     durationInput:
       typeof parsed.durationInput === 'string' ? parsed.durationInput : fallback.durationInput,
     catCountInput:
       typeof parsed.catCountInput === 'string' ? parsed.catCountInput : fallback.catCountInput,
-    includePackCategories:
-      typeof parsed.includePackCategories === 'boolean'
-        ? parsed.includePackCategories
-        : fallback.includePackCategories,
-    categoryRefreshMode:
-      parsed.categoryRefreshMode === 'auto' || parsed.categoryRefreshMode === 'pinned'
-        ? parsed.categoryRefreshMode
-        : fallback.categoryRefreshMode,
-    activePack:
-      typeof parsed.activePack === 'string' && isValidPackId(parsed.activePack)
-        ? parsed.activePack
-        : fallback.activePack,
-    customCategories: sanitizeCustomCategories(parsed.customCategories),
+    bufferSecondsInput:
+      typeof parsed.bufferSecondsInput === 'string'
+        ? parsed.bufferSecondsInput
+        : fallback.bufferSecondsInput,
+    deckBuiltins,
+    customCategories,
+    pinned,
     isMuted: typeof parsed.isMuted === 'boolean' ? parsed.isMuted : fallback.isMuted,
     theme: parsed.theme === 'light' || parsed.theme === 'dark' ? parsed.theme : fallback.theme,
     promptDeckPreference:
@@ -136,7 +177,7 @@ function serializeSettings(settings: Settings): string {
   return JSON.stringify(settings);
 }
 
-export type { CategoryRefreshMode, NumericFieldName, PromptDeckPreference, Settings, Theme };
+export type { NumericFieldName, PromptDeckPreference, Settings, Theme };
 export {
   getDefaultSettings,
   getPreferredTheme,

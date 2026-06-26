@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import type { Phase, StatusKey } from '@/domain/game/roundReducer';
 import { useRound } from '@/features/round/useRound';
 import { useSettings } from '@/features/settings/SettingsProvider';
-import type { CategoryRefreshMode, NumericFieldName } from '@/features/settings/schema';
+import type { NumericFieldName } from '@/features/settings/schema';
 import { useAppControls } from './useAppControls';
 import { useCategoryBoard } from './useCategoryBoard';
 import { useKeyboardShortcuts } from './useKeyboardShortcuts';
@@ -17,27 +17,28 @@ interface GameController {
   categories: {
     availableCount: number;
     drawnCategories: string[];
-    customCount: number;
+    pinnedCount: number;
     isLanding: boolean;
     isCompactLayout: boolean;
     isPromptDeckOpen: boolean;
-    newCategoryInput: string;
     normalizedCategoryCount: number;
-    setNewCategoryInput: (value: string) => void;
     inputRef: RefObject<HTMLInputElement>;
   };
   controls: {
-    onAddCustomCategory: () => void;
-    onActivePackChange: (packId: string) => void;
+    onAddCustomCategory: (name: string) => void;
     onBlurNumericField: (field: NumericFieldName) => void;
-    onIncludePackChange: (value: boolean) => void;
-    onCategoryRefreshModeChange: (mode: CategoryRefreshMode) => void;
+    onTogglePin: (name: string) => void;
+    onAddPack: (packId: string) => void;
+    onRemoveBuiltin: (name: string) => void;
+    onRemoveAllCustom: () => void;
+    onRemoveAllBuiltins: () => void;
     onCloseHowToPlay: () => void;
     onLanguageChange: (language: string) => void;
     onOpenHowToPlay: () => void;
     onReloadAfterChunkError: () => void;
     onRemoveCustomCategory: (category: string) => void;
     onRedrawCategories: () => void;
+    onRedrawSlot: (index: number) => void;
     onStartRound: () => void;
     onToggleMute: () => void;
     onTogglePause: () => void;
@@ -101,15 +102,25 @@ const HowToPlayDialog = lazy(async () => {
 });
 
 function useGameController(): GameController {
-  const { settings, update, addCustomCategory, removeCustomCategory } = useSettings();
+  const {
+    settings,
+    update,
+    addCustom,
+    removeCustom,
+    togglePin,
+    addPack,
+    removeBuiltin,
+    removeAllCustom,
+    removeAllBuiltins,
+  } = useSettings();
   const { i18n } = useTranslation();
   const promptDeck = usePromptDeckState(settings.promptDeckPreference, update);
   const roundSetup = useRoundSetup(settings);
   const board = useCategoryBoard({
-    pinnedCategories: roundSetup.customCategories,
-    poolCategories: roundSetup.packCategories,
+    customCategories: roundSetup.customCategories,
+    deckBuiltins: roundSetup.deckBuiltins,
+    pinned: roundSetup.pinned,
     count: roundSetup.normalizedCategoryCount,
-    includePack: roundSetup.includePackCategories,
   });
   const round = useRound({
     gameSeconds: roundSetup.gameSeconds,
@@ -119,7 +130,6 @@ function useGameController(): GameController {
     onLetterPicked: () => board.redrawCategories(true),
   });
   const controls = useAppControls({
-    addCustomCategory,
     i18n,
     settings,
     update,
@@ -137,26 +147,26 @@ function useGameController(): GameController {
     categories: {
       availableCount: roundSetup.availableCount,
       drawnCategories: board.drawnCategories,
-      customCount: board.customCount,
+      pinnedCount: board.pinnedCount,
       isLanding: board.landing,
       isCompactLayout: promptDeck.isCompactLayout,
       isPromptDeckOpen: promptDeck.isPromptDeckOpen,
-      newCategoryInput: controls.newCategoryInput,
       normalizedCategoryCount: roundSetup.normalizedCategoryCount,
-      setNewCategoryInput: controls.setNewCategoryInput,
       inputRef: controls.newCategoryInputRef as RefObject<HTMLInputElement>,
     },
     controls: {
-      onAddCustomCategory: controls.handleAddCustomCategory,
-      onActivePackChange: (packId: string) => update('activePack', packId),
+      onAddCustomCategory: addCustom,
       onBlurNumericField: controls.blurNumericField,
-      onIncludePackChange: (value) => update('includePackCategories', value),
-      onCategoryRefreshModeChange: (mode) => update('categoryRefreshMode', mode),
+      onTogglePin: togglePin,
+      onAddPack: addPack,
+      onRemoveBuiltin: removeBuiltin,
+      onRemoveAllCustom: removeAllCustom,
+      onRemoveAllBuiltins: removeAllBuiltins,
       onCloseHowToPlay: () => controls.setIsHowToPlayOpen(false),
       onLanguageChange: controls.handleLanguageChange,
       onOpenHowToPlay: () => controls.setIsHowToPlayOpen(true),
       onReloadAfterChunkError: () => window.location.reload(),
-      onRemoveCustomCategory: removeCustomCategory,
+      onRemoveCustomCategory: removeCustom,
       onRedrawCategories: () => board.redrawCategories(true),
       onRedrawSlot: board.redrawSlot,
       onStartRound: round.primaryAction,

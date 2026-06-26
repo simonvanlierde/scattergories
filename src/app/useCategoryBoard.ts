@@ -1,79 +1,121 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { pickRandom, shuffleFisherYates } from '@/domain/game/utils';
+import { pickRandom } from '@/domain/game/utils';
 import { prefersReducedMotion, runRoll } from '@/features/round/rollAnimation';
+import { composeDeck } from '@/shared/lib/deck';
 
 interface UseCategoryBoardParams {
-  /** Custom categories — always shown, never animated. */
-  pinnedCategories: string[];
-  /** Pack pool that fills the remaining slots up to `count`. */
-  poolCategories: string[];
+  customCategories: string[];
+  deckBuiltins: string[];
+  pinned: string[];
   count: number;
-  includePack: boolean;
 }
 
-function composeDeck(params: UseCategoryBoardParams): string[] {
-  const { pinnedCategories, poolCategories, count, includePack } = params;
-  if (!includePack) {
-    return [...pinnedCategories];
-  }
-  const fill = shuffleFisherYates(poolCategories).slice(
-    0,
-    Math.max(0, count - pinnedCategories.length),
-  );
-  return [...pinnedCategories, ...fill];
+function replaceAt(list: string[], index: number, value: string): string[] {
+  const next = [...list];
+  next[index] = value;
+  return next;
 }
 
 function useCategoryBoard(params: UseCategoryBoardParams) {
-  const { pinnedCategories, poolCategories, count, includePack } = params;
+  const { customCategories, deckBuiltins, pinned, count } = params;
   const [displayCategories, setDisplayCategories] = useState<string[]>([]);
+  const [pinnedCount, setPinnedCount] = useState(0);
   const [landing, setLanding] = useState(false);
   const spinIdRef = useRef(0);
+  const poolRef = useRef<string[]>([]);
+  const pinnedCountRef = useRef(0);
+  const displayRef = useRef<string[]>([]);
+
+  useEffect(() => {
+    displayRef.current = displayCategories;
+  }, [displayCategories]);
 
   const redrawCategories = useCallback(
     (animate: boolean) => {
-      const finalDeck = composeDeck({ pinnedCategories, poolCategories, count, includePack });
-      const packSlotCount = finalDeck.length - pinnedCategories.length;
+      const {
+        deck,
+        pinnedCount: pinned_,
+        pool,
+      } = composeDeck({
+        customCategories,
+        deckBuiltins,
+        pinned,
+        count,
+      });
+      poolRef.current = pool;
+      pinnedCountRef.current = pinned_;
+      setPinnedCount(pinned_);
 
       // Cancel any in-flight roll and clear the landing flag.
       spinIdRef.current += 1;
       setLanding(false);
 
-      const canAnimate =
-        animate && packSlotCount > 0 && poolCategories.length > 0 && !prefersReducedMotion();
+      const fillSlotCount = deck.length - pinned_;
+      const canAnimate = animate && fillSlotCount > 0 && pool.length > 0 && !prefersReducedMotion();
       if (!canAnimate) {
-        setDisplayCategories(finalDeck);
+        setDisplayCategories(deck);
         return;
       }
 
+      const pinnedSlice = deck.slice(0, pinned_);
       const spinId = spinIdRef.current;
       runRoll({
         onFlip: () => {
-          const rolling = Array.from({ length: packSlotCount }, () => pickRandom(poolCategories));
-          setDisplayCategories([...pinnedCategories, ...rolling]);
+          const rolling = Array.from({ length: fillSlotCount }, () => pickRandom(pool));
+          setDisplayCategories([...pinnedSlice, ...rolling]);
         },
         onLanded: () => {
-          setDisplayCategories(finalDeck);
+          setDisplayCategories(deck);
           setLanding(true);
         },
         spinId,
         spinIdRef,
       });
     },
-    [pinnedCategories, poolCategories, count, includePack],
+    [customCategories, deckBuiltins, pinned, count],
   );
 
-  // Compose instantly (no roll) whenever the inputs change — mount, pack/custom
-  // edits, count or include-pack toggles. Animated redraws come from round start
-  // and the Redraw button via redrawCategories(true).
+  // Reroll a single unpinned slot, drawing a fresh unpinned category.
+  const redrawSlot = useCallback((index: number) => {
+    const pool = poolRef.current;
+    const current = displayRef.current;
+    if (index < pinnedCountRef.current || pool.length === 0) {
+      return;
+    }
+    const candidates = pool.filter((name) => !current.includes(name));
+    if (candidates.length === 0) {
+      return;
+    }
+    const replacement = pickRandom(candidates);
+    spinIdRef.current += 1;
+    const spinId = spinIdRef.current;
+
+    if (prefersReducedMotion()) {
+      setDisplayCategories((d) => replaceAt(d, index, replacement));
+      return;
+    }
+
+    runRoll({
+      onFlip: () => setDisplayCategories((d) => replaceAt(d, index, pickRandom(pool))),
+      onLanded: () => setDisplayCategories((d) => replaceAt(d, index, replacement)),
+      spinId,
+      spinIdRef,
+    });
+  }, []);
+
+  // Compose instantly (no roll) whenever the deck inputs change — mount, deck
+  // edits, pin toggles, count changes. Animated redraws come from round start /
+  // the Redraw button via redrawCategories(true).
   useEffect(() => {
     redrawCategories(false);
   }, [redrawCategories]);
 
   return {
     drawnCategories: displayCategories,
-    customCount: pinnedCategories.length,
+    pinnedCount,
     landing,
     redrawCategories,
+    redrawSlot,
   };
 }
 

@@ -9,10 +9,14 @@ import {
   Trash2,
 } from 'lucide-react';
 import type { RefObject } from 'react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { catCountMax, catCountMin } from '@/domain/game/constants';
-import type { CategoryRefreshMode } from '@/features/settings/schema';
+import {
+  bufferSecondsMax,
+  bufferSecondsMin,
+  catCountMax,
+  catCountMin,
+} from '@/domain/game/constants';
 import { PACKS } from '@/shared/lib/categoryPacks';
 import { Button } from '@/shared/ui/Button';
 import { Field } from '@/shared/ui/Field';
@@ -22,70 +26,34 @@ import { Sheet } from '@/shared/ui/Sheet';
 import { CategoryChecklist } from './CategoryChecklist';
 
 interface CategoriesState {
-  includePackCategories: boolean;
-  refreshMode: CategoryRefreshMode;
-  catCountInput: string;
-  customCategories: string[];
-  availableCount: number;
   drawnCategories: string[];
-  customCount: number;
+  pinnedCount: number;
   isLanding: boolean;
+  availableCount: number;
+  customCategories: string[];
+  deckBuiltins: string[];
+  pinned: string[];
+  catCountInput: string;
+  bufferSecondsInput: string;
   isPromptDeckOpen: boolean;
-  newCategoryInput: string;
-  activePack: string;
-  canEditRoundSettings: boolean;
+  canEdit: boolean;
 }
 
 interface CategoriesActions {
-  onIncludePackChange: (value: boolean) => void;
-  onCategoryRefreshModeChange: (mode: CategoryRefreshMode) => void;
+  onAddCustom: (name: string) => void;
+  onRemoveCustom: (name: string) => void;
+  onRemoveBuiltin: (name: string) => void;
+  onTogglePin: (name: string) => void;
+  onAddPack: (packId: string) => void;
+  onRemoveAllCustom: () => void;
+  onRemoveAllBuiltins: () => void;
   onCatCountChange: (value: string) => void;
   onCatCountBlur: () => void;
+  onBufferChange: (value: string) => void;
+  onBufferBlur: () => void;
   onRedraw: () => void;
-  onAddCustom: () => void;
-  onRemoveCustom: (category: string) => void;
-  onNewCategoryInputChange: (value: string) => void;
+  onRedrawSlot: (index: number) => void;
   onTogglePromptDeck: () => void;
-  onActivePackChange: (packId: string) => void;
-}
-
-function PackSection({
-  activePack,
-  canEditRoundSettings,
-  onActivePackChange,
-}: {
-  activePack: string;
-  canEditRoundSettings: boolean;
-  onActivePackChange: (packId: string) => void;
-}) {
-  const { t } = useTranslation();
-  const activeMeta = PACKS.find((pack) => pack.id === activePack);
-
-  return (
-    <div className="custom-categories">
-      <label className="field-shell" htmlFor="categoryPack">
-        <span>{t('packs.sectionTitle', { defaultValue: 'Category pack' })}</span>
-        <select
-          id="categoryPack"
-          aria-label={t('packs.sectionTitle', { defaultValue: 'Category pack' })}
-          value={activePack}
-          disabled={!canEditRoundSettings}
-          onChange={(event) => onActivePackChange(event.target.value)}
-        >
-          {PACKS.map((pack) => (
-            <option key={pack.id} value={pack.id}>
-              {t(pack.labelKey, { defaultValue: pack.fallbackLabel })}
-            </option>
-          ))}
-        </select>
-      </label>
-      {activeMeta ? (
-        <p className="custom-empty">
-          {t(activeMeta.descriptionKey, { defaultValue: activeMeta.fallbackDescription })}
-        </p>
-      ) : null}
-    </div>
-  );
 }
 
 interface CategoriesPanelProps {
@@ -94,26 +62,16 @@ interface CategoriesPanelProps {
   inputRef: RefObject<HTMLInputElement | null>;
 }
 
-function CategoryToolbar({
-  actions,
+function DeckSettings({
   catCountInput,
-  includePackCategories,
-}: Pick<CategoriesState, 'catCountInput' | 'includePackCategories'> & {
+  bufferSecondsInput,
+  actions,
+}: Pick<CategoriesState, 'catCountInput' | 'bufferSecondsInput'> & {
   actions: CategoriesActions;
 }) {
   const { t } = useTranslation();
-
   return (
-    <div className="category-toolbar category-toolbar--setup">
-      <label className="field-shell field-shell--toggle" htmlFor="includePack">
-        <span>{t('categories.includePack', { defaultValue: 'Include pack categories' })}</span>
-        <input
-          id="includePack"
-          type="checkbox"
-          checked={includePackCategories}
-          onChange={(event) => actions.onIncludePackChange(event.target.checked)}
-        />
-      </label>
+    <div className="deck-settings">
       <Field
         id="catCount"
         label={t('settings.categoryDraw')}
@@ -125,100 +83,198 @@ function CategoryToolbar({
         onChange={(event) => actions.onCatCountChange(event.target.value)}
         onBlur={actions.onCatCountBlur}
       />
+      <Field
+        id="getReady"
+        label={t('settings.getReady', { defaultValue: 'Get ready' })}
+        type="number"
+        inputMode="numeric"
+        min={bufferSecondsMin}
+        max={bufferSecondsMax}
+        suffix={t('status.seconds')}
+        value={bufferSecondsInput}
+        onChange={(event) => actions.onBufferChange(event.target.value)}
+        onBlur={actions.onBufferBlur}
+      />
     </div>
   );
 }
 
-function CustomCategories({
-  actions,
-  customCategories,
+function AddCustomRow({
   inputRef,
-  newCategoryInput,
+  onAddCustom,
 }: {
-  actions: CategoriesActions;
-  customCategories: string[];
   inputRef: RefObject<HTMLInputElement | null>;
-  newCategoryInput: string;
+  onAddCustom: (name: string) => void;
 }) {
   const { t } = useTranslation();
+  // Local state keeps keystrokes from re-rendering the (large) deck list.
+  const [value, setValue] = useState('');
+  const submit = () => {
+    onAddCustom(value);
+    setValue('');
+  };
+  return (
+    <div className="custom-category-input-row">
+      <input
+        ref={inputRef}
+        id="newCategory"
+        type="text"
+        value={value}
+        aria-label={t('settings.addCustom')}
+        maxLength={50}
+        placeholder={t('settings.placeholder')}
+        onChange={(event) => setValue(event.target.value)}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            submit();
+          }
+        }}
+      />
+      <Button
+        variant="primary"
+        onClick={submit}
+        leadingIcon={<Icon icon={Plus} size={18} />}
+        title={t('buttons.addTooltip', { defaultValue: t('buttons.add') })}
+      >
+        {t('buttons.add')}
+      </Button>
+    </div>
+  );
+}
+
+function AddPackField({ actions }: { actions: CategoriesActions }) {
+  const { t } = useTranslation();
+  return (
+    <label className="field-shell" htmlFor="addPack">
+      <span>{t('categories.addPack', { defaultValue: 'Add a category pack' })}</span>
+      <select
+        id="addPack"
+        value=""
+        onChange={(event) => {
+          if (event.target.value) {
+            actions.onAddPack(event.target.value);
+          }
+        }}
+      >
+        <option value="">
+          {t('categories.addPackPlaceholder', { defaultValue: 'Add a pack…' })}
+        </option>
+        {PACKS.map((pack) => (
+          <option key={pack.id} value={pack.id}>
+            {t(pack.labelKey, { defaultValue: pack.fallbackLabel })}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+interface DeckRow {
+  name: string;
+  label: string;
+  isCustom: boolean;
+}
+
+function DeckList({
+  customCategories,
+  deckBuiltins,
+  pinned,
+  actions,
+}: Pick<CategoriesState, 'customCategories' | 'deckBuiltins' | 'pinned'> & {
+  actions: CategoriesActions;
+}) {
+  const { t } = useTranslation();
+  const pinnedSet = useMemo(() => new Set(pinned), [pinned]);
+  const rows = useMemo<DeckRow[]>(() => {
+    const customs = [...customCategories]
+      .sort((a, b) => a.localeCompare(b))
+      .map((name) => ({ name, label: name, isCustom: true }));
+    const builtins = [...deckBuiltins]
+      .map((name) => ({ name, label: t(name, { ns: 'categories' }), isCustom: false }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+    return [...customs, ...builtins];
+  }, [customCategories, deckBuiltins, t]);
 
   return (
-    <div className="custom-categories">
-      <label htmlFor="newCategory" className="section-label">
-        {t('settings.addCustom')}
-      </label>
-      <p className="custom-empty">
-        {t('categories.customAlwaysShown', {
-          defaultValue: 'Custom categories always appear in the deck.',
-        })}
-      </p>
-      <div className="custom-category-input-row">
-        <input
-          ref={inputRef}
-          id="newCategory"
-          type="text"
-          value={newCategoryInput}
-          aria-label={t('settings.addCustom')}
-          maxLength={50}
-          placeholder={t('settings.placeholder')}
-          onChange={(event) => actions.onNewCategoryInputChange(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              event.preventDefault();
-              actions.onAddCustom();
-            }
-          }}
-        />
-        <Button
-          variant="primary"
-          onClick={actions.onAddCustom}
-          leadingIcon={<Icon icon={Plus} size={18} />}
-          title={t('buttons.addTooltip', { defaultValue: t('buttons.add') })}
-        >
-          {t('buttons.add')}
-        </Button>
+    <div className="deck-list">
+      <div className="deck-list__toolbar">
+        <span className="deck-list__count">
+          {t('categories.deckCount', {
+            defaultValue: '{{custom}} custom / {{builtin}} built-in',
+            custom: customCategories.length,
+            builtin: deckBuiltins.length,
+          })}
+        </span>
+        <div className="deck-list__bulk">
+          <Button variant="ghost" onClick={actions.onRemoveAllCustom}>
+            {t('categories.removeAllCustom', { defaultValue: 'Remove custom' })}
+          </Button>
+          <Button variant="ghost" onClick={actions.onRemoveAllBuiltins}>
+            {t('categories.removeAllBuiltins', { defaultValue: 'Remove built-in' })}
+          </Button>
+        </div>
       </div>
-      {customCategories.length > 0 ? (
-        <ul
-          className="custom-list"
-          aria-label={t('categories.customListLabel', { defaultValue: 'Custom categories' })}
-        >
-          {customCategories.map((category) => (
-            <li key={category}>
-              <span>{category}</span>
-              <IconButton
-                label={`${t('buttons.remove')} ${category}`}
-                icon={<Icon icon={Trash2} size={18} />}
-                onClick={() => actions.onRemoveCustom(category)}
-              />
-            </li>
-          ))}
-        </ul>
+      {rows.length === 0 ? (
+        <p className="custom-empty">
+          {t('categories.emptyDeck', {
+            defaultValue: 'The deck is empty. Add a pack or a custom category.',
+          })}
+        </p>
       ) : (
-        <p className="custom-empty">{t('categories.noCustom')}</p>
+        <ul
+          className="deck-list__items"
+          aria-label={t('categories.deckLabel', { defaultValue: 'Category deck' })}
+        >
+          {rows.map((row) => {
+            const isPinned = pinnedSet.has(row.name);
+            return (
+              <li
+                key={`${row.isCustom ? 'c' : 'b'}:${row.name}`}
+                className={`deck-list__item${row.isCustom ? ' deck-list__item--custom' : ''}`}
+              >
+                <span className="deck-list__label">{row.label}</span>
+                <span className="deck-list__actions">
+                  <IconButton
+                    label={
+                      isPinned
+                        ? t('categories.unpinOne', {
+                            defaultValue: 'Unpin {{name}}',
+                            name: row.label,
+                          })
+                        : t('categories.pinOne', { defaultValue: 'Pin {{name}}', name: row.label })
+                    }
+                    icon={<Icon icon={isPinned ? Pin : PinOff} size={16} />}
+                    aria-pressed={isPinned}
+                    onClick={() => actions.onTogglePin(row.name)}
+                  />
+                  <IconButton
+                    label={t('buttons.remove', { defaultValue: 'Remove' })}
+                    icon={<Icon icon={Trash2} size={16} />}
+                    onClick={() =>
+                      row.isCustom
+                        ? actions.onRemoveCustom(row.name)
+                        : actions.onRemoveBuiltin(row.name)
+                    }
+                  />
+                </span>
+              </li>
+            );
+          })}
+        </ul>
       )}
     </div>
   );
 }
 
 function CustomizeSheetBlock({
+  categories,
   actions,
-  catCountInput,
-  includePackCategories,
-  customCategories,
-  newCategoryInput,
   inputRef,
-  activePack,
-  canEditRoundSettings,
 }: {
+  categories: CategoriesState;
   actions: CategoriesActions;
-  catCountInput: string;
-  includePackCategories: boolean;
-  customCategories: string[];
-  newCategoryInput: string;
   inputRef: RefObject<HTMLInputElement | null>;
-  activePack: string;
-  canEditRoundSettings: boolean;
 }) {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
@@ -236,21 +292,18 @@ function CustomizeSheetBlock({
         title={t('categories.customizeTitle', { defaultValue: 'Customize deck' })}
         closeLabel={t('buttons.closeTooltip', { defaultValue: 'Close' })}
       >
-        <PackSection
-          activePack={activePack}
-          canEditRoundSettings={canEditRoundSettings}
-          onActivePackChange={actions.onActivePackChange}
-        />
-        <CategoryToolbar
+        <DeckSettings
+          catCountInput={categories.catCountInput}
+          bufferSecondsInput={categories.bufferSecondsInput}
           actions={actions}
-          catCountInput={catCountInput}
-          includePackCategories={includePackCategories}
         />
-        <CustomCategories
+        <AddCustomRow inputRef={inputRef} onAddCustom={actions.onAddCustom} />
+        <AddPackField actions={actions} />
+        <DeckList
+          customCategories={categories.customCategories}
+          deckBuiltins={categories.deckBuiltins}
+          pinned={categories.pinned}
           actions={actions}
-          customCategories={customCategories}
-          inputRef={inputRef}
-          newCategoryInput={newCategoryInput}
         />
       </Sheet>
     </>
@@ -259,25 +312,15 @@ function CustomizeSheetBlock({
 
 function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps) {
   const { t } = useTranslation();
-  const {
-    includePackCategories,
-    refreshMode,
-    catCountInput,
-    customCategories,
-    availableCount,
-    drawnCategories,
-    customCount,
-    isLanding,
-    isPromptDeckOpen,
-    newCategoryInput,
-  } = categories;
+  const { isPromptDeckOpen, canEdit } = categories;
+  const pinnedSet = useMemo(() => new Set(categories.pinned), [categories.pinned]);
+  const customSet = useMemo(
+    () => new Set(categories.customCategories),
+    [categories.customCategories],
+  );
   const deckToggleLabel = isPromptDeckOpen
     ? t('categories.hideDeck', { defaultValue: 'Hide categories' })
     : t('categories.showDeck', { defaultValue: 'Show categories' });
-  const isPinned = refreshMode === 'pinned';
-  const pinButtonLabel = isPinned
-    ? t('categories.unpin', { defaultValue: 'Unpin categories' })
-    : t('categories.pin', { defaultValue: 'Pin categories' });
 
   return (
     <section
@@ -300,36 +343,28 @@ function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps
         <div className="categories-card__content categories-card__content--prompts-first">
           <div className="drawn-categories" id="categories-panel-content">
             <CategoryChecklist
-              categories={drawnCategories}
-              availableCount={availableCount}
-              customCount={customCount}
-              landing={isLanding}
+              categories={categories.drawnCategories}
+              availableCount={categories.availableCount}
+              pinnedCount={categories.pinnedCount}
+              landing={categories.isLanding}
+              canEdit={canEdit}
+              pinnedSet={pinnedSet}
+              customSet={customSet}
+              onTogglePin={actions.onTogglePin}
+              onRedrawSlot={actions.onRedrawSlot}
             />
           </div>
 
-          <div className="categories-card__actions">
-            <IconButton
-              label={pinButtonLabel}
-              icon={<Icon icon={isPinned ? PinOff : Pin} size={18} />}
-              aria-pressed={isPinned}
-              onClick={() => actions.onCategoryRefreshModeChange(isPinned ? 'auto' : 'pinned')}
-            />
-            <IconButton
-              label={t('buttons.redraw', { defaultValue: 'Redraw' })}
-              icon={<Icon icon={RefreshCw} size={18} />}
-              onClick={actions.onRedraw}
-            />
-            <CustomizeSheetBlock
-              actions={actions}
-              catCountInput={catCountInput}
-              includePackCategories={includePackCategories}
-              customCategories={customCategories}
-              newCategoryInput={newCategoryInput}
-              inputRef={inputRef}
-              activePack={categories.activePack}
-              canEditRoundSettings={categories.canEditRoundSettings}
-            />
-          </div>
+          {canEdit ? (
+            <div className="categories-card__actions">
+              <IconButton
+                label={t('buttons.redraw', { defaultValue: 'Redraw' })}
+                icon={<Icon icon={RefreshCw} size={18} />}
+                onClick={actions.onRedraw}
+              />
+              <CustomizeSheetBlock categories={categories} actions={actions} inputRef={inputRef} />
+            </div>
+          ) : null}
         </div>
       ) : null}
     </section>

@@ -1,6 +1,7 @@
 import { HelpCircle } from 'lucide-react';
 import { Suspense, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { canEditDeck } from '@/domain/game/roundReducer';
 import { CategoriesPanel } from '@/features/categories/CategoriesPanel';
 import { Playmat } from '@/features/round/Playmat';
 import { SettingsCluster } from '@/features/settings/SettingsCluster';
@@ -39,7 +40,6 @@ interface GameShellProps {
 
 function TopBar({ game }: { game: GameController }) {
   const { t, i18n } = useTranslation();
-  const canEditRoundSettings = game.round.phase === 'idle' || game.round.phase === 'done';
 
   return (
     <header className="topbar">
@@ -53,10 +53,11 @@ function TopBar({ game }: { game: GameController }) {
           language={i18n.resolvedLanguage ?? i18n.language}
           isLanguagePending={game.flags.isLanguagePending}
           theme={game.settings.theme}
-          canEditRoundSettings={canEditRoundSettings}
+          isMuted={game.settings.isMuted}
           durationInput={game.settings.durationInput}
           onLanguageChange={game.controls.onLanguageChange}
           onToggleTheme={game.controls.onToggleTheme}
+          onToggleMute={game.controls.onToggleMute}
           onUpdateTimingField={game.controls.onUpdateField}
           onBlurTimingField={game.controls.onBlurNumericField}
         />
@@ -108,7 +109,7 @@ interface PlayGridProps {
 }
 
 function PlayGrid({ game }: PlayGridProps) {
-  const canEditRoundSettings = game.round.phase === 'idle' || game.round.phase === 'done';
+  const canEdit = canEditDeck(game.round.phase, game.round.isPaused);
 
   return (
     <section className="play-grid">
@@ -118,29 +119,32 @@ function PlayGrid({ game }: PlayGridProps) {
         categories={{
           availableCount: game.categories.availableCount,
           catCountInput: game.settings.catCountInput,
+          bufferSecondsInput: game.settings.bufferSecondsInput,
           customCategories: game.settings.customCategories,
+          deckBuiltins: game.settings.deckBuiltins,
+          pinned: game.settings.pinned,
           drawnCategories: game.categories.drawnCategories,
-          customCount: game.categories.customCount,
+          pinnedCount: game.categories.pinnedCount,
           isLanding: game.categories.isLanding,
           isPromptDeckOpen: game.flags.isPromptDeckOpen,
-          includePackCategories: game.settings.includePackCategories,
-          refreshMode: game.settings.categoryRefreshMode,
-          newCategoryInput: game.categories.newCategoryInput,
-          activePack: game.settings.activePack,
-          canEditRoundSettings,
+          canEdit,
         }}
         inputRef={game.categories.inputRef}
         actions={{
           onAddCustom: game.controls.onAddCustomCategory,
-          onIncludePackChange: game.controls.onIncludePackChange,
-          onCategoryRefreshModeChange: game.controls.onCategoryRefreshModeChange,
+          onRemoveCustom: game.controls.onRemoveCustomCategory,
+          onRemoveBuiltin: game.controls.onRemoveBuiltin,
+          onTogglePin: game.controls.onTogglePin,
+          onAddPack: game.controls.onAddPack,
+          onRemoveAllCustom: game.controls.onRemoveAllCustom,
+          onRemoveAllBuiltins: game.controls.onRemoveAllBuiltins,
           onCatCountBlur: () => game.controls.onBlurNumericField('catCountInput'),
           onCatCountChange: (value) => game.controls.onUpdateField('catCountInput', value),
-          onNewCategoryInputChange: game.categories.setNewCategoryInput,
-          onRemoveCustom: game.controls.onRemoveCustomCategory,
+          onBufferBlur: () => game.controls.onBlurNumericField('bufferSecondsInput'),
+          onBufferChange: (value) => game.controls.onUpdateField('bufferSecondsInput', value),
           onRedraw: game.controls.onRedrawCategories,
+          onRedrawSlot: game.controls.onRedrawSlot,
           onTogglePromptDeck: game.controls.onTogglePromptDeck,
-          onActivePackChange: game.controls.onActivePackChange,
         }}
       />
     </section>
