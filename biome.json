@@ -49,6 +49,7 @@
     }
   },
   "javascript": {
+    "globals": ["__APP_VERSION__"],
     "formatter": {
       "quoteStyle": "single",
       "semicolons": "always"
