@@ -333,35 +333,8 @@ function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps
       data-open={isPromptDeckOpen ? 'true' : 'false'}
     >
       <div className="categories-card__header">
-        <h2 id="categories-panel-title">{t('categories.title')}</h2>
-        <div className="categories-card__header-actions">
-          {isPromptDeckOpen ? (
-            <>
-              <IconButton
-                label={t('buttons.redraw', { defaultValue: 'Redraw' })}
-                icon={<Icon icon={RefreshCw} size={18} />}
-                disabled={!canEdit}
-                onClick={actions.onRedraw}
-              />
-              <CustomizeSheetBlock
-                categories={categories}
-                actions={actions}
-                inputRef={inputRef}
-                disabled={!canEdit}
-              />
-              <IconButton
-                label={
-                  allPinned
-                    ? t('categories.unpinAll', { defaultValue: 'Unpin all' })
-                    : t('categories.pinAll', { defaultValue: 'Pin all' })
-                }
-                icon={<Icon icon={allPinned ? Pin : PinOff} size={18} />}
-                aria-pressed={allPinned}
-                disabled={!canEdit}
-                onClick={() => actions.onTogglePinAll(drawnCategories)}
-              />
-            </>
-          ) : null}
+        <div className="categories-card__heading">
+          <h2 id="categories-panel-title">{t('categories.title')}</h2>
           <IconButton
             label={deckToggleLabel}
             icon={<Icon icon={isPromptDeckOpen ? ChevronUp : ChevronDown} size={20} />}
@@ -370,6 +343,33 @@ function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps
             onClick={actions.onTogglePromptDeck}
           />
         </div>
+        {isPromptDeckOpen ? (
+          <div className="categories-card__header-actions">
+            <IconButton
+              label={t('buttons.redraw', { defaultValue: 'Redraw' })}
+              icon={<Icon icon={RefreshCw} size={18} />}
+              disabled={!canEdit}
+              onClick={actions.onRedraw}
+            />
+            <IconButton
+              label={
+                allPinned
+                  ? t('categories.unpinAll', { defaultValue: 'Unpin all' })
+                  : t('categories.pinAll', { defaultValue: 'Pin all' })
+              }
+              icon={<Icon icon={allPinned ? Pin : PinOff} size={18} />}
+              aria-pressed={allPinned}
+              disabled={!canEdit}
+              onClick={() => actions.onTogglePinAll(drawnCategories)}
+            />
+            <CustomizeSheetBlock
+              categories={categories}
+              actions={actions}
+              inputRef={inputRef}
+              disabled={!canEdit}
+            />
+          </div>
+        ) : null}
       </div>
 
       {isPromptDeckOpen ? (
