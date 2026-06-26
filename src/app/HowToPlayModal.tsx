@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Sheet } from '@/shared/ui/Sheet';
 
 interface HowToPlayModalProps {
   onClose: () => void;
@@ -18,88 +18,42 @@ export function HowToPlayModal({ onClose }: HowToPlayModalProps) {
   const gameplayPoints = toStringArray(t('modal.gameplayPoints', { returnObjects: true }));
   const scoringPoints = toStringArray(t('modal.scoringPoints', { returnObjects: true }));
   const featuresList = toStringArray(t('modal.featuresList', { returnObjects: true }));
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const lastFocusedRef = useRef<HTMLElement | null>(null);
-
-  const requestClose = useCallback(() => {
-    onClose();
-    lastFocusedRef.current?.focus();
-  }, [onClose]);
-
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) {
-      return;
-    }
-    lastFocusedRef.current = document.activeElement as HTMLElement | null;
-    dialog.showModal();
-
-    function onBackdropClick(event: MouseEvent) {
-      if (event.target === dialog && dialog) {
-        requestClose();
-      }
-    }
-
-    dialog.addEventListener('click', onBackdropClick);
-    return () => {
-      dialog.removeEventListener('click', onBackdropClick);
-      if (dialog.open) {
-        dialog.close();
-      }
-    };
-  }, [requestClose]);
 
   return (
-    <dialog
-      ref={dialogRef}
-      className="modal-dialog"
-      aria-labelledby="how-to-play-title"
-      onCancel={(event) => {
-        event.preventDefault();
-        requestClose();
-      }}
+    <Sheet
+      open={true}
+      onClose={onClose}
+      title={t('modal.title')}
+      closeLabel={t('buttons.closeTooltip', { defaultValue: t('buttons.close') })}
     >
-      <div className="modal-content">
-        <button
-          type="button"
-          className="modal-close"
-          onClick={requestClose}
-          aria-label={t('buttons.close')}
-          title={t('buttons.closeTooltip', { defaultValue: t('buttons.close') })}
-        >
-          {t('buttons.close')}
-        </button>
-        <h2 id="how-to-play-title">{t('modal.title')}</h2>
+      <h3>{t('modal.objective')}</h3>
+      <p>{t('modal.objectiveText')}</p>
 
-        <h3>{t('modal.objective')}</h3>
-        <p>{t('modal.objectiveText')}</p>
+      <h3>{t('modal.gameplay')}</h3>
+      <ol>
+        {gameplayPoints.map((point) => (
+          <li key={point}>{point}</li>
+        ))}
+      </ol>
 
-        <h3>{t('modal.gameplay')}</h3>
-        <ol>
-          {gameplayPoints.map((point) => (
-            <li key={point}>{point}</li>
-          ))}
-        </ol>
+      <h3>{t('modal.scoring')}</h3>
+      <ul>
+        {scoringPoints.map((point) => (
+          <li key={point}>{point}</li>
+        ))}
+      </ul>
 
-        <h3>{t('modal.scoring')}</h3>
-        <ul>
-          {scoringPoints.map((point) => (
-            <li key={point}>{point}</li>
-          ))}
-        </ul>
+      <h3>{t('modal.categories')}</h3>
+      <p>{t('modal.categoriesText')}</p>
 
-        <h3>{t('modal.categories')}</h3>
-        <p>{t('modal.categoriesText')}</p>
+      <h3>{t('modal.features')}</h3>
+      <ul>
+        {featuresList.map((feature) => (
+          <li key={feature}>{feature}</li>
+        ))}
+      </ul>
 
-        <h3>{t('modal.features')}</h3>
-        <ul>
-          {featuresList.map((feature) => (
-            <li key={feature}>{feature}</li>
-          ))}
-        </ul>
-
-        <p className="modal-footer-text">{t('modal.footer')}</p>
-      </div>
-    </dialog>
+      <p className="modal-footer-text">{t('modal.footer')}</p>
+    </Sheet>
   );
 }

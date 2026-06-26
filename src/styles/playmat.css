@@ -81,39 +81,6 @@
     font-weight: 700;
   }
 
-  /* ─── Round timer pill — ghost text link into Settings ──────── */
-  .round-timer-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    justify-self: center;
-    padding: var(--space-1) 0;
-    border-radius: 0;
-    background: transparent;
-    border: 0;
-    color: var(--text-muted);
-    font-family: var(--font-numeric);
-    font-size: var(--text-xs);
-    font-variant-numeric: tabular-nums;
-    font-weight: 500;
-    letter-spacing: var(--tracking-wider);
-    cursor: pointer;
-    transition: color var(--duration-fast) var(--ease-out);
-  }
-
-  .round-timer-pill:hover {
-    color: var(--text-primary);
-  }
-
-  .round-timer-pill:focus-visible {
-    outline: 2px solid var(--accent-primary);
-    outline-offset: 2px;
-  }
-
-  .round-timer-pill__text {
-    color: inherit;
-  }
-
   /* ─── Timer Ring — monochrome editorial ──────────────────────── */
   .timer-ring {
     position: absolute;
@@ -378,10 +345,6 @@
     .action-bar {
       width: min(100%, 32rem);
     }
-
-    .round-timer-pill {
-      justify-self: center;
-    }
   }
 
   /* ─── Round End Screen — typographic celebration ─────────────── */
@@ -535,6 +498,9 @@
       animation: none;
     }
     .letter-hero__glyph--landing {
+      animation: none;
+    }
+    .category-checklist__label--landing {
       animation: none;
     }
     .round-end {
