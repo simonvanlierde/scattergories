@@ -57,6 +57,12 @@ function createAppFixture(page: Page): AppFixture {
   const promptToggle = page.locator('button[aria-controls="categories-panel-content"]');
   const roundStatus = page.getByTestId('round-status');
 
+  // The primary action button is the only `.action-bar__primary`; scoping to it
+  // disambiguates from the always-rendered "Next round" secondary icon button,
+  // which shares the accessible name in the done phase.
+  const primaryRoundButton = (label: RoundButtonLabel = START_OR_NEXT_ROUND_BUTTON_LABEL) =>
+    page.getByRole('button', { name: label }).and(page.locator('.action-bar__primary'));
+
   return {
     currentLetter,
     page,
@@ -76,9 +82,7 @@ function createAppFixture(page: Page): AppFixture {
       await expect(promptToggle).toHaveAttribute('aria-expanded', 'false');
     },
     async expectIdle() {
-      await expect(
-        page.getByRole('button', { name: START_OR_NEXT_ROUND_BUTTON_LABEL }),
-      ).toBeVisible();
+      await expect(primaryRoundButton()).toBeVisible();
     },
     async expectRunning() {
       await expect(roundStatus).toHaveText(GO, { timeout: ROUND_STATE_TIMEOUT_MS });
@@ -92,16 +96,16 @@ function createAppFixture(page: Page): AppFixture {
     },
     async setTimer(value: string) {
       await openPopover(page, timerPopover, TIMER_NAME);
-      await fillNumericField(timerPopover.getByLabel('Timer', { exact: true }), value);
+      await fillNumericField(timerPopover.getByLabel('Round', { exact: true }), value);
       await closePopover(page);
     },
     async startRound(label: RoundButtonLabel = START_OR_NEXT_ROUND_BUTTON_LABEL) {
-      const startButton = page.getByRole('button', { name: label });
+      const startButton = primaryRoundButton(label);
       await startButton.scrollIntoViewIfNeeded();
       await startButton.click();
     },
     async startRoundSafely(label: RoundButtonLabel = START_OR_NEXT_ROUND_BUTTON_LABEL) {
-      const startButton = page.getByRole('button', { name: label });
+      const startButton = primaryRoundButton(label);
       await startButton.scrollIntoViewIfNeeded();
       await startButton.click();
     },

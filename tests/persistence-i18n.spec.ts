@@ -5,7 +5,7 @@ import { test } from './fixtures';
 
 test('@smoke persists the timer setting across reload', async ({ app, page }) => {
   await app.openTimer();
-  await expect(app.timerPopover.getByLabel('Timer', { exact: true })).toHaveValue('90');
+  await expect(app.timerPopover.getByLabel('Round', { exact: true })).toHaveValue('90');
   await app.closePopover();
 
   await app.setTimer('130');
@@ -13,7 +13,7 @@ test('@smoke persists the timer setting across reload', async ({ app, page }) =>
   await app.waitUntilReady();
 
   await app.openTimer();
-  await expect(app.timerPopover.getByLabel('Timer', { exact: true })).toHaveValue('130');
+  await expect(app.timerPopover.getByLabel('Round', { exact: true })).toHaveValue('130');
   await app.closePopover();
 });
 
