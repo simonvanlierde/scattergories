@@ -188,15 +188,15 @@ it('draws letters from a non-repeating bag and tracks used letters', () => {
   expect(driver.current.usedLetters).toEqual([first, second]);
 });
 
-it('new letter rerolls into a ready state awaiting Start', () => {
+it('new letter rerolls and auto-starts the get-ready buffer', () => {
   const driver = createRoundDriver();
 
   driver.start();
   driver.landLetter();
-  // From buffer, reroll the letter — should re-spin then land in `ready`.
+  // From buffer, reroll the letter — should re-spin then auto-start the buffer.
   act(() => driver.current.newLetter());
   expect(driver.current.phase).toBe('spinning');
   driver.landLetter();
-  expect(driver.current.phase).toBe('ready');
-  expect(driver.current.secondsLeft).toBe(SHORT_ROUND_SECONDS);
+  expect(driver.current.phase).toBe('buffer');
+  expect(driver.current.secondsLeft).toBe(BUFFER_SECONDS);
 });

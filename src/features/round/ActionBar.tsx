@@ -51,8 +51,8 @@ export function ActionBar({
   const isPausedRound = (phase === 'buffer' || phase === 'running') && isPaused;
   const roundControlsLabel = t('controls.roundGroup', { defaultValue: 'Round controls' });
 
-  // New letter (reroll) — only while paused or in the ready state.
-  const showNewLetter = phase === 'ready' || isPausedRound;
+  // New letter (reroll) — only while paused.
+  const showNewLetter = isPausedRound;
   // Next round — while actively running or paused.
   const showNextRound = phase === 'running' || isPausedRound;
 
@@ -71,24 +71,22 @@ export function ActionBar({
         {primaryLabel}
       </Button>
 
-      {showNewLetter || showNextRound ? (
-        <ControlGroup label={roundControlsLabel}>
-          {showNewLetter ? (
-            <IconButton
-              label={t('buttons.newLetter', { defaultValue: 'New letter' })}
-              icon={<Icon icon={RefreshCw} size={20} />}
-              onClick={onNewLetter}
-            />
-          ) : null}
-          {showNextRound ? (
-            <IconButton
-              label={t('buttons.nextRound', { defaultValue: 'Next round' })}
-              icon={<Icon icon={SkipForward} size={20} />}
-              onClick={onNextRound}
-            />
-          ) : null}
-        </ControlGroup>
-      ) : null}
+      {/* Always rendered so the layout never shifts — disabled (greyed) when the
+          action isn't available in the current phase. */}
+      <ControlGroup label={roundControlsLabel}>
+        <IconButton
+          label={t('buttons.newLetter', { defaultValue: 'New letter' })}
+          icon={<Icon icon={RefreshCw} size={20} />}
+          disabled={!showNewLetter}
+          onClick={onNewLetter}
+        />
+        <IconButton
+          label={t('buttons.nextRound', { defaultValue: 'Next round' })}
+          icon={<Icon icon={SkipForward} size={20} />}
+          disabled={!showNextRound}
+          onClick={onNextRound}
+        />
+      </ControlGroup>
     </div>
   );
 }

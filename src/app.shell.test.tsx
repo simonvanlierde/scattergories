@@ -42,13 +42,16 @@ it('keeps the main surface lean and categories outside the playmat', async () =>
   expect(within(categoriesPanel).queryByText(READY_SUMMARY_PATTERN)).not.toBeInTheDocument();
 });
 
-it('keeps the playmat lean: mute lives in the top bar, no round controls when idle', async () => {
+it('keeps the playmat lean: mute lives in the top bar, round controls always rendered', async () => {
   await renderApp();
 
   const playmat = screen.getByRole('region', { name: 'Game board' });
 
-  // No secondary round controls while idle (they appear during a round).
-  expect(within(playmat).queryByRole('group', { name: 'Round controls' })).not.toBeInTheDocument();
+  // Secondary round controls are always present (disabled when unavailable) so the
+  // layout never shifts as the phase changes.
+  const roundControls = within(playmat).getByRole('group', { name: 'Round controls' });
+  expect(within(roundControls).getByRole('button', { name: 'New letter' })).toBeInTheDocument();
+  expect(within(roundControls).getByRole('button', { name: 'Next round' })).toBeInTheDocument();
   // Mute is a borderless toggle in the top settings cluster, not on the playmat.
   expect(screen.getByRole('button', { name: 'Mute' })).toBeInTheDocument();
   expect(within(playmat).queryByRole('button', { name: 'Mute' })).not.toBeInTheDocument();

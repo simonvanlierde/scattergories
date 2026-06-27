@@ -194,11 +194,11 @@ function useSpinActions(params: {
     state,
   } = params;
 
-  // Draws a new letter and spins. `autoStart` runs the countdown on landing;
-  // otherwise it lands in a `ready` state awaiting Start. `redrawCategories`
-  // composes a fresh category set (false = keep the current deck — reroll).
+  // Draws a new letter and spins. The countdown auto-starts when the letter
+  // lands. `redrawCategories` composes a fresh category set (false = keep the
+  // current deck — reroll).
   const runSpin = useCallback(
-    (opts: { autoStart: boolean; redrawCategories: boolean }) => {
+    (opts: { redrawCategories: boolean }) => {
       clearAlarmTimeout();
       const { chosen, remaining, drawn } = drawNextLetterFromBag(
         locale,
@@ -214,7 +214,6 @@ function useSpinActions(params: {
         type: 'START_SPIN',
         gameSeconds,
         bufferSeconds,
-        autoStart: opts.autoStart,
         remainingLetters: remaining,
         drawnLetters: drawn,
       });
@@ -237,18 +236,9 @@ function useSpinActions(params: {
     ],
   );
 
-  const beginRound = useCallback(
-    () => runSpin({ autoStart: true, redrawCategories: true }),
-    [runSpin],
-  );
-  const newLetter = useCallback(
-    () => runSpin({ autoStart: false, redrawCategories: false }),
-    [runSpin],
-  );
-  const nextRound = useCallback(
-    () => runSpin({ autoStart: false, redrawCategories: true }),
-    [runSpin],
-  );
+  const beginRound = useCallback(() => runSpin({ redrawCategories: true }), [runSpin]);
+  const newLetter = useCallback(() => runSpin({ redrawCategories: false }), [runSpin]);
+  const nextRound = useCallback(() => runSpin({ redrawCategories: true }), [runSpin]);
 
   return { beginRound, newLetter, nextRound };
 }
@@ -344,9 +334,6 @@ export function useRound({
     switch (state.phase) {
       case 'idle':
         beginRound();
-        break;
-      case 'ready':
-        dispatch({ type: 'BEGIN_COUNTDOWN' });
         break;
       case 'done':
         nextRound();

@@ -9,7 +9,7 @@ const CRITICAL_THRESHOLD_SECONDS = 5;
 const RING_RADIUS = 86;
 const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
 
-type Stage = 'idle' | 'calm' | 'urgent' | 'critical' | 'done';
+type Stage = 'idle' | 'getready' | 'calm' | 'urgent' | 'critical' | 'done';
 
 interface TimerRingProps {
   phase: Phase;
@@ -26,7 +26,12 @@ export function getTimerStage(phase: Phase, secondsLeft: number): Stage {
   if (phase === 'done') {
     return 'done';
   }
-  if (phase === 'buffer' || phase === 'running') {
+  // The get-ready/buffer phase is its own calm stage — never the urgency colors,
+  // even though its countdown is only a few seconds.
+  if (phase === 'buffer') {
+    return 'getready';
+  }
+  if (phase === 'running') {
     if (secondsLeft <= CRITICAL_THRESHOLD_SECONDS) {
       return 'critical';
     }
@@ -35,13 +40,9 @@ export function getTimerStage(phase: Phase, secondsLeft: number): Stage {
   return 'idle';
 }
 
-function computeFraction(
-  phase: Phase,
-  isRunning: boolean,
-  secondsLeft: number,
-  gameSeconds: number,
-): number {
-  if (isRunning && gameSeconds > 0) {
+function computeFraction(phase: Phase, secondsLeft: number, gameSeconds: number): number {
+  // Only the live round drains the ring; get-ready shows a full, calm ring.
+  if (phase === 'running' && gameSeconds > 0) {
     return Math.max(0, Math.min(1, secondsLeft / gameSeconds));
   }
   if (phase === 'done') {
@@ -78,8 +79,17 @@ function getLabel(
   if (o.isRunning && o.isPaused) {
     return t('timer.paused', { defaultValue: 'Paused' });
   }
-  if (o.isRunning) {
+  if (o.phase === 'buffer') {
+    return t('timer.startIn', {
+      defaultValue: 'Start in {{seconds}}s',
+      seconds: Math.max(0, o.secondsLeft),
+    });
+  }
+  if (o.phase === 'running') {
     return formatSeconds(Math.max(0, o.secondsLeft));
+  }
+  if (o.phase === 'spinning') {
+    return t('timer.getReady', { defaultValue: 'Get ready' });
   }
   return t('timer.ready', { defaultValue: 'Ready' });
 }
@@ -91,7 +101,7 @@ export function TimerRing({ phase, isPaused, secondsLeft, gameSeconds }: TimerRi
 
   useStageHaptics(stage);
 
-  const fraction = computeFraction(phase, isRunning, secondsLeft, gameSeconds);
+  const fraction = computeFraction(phase, secondsLeft, gameSeconds);
   const dashOffset = RING_CIRCUMFERENCE * (1 - fraction);
   const label = getLabel(t, { phase, isRunning, isPaused, secondsLeft });
 

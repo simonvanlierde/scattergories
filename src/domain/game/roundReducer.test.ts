@@ -4,11 +4,10 @@ import { BUFFER_SECONDS, DEFAULT_TIMER_SECONDS } from '@/test/gameConstants';
 import type { RoundAction } from './roundReducer';
 import { initialRoundState, roundReducer } from './roundReducer';
 
-const startSpin = (overrides: { autoStart?: boolean; bufferSeconds?: number } = {}) => ({
+const startSpin = (overrides: { bufferSeconds?: number } = {}) => ({
   type: 'START_SPIN' as const,
   gameSeconds: DEFAULT_TIMER_SECONDS,
   bufferSeconds: overrides.bufferSeconds ?? BUFFER_SECONDS,
-  autoStart: overrides.autoStart ?? true,
   remainingLetters: ['A', 'B'],
   drawnLetters: ['C'],
 });
@@ -152,23 +151,6 @@ describe('roundReducer', () => {
     expect(roundReducer(ringing, { type: 'ALARM_OFF' }).alarmOn).toBe(false);
   });
 
-  it('LETTER_LANDED lands in ready (awaiting Start) when autoStart is false', () => {
-    const spinning = roundReducer(initialRoundState, startSpin({ autoStart: false }));
-    const ready = roundReducer(spinning, { type: 'LETTER_LANDED' });
-    expect(ready.phase).toBe('ready');
-    expect(ready.secondsLeft).toBe(DEFAULT_TIMER_SECONDS);
-    expect(ready.isPaused).toBe(false);
-  });
-
-  it('BEGIN_COUNTDOWN starts the get-ready buffer from ready', () => {
-    const ready = roundReducer(roundReducer(initialRoundState, startSpin({ autoStart: false })), {
-      type: 'LETTER_LANDED',
-    });
-    const buffer = roundReducer(ready, { type: 'BEGIN_COUNTDOWN' });
-    expect(buffer.phase).toBe('buffer');
-    expect(buffer.secondsLeft).toBe(BUFFER_SECONDS);
-  });
-
   it('get-ready of 0 skips the buffer and runs immediately', () => {
     const spinning = roundReducer(initialRoundState, startSpin({ bufferSeconds: ZERO }));
     const running = roundReducer(spinning, { type: 'LETTER_LANDED' });
@@ -184,18 +166,6 @@ describe('roundReducer', () => {
     const kept = roundReducer(running, { type: 'SET_GAME_SECONDS', gameSeconds: THIRTY });
     expect(kept.secondsLeft).toBe(TEN);
     expect(kept.gameSeconds).toBe(THIRTY);
-  });
-
-  it('SET_GAME_SECONDS resets the clock while ready', () => {
-    const ready = { ...initialRoundState, phase: 'ready' as const, secondsLeft: TEN };
-    const next = roundReducer(ready, { type: 'SET_GAME_SECONDS', gameSeconds: THIRTY });
-    expect(next.secondsLeft).toBe(THIRTY);
-    expect(next.gameSeconds).toBe(THIRTY);
-  });
-
-  it('BEGIN_COUNTDOWN is a no-op outside ready', () => {
-    const next = roundReducer(initialRoundState, { type: 'BEGIN_COUNTDOWN' });
-    expect(next).toBe(initialRoundState);
   });
 
   it('TICK is a no-op outside buffer/running', () => {
