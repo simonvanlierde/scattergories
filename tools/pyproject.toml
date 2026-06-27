@@ -14,7 +14,7 @@
     sg-tools = 'scattergories_tools.cli:main'
 
 [dependency-groups]
-  dev         = ['pytest>=9.1.1', 'pytest-cov>=6.0.0', 'ruff>=0.15.19', 'ty>=0.0.53', "uv-build>=0.11.24,<0.12"]
+  dev         = ['pytest>=9.1.1', 'pytest-cov>=7.1.0', 'ruff>=0.15.19', 'ty>=0.0.55', "uv-build>=0.11.24,<0.12"]
   translation = ['argostranslate>=1.9.6']
 
 [tool.pytest.ini_options]
