@@ -15,7 +15,7 @@ test('@smoke loads with the correct title and primary controls', async ({ app, p
   await expect(page.getByRole('button', { name: 'Start Round' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'How to Play' })).toBeVisible();
   await app.openTimer();
-  await expect(app.timerPopover.getByLabel('Timer', { exact: true })).toHaveValue('90');
+  await expect(app.timerPopover.getByLabel('Round', { exact: true })).toHaveValue('90');
   await expect(app.timerPopover.getByLabel('Rounds', { exact: true })).toHaveCount(0);
   await app.closePopover();
 });
