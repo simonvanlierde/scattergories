@@ -1,5 +1,12 @@
 import '@testing-library/jest-dom';
+import { configure } from '@testing-library/react';
 import { vi } from 'vitest';
+
+// findBy*/waitFor default to a 1s async timeout, which is too tight for the
+// lazy-loaded dialogs (How to Play, Customize deck) to resolve when the suite
+// runs in parallel under CI load. Give them headroom — still well under the
+// 20s per-test timeout, so genuine failures surface quickly.
+configure({ asyncUtilTimeout: 5000 });
 
 const noop = () => undefined;
 const noopEventDispatch = () => false;
