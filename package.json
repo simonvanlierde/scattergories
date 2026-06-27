@@ -84,7 +84,13 @@
     "jsdom": "^29.0.2",
     "lefthook": "^2.1.6",
     "typescript": "~6.0.3",
-    "vite": "^8.0.8",
+    "vite": "^8.1.0",
     "vitest": "^4.1.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "undici@>=7.0.0 <7.28.0": "^7.28.0",
+      "@babel/core": "7.29.7"
+    }
   }
 }
