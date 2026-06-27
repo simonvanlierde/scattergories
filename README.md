@@ -3,7 +3,7 @@
 [![CI](https://github.com/simonvanlierde/scattergories/actions/workflows/ci.yml/badge.svg)](https://github.com/simonvanlierde/scattergories/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/simonvanlierde/scattergories/branch/main/graph/badge.svg)](https://codecov.io/gh/simonvanlierde/scattergories)
 [![License: MIT](https://img.shields.io/github/license/simonvanlierde/scattergories)](LICENSE)
-[![PWA](https://img.shields.io/badge/PWA-installable-5A0FC8?logo=pwa&logoColor=white)](https://scattergories.duinlab.nl)
+[![PWA](https://img.shields.io/badge/PWA-installable-5A0FC8?)](https://scattergories.duinlab.nl)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fscattergories.duinlab.nl&label=scattergories.duinlab.nl)](https://scattergories.duinlab.nl)
 
 A browser-based companion for playing Scattergories at the table: no physical timer, die, or category cards needed. Single-page React app, no backend.
