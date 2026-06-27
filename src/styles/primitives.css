@@ -145,78 +145,6 @@
   }
 
   /* ─────────────────────────────────────────────────────────────
-     Switch primitive — labeled on/off toggle (role="switch")
-     ───────────────────────────────────────────────────────────── */
-  .ds-switch {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-3);
-  }
-
-  .ds-switch__label {
-    font-size: var(--text-sm);
-    color: var(--text-primary);
-  }
-
-  /* Button bounds stay 44px tall for touch; the visual track is a centered
-     pseudo-element so the pill can be shorter than the tap target. */
-  .ds-switch__control {
-    position: relative;
-    flex: none;
-    width: 2.75rem;
-    min-height: 2.75rem;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
-  }
-
-  .ds-switch__control::before {
-    content: "";
-    position: absolute;
-    inset: 50% 0 auto 0;
-    height: 1.5rem;
-    transform: translateY(-50%);
-    border: 1px solid var(--border-default);
-    border-radius: 999px;
-    background: color-mix(in oklch, var(--text-primary) 20%, transparent);
-    transition:
-      background var(--duration-fast) var(--ease-out),
-      border-color var(--duration-fast) var(--ease-out);
-  }
-
-  .ds-switch__control[aria-checked="true"]::before {
-    background: var(--accent-primary);
-    border-color: var(--accent-primary);
-  }
-
-  .ds-switch__thumb {
-    position: absolute;
-    top: 50%;
-    left: 0.1875rem;
-    z-index: 1;
-    width: 1.05rem;
-    height: 1.05rem;
-    border-radius: 50%;
-    background: var(--bg-raised);
-    transform: translateY(-50%);
-    transition: transform var(--duration-fast) var(--ease-out);
-  }
-
-  .ds-switch__control[aria-checked="true"] .ds-switch__thumb {
-    transform: translate(1.3rem, -50%);
-  }
-
-  .ds-switch__control:focus-visible {
-    outline: 2px solid var(--accent-primary);
-    outline-offset: 2px;
-    border-radius: 999px;
-  }
-
-  /* ─────────────────────────────────────────────────────────────
      Field primitive — label + input + helper
      ───────────────────────────────────────────────────────────── */
   .ds-field {
@@ -311,18 +239,19 @@
      Sheet primitive — bottom sheet on mobile, side drawer on wider
      Uses <dialog> semantics.
      ───────────────────────────────────────────────────────────── */
+  /* Centered modal at every size (not a bottom sheet on small/medium). */
   .ds-sheet {
     position: fixed;
-    inset: auto 0 0 0;
-    width: 100%;
-    max-height: 92dvh;
-    margin: 0;
+    inset: 0;
+    width: min(40rem, calc(100% - 2 * var(--space-4)));
+    max-height: min(90dvh, 48rem);
+    height: fit-content;
+    margin: auto;
     padding: 0;
     border: 0;
     background: var(--bg-raised);
     color: var(--text-primary);
-    border-top-left-radius: var(--radius-md);
-    border-top-right-radius: var(--radius-md);
+    border-radius: var(--radius-md);
     box-shadow: var(--elevation-4);
     overflow: hidden;
   }
@@ -332,28 +261,19 @@
   }
 
   .ds-sheet[open] {
-    animation: ds-sheet-in var(--duration-slow) var(--ease-spring) both;
+    animation: ds-sheet-in-center var(--duration-slow) var(--ease-spring) both;
   }
 
   @starting-style {
     .ds-sheet[open] {
-      transform: translateY(100%);
+      transform: scale(0.96);
+      opacity: 0;
     }
   }
 
+  /* Grip is a bottom-sheet affordance — not needed for a centered modal. */
   .ds-sheet__grip {
-    display: flex;
-    justify-content: center;
-    padding: var(--space-2) 0 var(--space-1);
-  }
-
-  .ds-sheet__grip::before {
-    content: "";
-    width: 2rem;
-    height: 0.125rem;
-    border-radius: var(--radius-full);
-    background: var(--border-strong);
-    opacity: 0.5;
+    display: none;
   }
 
   .ds-sheet__header {
@@ -384,48 +304,9 @@
   .ds-sheet__body {
     padding: var(--space-5);
     overflow-y: auto;
-    max-height: calc(92dvh - 4.5rem);
+    max-height: calc(90dvh - 4.5rem);
     display: grid;
     gap: var(--space-5);
-  }
-
-  @keyframes ds-sheet-in {
-    from {
-      transform: translateY(100%);
-    }
-    to {
-      transform: translateY(0);
-    }
-  }
-
-  @media (min-width: 48rem) {
-    .ds-sheet {
-      inset: 0;
-      margin: auto;
-      width: min(40rem, calc(100% - 2 * var(--space-6)));
-      max-height: min(90dvh, 48rem);
-      height: fit-content;
-      border-radius: var(--radius-md);
-    }
-
-    .ds-sheet[open] {
-      animation: ds-sheet-in-center var(--duration-slow) var(--ease-spring) both;
-    }
-
-    @starting-style {
-      .ds-sheet[open] {
-        transform: scale(0.96);
-        opacity: 0;
-      }
-    }
-
-    .ds-sheet__grip {
-      display: none;
-    }
-
-    .ds-sheet__body {
-      max-height: calc(90dvh - 4.5rem);
-    }
   }
 
   @keyframes ds-sheet-in-center {
