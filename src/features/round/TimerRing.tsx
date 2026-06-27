@@ -22,7 +22,7 @@ function joinClassNames(...tokens: (string | false | null | undefined)[]): strin
   return tokens.filter(Boolean).join(' ');
 }
 
-export function getTimerStage(phase: Phase, secondsLeft: number): Stage {
+function getTimerStage(phase: Phase, secondsLeft: number): Stage {
   if (phase === 'done') {
     return 'done';
   }
@@ -94,7 +94,7 @@ function getLabel(
   return t('timer.ready', { defaultValue: 'Ready' });
 }
 
-export function TimerRing({ phase, isPaused, secondsLeft, gameSeconds }: TimerRingProps) {
+function TimerRing({ phase, isPaused, secondsLeft, gameSeconds }: TimerRingProps) {
   const { t } = useTranslation();
   const stage = getTimerStage(phase, secondsLeft);
   const isRunning = phase === 'buffer' || phase === 'running';
@@ -134,3 +134,5 @@ export function TimerRing({ phase, isPaused, secondsLeft, gameSeconds }: TimerRi
     </div>
   );
 }
+
+export { getTimerStage, TimerRing };

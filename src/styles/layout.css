@@ -280,6 +280,9 @@
       align-content: start;
     }
 
+    /* biome-ignore lint/style/noDescendingSpecificity: the higher-specificity
+       .play-grid--deck-collapsed rules live in the mutually-exclusive min-width
+       breakpoint, so they never compete with these. */
     .playmat,
     .categories-card {
       position: relative;

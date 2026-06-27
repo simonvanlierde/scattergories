@@ -84,6 +84,7 @@ interface NumericTimingFieldProps {
   onCommit: (field: TimingField, value: string) => void;
 }
 
+// biome-ignore lint/complexity/noExcessiveLinesPerFunction: self-contained debounced numeric input; the draft/commit/flush-on-unmount logic is one cohesive unit.
 function NumericTimingField({
   field,
   id,

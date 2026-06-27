@@ -95,6 +95,7 @@ const HowToPlayDialog = lazy(async () => {
   return { default: module.HowToPlayModal };
 });
 
+// biome-ignore lint/complexity/noExcessiveLinesPerFunction: aggregator hook — the body wires together the sub-hooks and returns one flat controller object; splitting it would only scatter that shape.
 function useGameController(): GameController {
   const {
     settings,

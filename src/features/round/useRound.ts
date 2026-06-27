@@ -171,6 +171,7 @@ function useRoundEffects(options: {
   useRoundCleanup(clearAlarmTimeout);
 }
 
+// biome-ignore lint/complexity/noExcessiveLinesPerFunction: the runSpin callback plus its dependency list are inherent; the draw logic already lives in drawNextLetterFromBag.
 function useSpinActions(params: {
   bufferSeconds: number;
   clearAlarmTimeout: () => void;
@@ -284,6 +285,7 @@ function createRoundResult({ state, roller, actions }: CreateRoundResultOptions)
   };
 }
 
+// biome-ignore lint/complexity/noExcessiveLinesPerFunction: composition hook already decomposed into useRoundEffects/useSpinActions/useRoundRuntime; what remains is hook wiring.
 export function useRound({
   gameSeconds,
   bufferSeconds,

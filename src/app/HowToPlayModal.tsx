@@ -136,6 +136,7 @@ export function HowToPlayModal({ onClose }: HowToPlayModalProps) {
               >
                 <Icon icon={ExternalLink} size={16} />
                 {t('modal.officialGame')}
+                {/* biome-ignore lint/security/noSecrets: i18n message key, not a secret */}
                 <span className="sr-only"> {t('modal.opensInNewTab')}</span>
               </a>
             </li>
@@ -148,6 +149,7 @@ export function HowToPlayModal({ onClose }: HowToPlayModalProps) {
               >
                 <Icon icon={ExternalLink} size={16} />
                 {t('modal.sourceCode')}
+                {/* biome-ignore lint/security/noSecrets: i18n message key, not a secret */}
                 <span className="sr-only"> {t('modal.opensInNewTab')}</span>
               </a>
             </li>

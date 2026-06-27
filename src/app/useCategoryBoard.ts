@@ -15,6 +15,7 @@ interface UseCategoryBoardParams {
   deferComposeRef?: RefObject<boolean>;
 }
 
+// biome-ignore lint/complexity/noExcessiveLinesPerFunction: cohesive board hook — the redraw callback closes over local state and setters that don't extract without threading them all back through.
 function useCategoryBoard(params: UseCategoryBoardParams) {
   const { customCategories, deckBuiltins, pinned, count, deferComposeRef } = params;
   const [displayCategories, setDisplayCategories] = useState<string[]>([]);

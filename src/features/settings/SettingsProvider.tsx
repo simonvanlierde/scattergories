@@ -58,6 +58,7 @@ function applyTogglePinAll(state: Settings, names: string[]): Settings {
   return { ...state, pinned: [...new Set([...state.pinned, ...inDeck])] };
 }
 
+// biome-ignore lint/complexity/noExcessiveLinesPerFunction: a reducer switch over 10 action types; the cases are already flat and per-case extraction would scatter the state logic.
 function settingsReducer(state: Settings, action: SettingsAction): Settings {
   switch (action.type) {
     case 'hydrate':

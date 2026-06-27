@@ -8,7 +8,7 @@ import type { MutableRefObject } from 'react';
  * 1.2s landing. Each flip calls `onFlip` (the caller decides what to show);
  * the final frame calls `onLanded`.
  */
-export const SPIN_MS = 1200;
+const SPIN_MS = 1200;
 const BASE_FLIP_INTERVAL_MS = 60;
 const FLIP_INTERVAL_SPREAD_MS = 260;
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
@@ -62,3 +62,5 @@ export function runRoll(params: {
 
   window.requestAnimationFrame(frame);
 }
+
+export { SPIN_MS };
