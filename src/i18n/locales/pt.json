@@ -26,7 +26,8 @@
     "remove": "Remover",
     "close": "✕",
     "addTooltip": "Adicionar esta categoria à sua coleção personalizada",
-    "closeTooltip": "Fechar esta janela"
+    "closeTooltip": "Fechar esta janela",
+    "howToPlay": "Como Jogar"
   },
   "timer": {
     "ready": "Pronto",
@@ -60,46 +61,45 @@
     "summaryMode": "Fonte: {{mode}}",
     "summaryDraw": "Sorteio: {{count}}",
     "pin": "Fixar categorias",
-    "unpin": "Desafixar categorias"
+    "unpin": "Desafixar categorias",
+    "addSectionTitle": "Adicionar categorias",
+    "deckSectionTitle": "Seu baralho",
+    "deckCount": "{{custom}} próprias · {{builtin}} padrão",
+    "removeAllCustom": "Remover todas as próprias",
+    "removeAllBuiltins": "Remover todas as padrão",
+    "drawUnit": "cartas"
   },
   "usedLetters": "Letras usadas: {{letters}}{{empty}}",
   "usedLettersEmpty": "Nenhuma",
   "shortcuts": "Atalhos: Espaço iniciar, R pular letra, P pausa, C mostrar temas, A adicionar categoria",
-  "footer": {
-    "howToPlay": "Como Jogar",
-    "officialGame": "Jogo Oficial",
-    "sourceCode": "Código Fonte",
-    "privacy": "Este aplicativo salva configurações e categorias apenas no seu navegador.",
-    "label": "Rodapé do aplicativo"
-  },
   "modal": {
-    "title": "Como jogar Scattergories",
-    "objective": "Objetivo",
+    "title": "Como Jogar",
     "objectiveText": "Acumule pontos escrevendo palavras que comecem com a letra sorteada e se encaixem nas categorias exibidas.",
     "gameplay": "Regras do Jogo",
     "gameplayPoints": [
-      "Uma letra é sorteada aleatoriamente",
-      "Você tem tempo limitado (padrão 90s) para encontrar as respostas",
-      "Todas as respostas devem começar com a letra indicada",
-      "Cada categoria deve ter uma resposta única (não repita palavras)"
-    ],
-    "scoring": "Pontuação (com outros jogadores)",
-    "scoringPoints": [
-      "1 ponto: Sua palavra é única (ninguém mais escreveu)",
-      "0 pontos: Outro jogador escreveu a mesma palavra",
-      "Respostas originais e criativas costumam valer mais!"
+      "Uma letra é sorteada ao acaso: todas as respostas devem começar com ela.",
+      "Antes de o tempo acabar (90 s por padrão), escreva uma palavra para cada categoria.",
+      "Use uma palavra diferente em cada categoria, sem repetir.",
+      "Joga com outros? Ganha 1 ponto por cada resposta que ninguém mais escreveu; as repetidas valem 0, então aposte em respostas originais."
     ],
     "categories": "Categorias",
     "categoriesText": "Esta ferramenta utiliza as categorias do jogo oficial. Você também pode criar as suas e misturá-las com as padrão.",
-    "features": "Recursos",
-    "featuresList": [
-      "Use o botão Pular Letra (ou aperte R) se uma letra for muito difícil",
-      "Ative a Pausa (aperte P) durante a rodada para pensar",
-      "Ajuste a duração do temporizador nas configurações",
-      "Silencie o som se desejar",
-      "Todas as configurações são salvas automaticamente"
+    "settings": "Configurações",
+    "settingsIntro": "Você as encontra na parte inferior da tela; tudo é salvo automaticamente.",
+    "settingsItems": [
+      "Temporizador — quanto dura cada rodada e a contagem regressiva de preparação antes de começar.",
+      "Idioma — altere o idioma da interface e das categorias.",
+      "Som — silencie ou ative o temporizador e o alarme.",
+      "Tema — alterne entre o modo claro e escuro."
     ],
-    "footer": "Esta é uma ferramenta de ajuda para gerenciar as letras e o tempo. Divirta-se com seus amigos!"
+    "shortcuts": "Atalhos de teclado",
+    "about": "Sobre",
+    "officialGame": "Jogo Oficial",
+    "sourceCode": "Código Fonte",
+    "privacy": "Este aplicativo salva configurações e categorias apenas no seu navegador.",
+    "version": "Versão {{version}}",
+    "opensInNewTab": "(abre em uma nova aba)",
+    "loading": "Abrindo as regras…"
   },
   "language": {
     "label": "Idioma",

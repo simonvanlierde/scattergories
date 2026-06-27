@@ -14,10 +14,10 @@ test('@smoke loads with the correct title and primary controls', async ({ app, p
   await expect(app.readyHeading).toBeVisible();
   await expect(page.getByRole('button', { name: 'Start Round' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'How to Play' })).toBeVisible();
-  await app.openSettings();
-  await expect(app.settingsDialog.getByLabel('Timer', { exact: true })).toHaveValue('90');
-  await expect(app.settingsDialog.getByLabel('Rounds', { exact: true })).toHaveCount(0);
-  await app.closeSettings();
+  await app.openTimer();
+  await expect(app.timerPopover.getByLabel('Timer', { exact: true })).toHaveValue('90');
+  await expect(app.timerPopover.getByLabel('Rounds', { exact: true })).toHaveCount(0);
+  await app.closePopover();
 });
 
 test('@smoke keeps prompts in the categories panel and uses the expected prompt deck default', async ({
@@ -47,8 +47,7 @@ test('@smoke keeps prompts in the categories panel and uses the expected prompt 
     ).toBeVisible();
   }
 
-  await expect(categoriesPanel.getByRole('button', { name: 'Shuffle' })).toBeVisible();
-  await expect(categoriesPanel.getByRole('button', { name: 'Pin categories' })).toBeVisible();
+  await expect(categoriesPanel.getByRole('button', { name: 'Redraw' })).toBeVisible();
   await expect(categoriesPanel.getByRole('button', { name: 'Customize deck' })).toBeVisible();
   await expect(categoriesPanel.getByText(SOURCE_SUMMARY_PATTERN)).toHaveCount(0);
   await expect(categoriesPanel.getByText(DRAW_SUMMARY_PATTERN)).toHaveCount(0);

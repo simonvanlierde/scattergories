@@ -13,7 +13,7 @@ it('reveals category tools with the category shortcut', async () => {
     'false',
   );
 
-  await user.keyboard('a');
+  await user.keyboard('c');
 
   expect(screen.getByRole('button', { name: 'Hide categories' })).toHaveAttribute(
     'aria-expanded',

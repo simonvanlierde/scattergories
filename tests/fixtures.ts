@@ -4,10 +4,10 @@ import { GO, ROUND_STATE_TIMEOUT_MS, SCATTERGORIES_HEADING } from '../src/test/c
 // spell-checker: ignore Configuración, Idioma
 
 type RoundButtonLabel = RegExp | string;
-const START_OR_NEXT_ROUND_BUTTON_LABEL = /Start Round|Next letter/;
+const START_OR_NEXT_ROUND_BUTTON_LABEL = /Start Round|Next round/;
 const MUTE_BUTTON_LABEL = /Mute|Unmute/;
-const SETTINGS_DIALOG_NAME = /Settings|Configuración/i;
-const LANGUAGE_REGION_NAME = /Language|Idioma/i;
+const TIMER_NAME = /Round timer/i;
+const LANGUAGE_NAME = /Language|Idioma/i;
 
 interface AppFixture {
   currentLetter: Locator;
@@ -16,12 +16,14 @@ interface AppFixture {
   readyHeading: Locator;
   roundClock: Locator;
   roundStatus: Locator;
-  settingsDialog: Locator;
-  closeSettings: () => Promise<void>;
+  timerPopover: Locator;
+  languagePopover: Locator;
   collapseCategories: () => Promise<void>;
   expectIdle: () => Promise<void>;
   expectRunning: () => Promise<void>;
-  openSettings: () => Promise<void>;
+  openTimer: () => Promise<void>;
+  openLanguage: () => Promise<void>;
+  closePopover: () => Promise<void>;
   setTimer: (value: string) => Promise<void>;
   startRound: (label?: RoundButtonLabel) => Promise<void>;
   startRoundSafely: (label?: RoundButtonLabel) => Promise<void>;
@@ -35,28 +37,21 @@ async function fillNumericField(field: Locator, value: string) {
   await field.blur();
 }
 
-async function openSettings(page: Page, label = 'Settings') {
-  const dialog = page.getByRole('dialog', { name: SETTINGS_DIALOG_NAME });
-  if (await dialog.isVisible()) {
+async function openPopover(page: Page, panel: Locator, triggerName: RegExp) {
+  if (await panel.isVisible()) {
     return;
   }
-
-  await page.getByRole('button', { name: label }).click();
-  await expect(dialog).toBeVisible();
+  await page.getByRole('button', { name: triggerName }).click();
+  await expect(panel).toBeVisible();
 }
 
-async function closeSettings(page: Page) {
-  const dialog = page.getByRole('dialog', { name: SETTINGS_DIALOG_NAME });
-  if (!(await dialog.isVisible())) {
-    return;
-  }
-
+async function closePopover(page: Page) {
   await page.keyboard.press('Escape');
-  await expect(dialog).not.toBeVisible();
 }
 
 function createAppFixture(page: Page): AppFixture {
-  const settingsDialog = page.getByRole('dialog', { name: SETTINGS_DIALOG_NAME });
+  const timerPopover = page.getByRole('dialog', { name: TIMER_NAME });
+  const languagePopover = page.getByRole('dialog', { name: LANGUAGE_NAME });
   const readyHeading = page.getByRole('heading', { name: SCATTERGORIES_HEADING });
   const currentLetter = page.getByTestId('current-letter');
   const promptToggle = page.locator('button[aria-controls="categories-panel-content"]');
@@ -69,9 +64,10 @@ function createAppFixture(page: Page): AppFixture {
     readyHeading,
     roundClock: page.getByTestId('round-clock'),
     roundStatus,
-    settingsDialog,
-    async closeSettings() {
-      await closeSettings(page);
+    timerPopover,
+    languagePopover,
+    async closePopover() {
+      await closePopover(page);
     },
     async collapseCategories() {
       if ((await promptToggle.getAttribute('aria-expanded')) === 'true') {
@@ -88,13 +84,16 @@ function createAppFixture(page: Page): AppFixture {
       await expect(roundStatus).toHaveText(GO, { timeout: ROUND_STATE_TIMEOUT_MS });
       await expect(currentLetter).toBeVisible();
     },
-    async openSettings() {
-      await openSettings(page);
+    async openTimer() {
+      await openPopover(page, timerPopover, TIMER_NAME);
+    },
+    async openLanguage() {
+      await openPopover(page, languagePopover, LANGUAGE_NAME);
     },
     async setTimer(value: string) {
-      await openSettings(page);
-      await fillNumericField(settingsDialog.getByLabel('Timer', { exact: true }), value);
-      await closeSettings(page);
+      await openPopover(page, timerPopover, TIMER_NAME);
+      await fillNumericField(timerPopover.getByLabel('Timer', { exact: true }), value);
+      await closePopover(page);
     },
     async startRound(label: RoundButtonLabel = START_OR_NEXT_ROUND_BUTTON_LABEL) {
       const startButton = page.getByRole('button', { name: label });
@@ -107,12 +106,9 @@ function createAppFixture(page: Page): AppFixture {
       await startButton.click();
     },
     async switchLanguage(language: string) {
-      await openSettings(page);
-      await settingsDialog
-        .getByRole('region', { name: LANGUAGE_REGION_NAME })
-        .getByRole('combobox')
-        .selectOption(language);
-      await closeSettings(page);
+      await openPopover(page, languagePopover, LANGUAGE_NAME);
+      // Selecting a language applies it and closes the popover.
+      await languagePopover.locator(`[data-locale="${language}"]`).click();
     },
     async toggleMute() {
       await page

@@ -208,22 +208,50 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /* Inline one-liner variant: "Label: [input] s" on a single row. */
+  /* Dissolve into the parent .timing-fields grid so labels + inputs align
+     across rows and the panel hugs its content (no wasted width). */
+  .ds-field--inline {
+    display: contents;
+  }
+
+  .ds-field--inline .ds-field__label {
+    text-transform: none;
+    letter-spacing: var(--tracking-normal);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  .ds-field--inline .ds-field__label::after {
+    content: ":";
+  }
+
+  .ds-field--inline .ds-field__control {
+    width: 4rem;
+    min-height: 2.25rem;
+    padding-right: var(--space-1);
+    text-align: right;
+  }
+
   /* ─────────────────────────────────────────────────────────────
      Sheet primitive — bottom sheet on mobile, side drawer on wider
      Uses <dialog> semantics.
      ───────────────────────────────────────────────────────────── */
+  /* Centered modal at every size (not a bottom sheet on small/medium). */
   .ds-sheet {
     position: fixed;
-    inset: auto 0 0 0;
-    width: 100%;
-    max-height: 92dvh;
-    margin: 0;
+    inset: 0;
+    width: min(40rem, calc(100% - 2 * var(--space-4)));
+    max-height: min(90dvh, 48rem);
+    height: fit-content;
+    margin: auto;
     padding: 0;
     border: 0;
     background: var(--bg-raised);
     color: var(--text-primary);
-    border-top-left-radius: var(--radius-md);
-    border-top-right-radius: var(--radius-md);
+    border-radius: var(--radius-md);
     box-shadow: var(--elevation-4);
     overflow: hidden;
   }
@@ -233,40 +261,33 @@
   }
 
   .ds-sheet[open] {
-    animation: ds-sheet-in var(--duration-slow) var(--ease-spring) both;
+    animation: ds-sheet-in-center var(--duration-slow) var(--ease-spring) both;
   }
 
   @starting-style {
     .ds-sheet[open] {
-      transform: translateY(100%);
+      transform: scale(0.96);
+      opacity: 0;
     }
   }
 
+  /* Grip is a bottom-sheet affordance — not needed for a centered modal. */
   .ds-sheet__grip {
-    display: flex;
-    justify-content: center;
-    padding: var(--space-2) 0 var(--space-1);
-  }
-
-  .ds-sheet__grip::before {
-    content: "";
-    width: 2rem;
-    height: 0.125rem;
-    border-radius: var(--radius-full);
-    background: var(--border-strong);
-    opacity: 0.5;
+    display: none;
   }
 
   .ds-sheet__header {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
-    gap: var(--space-3);
-    padding: var(--space-4) var(--space-6) var(--space-4);
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-5) var(--space-4);
     border-bottom: 1px solid var(--border-subtle);
   }
 
   .ds-sheet__title {
+    flex: 1 1 auto;
+    min-width: 0;
     font-family: var(--font-display);
     font-size: var(--text-2xl);
     font-weight: 500;
@@ -274,122 +295,112 @@
     margin: 0;
   }
 
+  .ds-sheet__header .ds-icon-button {
+    flex: none;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+  }
+
   .ds-sheet__body {
     padding: var(--space-5);
     overflow-y: auto;
-    max-height: calc(92dvh - 4.5rem);
+    max-height: calc(90dvh - 4.5rem);
     display: grid;
     gap: var(--space-5);
   }
 
-  @keyframes ds-sheet-in {
+  @keyframes ds-sheet-in-center {
     from {
-      transform: translateY(100%);
+      transform: scale(0.96);
+      opacity: 0;
     }
     to {
-      transform: translateY(0);
+      transform: scale(1);
+      opacity: 1;
     }
   }
 
-  @media (min-width: 48rem) {
-    .ds-sheet {
-      inset: 0 0 0 auto;
-      width: min(30rem, 100%);
-      max-height: 100dvh;
-      border-radius: 0;
-    }
-
-    .ds-sheet[open] {
-      animation: ds-sheet-in-side var(--duration-slow) var(--ease-spring) both;
-    }
-
-    @starting-style {
-      .ds-sheet[open] {
-        transform: translateX(100%);
-      }
-    }
-
-    .ds-sheet__grip {
-      display: none;
-    }
-
-    .ds-sheet__body {
-      max-height: calc(100dvh - 4.5rem);
-    }
-  }
-
-  @keyframes ds-sheet-in-side {
-    from {
-      transform: translateX(100%);
-    }
-    to {
-      transform: translateX(0);
-    }
-  }
-
-  /* ─────────────────────────────────────────────────────────────
-     Settings Sheet sections
-     ───────────────────────────────────────────────────────────── */
-  .settings-section {
+  /* Language menu — direct one-tap list inside the popover. */
+  .lang-menu {
     display: grid;
-    gap: var(--space-3);
+    gap: var(--space-0-5);
+    min-width: 9rem;
   }
 
-  .settings-section__grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-3);
-  }
-
-  .settings-section__hint {
-    margin: 0;
-    font-size: var(--text-xs);
-    color: var(--text-muted);
-    line-height: var(--leading-snug);
-  }
-
-  .settings-section__header {
+  .lang-menu__item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--space-3);
-  }
-
-  .settings-section__count {
-    font-family: var(--font-numeric);
-    font-size: var(--text-sm);
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    color: var(--text-muted);
-    letter-spacing: var(--tracking-wide);
-  }
-
-  .settings-section__title {
-    margin: 0;
-    font-family: var(--font-ui);
-    font-size: var(--text-xs);
-    font-weight: 600;
-    letter-spacing: var(--tracking-widest);
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
-  .settings-select select {
+    gap: var(--space-4);
     width: 100%;
-    min-height: 2.75rem;
+    min-height: 2.5rem;
     padding: var(--space-2) var(--space-3);
-    border: 1px solid var(--border-default);
+    border: 0;
     border-radius: var(--radius-sm);
     background: transparent;
     color: var(--text-primary);
     font-family: inherit;
     font-size: var(--text-md);
+    text-align: left;
+    cursor: pointer;
+    transition: background var(--duration-fast) var(--ease-out);
   }
 
-  .settings-select select:focus-visible {
-    outline: none;
-    border-color: var(--accent-primary);
-    box-shadow: 0 0 0 2px color-mix(in oklch, var(--accent-primary) 22%, transparent);
+  .lang-menu__item:where(:not(:disabled)):hover {
+    background: color-mix(in oklch, var(--text-primary) 6%, transparent);
+  }
+
+  .lang-menu__item[aria-checked="true"] {
+    color: var(--accent-primary);
+    font-weight: 600;
+  }
+
+  .lang-menu__item:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .lang-menu__item:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: -2px;
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     Settings cluster — top-bar icon controls + popovers
+     ───────────────────────────────────────────────────────────── */
+  .settings-cluster {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .ds-popover {
+    position: relative;
+  }
+
+  .ds-popover__panel {
+    position: absolute;
+    bottom: calc(100% + var(--space-2));
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: var(--z-modal);
+    width: max-content;
+    max-width: min(90vw, 18rem);
+    padding: var(--space-4);
+    background: var(--surface-2);
+    color: var(--text-primary);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    box-shadow: var(--elevation-4);
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .timing-fields {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: var(--space-3) var(--space-2);
+    align-items: center;
   }
 
   @media (prefers-reduced-motion: reduce) {

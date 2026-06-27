@@ -56,17 +56,9 @@ function useLanguageSwitcher(
   );
 }
 
-function useCustomCategoryInput(
-  addCustomCategory: (value: string) => void,
-  isPromptDeckOpen: boolean,
-) {
-  const [newCategoryInput, setNewCategoryInput] = useState('');
+function useCustomCategoryInput(isPromptDeckOpen: boolean) {
   const [shouldFocusPromptInput, setShouldFocusPromptInput] = useState(false);
   const newCategoryInputRef = useRef<HTMLInputElement>(null);
-  const handleAddCustomCategory = useCallback(() => {
-    addCustomCategory(newCategoryInput);
-    setNewCategoryInput('');
-  }, [addCustomCategory, newCategoryInput]);
 
   useEffect(() => {
     if (!(shouldFocusPromptInput && isPromptDeckOpen && newCategoryInputRef.current)) {
@@ -79,19 +71,16 @@ function useCustomCategoryInput(
 
   return {
     focusNewCategoryInput: () => setShouldFocusPromptInput(true),
-    handleAddCustomCategory,
-    newCategoryInput,
     newCategoryInputRef,
-    setNewCategoryInput,
   };
 }
 
 function useAppControls(params: {
-  addCustomCategory: (value: string) => void;
   i18n: I18nInstance;
   settings: {
     catCountInput: string;
     durationInput: string;
+    bufferSecondsInput: string;
   };
   update: ReturnType<typeof useSettings>['update'];
   isPromptDeckOpen: boolean;
@@ -99,7 +88,7 @@ function useAppControls(params: {
   const [hasChunkError, setHasChunkError] = useState(false);
   const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
   const [isLanguagePending, setIsLanguagePending] = useState(false);
-  const customInput = useCustomCategoryInput(params.addCustomCategory, params.isPromptDeckOpen);
+  const customInput = useCustomCategoryInput(params.isPromptDeckOpen);
   const blurNumericField = useCallback(
     (field: NumericFieldName) => {
       params.update(field, sanitizeNumericField(field, params.settings[field]));

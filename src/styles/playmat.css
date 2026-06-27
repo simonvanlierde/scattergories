@@ -7,14 +7,25 @@
   .playmat {
     container-type: inline-size;
     display: grid;
-    gap: var(--space-5);
-    padding: var(--space-6);
-    background: var(--bg-raised);
-    border: 1px solid var(--rule);
-    border-radius: var(--radius-md);
+    gap: var(--space-4);
+    padding: var(--space-4) 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
     box-shadow: none;
     min-width: 0;
     min-height: 0;
+  }
+
+  /* Consistent ring↔controls gap on desktop, regardless of whether the
+     categories panel is open or collapsed. The playmat stretches taller when
+     categories are shown, so center its content (instead of letting the default
+     align-content spread the rows) to keep the gap at exactly --space-3. */
+  @media (min-width: 52rem) {
+    .playmat {
+      gap: var(--space-4);
+      align-content: center;
+    }
   }
 
   .playmat__meta {
@@ -45,75 +56,6 @@
     margin: 0 auto;
   }
 
-  .playmat__status {
-    margin: 0 auto;
-    width: max-content;
-    max-width: 100%;
-    min-height: 1.5rem;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    text-align: center;
-    font-size: var(--text-xs);
-    font-weight: 600;
-    letter-spacing: var(--tracking-widest);
-    text-transform: uppercase;
-    color: var(--text-muted);
-    pointer-events: none;
-    transition: color var(--duration-normal) var(--ease-out);
-  }
-
-  .playmat__status:empty {
-    visibility: hidden;
-    pointer-events: none;
-  }
-
-  .playmat[data-phase="buffer"] .playmat__status {
-    color: var(--text-secondary);
-  }
-
-  .playmat[data-phase="running"] .playmat__status {
-    color: var(--accent-primary);
-  }
-
-  .playmat__status--done {
-    color: var(--accent-primary);
-    font-weight: 700;
-  }
-
-  /* ─── Round timer pill — ghost text link into Settings ──────── */
-  .round-timer-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    justify-self: center;
-    padding: var(--space-1) 0;
-    border-radius: 0;
-    background: transparent;
-    border: 0;
-    color: var(--text-muted);
-    font-family: var(--font-numeric);
-    font-size: var(--text-xs);
-    font-variant-numeric: tabular-nums;
-    font-weight: 500;
-    letter-spacing: var(--tracking-wider);
-    cursor: pointer;
-    transition: color var(--duration-fast) var(--ease-out);
-  }
-
-  .round-timer-pill:hover {
-    color: var(--text-primary);
-  }
-
-  .round-timer-pill:focus-visible {
-    outline: 2px solid var(--accent-primary);
-    outline-offset: 2px;
-  }
-
-  .round-timer-pill__text {
-    color: inherit;
-  }
-
   /* ─── Timer Ring — monochrome editorial ──────────────────────── */
   .timer-ring {
     position: absolute;
@@ -132,13 +74,13 @@
   .timer-ring__track {
     fill: none;
     stroke: var(--rule);
-    stroke-width: 2;
+    stroke-width: 3;
   }
 
   .timer-ring__progress {
     fill: none;
     stroke: var(--text-secondary);
-    stroke-width: 2;
+    stroke-width: 3;
     stroke-linecap: butt;
     transition:
       stroke-dashoffset var(--duration-slow) var(--ease-out),
@@ -151,8 +93,13 @@
   }
 
   .timer-ring--urgent .timer-ring__progress {
-    stroke: var(--accent-primary);
-    stroke-width: 3;
+    stroke: var(--warning);
+    stroke-width: 4;
+  }
+
+  .timer-ring--critical .timer-ring__progress {
+    stroke: var(--danger);
+    stroke-width: 5;
   }
 
   .timer-ring--done .timer-ring__progress {
@@ -160,16 +107,22 @@
     stroke-width: 4;
   }
 
+  /* Get-ready: a full, calm accent ring — visibly not the live/urgent countdown. */
+  .timer-ring--getready .timer-ring__progress {
+    stroke: var(--accent-primary);
+    stroke-width: 3;
+  }
+
   .timer-ring__readout {
     position: absolute;
     bottom: -0.5rem;
     padding: var(--space-1) var(--space-3);
-    background: var(--bg-raised);
+    background: var(--bg-page);
     border: 0;
     border-radius: 0;
     font-family: var(--font-numeric);
-    font-size: var(--text-xl);
-    font-weight: 500;
+    font-size: var(--text-3xl);
+    font-weight: 600;
     font-variant-numeric: tabular-nums;
     letter-spacing: var(--tracking-tight);
     color: var(--text-primary);
@@ -181,12 +134,36 @@
   }
 
   .timer-ring--urgent .timer-ring__readout {
-    color: var(--accent-primary);
+    color: var(--warning);
+  }
+
+  .timer-ring--critical .timer-ring__readout {
+    color: var(--danger);
+    font-weight: 700;
   }
 
   .timer-ring--done .timer-ring__readout {
     color: var(--accent-primary);
     font-weight: 700;
+  }
+
+  /* "Start in Xs" reads as a calm accent prompt, but stays the same size as the
+     other readouts (Ready / the live clock) so the hero doesn't jump. */
+  .timer-ring--getready .timer-ring__readout {
+    color: var(--accent-primary);
+  }
+
+  /* ─── Paused state — dim the ring, surface a "Paused" readout ── */
+  .timer-ring--paused {
+    opacity: 0.6;
+  }
+
+  .timer-ring--paused .timer-ring__progress {
+    filter: grayscale(0.7);
+  }
+
+  .timer-ring--paused .timer-ring__readout {
+    color: var(--text-secondary);
   }
 
   /* ─── Letter Hero — serif drop-cap ───────────────────────────── */
@@ -258,76 +235,196 @@
     font-style: italic;
   }
 
+  /* Multi-column flow fills each column top-to-bottom, then moves right — so
+     1–6 land in the left column and 7–12 in the right (not row-major). Column
+     count stays responsive (~13rem each). */
   .category-checklist__list {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: grid;
-    gap: 0;
-    border-top: 1px solid var(--rule);
+    column-width: 15rem;
+    column-gap: var(--space-2);
   }
 
   .category-checklist__item {
     min-width: 0;
-    border-bottom: 1px solid var(--rule);
+    break-inside: avoid;
+    margin-bottom: var(--space-2);
   }
 
-  .category-checklist__row {
+  /* Each drawn category is a tap-to-pin chip. */
+  .category-checklist__chip {
     width: 100%;
     display: grid;
-    grid-template-columns: 2.5rem minmax(0, 1fr);
-    align-items: baseline;
-    gap: var(--space-3);
-    min-height: 3rem;
-    padding: var(--space-3) var(--space-1);
+    grid-template-columns: 1.42rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-1);
+    min-height: 2.75rem;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-sm);
+    background: transparent;
     color: var(--text-primary);
+    font-family: inherit;
     font-size: var(--text-md);
+    text-align: left;
+    cursor: pointer;
+    transition:
+      background var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-spring);
+  }
+
+  .category-checklist__chip:where(:not(:disabled)):hover {
+    background: color-mix(in oklch, var(--text-primary) 5%, transparent);
+  }
+
+  .category-checklist__chip:where(:not(:disabled)):active {
+    transform: scale(0.98);
+  }
+
+  .category-checklist__chip:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+  }
+
+  /* Disabled during active play: non-interactive but fully readable (no dimming). */
+  .category-checklist__chip:disabled {
+    cursor: default;
   }
 
   .category-checklist__mark {
     display: grid;
     place-items: center;
-    min-width: 2rem;
-    min-height: 2rem;
-    border-radius: 0;
-    background: transparent;
+    min-width: 1.25rem;
+    margin-inline-end: 0.25rem;
     color: var(--text-muted);
     font-family: var(--font-display);
     font-weight: 500;
     font-size: var(--text-md);
     font-variant-numeric: tabular-nums;
     font-style: italic;
-    transition: color var(--duration-fast) var(--ease-out);
   }
 
+  /* Wrap long names onto multiple lines instead of truncating — drawn
+     categories are essential to read, and hover tooltips don't work on touch.
+     Wrap at word boundaries (break-word only splits a token as a last resort),
+     and balance the lines so a wrapped name never leaves a lonely orphan word. */
   .category-checklist__label {
+    min-width: 0;
+    overflow-wrap: break-word;
+    text-wrap: balance;
     font-weight: 400;
     letter-spacing: var(--tracking-normal);
     line-height: var(--leading-snug);
-    text-decoration: none;
+  }
+
+  .category-checklist__item--custom .category-checklist__label {
+    font-weight: 600;
+  }
+
+  .category-checklist__item--custom .category-checklist__label::after {
+    content: " ★";
+    color: var(--accent-primary);
+  }
+
+  .category-checklist__pin {
+    color: var(--text-muted);
+    opacity: 0;
+    transition:
+      opacity var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+
+  .category-checklist__chip:where(:not(:disabled)):hover .category-checklist__pin {
+    opacity: 0.55;
+  }
+
+  .category-checklist__item--pinned .category-checklist__chip {
+    border-color: var(--accent-primary);
+    background: var(--accent-soft);
+  }
+
+  .category-checklist__item--pinned .category-checklist__pin {
+    opacity: 1;
+    color: var(--accent-primary);
+  }
+
+  .category-checklist__label--landing {
+    animation: category-land var(--duration-hero) var(--ease-spring) both;
+  }
+
+  @keyframes category-land {
+    0% {
+      transform: translateY(-30%);
+      opacity: 0;
+    }
+    60% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* On mobile, keep the drawn categories in a single full-width column so every
+     name reads on one line, and collapse the hero into a horizontal strip (timer
+     circle on the left, round controls beside it) so all 12 fit without scrolling. */
+  @media (max-width: 51.99rem) {
+    /* Compact horizontal hero (circle left, controls right) ONLY while the deck
+       is open and competing for vertical space. When the deck is collapsed there
+       is room, so the playmat keeps its full-size ring (controls below). */
+    .play-grid:not(.play-grid--deck-collapsed) .playmat {
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .play-grid:not(.play-grid--deck-collapsed) .playmat__hero {
+      width: min(36vw, 9rem);
+      margin: 0;
+    }
+
+    /* The letter glyph + readout are sized for the full circle — scale them to
+       the compact one. */
+    .play-grid:not(.play-grid--deck-collapsed) .letter-hero__glyph {
+      font-size: clamp(3rem, 14vw, 4rem);
+    }
+
+    .play-grid:not(.play-grid--deck-collapsed) .timer-ring__readout {
+      bottom: -0.35rem;
+      min-width: 3rem;
+      padding: var(--space-0-5) var(--space-2);
+      font-size: var(--text-lg);
+    }
+
+    .category-checklist__item {
+      margin-bottom: var(--space-1);
+    }
+
+    .category-checklist__chip {
+      min-height: 2.5rem;
+    }
   }
 
   /* ─── Action Bar ─────────────────────────────────────────────── */
+  /* Primary action on top, the New letter / Next round controls stacked below. */
   .action-bar {
-    display: grid;
-    gap: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
   }
 
-  .action-bar .ds-button--lg {
+  .action-bar__primary {
     min-height: 3rem;
     box-shadow: none;
   }
 
-  .action-bar .ds-button--lg:where(:not(:disabled)):hover {
+  .action-bar__primary:where(:not(:disabled)):hover {
     box-shadow: none;
-  }
-
-  .action-bar__groups {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-3);
-    flex-wrap: wrap;
   }
 
   .action-bar__group {
@@ -342,46 +439,25 @@
     border-radius: var(--radius-sm);
   }
 
-  .action-bar__destructive:where(:not(:disabled)):hover {
-    color: var(--danger);
-    background: transparent;
-  }
-
-  .action-bar__destructive:where(:not(:disabled)):active {
-    color: var(--danger);
-    background: transparent;
-  }
-
-  .action-bar__destructive:focus-visible {
-    outline-color: var(--danger);
+  .action-bar__group--bare {
+    border: 0;
+    padding: 0;
   }
 
   /* ─── Container-query responsive ─────────────────────────────── */
   @container (min-width: 40rem) {
     .playmat {
       justify-items: center;
-      gap: var(--space-6);
-      padding: var(--space-8);
+      padding: var(--space-6) 0;
     }
 
     .playmat__meta {
       width: 100%;
     }
 
-    .playmat__hero {
-      width: min(100%, 24rem);
-    }
-
-    .playmat__status {
-      width: min(100%, 22rem);
-    }
-
     .action-bar {
       width: min(100%, 32rem);
-    }
-
-    .round-timer-pill {
-      justify-self: center;
+      margin-inline: auto;
     }
   }
 
@@ -536,6 +612,9 @@
       animation: none;
     }
     .letter-hero__glyph--landing {
+      animation: none;
+    }
+    .category-checklist__label--landing {
       animation: none;
     }
     .round-end {

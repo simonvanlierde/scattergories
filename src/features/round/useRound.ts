@@ -7,7 +7,6 @@ import {
   roundReducer,
 } from '@/domain/game/roundReducer';
 import { pickRandom, weightedLetterBag } from '@/domain/game/utils';
-import type { CategoryRefreshMode } from '@/features/settings/schema';
 import { getLocaleLetters } from '@/i18n/localeRegistry';
 import { useAudio } from './useAudio';
 import { useLetterRoller } from './useLetterRoller';
@@ -18,34 +17,27 @@ const LAST_TICK_THRESHOLD = 10;
 
 interface UseRoundOptions {
   gameSeconds: number;
+  bufferSeconds: number;
   isMuted: boolean;
   locale: string;
-  categoryRefreshMode: CategoryRefreshMode;
   onLetterPicked?: () => void;
 }
 
 interface RoundActions {
-  startRound: () => void;
-  rerollLetter: () => void;
+  primaryAction: () => void;
+  newLetter: () => void;
+  nextRound: () => void;
   togglePause: () => void;
-  resetRound: () => void;
 }
 
-function canBeginRound(state: { phase: string }): boolean {
-  return state.phase !== 'spinning';
-}
-
-function drawAutoLetter(locale: string, previousLetter: string | null) {
-  const letters = getLocaleLetters(locale);
-  const candidates =
-    previousLetter && letters.length > 1
-      ? letters.filter((letter) => letter !== previousLetter)
-      : letters;
-  const chosen = pickRandom(candidates);
-  return { chosen, remaining: [], drawn: [] };
-}
-
-function drawPinnedLetter(locale: string, currentRemaining: string[], currentDrawn: string[]) {
+// Draws the next letter from a non-repeating weighted bag, refilling when empty
+// and avoiding an immediate repeat of the previous letter at the refill boundary.
+function drawNextLetterFromBag(
+  locale: string,
+  currentRemaining: string[],
+  currentDrawn: string[],
+  previousLetter: string | null,
+) {
   let remaining = [...currentRemaining];
   let drawn = [...currentDrawn];
 
@@ -54,28 +46,16 @@ function drawPinnedLetter(locale: string, currentRemaining: string[], currentDra
     drawn = [];
   }
 
-  const chosen = remaining.pop() ?? pickRandom(getLocaleLetters(locale));
+  let chosen = remaining.pop() ?? pickRandom(getLocaleLetters(locale));
+  if (chosen === previousLetter && remaining.length > 0) {
+    const swapIndex = remaining.length - 1;
+    const swap = remaining[swapIndex];
+    remaining[swapIndex] = chosen;
+    chosen = swap;
+  }
   drawn.push(chosen);
 
   return { chosen, remaining, drawn };
-}
-
-interface DrawNextLetterOptions {
-  locale: string;
-  mode: CategoryRefreshMode;
-  currentRemaining: string[];
-  currentDrawn: string[];
-  previousLetter: string | null;
-}
-
-function drawNextLetter(options: DrawNextLetterOptions) {
-  const { locale, mode, currentRemaining, currentDrawn, previousLetter } = options;
-
-  if (mode === 'auto') {
-    return drawAutoLetter(locale, previousLetter);
-  }
-
-  return drawPinnedLetter(locale, currentRemaining, currentDrawn);
 }
 
 function useRoundClock(phase: string, isPaused: boolean, dispatch: Dispatch<RoundAction>) {
@@ -191,129 +171,77 @@ function useRoundEffects(options: {
   useRoundCleanup(clearAlarmTimeout);
 }
 
-function useBeginRoundAction(params: {
+// biome-ignore lint/complexity/noExcessiveLinesPerFunction: the runSpin callback plus its dependency list are inherent; the draw logic already lives in drawNextLetterFromBag.
+function useSpinActions(params: {
+  bufferSeconds: number;
   clearAlarmTimeout: () => void;
   dispatch: Dispatch<RoundAction>;
-  drawNextLetterForLocale: (
-    remaining: string[],
-    drawn: string[],
-    previousLetter: string | null,
-  ) => {
-    chosen: string;
-    remaining: string[];
-    drawn: string[];
-  };
   gameSeconds: number;
+  locale: string;
   onLetterPicked: () => void;
   playLetterLand: () => void;
   roller: ReturnType<typeof useLetterRoller>;
   state: RoundState;
 }) {
   const {
+    bufferSeconds,
     clearAlarmTimeout,
     dispatch,
-    drawNextLetterForLocale,
     gameSeconds,
+    locale,
     onLetterPicked,
     playLetterLand,
     roller,
     state,
   } = params;
 
-  return useCallback(() => {
-    if (!canBeginRound(state)) {
-      return;
-    }
-
-    clearAlarmTimeout();
-    const { chosen, remaining, drawn } = drawNextLetterForLocale(
-      state.remainingLetters,
-      state.drawnLetters,
-      roller.letter === '?' ? null : roller.letter,
-    );
-    onLetterPicked();
-
-    dispatch({
-      type: 'START_SPIN',
-      gameSeconds,
-      remainingLetters: remaining,
-      drawnLetters: drawn,
-    });
-
-    roller.spinTo(chosen, () => {
-      playLetterLand();
-      dispatch({ type: 'LETTER_LANDED' });
-    });
-  }, [
-    clearAlarmTimeout,
-    dispatch,
-    drawNextLetterForLocale,
-    gameSeconds,
-    onLetterPicked,
-    playLetterLand,
-    roller,
-    state,
-  ]);
-}
-
-function useRerollLetterAction(
-  params: {
-    dispatch: Dispatch<RoundAction>;
-    drawNextLetterForLocale: (
-      remaining: string[],
-      drawn: string[],
-      previousLetter: string | null,
-    ) => {
-      chosen: string;
-      remaining: string[];
-      drawn: string[];
-    };
-    onLetterPicked: () => void;
-    roller: ReturnType<typeof useLetterRoller>;
-    state: RoundState;
-  },
-  beginRound: () => void,
-) {
-  const { dispatch, drawNextLetterForLocale, onLetterPicked, roller, state } = params;
-
-  return useCallback(() => {
-    if (state.phase === 'buffer' || state.phase === 'running') {
-      const { chosen, remaining, drawn } = drawNextLetterForLocale(
+  // Draws a new letter and spins. The countdown auto-starts when the letter
+  // lands. `redrawCategories` composes a fresh category set (false = keep the
+  // current deck — reroll).
+  const runSpin = useCallback(
+    (opts: { redrawCategories: boolean }) => {
+      clearAlarmTimeout();
+      const { chosen, remaining, drawn } = drawNextLetterFromBag(
+        locale,
         state.remainingLetters,
         state.drawnLetters,
         roller.letter === '?' ? null : roller.letter,
       );
-      onLetterPicked();
+      if (opts.redrawCategories) {
+        onLetterPicked();
+      }
 
-      roller.spinTo(chosen, () => undefined);
-      dispatch({ type: 'SYNC_BAGS', remainingLetters: remaining, drawnLetters: drawn });
-      return;
-    }
+      dispatch({
+        type: 'START_SPIN',
+        gameSeconds,
+        bufferSeconds,
+        remainingLetters: remaining,
+        drawnLetters: drawn,
+      });
 
-    beginRound();
-  }, [beginRound, dispatch, drawNextLetterForLocale, onLetterPicked, roller, state]);
-}
+      roller.spinTo(chosen, () => {
+        playLetterLand();
+        dispatch({ type: 'LETTER_LANDED' });
+      });
+    },
+    [
+      bufferSeconds,
+      clearAlarmTimeout,
+      dispatch,
+      gameSeconds,
+      locale,
+      onLetterPicked,
+      playLetterLand,
+      roller,
+      state,
+    ],
+  );
 
-function useRoundControlActions(params: {
-  clearAlarmTimeout: () => void;
-  dispatch: Dispatch<RoundAction>;
-  roller: ReturnType<typeof useLetterRoller>;
-}) {
-  const { clearAlarmTimeout, dispatch, roller } = params;
+  const beginRound = useCallback(() => runSpin({ redrawCategories: true }), [runSpin]);
+  const newLetter = useCallback(() => runSpin({ redrawCategories: false }), [runSpin]);
+  const nextRound = useCallback(() => runSpin({ redrawCategories: true }), [runSpin]);
 
-  const togglePause = useCallback(() => {
-    dispatch({ type: 'PAUSE_TOGGLE' });
-  }, [dispatch]);
-  const resetRound = useCallback(() => {
-    roller.reset();
-    clearAlarmTimeout();
-    dispatch({ type: 'RESET' });
-  }, [clearAlarmTimeout, dispatch, roller]);
-
-  return {
-    resetRound,
-    togglePause,
-  };
+  return { beginRound, newLetter, nextRound };
 }
 
 function useRoundRuntime() {
@@ -336,7 +264,7 @@ function useRoundRuntime() {
 interface CreateRoundResultOptions {
   state: RoundState;
   roller: ReturnType<typeof useLetterRoller>;
-  actions: RoundActions & { beginRound: () => void };
+  actions: RoundActions;
 }
 
 function createRoundResult({ state, roller, actions }: CreateRoundResultOptions) {
@@ -350,18 +278,19 @@ function createRoundResult({ state, roller, actions }: CreateRoundResultOptions)
     letterVisible: roller.visible,
     letterLanding: roller.landing,
     usedLetters: state.drawnLetters,
-    startRound: actions.startRound,
-    rerollLetter: actions.rerollLetter,
+    primaryAction: actions.primaryAction,
+    newLetter: actions.newLetter,
+    nextRound: actions.nextRound,
     togglePause: actions.togglePause,
-    resetRound: actions.resetRound,
   };
 }
 
+// biome-ignore lint/complexity/noExcessiveLinesPerFunction: composition hook already decomposed into useRoundEffects/useSpinActions/useRoundRuntime; what remains is hook wiring.
 export function useRound({
   gameSeconds,
+  bufferSeconds,
   isMuted,
   locale,
-  categoryRefreshMode,
   onLetterPicked = () => undefined,
 }: UseRoundOptions) {
   const [state, dispatch] = useReducer(roundReducer, initialRoundState);
@@ -369,17 +298,7 @@ export function useRound({
   const { playTick, playAlarm, playLetterLand } = useAudio(isMuted);
   const { alarmTimeoutRef, clearAlarmTimeout, tickedSecondRef } = useRoundRuntime();
   const resetRoller = roller.reset;
-  const drawNextLetterForLocale = useCallback(
-    (currentRemaining: string[], currentDrawn: string[], previousLetter: string | null) =>
-      drawNextLetter({
-        locale,
-        mode: categoryRefreshMode,
-        currentRemaining,
-        currentDrawn,
-        previousLetter,
-      }),
-    [categoryRefreshMode, locale],
-  );
+
   useRoundEffects({
     alarmTimeoutRef,
     clearAlarmTimeout,
@@ -391,38 +310,46 @@ export function useRound({
     tickedSecondRef,
   });
 
-  const beginRound = useBeginRoundAction({
+  // Apply live duration / get-ready changes to an in-flight round.
+  useEffect(() => {
+    dispatch({ type: 'SET_GAME_SECONDS', gameSeconds });
+  }, [gameSeconds]);
+  useEffect(() => {
+    dispatch({ type: 'SET_BUFFER_SECONDS', bufferSeconds });
+  }, [bufferSeconds]);
+
+  const { beginRound, newLetter, nextRound } = useSpinActions({
+    bufferSeconds,
     clearAlarmTimeout,
     dispatch,
-    drawNextLetterForLocale,
     gameSeconds,
+    locale,
     onLetterPicked,
     playLetterLand,
     roller,
     state,
   });
-  const rerollLetter = useRerollLetterAction(
-    {
-      dispatch,
-      drawNextLetterForLocale,
-      onLetterPicked,
-      roller,
-      state,
-    },
-    beginRound,
-  );
-  const { resetRound, togglePause } = useRoundControlActions({
-    clearAlarmTimeout,
-    dispatch,
-    roller,
-  });
-  const actions = {
-    beginRound,
-    rerollLetter,
-    resetRound,
-    startRound: beginRound,
-    togglePause,
-  } satisfies RoundActions & { beginRound: () => void };
+
+  const togglePause = useCallback(() => dispatch({ type: 'PAUSE_TOGGLE' }), []);
+
+  const primaryAction = useCallback(() => {
+    switch (state.phase) {
+      case 'idle':
+        beginRound();
+        break;
+      case 'done':
+        nextRound();
+        break;
+      case 'buffer':
+      case 'running':
+        togglePause();
+        break;
+      default:
+        break;
+    }
+  }, [state.phase, beginRound, nextRound, togglePause]);
+
+  const actions: RoundActions = { primaryAction, newLetter, nextRound, togglePause };
 
   return createRoundResult({ state, roller, actions });
 }

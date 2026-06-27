@@ -53,6 +53,7 @@ overrides:
 words:
   - Lierde
   - scattergories
+  - duinlab
   - Wikitext
   # Fonts
   - Avenir
@@ -62,6 +63,7 @@ words:
   # Common technical terms
   - CICD
   - geolocation
+  - oklch
   - htmlcov
   - nosniff
   - playmat
@@ -87,7 +89,6 @@ words:
   - huggingface
   - justfile
   - monkeypatch
-  - scattegories
   - testpaths
   - toupper
   - tqdm
@@ -120,6 +121,7 @@ words:
   - Υπερήρωες
   - Σίγαση
   - Ήχος
+  - δευτ
   # Longer forms for accessibility/tooltips
   - Απενεργοποίηση
   - Ενεργοποίηση

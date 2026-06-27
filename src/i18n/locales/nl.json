@@ -26,7 +26,8 @@
     "remove": "Verwijderen",
     "close": "✕",
     "addTooltip": "Voeg deze categorie toe aan je eigen verzameling",
-    "closeTooltip": "Sluit dit venster"
+    "closeTooltip": "Sluit dit venster",
+    "howToPlay": "Hoe te spelen"
   },
   "timer": {
     "ready": "Klaar",
@@ -60,46 +61,45 @@
     "summaryMode": "Bron: {{mode}}",
     "summaryDraw": "Loting: {{count}}",
     "pin": "Categorieën vastzetten",
-    "unpin": "Categorieën losmaken"
+    "unpin": "Categorieën losmaken",
+    "addSectionTitle": "Categorieën toevoegen",
+    "deckSectionTitle": "Jouw stapel",
+    "deckCount": "{{custom}} eigen · {{builtin}} standaard",
+    "removeAllCustom": "Alle eigen verwijderen",
+    "removeAllBuiltins": "Alle standaard verwijderen",
+    "drawUnit": "kaarten"
   },
   "usedLetters": "Gebruikte letters: {{letters}}{{empty}}",
   "usedLettersEmpty": "Geen",
   "shortcuts": "Sneltoetsen: Spatie starten, R nieuwe letter, P pauze, C categorieën tonen, A categorie toevoegen",
-  "footer": {
-    "howToPlay": "Hoe te spelen",
-    "officialGame": "Officieel Spel",
-    "sourceCode": "Broncode",
-    "privacy": "Deze app bewaart instellingen en categorieën alleen in je browser.",
-    "label": "Voettekst"
-  },
   "modal": {
-    "title": "Hoe speel je Scattergories",
-    "objective": "Doel",
+    "title": "Hoe te spelen",
     "objectiveText": "Verdien punten door woorden op te schrijven die beginnen met de gekozen letter en passen in de categorieën.",
     "gameplay": "Spelregels",
     "gameplayPoints": [
-      "Er wordt willekeurig een letter gekozen",
-      "Je hebt beperkte tijd (standaard 90 seconden) om antwoorden te vinden",
-      "Alle antwoorden moeten beginnen met de gekozen letter",
-      "Elke categorie moet een uniek antwoord hebben (geen dubbele woorden)"
-    ],
-    "scoring": "Puntentelling (met anderen)",
-    "scoringPoints": [
-      "1 punt: Je woord is uniek (niemand anders heeft het)",
-      "0 punten: Iemand anders heeft hetzelfde woord opgeschreven",
-      "Originele en creatieve antwoorden zijn vaak meer waard!"
+      "Er wordt willekeurig een letter getrokken — elk antwoord moet daarmee beginnen.",
+      "Schrijf vóór het einde van de timer (standaard 90 seconden) een woord voor elke categorie.",
+      "Gebruik voor elke categorie een ander woord, zonder herhaling.",
+      "Speel je met anderen? Je scoort 1 punt voor elk antwoord dat niemand anders had; dubbele antwoorden leveren 0 op, dus kies originele woorden."
     ],
     "categories": "Categorieën",
     "categoriesText": "Deze tool gebruikt categorieën uit het officiële spel. Je kunt ook eigen categorieën maken en mixen met de rest.",
-    "features": "Functies",
-    "featuresList": [
-      "Gebruik 'Andere Letter' (of druk op R) als een letter te moeilijk is",
-      "Gebruik de Pauze (of druk op P) tijdens een ronde om na te denken",
-      "Pas de duur van de timer aan in Instellingen",
-      "Je kunt het geluid op elk moment dempen",
-      "Alle instellingen worden automatisch opgeslagen"
+    "settings": "Instellingen",
+    "settingsIntro": "Je vindt ze onderaan het scherm — alles wordt automatisch opgeslagen.",
+    "settingsItems": [
+      "Timer — hoe lang elke ronde duurt en de afteltijd om klaar te staan ervoor.",
+      "Taal — wijzig de taal van de interface en de categorieën.",
+      "Geluid — demp of activeer de timer en het alarm.",
+      "Thema — wissel tussen lichte en donkere modus."
     ],
-    "footer": "Dit is een hulpmiddel voor het beheren van letters en tijd. Veel plezier met je vrienden!"
+    "shortcuts": "Sneltoetsen",
+    "about": "Over",
+    "officialGame": "Officieel Spel",
+    "sourceCode": "Broncode",
+    "privacy": "Deze app bewaart instellingen en categorieën alleen in je browser.",
+    "version": "Versie {{version}}",
+    "opensInNewTab": "(opent in een nieuw tabblad)",
+    "loading": "Regels openen…"
   },
   "language": {
     "label": "Taal",

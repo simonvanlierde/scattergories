@@ -5,13 +5,15 @@ import { formatSeconds } from '@/domain/game/utils';
 import { vibrate } from '@/shared/lib/haptics';
 
 const URGENT_THRESHOLD_SECONDS = 15;
+const CRITICAL_THRESHOLD_SECONDS = 5;
 const RING_RADIUS = 86;
 const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
 
-type Stage = 'idle' | 'calm' | 'urgent' | 'done';
+type Stage = 'idle' | 'getready' | 'calm' | 'urgent' | 'critical' | 'done';
 
 interface TimerRingProps {
   phase: Phase;
+  isPaused: boolean;
   secondsLeft: number;
   gameSeconds: number;
 }
@@ -24,19 +26,23 @@ function getTimerStage(phase: Phase, secondsLeft: number): Stage {
   if (phase === 'done') {
     return 'done';
   }
-  if (phase === 'buffer' || phase === 'running') {
+  // The get-ready/buffer phase is its own calm stage — never the urgency colors,
+  // even though its countdown is only a few seconds.
+  if (phase === 'buffer') {
+    return 'getready';
+  }
+  if (phase === 'running') {
+    if (secondsLeft <= CRITICAL_THRESHOLD_SECONDS) {
+      return 'critical';
+    }
     return secondsLeft <= URGENT_THRESHOLD_SECONDS ? 'urgent' : 'calm';
   }
   return 'idle';
 }
 
-function computeFraction(
-  phase: Phase,
-  isRunning: boolean,
-  secondsLeft: number,
-  gameSeconds: number,
-): number {
-  if (isRunning && gameSeconds > 0) {
+function computeFraction(phase: Phase, secondsLeft: number, gameSeconds: number): number {
+  // Only the live round drains the ring; get-ready shows a full, calm ring.
+  if (phase === 'running' && gameSeconds > 0) {
     return Math.max(0, Math.min(1, secondsLeft / gameSeconds));
   }
   if (phase === 'done') {
@@ -54,6 +60,8 @@ function useStageHaptics(stage: Stage) {
     }
     if (stage === 'urgent' && lastStageRef.current === 'calm') {
       vibrate('warning');
+    } else if (stage === 'critical') {
+      vibrate('warning');
     } else if (stage === 'done') {
       vibrate('strong');
     }
@@ -63,33 +71,47 @@ function useStageHaptics(stage: Stage) {
 
 function getLabel(
   t: ReturnType<typeof useTranslation>['t'],
-  phase: Phase,
-  isRunning: boolean,
-  secondsLeft: number,
+  o: { phase: Phase; isRunning: boolean; isPaused: boolean; secondsLeft: number },
 ): string {
-  if (phase === 'done') {
+  if (o.phase === 'done') {
     return t('timer.timeUp');
   }
-  if (isRunning) {
-    return formatSeconds(Math.max(0, secondsLeft));
+  if (o.isRunning && o.isPaused) {
+    return t('timer.paused', { defaultValue: 'Paused' });
+  }
+  if (o.phase === 'buffer') {
+    return t('timer.startIn', {
+      defaultValue: 'Start in {{seconds}}s',
+      seconds: Math.max(0, o.secondsLeft),
+    });
+  }
+  if (o.phase === 'running') {
+    return formatSeconds(Math.max(0, o.secondsLeft));
+  }
+  if (o.phase === 'spinning') {
+    return t('timer.getReady', { defaultValue: 'Get ready' });
   }
   return t('timer.ready', { defaultValue: 'Ready' });
 }
 
-export function TimerRing({ phase, secondsLeft, gameSeconds }: TimerRingProps) {
+function TimerRing({ phase, isPaused, secondsLeft, gameSeconds }: TimerRingProps) {
   const { t } = useTranslation();
   const stage = getTimerStage(phase, secondsLeft);
   const isRunning = phase === 'buffer' || phase === 'running';
 
   useStageHaptics(stage);
 
-  const fraction = computeFraction(phase, isRunning, secondsLeft, gameSeconds);
+  const fraction = computeFraction(phase, secondsLeft, gameSeconds);
   const dashOffset = RING_CIRCUMFERENCE * (1 - fraction);
-  const label = getLabel(t, phase, isRunning, secondsLeft);
+  const label = getLabel(t, { phase, isRunning, isPaused, secondsLeft });
 
   return (
     <div
-      className={joinClassNames('timer-ring', `timer-ring--${stage}`)}
+      className={joinClassNames(
+        'timer-ring',
+        `timer-ring--${stage}`,
+        isRunning && isPaused && 'timer-ring--paused',
+      )}
       data-testid="round-clock"
       role="timer"
       aria-label={t('round.timerLabel', { defaultValue: 'Round clock' })}
@@ -112,3 +134,5 @@ export function TimerRing({ phase, secondsLeft, gameSeconds }: TimerRingProps) {
     </div>
   );
 }
+
+export { getTimerStage, TimerRing };

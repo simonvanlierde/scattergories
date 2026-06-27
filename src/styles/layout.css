@@ -4,6 +4,7 @@
     min-height: 100dvh;
     overflow: clip;
     background: var(--bg-page);
+    color: var(--text-primary);
   }
 
   .app-shell__bg {
@@ -25,36 +26,36 @@
     max-height: 100dvh;
     margin: 0 auto;
     padding: calc(var(--space-4) + env(safe-area-inset-top, 0px)) env(safe-area-inset-right, 0px)
-      calc(var(--space-4) + env(safe-area-inset-bottom, 0px)) env(safe-area-inset-left, 0px);
-    display: grid;
+      calc(var(--space-2) + env(safe-area-inset-bottom, 0px)) env(safe-area-inset-left, 0px);
+    display: flex;
+    flex-direction: column;
     gap: var(--space-4);
-    grid-template-rows: auto auto minmax(0, 1fr) auto;
     overflow: auto;
   }
 
-  .topbar {
+  .controlbar {
     border: 0;
-    border-bottom: 1px solid var(--rule);
+    border-top: 1px solid var(--rule);
     border-radius: 0;
     background: transparent;
     box-shadow: none;
-    padding: var(--space-3) var(--space-4);
+    padding: var(--space-2) var(--space-4);
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     gap: var(--space-3);
     align-items: center;
+    flex: none;
   }
 
   .categories-card {
-    border: 1px solid var(--rule);
-    border-radius: var(--radius-md);
-    background: var(--bg-raised);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
     box-shadow: none;
-    padding: var(--space-6);
+    padding: 0;
   }
 
   .banner,
-  .app-footer,
   .app-loading,
   .app-error {
     border: 1px solid var(--rule);
@@ -63,37 +64,28 @@
     box-shadow: none;
   }
 
-  .app-footer {
-    border: 0;
-    border-top: 1px solid var(--rule);
-    border-radius: 0;
-    background: transparent;
-    padding: var(--space-3) var(--space-4);
-  }
-
-  .topbar__brand {
+  .controlbar__brand {
     display: flex;
     align-items: center;
     gap: var(--space-3);
     min-width: 0;
   }
 
-  .topbar__actions {
+  .controlbar__actions {
     display: flex;
     align-items: center;
     justify-content: end;
     gap: var(--space-2);
   }
 
-  .category-toolbar,
-  .app-footer,
-  .app-footer__links {
+  .category-toolbar {
     display: grid;
     gap: var(--space-3);
   }
 
   .play-grid {
     min-height: 0;
+    flex: 1 1 auto;
     display: grid;
     gap: var(--space-4);
     align-items: stretch;
@@ -111,9 +103,48 @@
     gap: var(--space-4);
   }
 
+  /* Single row when collapsed — a second `auto` track would add the card's row
+     gap below the header, making the divider overshoot it. */
   .categories-card--collapsed {
-    grid-template-rows: auto auto;
+    grid-template-rows: auto;
     align-self: start;
+  }
+
+  /* Chevron points the way the panel collapses: down/up on mobile (it folds
+     into a bar), left/right on desktop (it tucks to the side). Rotating one icon
+     keeps the transition smooth in both directions. */
+  .categories-card__chevron {
+    transition: transform var(--duration-normal) var(--ease-out);
+  }
+
+  .categories-card[data-open="true"] .categories-card__chevron {
+    transform: rotate(180deg);
+  }
+
+  /* The drawn list fades+slides in as the deck expands. */
+  .categories-card__content {
+    animation: deck-expand var(--duration-normal) var(--ease-out) both;
+  }
+
+  @keyframes deck-expand {
+    from {
+      opacity: 0;
+      transform: translateY(-0.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .categories-card__chevron {
+      transition: none;
+    }
+
+    .categories-card__content {
+      animation: none;
+    }
   }
 
   .categories-card__content,
@@ -128,18 +159,21 @@
     grid-template-rows: auto;
   }
 
+  /* Single row — the content holds only the drawn list; a second `auto` track
+     would add the content's row gap below it. */
   .categories-card__content--prompts-first {
-    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-rows: minmax(0, 1fr);
   }
 
   .drawn-categories {
     grid-template-rows: minmax(0, 1fr);
+    overflow-y: auto;
   }
 
-  .categories-card__actions {
-    display: grid;
-    gap: var(--space-3);
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .categories-card__header-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
   }
 
   .custom-list {
@@ -148,10 +182,6 @@
 
   .custom-list {
     overflow: auto;
-  }
-
-  .app-footer {
-    align-items: center;
   }
 
   .app-loading,
@@ -178,64 +208,132 @@
 
   @media (min-width: 52rem) {
     .app {
-      padding: var(--space-5) 0;
+      padding: var(--space-5) 0 var(--space-2);
       gap: var(--space-5);
     }
 
-    .topbar {
+    .controlbar {
       grid-template-columns: minmax(0, 1.3fr) auto;
     }
 
     .play-grid {
-      grid-template-columns: minmax(0, 1.2fr) minmax(22rem, 0.9fr);
+      grid-template-columns: minmax(0, 1fr) minmax(24rem, 1.25fr);
       min-height: min(42rem, calc(100dvh - 18rem));
     }
 
-    .app-footer {
-      grid-template-columns: auto minmax(0, 1fr);
-      justify-content: space-between;
+    /* Hairline rule separates the flattened hero and categories columns. */
+    .categories-card {
+      border-left: 1px solid var(--rule);
+      padding-left: var(--space-5);
     }
 
-    .app-footer__links {
-      grid-auto-flow: column;
+    /* Collapsed: one full-width track so the playmat centers on screen; the
+       categories header floats into the top-right corner over it (rather than
+       reserving a column that would push the playmat off-center). */
+    .play-grid--deck-collapsed {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+    }
+
+    .play-grid--deck-collapsed .playmat,
+    .play-grid--deck-collapsed .categories-card {
+      grid-row: 1;
+      grid-column: 1;
+    }
+
+    .play-grid--deck-collapsed .categories-card {
+      justify-self: end;
+      align-self: start;
+    }
+
+    /* Desktop chevron points right when open (collapses rightward), left when
+       collapsed (expands back leftward). */
+    .categories-card[data-open="true"] .categories-card__chevron {
+      transform: rotate(-90deg);
+    }
+
+    .categories-card[data-open="false"] .categories-card__chevron {
+      transform: rotate(90deg);
     }
   }
 
   @media (max-width: 51.99rem) {
     .app {
       width: min(100% - 1rem, 38rem);
-      grid-template-rows: auto auto minmax(0, 1fr);
       gap: var(--space-3);
     }
 
-    .categories-card__content {
-      max-height: min(28rem, 44dvh);
+    .controlbar h1 {
+      display: none;
     }
 
-    .categories-card__actions {
-      grid-template-columns: 1fr;
-    }
-
+    /* Open deck: the categories list fills the remaining height down to the
+       footer (no dead gap) and scrolls internally for overflow. */
     .play-grid {
-      align-content: start;
-      grid-auto-rows: max-content;
+      grid-template-rows: auto minmax(0, 1fr);
       padding-right: 0.1rem;
     }
 
+    /* Collapsed: header-only card stays content-height, packed at the top. */
+    .play-grid--deck-collapsed {
+      grid-template-rows: auto auto;
+      align-content: start;
+    }
+
+    /* biome-ignore lint/style/noDescendingSpecificity: the higher-specificity
+       .play-grid--deck-collapsed rules live in the mutually-exclusive min-width
+       breakpoint, so they never compete with these. */
     .playmat,
     .categories-card {
       position: relative;
     }
 
-    .topbar,
-    .playmat,
-    .categories-card,
-    .app-footer {
-      padding: var(--space-4);
+    .controlbar {
+      padding: var(--space-1) var(--space-4);
     }
 
-    .app-footer {
-      gap: var(--space-2);
+    /* Open: full-width hairline separates categories from the hero above. */
+    .categories-card {
+      border-top: 1px solid var(--rule);
+      padding-top: var(--space-4);
+    }
+
+    /* Collapsed: shorten the rule to hug just the header cluster (icon+chevron). */
+    .play-grid--deck-collapsed .categories-card {
+      border-top: 0;
+      padding-top: var(--space-3);
+    }
+
+    .play-grid--deck-collapsed .categories-card__heading {
+      border-top: 1px solid var(--rule);
+      padding-top: var(--space-2);
+    }
+
+    /* Open deck: stack the toggle + control icons in a vertical strip on the
+       left, so the category list starts at the top (a bit higher). */
+    .play-grid:not(.play-grid--deck-collapsed) .categories-card {
+      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1fr);
+      column-gap: var(--space-2);
+    }
+
+    .play-grid:not(.play-grid--deck-collapsed) .categories-card__content {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .play-grid:not(.play-grid--deck-collapsed) .categories-card__header {
+      grid-column: 1;
+      grid-row: 1;
+      flex-direction: column;
+      align-items: center;
+      align-self: start;
+      gap: var(--space-1);
+    }
+
+    .play-grid:not(.play-grid--deck-collapsed) .categories-card__heading,
+    .play-grid:not(.play-grid--deck-collapsed) .categories-card__header-actions {
+      flex-direction: column;
     }
   }
 }

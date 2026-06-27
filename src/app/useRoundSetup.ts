@@ -1,34 +1,15 @@
-import { useMemo } from 'react';
 import {
+  bufferSecondsDefault,
+  bufferSecondsMax,
+  bufferSecondsMin,
   catCountDefault,
   catCountMax,
   catCountMin,
-  categories,
   durationDefault,
   durationMax,
   durationMin,
 } from '@/domain/game/constants';
 import { clampInt } from '@/domain/game/utils';
-import type { CategoryMode } from '@/features/settings/schema';
-import { getPackCategories } from '@/shared/lib/categoryPacks';
-
-function getAvailableCategories(
-  categoryMode: CategoryMode,
-  activePack: string,
-  customCategories: string[],
-): string[] {
-  const packCategories = getPackCategories(activePack, categories);
-
-  if (categoryMode === 'default') {
-    return packCategories;
-  }
-
-  if (categoryMode === 'custom') {
-    return [...customCategories];
-  }
-
-  return Array.from(new Set([...packCategories, ...customCategories]));
-}
 
 function getNormalizedCategoryCount(categoryCount: number, availableCount: number): number {
   return Math.min(categoryCount, Math.max(catCountMin, availableCount));
@@ -36,27 +17,32 @@ function getNormalizedCategoryCount(categoryCount: number, availableCount: numbe
 
 function useRoundSetup(settings: {
   catCountInput: string;
-  categoryMode: CategoryMode;
-  activePack: string;
-  customCategories: string[];
   durationInput: string;
+  bufferSecondsInput: string;
+  deckBuiltins: string[];
+  customCategories: string[];
+  pinned: string[];
 }) {
   const gameSeconds = clampInt(settings.durationInput, durationMin, durationMax, durationDefault);
+  const bufferSeconds = clampInt(
+    settings.bufferSecondsInput,
+    bufferSecondsMin,
+    bufferSecondsMax,
+    bufferSecondsDefault,
+  );
   const categoryCount = clampInt(settings.catCountInput, catCountMin, catCountMax, catCountDefault);
-  const availableCategories = useMemo(
-    () =>
-      getAvailableCategories(settings.categoryMode, settings.activePack, settings.customCategories),
-    [settings.categoryMode, settings.activePack, settings.customCategories],
-  );
-  const normalizedCategoryCount = useMemo(
-    () => getNormalizedCategoryCount(categoryCount, availableCategories.length),
-    [availableCategories.length, categoryCount],
-  );
+
+  const availableCount = new Set([...settings.customCategories, ...settings.deckBuiltins]).size;
+  const normalizedCategoryCount = getNormalizedCategoryCount(categoryCount, availableCount);
 
   return {
-    availableCategories,
+    deckBuiltins: settings.deckBuiltins,
+    customCategories: settings.customCategories,
+    pinned: settings.pinned,
     gameSeconds,
+    bufferSeconds,
     normalizedCategoryCount,
+    availableCount,
   };
 }
 

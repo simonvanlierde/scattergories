@@ -24,8 +24,9 @@ describe('useSettings', () => {
       const { settings } = result.current;
       expect(settings.durationInput).toBe('90');
       expect(settings.catCountInput).toBe('12');
-      expect(settings.categoryMode).toBe('default');
-      expect(settings.categoryRefreshMode).toBe('auto');
+      expect(settings.bufferSecondsInput).toBe('3');
+      expect(settings.deckBuiltins.length).toBeGreaterThan(0);
+      expect(settings.pinned).toEqual([]);
       expect(settings.customCategories).toEqual([]);
       expect(settings.isMuted).toBe(false);
     });
@@ -67,21 +68,30 @@ describe('useSettings', () => {
     it('hydrates from existing localStorage on mount', () => {
       window.localStorage.setItem(
         SETTINGS_STORAGE_KEY,
-        JSON.stringify({ durationInput: '120', isMuted: true, categoryRefreshMode: 'pinned' }),
+        JSON.stringify({
+          durationInput: '120',
+          isMuted: true,
+          customCategories: ['Foo'],
+          pinned: ['Foo'],
+        }),
       );
       const { result } = renderHook(() => useSettings(), { wrapper });
       expect(result.current.settings.durationInput).toBe('120');
       expect(result.current.settings.isMuted).toBe(true);
-      expect(result.current.settings.categoryRefreshMode).toBe('pinned');
+      expect(result.current.settings.customCategories).toEqual(['Foo']);
+      expect(result.current.settings.pinned).toEqual(['Foo']);
     });
 
-    it('sanitizes invalid category refresh modes back to auto', () => {
+    it('migrates the legacy pack settings into a deck', () => {
       window.localStorage.setItem(
         SETTINGS_STORAGE_KEY,
-        JSON.stringify({ categoryRefreshMode: 'surprise-me' }),
+        JSON.stringify({ includePackCategories: false, customCategories: ['Foo'] }),
       );
       const { result } = renderHook(() => useSettings(), { wrapper });
-      expect(result.current.settings.categoryRefreshMode).toBe('auto');
+      // includePackCategories:false → no built-ins; customs auto-pin on migration.
+      expect(result.current.settings.deckBuiltins).toEqual([]);
+      expect(result.current.settings.customCategories).toEqual(['Foo']);
+      expect(result.current.settings.pinned).toEqual(['Foo']);
     });
 
     it('falls back to defaults on malformed JSON and rewrites storage', () => {
@@ -127,19 +137,20 @@ describe('useSettings', () => {
     });
   });
 
-  describe('addCustomCategory', () => {
-    it('adds a trimmed, non-empty category', () => {
+  describe('addCustom', () => {
+    it('adds a trimmed, non-empty category and pins it', () => {
       const { result } = renderHook(() => useSettings(), { wrapper });
       act(() => {
-        result.current.addCustomCategory('  Science  ');
+        result.current.addCustom('  Science  ');
       });
       expect(result.current.settings.customCategories).toEqual(['Science']);
+      expect(result.current.settings.pinned).toContain('Science');
     });
 
     it('ignores empty or whitespace-only input', () => {
       const { result } = renderHook(() => useSettings(), { wrapper });
       act(() => {
-        result.current.addCustomCategory('   ');
+        result.current.addCustom('   ');
       });
       expect(result.current.settings.customCategories).toEqual([]);
     });
@@ -147,24 +158,25 @@ describe('useSettings', () => {
     it('deduplicates case-insensitively', () => {
       const { result } = renderHook(() => useSettings(), { wrapper });
       act(() => {
-        result.current.addCustomCategory('Science');
-        result.current.addCustomCategory('science');
+        result.current.addCustom('Science');
+        result.current.addCustom('science');
       });
       expect(result.current.settings.customCategories).toEqual(['Science']);
     });
   });
 
-  describe('removeCustomCategory', () => {
-    it('removes an existing category', () => {
+  describe('removeCustom', () => {
+    it('removes an existing category and unpins it', () => {
       const { result } = renderHook(() => useSettings(), { wrapper });
       act(() => {
-        result.current.addCustomCategory('Science');
-        result.current.addCustomCategory('Art');
+        result.current.addCustom('Science');
+        result.current.addCustom('Art');
       });
       act(() => {
-        result.current.removeCustomCategory('Science');
+        result.current.removeCustom('Science');
       });
       expect(result.current.settings.customCategories).toEqual(['Art']);
+      expect(result.current.settings.pinned).not.toContain('Science');
     });
   });
 });

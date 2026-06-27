@@ -52,6 +52,5 @@ export const TITLE = /scattergories/i;
 export const GET_READY = /get ready/i;
 export const GO = /^go!$/i;
 export const ROUND_OVER = /round over/i;
-export const RESET = /reset/i;
 export const ROUND_BUTTON = /next letter|start round/i;
 export const APP_MIN_TIMER_SECONDS = '10';

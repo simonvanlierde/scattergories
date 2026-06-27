@@ -4,15 +4,13 @@ import { DEFAULT_DRAW_COUNT, DEFAULT_TIMER_SECONDS } from './test/gameConstants'
 import {
   DRAW_SUMMARY_PATTERN,
   openCustomizeDeck,
-  openSettings,
+  openTimerPopover,
   READY_SUMMARY_PATTERN,
   renderApp,
   resetAppTestState,
   SELECTED_CATEGORIES,
   SOURCE_SUMMARY_PATTERN,
 } from './test/renderApp';
-
-const SESSION_ROUND_TEXT = /session round/i;
 
 beforeEach(resetAppTestState);
 
@@ -25,7 +23,7 @@ it('renders the core app shell and primary controls', async () => {
 });
 
 it('keeps the main surface lean and categories outside the playmat', async () => {
-  const { user } = await renderApp();
+  await renderApp();
 
   expect(screen.queryByTestId('onboarding-banner')).not.toBeInTheDocument();
 
@@ -42,30 +40,29 @@ it('keeps the main surface lean and categories outside the playmat', async () =>
   expect(within(categoriesPanel).queryByText(SOURCE_SUMMARY_PATTERN)).not.toBeInTheDocument();
   expect(within(categoriesPanel).queryByText(DRAW_SUMMARY_PATTERN)).not.toBeInTheDocument();
   expect(within(categoriesPanel).queryByText(READY_SUMMARY_PATTERN)).not.toBeInTheDocument();
-
-  const settingsDialog = await openSettings(user);
-  expect(within(settingsDialog).queryByText('Achievements')).not.toBeInTheDocument();
 });
 
-it('groups secondary play controls by intent', async () => {
+it('keeps the playmat lean: mute lives in the top bar, round controls always rendered', async () => {
   await renderApp();
 
   const playmat = screen.getByRole('region', { name: 'Game board' });
 
-  expect(within(playmat).getByRole('group', { name: 'Round controls' })).toBeInTheDocument();
-  expect(
-    within(playmat).queryByRole('group', { name: 'Session controls' }),
-  ).not.toBeInTheDocument();
-  expect(within(playmat).getByRole('group', { name: 'Audio controls' })).toBeInTheDocument();
-  expect(within(playmat).queryByText(SESSION_ROUND_TEXT)).not.toBeInTheDocument();
+  // Secondary round controls are always present (disabled when unavailable) so the
+  // layout never shifts as the phase changes.
+  const roundControls = within(playmat).getByRole('group', { name: 'Round controls' });
+  expect(within(roundControls).getByRole('button', { name: 'New letter' })).toBeInTheDocument();
+  expect(within(roundControls).getByRole('button', { name: 'Next round' })).toBeInTheDocument();
+  // Mute is a borderless toggle in the top settings cluster, not on the playmat.
+  expect(screen.getByRole('button', { name: 'Mute' })).toBeInTheDocument();
+  expect(within(playmat).queryByRole('button', { name: 'Mute' })).not.toBeInTheDocument();
 });
 
 it('shows default editable settings in their owning dialogs', async () => {
   const { user } = await renderApp();
 
-  const settingsDialog = await openSettings(user);
-  expect(within(settingsDialog).getByLabelText('Timer')).toHaveValue(DEFAULT_TIMER_SECONDS);
-  expect(within(settingsDialog).queryByLabelText('Rounds')).not.toBeInTheDocument();
+  const timerPopover = await openTimerPopover(user);
+  expect(within(timerPopover).getByLabelText('Round')).toHaveValue(DEFAULT_TIMER_SECONDS);
+  expect(within(timerPopover).queryByLabelText('Rounds')).not.toBeInTheDocument();
   await user.keyboard('{Escape}');
 
   const customizeDialog = await openCustomizeDeck(user);
@@ -79,7 +76,7 @@ it('opens and dismisses the How To Play dialog', async () => {
 
   await user.click(screen.getByRole('button', { name: 'How to Play' }));
   expect(await screen.findByRole('dialog')).toBeInTheDocument();
-  expect(await screen.findByText('How to Play Scattergories')).toBeInTheDocument();
+  expect(await screen.findByRole('heading', { name: 'How to Play' })).toBeInTheDocument();
 
   await user.keyboard('{Escape}');
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument();

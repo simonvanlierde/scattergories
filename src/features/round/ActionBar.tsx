@@ -1,4 +1,4 @@
-import { Pause, Play, RotateCcw, Settings2, SkipForward, Volume2, VolumeX } from 'lucide-react';
+import { Pause, Play, RefreshCw, SkipForward } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Phase } from '@/domain/game/roundReducer';
@@ -9,124 +9,84 @@ import { IconButton } from '@/shared/ui/IconButton';
 interface ActionBarProps {
   phase: Phase;
   isPaused: boolean;
-  isMuted: boolean;
-  durationSeconds: number;
-  onStart: () => void;
-  onPause: () => void;
-  onSkip: () => void;
-  onReset: () => void;
-  onToggleMute: () => void;
-  onOpenSettings: () => void;
+  onPrimary: () => void;
+  onNewLetter: () => void;
+  onNextRound: () => void;
 }
 
 function ControlGroup({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <fieldset className="action-bar__group">
+    <fieldset className="action-bar__group action-bar__group--bare">
       <legend className="sr-only">{label}</legend>
       {children}
     </fieldset>
   );
 }
 
-function RoundTimerButton({
-  durationSeconds,
-  onClick,
-}: {
-  durationSeconds: number;
-  onClick: () => void;
-}) {
-  const { t } = useTranslation();
+type Translate = ReturnType<typeof useTranslation>['t'];
 
-  return (
-    <button
-      type="button"
-      className="round-timer-pill"
-      onClick={onClick}
-      aria-label={t('settings.paceLabel', {
-        defaultValue: 'Round timer — {{seconds}}s. Tap to change.',
-        seconds: durationSeconds,
-      })}
-    >
-      <Icon icon={Settings2} size={16} />
-      <span className="round-timer-pill__text">
-        {t('settings.pace', {
-          defaultValue: '{{seconds}}s',
-          seconds: durationSeconds,
-        })}
-      </span>
-    </button>
-  );
+function resolvePrimary(phase: Phase, isPaused: boolean, t: Translate) {
+  if (phase === 'spinning') {
+    return { label: t('buttons.spinning'), icon: Play };
+  }
+  if (phase === 'done') {
+    return { label: t('buttons.nextRound', { defaultValue: 'Next round' }), icon: Play };
+  }
+  if (phase === 'buffer' || phase === 'running') {
+    return isPaused
+      ? { label: t('buttons.resume'), icon: Play }
+      : { label: t('buttons.pause'), icon: Pause };
+  }
+  return { label: t('buttons.startRound'), icon: Play };
 }
 
 export function ActionBar({
   phase,
   isPaused,
-  isMuted,
-  durationSeconds,
-  onStart,
-  onPause,
-  onSkip,
-  onReset,
-  onToggleMute,
-  onOpenSettings,
+  onPrimary,
+  onNewLetter,
+  onNextRound,
 }: ActionBarProps) {
   const { t } = useTranslation();
-  const isSpinning = phase === 'spinning';
-  const primaryDisabled = isSpinning;
-  let primaryLabel = t('buttons.nextRound', { defaultValue: 'Next letter' });
-  if (isSpinning) {
-    primaryLabel = t('buttons.spinning');
-  } else if (phase === 'idle') {
-    primaryLabel = t('buttons.startRound');
-  }
-  const pauseLabel = isPaused ? t('buttons.resume') : t('buttons.pause');
-  const muteLabel = isMuted ? t('buttons.unmute') : t('buttons.mute');
+  const isPausedRound = (phase === 'buffer' || phase === 'running') && isPaused;
   const roundControlsLabel = t('controls.roundGroup', { defaultValue: 'Round controls' });
-  const audioControlsLabel = t('controls.audioGroup', { defaultValue: 'Audio controls' });
+
+  // New letter (reroll) — only while paused.
+  const showNewLetter = isPausedRound;
+  // Next round — while actively running or paused.
+  const showNextRound = phase === 'running' || isPausedRound;
+
+  const { label: primaryLabel, icon: primaryIcon } = resolvePrimary(phase, isPaused, t);
 
   return (
     <div className="action-bar">
       <Button
         variant="primary"
         size="lg"
-        fullWidth={true}
-        onClick={onStart}
-        disabled={primaryDisabled}
-        leadingIcon={<Icon icon={Play} size={20} />}
+        className="action-bar__primary"
+        onClick={onPrimary}
+        disabled={phase === 'spinning'}
+        leadingIcon={<Icon icon={primaryIcon} size={20} />}
       >
         {primaryLabel}
       </Button>
 
-      <div className="action-bar__groups">
-        <ControlGroup label={roundControlsLabel}>
-          <IconButton
-            label={pauseLabel}
-            icon={<Icon icon={isPaused ? Play : Pause} size={20} />}
-            onClick={onPause}
-          />
-          <IconButton
-            label={t('buttons.skipLetter')}
-            icon={<Icon icon={SkipForward} size={20} />}
-            onClick={onSkip}
-          />
-          <IconButton
-            label={t('buttons.reset')}
-            icon={<Icon icon={RotateCcw} size={20} />}
-            onClick={onReset}
-            className="action-bar__destructive"
-          />
-        </ControlGroup>
-        <ControlGroup label={t('settings.roundTimerTitle', { defaultValue: 'Round timer' })}>
-          <RoundTimerButton durationSeconds={durationSeconds} onClick={onOpenSettings} />
-        </ControlGroup>
-        <ControlGroup label={audioControlsLabel}>
-          <IconButton
-            label={muteLabel}
-            icon={<Icon icon={isMuted ? VolumeX : Volume2} size={20} />}
-            onClick={onToggleMute}
-          />
-        </ControlGroup>
-      </div>
+      {/* Always rendered so the layout never shifts — disabled (greyed) when the
+          action isn't available in the current phase. */}
+      <ControlGroup label={roundControlsLabel}>
+        <IconButton
+          label={t('buttons.newLetter', { defaultValue: 'New letter' })}
+          icon={<Icon icon={RefreshCw} size={20} />}
+          disabled={!showNewLetter}
+          onClick={onNewLetter}
+        />
+        <IconButton
+          label={t('buttons.nextRound', { defaultValue: 'Next round' })}
+          icon={<Icon icon={SkipForward} size={20} />}
+          disabled={!showNextRound}
+          onClick={onNextRound}
+        />
+      </ControlGroup>
     </div>
   );
 }

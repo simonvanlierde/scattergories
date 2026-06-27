@@ -8,7 +8,9 @@ export const letters = englishLetters;
 
 export const categories = Object.freeze(Object.keys(categoriesResourceEn));
 
-export const bufferSeconds = gameConstants.bufferSeconds;
+export const bufferSecondsMin = gameConstants.bufferSecondsMin;
+export const bufferSecondsMax = gameConstants.bufferSecondsMax;
+export const bufferSecondsDefault = gameConstants.bufferSecondsDefault;
 
 // Settings bounds and defaults
 export const durationMin = gameConstants.durationMin;

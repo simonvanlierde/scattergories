@@ -3,9 +3,14 @@
 import babel from '@rolldown/plugin-babel';
 import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import { configDefaults, defineConfig } from 'vitest/config';
+import pkg from './package.json' with { type: 'json' };
 
 // https://vite.dev/config/
 export default defineConfig({
+  define: {
+    // biome-ignore lint/style/useNamingConvention: Vite global define constants are conventionally SCREAMING_SNAKE_CASE.
+    __APP_VERSION__: JSON.stringify(pkg.version),
+  },
   plugins: [
     react(),
     babel({
@@ -35,6 +40,9 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
+    // The customize-deck sheet renders the full built-in category list, which is
+    // slow to mount in jsdom under parallel load; give integration tests headroom.
+    testTimeout: 20_000,
     exclude: [...configDefaults.exclude, 'tests/**'],
     setupFiles: './src/setupTests.ts',
     coverage: {

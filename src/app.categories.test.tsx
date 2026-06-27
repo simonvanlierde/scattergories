@@ -1,11 +1,9 @@
 import { screen, waitFor, within } from '@testing-library/react';
 import { beforeEach, expect, it } from 'vitest';
 import {
-  ADD_AT_LEAST_ONE_CUSTOM_CATEGORY,
   CUSTOM_CATEGORY,
   FOUR,
   KEYBOARD_CATEGORY,
-  NO_CUSTOM_CATEGORIES,
   ONLY_CUSTOM_CATEGORY,
   PERSISTED_CATEGORY,
 } from './test/constants';
@@ -18,12 +16,22 @@ import {
   selectedCategoryItems,
 } from './test/renderApp';
 
-const MAX_DRAW_COUNT = 999;
+const DECK_LABEL = 'Category deck';
+const EMPTY_DECK = /deck is empty/i;
 const MIN_VISIBLE_BOARD_ITEMS = 1;
 
 beforeEach(resetAppTestState);
 
-it('adds and removes a custom category', async () => {
+function deckRow(dialog: HTMLElement, name: string): HTMLElement {
+  const deck = within(dialog).getByRole('list', { name: DECK_LABEL });
+  const row = within(deck).getByText(name).closest('li');
+  if (!row) {
+    throw new Error(`No deck row for ${name}`);
+  }
+  return row as HTMLElement;
+}
+
+it('adds and removes a custom category from the deck', async () => {
   const { user } = await renderApp();
   const dialog = await openCustomizeDeck(user);
 
@@ -31,35 +39,36 @@ it('adds and removes a custom category', async () => {
   await user.type(input, CUSTOM_CATEGORY);
   await user.click(within(dialog).getByRole('button', { name: 'Add' }));
 
-  expect(within(dialog).getByRole('list', { name: 'Custom categories' })).toHaveTextContent(
-    CUSTOM_CATEGORY,
+  expect(within(dialog).getByRole('list', { name: DECK_LABEL })).toHaveTextContent(CUSTOM_CATEGORY);
+
+  await user.click(
+    within(deckRow(dialog, CUSTOM_CATEGORY)).getByRole('button', { name: 'Remove' }),
   );
 
-  await user.click(within(dialog).getByRole('button', { name: `Remove ${CUSTOM_CATEGORY}` }));
-
-  expect(within(dialog).queryByRole('list', { name: 'Custom categories' })).not.toBeInTheDocument();
-  expect(within(dialog).getByText(NO_CUSTOM_CATEGORIES)).toBeInTheDocument();
+  expect(within(dialog).getByRole('list', { name: DECK_LABEL })).not.toHaveTextContent(
+    CUSTOM_CATEGORY,
+  );
 });
 
-it('supports custom category entry and empty custom source feedback', async () => {
+it('shows guidance when the deck is emptied and accepts a custom entry', async () => {
   const { user } = await renderApp();
   const dialog = await openCustomizeDeck(user);
 
-  await user.selectOptions(within(dialog).getByRole('combobox', { name: 'Source' }), 'custom');
-  expect(screen.getByText(ADD_AT_LEAST_ONE_CUSTOM_CATEGORY)).toBeInTheDocument();
+  // Clearing built-ins (with no customs) empties the deck.
+  await user.click(within(dialog).getByRole('button', { name: 'Remove all built-in' }));
+  expect(within(dialog).getByText(EMPTY_DECK)).toBeInTheDocument();
 
   const input = within(dialog).getByRole('textbox', { name: 'Add custom category' });
   await user.type(input, `${KEYBOARD_CATEGORY}{Enter}`);
 
-  expect(within(dialog).getByRole('list', { name: 'Custom categories' })).toHaveTextContent(
+  expect(within(dialog).getByRole('list', { name: DECK_LABEL })).toHaveTextContent(
     KEYBOARD_CATEGORY,
   );
 });
 
-it('switches between default, custom, and mixed category sources', async () => {
+it('always shows custom categories and lets built-ins be cleared and re-added', async () => {
   const { user } = await renderApp();
   const dialog = await openCustomizeDeck(user);
-  const source = within(dialog).getByLabelText('Source');
 
   await user.type(
     within(dialog).getByRole('textbox', { name: 'Add custom category' }),
@@ -67,24 +76,23 @@ it('switches between default, custom, and mixed category sources', async () => {
   );
   await user.click(within(dialog).getByRole('button', { name: 'Add' }));
 
-  const drawInput = within(dialog).getAllByRole('spinbutton')[0];
-  await user.clear(drawInput);
-  await user.type(drawInput, String(MAX_DRAW_COUNT));
-  await user.tab();
-
-  await user.selectOptions(source, 'custom');
+  // The custom category appears in the drawn deck alongside built-ins.
   const drawnList = screen.getByRole('list', { name: SELECTED_CATEGORIES });
+  expect(drawnList).toHaveTextContent(ONLY_CUSTOM_CATEGORY);
+  expect(within(drawnList).getAllByRole('listitem').length).toBeGreaterThan(
+    MIN_VISIBLE_BOARD_ITEMS,
+  );
+
+  // Clearing built-ins leaves only the custom one.
+  await user.click(within(dialog).getByRole('button', { name: 'Remove all built-in' }));
   expect(within(drawnList).getAllByRole('listitem')).toHaveLength(MIN_VISIBLE_BOARD_ITEMS);
   expect(drawnList).toHaveTextContent(ONLY_CUSTOM_CATEGORY);
 
-  await user.selectOptions(source, 'default');
-  expect(selectedCategoryItems().length).toBeGreaterThan(MIN_VISIBLE_BOARD_ITEMS);
-  expect(screen.getByRole('list', { name: SELECTED_CATEGORIES })).not.toHaveTextContent(
-    ONLY_CUSTOM_CATEGORY,
-  );
-
-  await user.selectOptions(source, 'mixed');
-  expect(selectedCategoryItems().length).toBeGreaterThan(MIN_VISIBLE_BOARD_ITEMS);
+  // Adding a pack restores built-in fill.
+  await user.selectOptions(within(dialog).getByLabelText('Add a category pack'), 'foodie');
+  await waitFor(() => {
+    expect(selectedCategoryItems().length).toBeGreaterThan(MIN_VISIBLE_BOARD_ITEMS);
+  });
 });
 
 it('updates the drawn category count', async () => {
@@ -93,7 +101,7 @@ it('updates the drawn category count', async () => {
   await waitFor(() => expect(selectedCategoryItems()).toHaveLength(DEFAULT_DRAW_COUNT));
 
   const dialog = await openCustomizeDeck(user);
-  const drawInput = within(dialog).getAllByRole('spinbutton')[0];
+  const drawInput = within(dialog).getByLabelText('Draw');
   await user.clear(drawInput);
   await user.type(drawInput, String(FOUR));
   await user.tab();
@@ -115,7 +123,7 @@ it('persists custom categories across remount with the same localStorage', async
 
   const second = await renderApp();
   const remountedDialog = await openCustomizeDeck(second.user);
-  expect(
-    within(remountedDialog).getByRole('list', { name: 'Custom categories' }),
-  ).toHaveTextContent(PERSISTED_CATEGORY);
+  expect(within(remountedDialog).getByRole('list', { name: DECK_LABEL })).toHaveTextContent(
+    PERSISTED_CATEGORY,
+  );
 });
