@@ -5,10 +5,10 @@ import type { MutableRefObject } from 'react';
  * category deck roll, so they share an identical speed and duration.
  *
  * The roll flips fast at the start and decelerates (quadratically) toward a
- * 1.8s landing. Each flip calls `onFlip` (the caller decides what to show);
+ * 1.2s landing. Each flip calls `onFlip` (the caller decides what to show);
  * the final frame calls `onLanded`.
  */
-export const SPIN_MS = 1800;
+export const SPIN_MS = 1200;
 const BASE_FLIP_INTERVAL_MS = 60;
 const FLIP_INTERVAL_SPREAD_MS = 260;
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
