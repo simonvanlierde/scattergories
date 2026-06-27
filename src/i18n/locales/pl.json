@@ -61,45 +61,45 @@
     "summaryMode": "Źródło: {{mode}}",
     "summaryDraw": "Losowanie: {{count}}",
     "pin": "Przypnij kategorie",
-    "unpin": "Odepnij kategorie"
+    "unpin": "Odepnij kategorie",
+    "addSectionTitle": "Dodaj kategorie",
+    "deckSectionTitle": "Twoja talia",
+    "deckCount": "{{custom}} własne · {{builtin}} standardowe",
+    "removeAllCustom": "Usuń wszystkie własne",
+    "removeAllBuiltins": "Usuń wszystkie standardowe",
+    "drawUnit": "kart"
   },
   "usedLetters": "Użyte litery: {{letters}}{{empty}}",
   "usedLettersEmpty": "Brak",
   "shortcuts": "Skróty: Spacja start, R pomiń literę, P pauza, C pokaż hasła, A dodaj kategorię",
   "modal": {
-    "title": "O aplikacji & Jak grać",
-    "objective": "Cel gry",
+    "title": "Jak grać",
     "objectiveText": "Zdobywaj punkty, zapisując słowa, które zaczynają się na wylosowaną literę i pasują do wybranych kategorii.",
     "gameplay": "Zasady",
     "gameplayPoints": [
-      "Litera jest wybierana losowo i wyświetlana na ekranie",
-      "Masz ograniczony czas (domyślnie 90s) na znalezienie odpowiedzi",
-      "Wszystkie słowa muszą zaczynać się na wskazaną literę",
-      "Każda kategoria musi mieć unikalną odpowiedź (nie powtarzaj słów)"
-    ],
-    "scoring": "Punktacja (z innymi graczami)",
-    "scoringPoints": [
-      "1 punkt: Twoje słowo jest unikalne (nikt inny go nie zapisał)",
-      "0 punktów: Ktoś inny zapisał to samo słowo",
-      "Oryginalne i kreatywne odpowiedzi są zazwyczaj bezpieczniejsze!"
+      "Losowana jest litera — każda odpowiedź musi się od niej zaczynać.",
+      "Zanim skończy się czas (domyślnie 90 s), wpisz jedno słowo do każdej kategorii.",
+      "W każdej kategorii użyj innego słowa, bez powtórzeń.",
+      "Grasz z innymi? Zdobywasz 1 punkt za każdą odpowiedź, której nikt inny nie zapisał; powtórki dają 0, więc stawiaj na oryginalne słowa."
     ],
     "categories": "Kategorie",
     "categoriesText": "To narzędzie korzysta z kategorii z oficjalnej gry. Możesz też tworzyć własne kategorie i mieszać je ze standardowymi.",
-    "features": "Funkcje",
-    "featuresList": [
-      "Użyj przycisku Pomiń Literę (lub R), jeśli litera jest za trudna",
-      "Włącz Pauzę (lub P) podczas rundy, aby zyskać chwilę na zastanowienie",
-      "Dostosuj czas rundy w Ustawieniach",
-      "Możesz w każdej chwili wyciszyć dźwięk",
-      "Wszystkie ustawienia zapisują się automatycznie"
+    "settings": "Ustawienia",
+    "settingsIntro": "Znajdziesz je na dole ekranu — wszystko zapisuje się automatycznie.",
+    "settingsItems": [
+      "Czas rundy — jak długo trwa każda runda oraz odliczanie przygotowania przed startem.",
+      "Język — zmień język interfejsu i kategorii.",
+      "Dźwięk — wycisz lub włącz timer i alarm.",
+      "Motyw — przełączaj między trybem jasnym a ciemnym."
     ],
-    "footer": "To jest narzędzie pomocnicze do zarządzania literami i czasem. Miłej zabawy ze znajomymi!",
+    "shortcuts": "Skróty klawiszowe",
     "about": "O aplikacji",
     "officialGame": "Oficjalna Gra",
     "sourceCode": "Kod źródłowy",
     "privacy": "Ta aplikacja zapisuje ustawienia i kategorie wyłącznie w Twojej przeglądarce.",
     "version": "Wersja {{version}}",
-    "opensInNewTab": "(otwiera się w nowej karcie)"
+    "opensInNewTab": "(otwiera się w nowej karcie)",
+    "loading": "Otwieranie zasad…"
   },
   "language": {
     "label": "Język",

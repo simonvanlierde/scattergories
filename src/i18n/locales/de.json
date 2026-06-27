@@ -61,45 +61,45 @@
     "summaryMode": "Quelle: {{mode}}",
     "summaryDraw": "Ziehung: {{count}}",
     "pin": "Kategorien fixieren",
-    "unpin": "Kategorien lösen"
+    "unpin": "Kategorien lösen",
+    "addSectionTitle": "Kategorien hinzufügen",
+    "deckSectionTitle": "Dein Deck",
+    "deckCount": "{{custom}} eigene · {{builtin}} Standard",
+    "removeAllCustom": "Alle eigenen entfernen",
+    "removeAllBuiltins": "Alle Standard entfernen",
+    "drawUnit": "Karten"
   },
   "usedLetters": "Benutzte Buchstaben: {{letters}}{{empty}}",
   "usedLettersEmpty": "Keine",
   "shortcuts": "Shortcuts: Leertaste Start, R Buchstabe überspringen, P Pause, C Prompts umschalten, A Kategorie hinzufügen",
   "modal": {
-    "title": "Über & Spielanleitung",
-    "objective": "Ziel des Spiels",
+    "title": "Spielanleitung",
     "objectiveText": "Sammle Punkte, indem du Begriffe aufschreibst, die mit dem gewählten Buchstaben beginnen und in die jeweilige Kategorie passen.",
     "gameplay": "Ablauf",
     "gameplayPoints": [
-      "Ein Buchstabe wird zufällig ausgewählt",
-      "Du hast begrenzt Zeit (Standard: 90 Sek.), um Begriffe zu finden",
-      "Alle Antworten müssen mit dem gewählten Buchstaben beginnen",
-      "Jede Kategorie braucht eine eigene Antwort (keine Dopplungen)"
-    ],
-    "scoring": "Punktewertung (mit Mitspielern)",
-    "scoringPoints": [
-      "1 Punkt: Dein Begriff ist einzigartig (kein anderer hat ihn)",
-      "0 Punkte: Jemand anderes hat den gleichen Begriff",
-      "Kreative und seltene Antworten sind meist sicherer!"
+      "Ein zufälliger Buchstabe wird gezogen – jede Antwort muss damit beginnen.",
+      "Schreibe vor Ablauf des Timers (standardmäßig 90 Sek.) ein Wort für jede Kategorie.",
+      "Nutze für jede Kategorie ein anderes Wort, ohne Wiederholungen.",
+      "Mit Mitspielern? Du bekommst 1 Punkt für jede Antwort, die sonst niemand hat; Dopplungen zählen 0, also wähle kreative, seltene Antworten."
     ],
     "categories": "Kategorien",
     "categoriesText": "Dieses Tool nutzt Kategorien aus dem offiziellen Spiel. Du kannst auch eigene hinzufügen und diese mischen.",
-    "features": "Features",
-    "featuresList": [
-      "Nutze 'Anderer Buchstabe' (oder R), falls ein Buchstabe zu schwer ist",
-      "Pausiere mit P, um kurz nachzudenken",
-      "Passe das Zeitlimit in den Einstellungen an",
-      "Du kannst den Ton jederzeit stummschalten",
-      "Einstellungen werden automatisch gespeichert"
+    "settings": "Einstellungen",
+    "settingsIntro": "Du findest sie unten auf dem Bildschirm – alles wird automatisch gespeichert.",
+    "settingsItems": [
+      "Timer — wie lange jede Runde dauert und der Countdown zum Bereitmachen davor.",
+      "Sprache — ändere die Sprache der Oberfläche und der Kategorien.",
+      "Ton — schalte Timer und Alarm stumm oder wieder an.",
+      "Design — wechsle zwischen hellem und dunklem Modus."
     ],
-    "footer": "Dies ist ein Hilfstool für Buchstaben und Zeit. Viel Spaß beim Spielen!",
+    "shortcuts": "Tastenkürzel",
     "about": "Über",
     "officialGame": "Offizielles Spiel",
     "sourceCode": "Quellcode",
     "privacy": "Diese App speichert Einstellungen und Kategorien nur lokal im Browser.",
     "version": "Version {{version}}",
-    "opensInNewTab": "(öffnet in neuem Tab)"
+    "opensInNewTab": "(öffnet in neuem Tab)",
+    "loading": "Regeln werden geöffnet…"
   },
   "language": {
     "label": "Sprache",

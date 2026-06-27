@@ -61,45 +61,45 @@
     "summaryMode": "Fuente: {{mode}}",
     "summaryDraw": "Sorteo: {{count}}",
     "pin": "Fijar categorías",
-    "unpin": "Desfijar categorías"
+    "unpin": "Desfijar categorías",
+    "addSectionTitle": "Añadir categorías",
+    "deckSectionTitle": "Tu baraja",
+    "deckCount": "{{custom}} propias · {{builtin}} estándar",
+    "removeAllCustom": "Quitar todas las propias",
+    "removeAllBuiltins": "Quitar todas las estándar",
+    "drawUnit": "cartas"
   },
   "usedLetters": "Letras usadas: {{letters}}{{empty}}",
   "usedLettersEmpty": "Ninguna",
   "shortcuts": "Atajos: Espacio empezar, R saltar letra, P pausa, C mostrar temas, A añadir propia",
   "modal": {
-    "title": "Acerca de & Cómo Jugar",
-    "objective": "Objetivo",
+    "title": "Cómo Jugar",
     "objectiveText": "Gana puntos escribiendo palabras que empiecen por la letra dada y encajen en las categorías.",
     "gameplay": "Reglas de Juego",
     "gameplayPoints": [
-      "Se selecciona una letra al azar y se muestra en pantalla",
-      "Tienes un tiempo limitado (por defecto 90s) para escribir las respuestas",
-      "Todas las respuestas deben empezar por la letra indicada",
-      "Cada categoría debe tener una respuesta única (sin repetir palabras)"
-    ],
-    "scoring": "Puntuación (con otros jugadores)",
-    "scoringPoints": [
-      "1 punto: Tu palabra es única (nadie más la ha escrito)",
-      "0 puntos: Alguien más ha escrito la misma palabra",
-      "¡Las respuestas originales y creativas suelen valer más!"
+      "Se sortea una letra al azar: todas las respuestas deben empezar por ella.",
+      "Antes de que acabe el tiempo (90 s por defecto), escribe una palabra para cada categoría.",
+      "Usa una palabra distinta en cada categoría, sin repetir.",
+      "¿Juegas con otros? Ganas 1 punto por cada respuesta que nadie más escribió; las repetidas valen 0, así que busca respuestas originales."
     ],
     "categories": "Categorías",
     "categoriesText": "Esta herramienta utiliza categorías del juego oficial. También puedes crear las tuyas propias y mezclarlas.",
-    "features": "Funciones",
-    "featuresList": [
-      "Usa el botón de Saltar Letra (o pulsa R) si una letra es muy difícil",
-      "Activa la Pausa (pulsa P) durante la ronda para pensar",
-      "Ajusta la duración del temporizador en Ajustes",
-      "Silencia el sonido si es necesario",
-      "Todos los ajustes se guardan automáticamente"
+    "settings": "Ajustes",
+    "settingsIntro": "Los encontrarás en la parte inferior de la pantalla; todo se guarda automáticamente.",
+    "settingsItems": [
+      "Temporizador — cuánto dura cada ronda y la cuenta atrás de preparación antes de empezar.",
+      "Idioma — cambia el idioma de la interfaz y de las categorías.",
+      "Sonido — silencia o activa el temporizador y la alarma.",
+      "Tema — cambia entre el modo claro y oscuro."
     ],
-    "footer": "Esta es una herramienta de ayuda para gestionar letras y tiempo. ¡Diviértete con tus amigos!",
+    "shortcuts": "Atajos de teclado",
     "about": "Acerca de",
     "officialGame": "Juego Oficial",
     "sourceCode": "Código Fuente",
     "privacy": "Esta aplicación guarda los ajustes y categorías solo en tu navegador.",
     "version": "Versión {{version}}",
-    "opensInNewTab": "(se abre en una pestaña nueva)"
+    "opensInNewTab": "(se abre en una pestaña nueva)",
+    "loading": "Abriendo las reglas…"
   },
   "language": {
     "label": "Idioma",

@@ -61,45 +61,45 @@
     "summaryMode": "Fonte: {{mode}}",
     "summaryDraw": "Sorteggio: {{count}}",
     "pin": "Fissa categorie",
-    "unpin": "Sblocca categorie"
+    "unpin": "Sblocca categorie",
+    "addSectionTitle": "Aggiungi categorie",
+    "deckSectionTitle": "Il tuo mazzo",
+    "deckCount": "{{custom}} personali · {{builtin}} standard",
+    "removeAllCustom": "Rimuovi tutte le personali",
+    "removeAllBuiltins": "Rimuovi tutte le standard",
+    "drawUnit": "carte"
   },
   "usedLetters": "Lettere usate: {{letters}}{{empty}}",
   "usedLettersEmpty": "Nessuna",
   "shortcuts": "Scorciatoie: Spazio avvia, R salta lettera, P pausa, C mostra prompt, A aggiungi categoria",
   "modal": {
-    "title": "Informazioni & Come Giocare",
-    "objective": "Obiettivo",
+    "title": "Come Giocare",
     "objectiveText": "Guadagna punti scrivendo parole che iniziano con la lettera data e rientrano nelle categorie selezionate.",
     "gameplay": "Regole del Gioco",
     "gameplayPoints": [
-      "Una lettera viene scelta casualmente e mostrata",
-      "Hai un tempo limitato (default 90s) per scrivere le risposte",
-      "Tutte le risposte devono iniziare con la lettera indicata",
-      "Ogni categoria deve avere una risposta unica (niente doppioni)"
-    ],
-    "scoring": "Punteggio (con altri giocatori)",
-    "scoringPoints": [
-      "1 punto: La tua parola è unica (nessun altro l'ha scritta)",
-      "0 punti: Qualcun altro ha scritto la stessa parola",
-      "Le risposte originali e creative valgono di più!"
+      "Viene estratta una lettera a caso: tutte le risposte devono iniziare con essa.",
+      "Prima che scada il timer (90 s di default), scrivi una parola per ogni categoria.",
+      "Usa una parola diversa per ogni categoria, senza ripetizioni.",
+      "Giochi con altri? Guadagni 1 punto per ogni risposta che nessun altro ha scritto; i doppioni valgono 0, quindi punta su risposte originali."
     ],
     "categories": "Categorie",
     "categoriesText": "Questo strumento usa le categorie del gioco ufficiale. Puoi anche crearne di tue e mischiarle con quelle standard.",
-    "features": "Funzioni",
-    "featuresList": [
-      "Usa il tasto Salta Lettera (o premi R) se una lettera è troppo difficile",
-      "Usa la Pausa (premi P) durante il round per pensare",
-      "Regola la durata del timer nelle impostazioni",
-      "Disattiva l'audio se necessario",
-      "Tutte le impostazioni vengono salvate automaticamente"
+    "settings": "Impostazioni",
+    "settingsIntro": "Le trovi in fondo allo schermo; tutto si salva automaticamente.",
+    "settingsItems": [
+      "Timer — quanto dura ogni round e il conto alla rovescia di preparazione prima dell'inizio.",
+      "Lingua — cambia la lingua dell'interfaccia e delle categorie.",
+      "Audio — disattiva o attiva il timer e l'allarme.",
+      "Tema — passa dalla modalità chiara a quella scura."
     ],
-    "footer": "Questo è uno strumento di supporto per gestire lettere e tempo. Buon divertimento con gli amici!",
+    "shortcuts": "Scorciatoie da tastiera",
     "about": "Informazioni",
     "officialGame": "Gioco Ufficiale",
     "sourceCode": "Codice Sorgente",
     "privacy": "Questa app salva impostazioni e categorie solo nel tuo browser.",
     "version": "Versione {{version}}",
-    "opensInNewTab": "(si apre in una nuova scheda)"
+    "opensInNewTab": "(si apre in una nuova scheda)",
+    "loading": "Apertura delle regole…"
   },
   "language": {
     "label": "Lingua",

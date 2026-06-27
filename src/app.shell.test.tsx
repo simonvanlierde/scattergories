@@ -76,7 +76,7 @@ it('opens and dismisses the How To Play dialog', async () => {
 
   await user.click(screen.getByRole('button', { name: 'How to Play' }));
   expect(await screen.findByRole('dialog')).toBeInTheDocument();
-  expect(await screen.findByText('About & How to Play')).toBeInTheDocument();
+  expect(await screen.findByRole('heading', { name: 'How to Play' })).toBeInTheDocument();
 
   await user.keyboard('{Escape}');
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument();

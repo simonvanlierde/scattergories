@@ -61,45 +61,45 @@
     "summaryMode": "Source : {{mode}}",
     "summaryDraw": "Tirage : {{count}}",
     "pin": "Épingler les catégories",
-    "unpin": "Désépingler les catégories"
+    "unpin": "Désépingler les catégories",
+    "addSectionTitle": "Ajouter des catégories",
+    "deckSectionTitle": "Votre paquet",
+    "deckCount": "{{custom}} perso · {{builtin}} standard",
+    "removeAllCustom": "Supprimer toutes les perso",
+    "removeAllBuiltins": "Supprimer toutes les standard",
+    "drawUnit": "cartes"
   },
   "usedLetters": "Lettres utilisées : {{letters}}{{empty}}",
   "usedLettersEmpty": "Aucune pour l'instant",
   "shortcuts": "Raccourcis : Espace démarrer, R passer lettre, P pause, C afficher les thèmes, A ajouter catégorie",
   "modal": {
-    "title": "À propos & Comment jouer",
-    "objective": "Objectif",
+    "title": "Comment jouer",
     "objectiveText": "Marquez des points en écrivant des mots qui commencent par la lettre donnée et correspondent aux catégories.",
     "gameplay": "Déroulement",
     "gameplayPoints": [
-      "Une lettre est choisie au hasard et affichée",
-      "Vous avez un temps limité (90s par défaut) pour trouver les réponses",
-      "Toutes les réponses doivent commencer par la lettre imposée",
-      "Chaque catégorie doit avoir une réponse unique (pas de doublons)"
-    ],
-    "scoring": "Points (avec d'autres joueurs)",
-    "scoringPoints": [
-      "1 point : Votre mot est unique (personne d'autre ne l'a)",
-      "0 point : Quelqu'un d'autre a écrit le même mot",
-      "Les réponses originales et créatives sont souvent les meilleures !"
+      "Une lettre est tirée au hasard : toutes les réponses doivent commencer par elle.",
+      "Avant la fin du minuteur (90 s par défaut), écrivez un mot pour chaque catégorie.",
+      "Utilisez un mot différent pour chaque catégorie, sans répétition.",
+      "À plusieurs ? Vous marquez 1 point par réponse que personne d'autre n'a écrite ; les doublons valent 0, alors privilégiez les réponses originales."
     ],
     "categories": "Catégories",
     "categoriesText": "Cet outil utilise les catégories du jeu officiel. Vous pouvez aussi créer les vôtres et les mélanger aux autres.",
-    "features": "Fonctionnalités",
-    "featuresList": [
-      "Utilisez le bouton de changement de lettre (ou R) pour en obtenir une nouvelle",
-      "Utilisez la Pause (ou P) pendant une manche pour réfléchir",
-      "Ajustez la durée du minuteur dans les paramètres",
-      "Coupez le son si nécessaire",
-      "Tous les réglages sont sauvegardés automatiquement"
+    "settings": "Paramètres",
+    "settingsIntro": "Vous les trouverez en bas de l'écran ; tout est sauvegardé automatiquement.",
+    "settingsItems": [
+      "Minuteur — la durée de chaque manche et le compte à rebours de préparation avant le départ.",
+      "Langue — changez la langue de l'interface et des catégories.",
+      "Son — activez ou coupez le minuteur et l'alarme.",
+      "Thème — basculez entre le mode clair et sombre."
     ],
-    "footer": "Ceci est un outil d'aide pour gérer les lettres et le temps. Amusez-vous bien !",
+    "shortcuts": "Raccourcis clavier",
     "about": "À propos",
     "officialGame": "Jeu Officiel",
     "sourceCode": "Code Source",
     "privacy": "Cette application enregistre les réglages et catégories uniquement dans votre navigateur.",
     "version": "Version {{version}}",
-    "opensInNewTab": "(s'ouvre dans un nouvel onglet)"
+    "opensInNewTab": "(s'ouvre dans un nouvel onglet)",
+    "loading": "Ouverture des règles…"
   },
   "language": {
     "label": "Langue",

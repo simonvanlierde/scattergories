@@ -98,7 +98,6 @@
       "r": "Re-roll the current letter",
       "p": "Pause or resume",
       "c": "Toggle the categories panel",
-      "a": "Add a custom category",
       "help": "Open this shortcut list"
     }
   },
@@ -108,7 +107,7 @@
     "minimumRequired": "Add categories to your deck to play.",
     "drawnListLabel": "Selected categories",
     "deckLabel": "Category deck",
-    "deckCount": "{{custom}} custom / {{builtin}} built-in",
+    "deckCount": "{{custom}} custom · {{builtin}} built-in",
     "emptyDeck": "The deck is empty. Add a pack or a custom category.",
     "showDeck": "Open categories",
     "hideDeck": "Hide categories",
@@ -116,51 +115,47 @@
     "customizeTitle": "Customize deck",
     "addPack": "Add a category pack",
     "addPackPlaceholder": "Add a pack…",
-    "removeAllCustom": "Remove custom",
-    "removeAllBuiltins": "Remove built-in",
+    "removeAllCustom": "Remove all custom",
+    "removeAllBuiltins": "Remove all built-in",
     "pinOne": "Pin {{name}}",
     "unpinOne": "Unpin {{name}}",
     "pinAll": "Pin all",
-    "unpinAll": "Unpin all"
+    "unpinAll": "Unpin all",
+    "addSectionTitle": "Add categories",
+    "deckSectionTitle": "Your deck",
+    "drawUnit": "cards"
   },
   "usedLetters": "Used letters: {{letters}}{{empty}}",
   "usedLettersEmpty": "None yet",
   "shortcuts": "Shortcuts: Space start, R skip letter, P pause, C toggle categories, A add custom",
   "modal": {
-    "title": "About & How to Play",
-    "objective": "Objective",
-    "objectiveText": "Score points by writing down words that start with a given letter and fit the categories.",
+    "title": "How to Play",
+    "objectiveText": "Score points by writing words that fit each category and start with the drawn letter.",
     "gameplay": "Gameplay",
     "gameplayPoints": [
-      "A letter is randomly selected and displayed",
-      "You have a limited time (default 90 seconds) to write answers",
-      "All answers must start with the given letter",
-      "Each category must have a unique answer (no duplicates across categories)"
-    ],
-    "scoring": "Scoring (with another player)",
-    "scoringPoints": [
-      "1 point: Your word is unique (no one else wrote it)",
-      "0 points: Someone else also wrote the same word",
-      "Uncommon, creative answers are often more valuable!"
+      "A random letter is drawn — every answer must start with it.",
+      "Before the timer runs out (90 seconds by default), write one word for each category.",
+      "Use a different word for each category, with no repeats across your list.",
+      "Playing with others? Score 1 point for each answer nobody else wrote; matching answers score 0, so aim for creative, uncommon words."
     ],
     "categories": "Categories",
     "categoriesText": "This tool draws categories from the official Scattergories game. You can also create custom categories and mix them with the defaults.",
-    "features": "Features",
-    "featuresList": [
-      "Use the Skip Letter button (or press R) to get a new letter",
-      "Toggle Pause (press P) during a round to think",
-      "Adjust timer duration in Settings",
-      "Mute sound if needed",
-      "All settings are saved automatically"
+    "settings": "Settings",
+    "settingsIntro": "Find these at the bottom of the screen — everything saves automatically.",
+    "settingsItems": [
+      "Round timer — how long each round lasts, plus the get-ready countdown before it begins.",
+      "Language — change the interface and category language.",
+      "Sound — mute or unmute the timer ticks and alarm.",
+      "Theme — switch between light and dark mode."
     ],
-    "loading": "Opening rules…",
-    "footer": "This is a lightweight round companion for letters, timing, and prompts. Have fun with friends!",
+    "shortcuts": "Keyboard shortcuts",
     "about": "About",
     "officialGame": "Official Game",
     "sourceCode": "Source Code",
     "privacy": "This app stores settings and custom categories in your browser only.",
     "version": "Version {{version}}",
-    "opensInNewTab": "(opens in new tab)"
+    "opensInNewTab": "(opens in new tab)",
+    "loading": "Opening rules…"
   },
   "language": {
     "label": "Language",

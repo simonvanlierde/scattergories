@@ -40,13 +40,13 @@ function ControlBar({ game }: { game: GameController }) {
   const { t, i18n } = useTranslation();
 
   return (
-    <footer className="topbar">
-      <div className="topbar__brand">
+    <footer className="controlbar">
+      <div className="controlbar__brand">
         <BrandMark />
         <h1>{t('title')}</h1>
       </div>
 
-      <div className="topbar__actions">
+      <div className="controlbar__actions">
         <SettingsCluster
           language={i18n.resolvedLanguage ?? i18n.language}
           isLanguagePending={game.flags.isLanguagePending}

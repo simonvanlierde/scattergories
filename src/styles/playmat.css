@@ -8,13 +8,24 @@
     container-type: inline-size;
     display: grid;
     gap: var(--space-4);
-    padding: var(--space-5);
-    background: var(--bg-raised);
-    border: 1px solid var(--rule);
-    border-radius: var(--radius-md);
+    padding: var(--space-4) 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
     box-shadow: none;
     min-width: 0;
     min-height: 0;
+  }
+
+  /* Consistent ring↔controls gap on desktop, regardless of whether the
+     categories panel is open or collapsed. The playmat stretches taller when
+     categories are shown, so center its content (instead of letting the default
+     align-content spread the rows) to keep the gap at exactly --space-3. */
+  @media (min-width: 52rem) {
+    .playmat {
+      gap: var(--space-4);
+      align-content: center;
+    }
   }
 
   .playmat__meta {
@@ -96,11 +107,17 @@
     stroke-width: 4;
   }
 
+  /* Get-ready: a full, calm accent ring — visibly not the live/urgent countdown. */
+  .timer-ring--getready .timer-ring__progress {
+    stroke: var(--accent-primary);
+    stroke-width: 3;
+  }
+
   .timer-ring__readout {
     position: absolute;
     bottom: -0.5rem;
     padding: var(--space-1) var(--space-3);
-    background: var(--bg-raised);
+    background: var(--bg-page);
     border: 0;
     border-radius: 0;
     font-family: var(--font-numeric);
@@ -128,6 +145,12 @@
   .timer-ring--done .timer-ring__readout {
     color: var(--accent-primary);
     font-weight: 700;
+  }
+
+  /* "Start in Xs" reads as a calm accent prompt, but stays the same size as the
+     other readouts (Ready / the live clock) so the hero doesn't jump. */
+  .timer-ring--getready .timer-ring__readout {
+    color: var(--accent-primary);
   }
 
   /* ─── Paused state — dim the ring, surface a "Paused" readout ── */
@@ -219,7 +242,7 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    column-width: 13rem;
+    column-width: 15rem;
     column-gap: var(--space-2);
   }
 
@@ -233,9 +256,9 @@
   .category-checklist__chip {
     width: 100%;
     display: grid;
-    grid-template-columns: 1.75rem minmax(0, 1fr) auto;
+    grid-template-columns: 1.42rem minmax(0, 1fr) auto;
     align-items: center;
-    gap: var(--space-2);
+    gap: var(--space-1);
     min-height: 2.75rem;
     padding: var(--space-2) var(--space-3);
     border: 1px solid var(--rule);
@@ -273,7 +296,8 @@
   .category-checklist__mark {
     display: grid;
     place-items: center;
-    min-width: 1.75rem;
+    min-width: 1.25rem;
+    margin-inline-end: 0.25rem;
     color: var(--text-muted);
     font-family: var(--font-display);
     font-weight: 500;
@@ -283,10 +307,13 @@
   }
 
   /* Wrap long names onto multiple lines instead of truncating — drawn
-     categories are essential to read, and hover tooltips don't work on touch. */
+     categories are essential to read, and hover tooltips don't work on touch.
+     Wrap at word boundaries (break-word only splits a token as a last resort),
+     and balance the lines so a wrapped name never leaves a lonely orphan word. */
   .category-checklist__label {
     min-width: 0;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
+    text-wrap: balance;
     font-weight: 400;
     letter-spacing: var(--tracking-normal);
     line-height: var(--leading-snug);
@@ -342,15 +369,56 @@
     }
   }
 
+  /* On mobile, keep the drawn categories in a single full-width column so every
+     name reads on one line, and collapse the hero into a horizontal strip (timer
+     circle on the left, round controls beside it) so all 12 fit without scrolling. */
+  @media (max-width: 51.99rem) {
+    /* Compact horizontal hero (circle left, controls right) ONLY while the deck
+       is open and competing for vertical space. When the deck is collapsed there
+       is room, so the playmat keeps its full-size ring (controls below). */
+    .play-grid:not(.play-grid--deck-collapsed) .playmat {
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .play-grid:not(.play-grid--deck-collapsed) .playmat__hero {
+      width: min(36vw, 9rem);
+      margin: 0;
+    }
+
+    /* The letter glyph + readout are sized for the full circle — scale them to
+       the compact one. */
+    .play-grid:not(.play-grid--deck-collapsed) .letter-hero__glyph {
+      font-size: clamp(3rem, 14vw, 4rem);
+    }
+
+    .play-grid:not(.play-grid--deck-collapsed) .timer-ring__readout {
+      bottom: -0.35rem;
+      min-width: 3rem;
+      padding: var(--space-0-5) var(--space-2);
+      font-size: var(--text-lg);
+    }
+
+    .category-checklist__item {
+      margin-bottom: var(--space-1);
+    }
+
+    .category-checklist__chip {
+      min-height: 2.5rem;
+    }
+  }
+
   /* ─── Action Bar ─────────────────────────────────────────────── */
+  /* Primary action on top, the New letter / Next round controls stacked below. */
   .action-bar {
     display: flex;
-    align-items: center;
-    gap: var(--space-3);
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
   }
 
   .action-bar__primary {
-    flex: 1 1 auto;
     min-height: 3rem;
     box-shadow: none;
   }
@@ -380,20 +448,16 @@
   @container (min-width: 40rem) {
     .playmat {
       justify-items: center;
-      gap: var(--space-5);
-      padding: var(--space-7);
+      padding: var(--space-6) 0;
     }
 
     .playmat__meta {
       width: 100%;
     }
 
-    .playmat__hero {
-      width: min(100%, 24rem);
-    }
-
     .action-bar {
       width: min(100%, 32rem);
+      margin-inline: auto;
     }
   }
 
