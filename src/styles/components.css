@@ -110,49 +110,71 @@
     gap: var(--space-1);
   }
 
+  /* Quiet icon section title — the list itself is the focus. */
+  .categories-card__heading h2 {
+    display: inline-flex;
+    align-items: center;
+    color: var(--text-secondary);
+  }
+
   .category-toolbar--setup {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: end;
   }
 
   /* ─── Customize deck sheet ───────────────────────────────────── */
-  .deck-settings {
+  /* The sheet reads top-to-bottom as three tasks: configure, add, manage. */
+  .deck-section {
     display: grid;
     gap: var(--space-3);
   }
 
-  /* Keep the numeric draw-count field compact; let the switch row span full width. */
-  .deck-settings .ds-field {
-    max-width: 12rem;
-  }
-
-  .deck-list {
-    display: grid;
-    gap: var(--space-3);
-  }
-
-  .deck-list__toolbar {
+  .deck-section__head {
     display: flex;
     flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-1) var(--space-3);
+  }
+
+  .deck-section__title {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+  }
+
+  /* One-line draw control: "Draw: [n] cards", hugging its content. */
+  .deck-settings {
+    display: grid;
+    grid-template-columns: auto auto;
     align-items: center;
+    justify-content: start;
+    gap: var(--space-2);
+  }
+
+  /* Add controls: pack picker stacked above the custom-name row. */
+  .deck-add {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .deck-add__custom {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: var(--space-2);
   }
 
   .deck-list__pack {
-    flex: 1 1 14rem;
+    display: block;
     min-width: 0;
   }
 
   .deck-list__count {
-    margin-inline-start: auto;
     font-size: var(--text-sm);
     color: var(--text-secondary);
     font-variant-numeric: tabular-nums;
-  }
-
-  .deck-list__bulk {
-    display: inline-flex;
-    gap: var(--space-1);
   }
 
   .deck-list__items {
@@ -163,19 +185,6 @@
     overflow-y: auto;
     border: 1px solid var(--border-soft);
     border-radius: var(--radius-md);
-  }
-
-  /* Add-custom is the sticky first row of the deck list. */
-  .deck-list__add {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: var(--space-2);
-    padding: var(--space-2) var(--space-3);
-    background: var(--bg-raised);
-    border-bottom: 1px solid var(--border-soft);
   }
 
   .deck-list__empty {
@@ -189,7 +198,7 @@
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: var(--space-2);
-    padding: var(--space-2) var(--space-3);
+    padding: var(--space-1) var(--space-3);
     border-bottom: 1px solid var(--border-soft);
   }
 
@@ -213,10 +222,20 @@
     gap: var(--space-0-5);
   }
 
-  .deck-list__actions .ds-icon-button {
-    min-width: 2rem;
-    min-height: 2rem;
-    padding: var(--space-1);
+  /* Destructive bulk actions sit below the list — present but de-emphasized. */
+  .deck-list__bulk {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .deck-bulk-action {
+    color: var(--danger);
+  }
+
+  .deck-bulk-action:hover {
+    background: var(--danger-soft);
+    color: var(--danger);
   }
 
   .custom-list {

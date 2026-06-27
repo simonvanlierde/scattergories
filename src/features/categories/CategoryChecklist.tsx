@@ -6,7 +6,6 @@ interface CategoryChecklistProps {
   categories: string[];
   availableCount: number;
   landing?: boolean;
-  canEdit?: boolean;
   pinnedSet?: Set<string>;
   customSet?: Set<string>;
   onTogglePin?: (name: string) => void;
@@ -16,14 +15,15 @@ export function CategoryChecklist({
   categories,
   availableCount,
   landing = false,
-  canEdit = false,
   pinnedSet,
   customSet,
   onTogglePin,
 }: CategoryChecklistProps) {
   const { t } = useTranslation();
 
-  if (availableCount === 0) {
+  // Only show the "not enough categories" notice when nothing is drawn — a round
+  // already in progress keeps showing its drawn cards even if the deck is emptied.
+  if (availableCount === 0 && categories.length === 0) {
     return (
       <section className="category-checklist category-checklist--empty">
         <p className="category-checklist__empty">{t('categories.minimumRequired')}</p>
@@ -62,7 +62,6 @@ export function CategoryChecklist({
                     ? t('categories.unpinOne', { defaultValue: 'Unpin {{name}}', name: label })
                     : t('categories.pinOne', { defaultValue: 'Pin {{name}}', name: label })
                 }
-                disabled={!canEdit}
                 onClick={() => onTogglePin?.(category)}
               >
                 <span className="category-checklist__mark" aria-hidden="true">

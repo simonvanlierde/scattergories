@@ -111,7 +111,9 @@ function PlayGrid({ game }: PlayGridProps) {
   const canEdit = canEditDeck(game.round.phase, game.round.isPaused);
 
   return (
-    <section className="play-grid">
+    <section
+      className={`play-grid${game.flags.isPromptDeckOpen ? '' : ' play-grid--deck-collapsed'}`}
+    >
       <Playmat game={game} />
 
       <CategoriesPanel
@@ -122,6 +124,7 @@ function PlayGrid({ game }: PlayGridProps) {
           deckBuiltins: game.settings.deckBuiltins,
           pinned: game.settings.pinned,
           drawnCategories: game.categories.drawnCategories,
+          drawnCustomCategories: game.categories.drawnCustomCategories,
           isLanding: game.categories.isLanding,
           isPromptDeckOpen: game.flags.isPromptDeckOpen,
           canEdit,
@@ -140,6 +143,7 @@ function PlayGrid({ game }: PlayGridProps) {
           onRedraw: game.controls.onRedrawCategories,
           onTogglePinAll: game.controls.onTogglePinAll,
           onTogglePromptDeck: game.controls.onTogglePromptDeck,
+          onTogglePause: game.controls.onTogglePause,
         }}
       />
     </section>

@@ -55,7 +55,7 @@ it('shows guidance when the deck is emptied and accepts a custom entry', async (
   const dialog = await openCustomizeDeck(user);
 
   // Clearing built-ins (with no customs) empties the deck.
-  await user.click(within(dialog).getByRole('button', { name: 'Remove built-in' }));
+  await user.click(within(dialog).getByRole('button', { name: 'Remove all built-in' }));
   expect(within(dialog).getByText(EMPTY_DECK)).toBeInTheDocument();
 
   const input = within(dialog).getByRole('textbox', { name: 'Add custom category' });
@@ -84,7 +84,7 @@ it('always shows custom categories and lets built-ins be cleared and re-added', 
   );
 
   // Clearing built-ins leaves only the custom one.
-  await user.click(within(dialog).getByRole('button', { name: 'Remove built-in' }));
+  await user.click(within(dialog).getByRole('button', { name: 'Remove all built-in' }));
   expect(within(drawnList).getAllByRole('listitem')).toHaveLength(MIN_VISIBLE_BOARD_ITEMS);
   expect(drawnList).toHaveTextContent(ONLY_CUSTOM_CATEGORY);
 

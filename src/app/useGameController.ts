@@ -1,5 +1,5 @@
 import type { RefObject } from 'react';
-import { type ComponentType, lazy } from 'react';
+import { type ComponentType, lazy, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Phase, StatusKey } from '@/domain/game/roundReducer';
 import { useRound } from '@/features/round/useRound';
@@ -17,6 +17,7 @@ interface GameController {
   categories: {
     availableCount: number;
     drawnCategories: string[];
+    drawnCustomCategories: string[];
     isLanding: boolean;
     isCompactLayout: boolean;
     isPromptDeckOpen: boolean;
@@ -110,11 +111,15 @@ function useGameController(): GameController {
   const { i18n } = useTranslation();
   const promptDeck = usePromptDeckState(settings.promptDeckPreference, update);
   const roundSetup = useRoundSetup(settings);
+  // True while a round is mid-flight (buffer/running, paused or not). Deck edits
+  // made during a round are deferred to the next redraw rather than applied live.
+  const roundInProgressRef = useRef(false);
   const board = useCategoryBoard({
     customCategories: roundSetup.customCategories,
     deckBuiltins: roundSetup.deckBuiltins,
     pinned: roundSetup.pinned,
     count: roundSetup.normalizedCategoryCount,
+    deferComposeRef: roundInProgressRef,
   });
   const round = useRound({
     gameSeconds: roundSetup.gameSeconds,
@@ -123,6 +128,7 @@ function useGameController(): GameController {
     locale: i18n.resolvedLanguage ?? i18n.language,
     onLetterPicked: () => board.redrawCategories(true),
   });
+  roundInProgressRef.current = round.phase === 'buffer' || round.phase === 'running';
   const controls = useAppControls({
     i18n,
     settings,
@@ -139,6 +145,7 @@ function useGameController(): GameController {
     categories: {
       availableCount: roundSetup.availableCount,
       drawnCategories: board.drawnCategories,
+      drawnCustomCategories: board.drawnCustom,
       isLanding: board.landing,
       isCompactLayout: promptDeck.isCompactLayout,
       isPromptDeckOpen: promptDeck.isPromptDeckOpen,

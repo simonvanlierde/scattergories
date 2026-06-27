@@ -103,9 +103,48 @@
     gap: var(--space-4);
   }
 
+  /* Single row when collapsed — a second `auto` track would add the card's row
+     gap below the header, making the divider overshoot it. */
   .categories-card--collapsed {
-    grid-template-rows: auto auto;
+    grid-template-rows: auto;
     align-self: start;
+  }
+
+  /* Chevron points the way the panel collapses: down/up on mobile (it folds
+     into a bar), left/right on desktop (it tucks to the side). Rotating one icon
+     keeps the transition smooth in both directions. */
+  .categories-card__chevron {
+    transition: transform var(--duration-normal) var(--ease-out);
+  }
+
+  .categories-card[data-open="true"] .categories-card__chevron {
+    transform: rotate(180deg);
+  }
+
+  /* The drawn list fades+slides in as the deck expands. */
+  .categories-card__content {
+    animation: deck-expand var(--duration-normal) var(--ease-out) both;
+  }
+
+  @keyframes deck-expand {
+    from {
+      opacity: 0;
+      transform: translateY(-0.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .categories-card__chevron {
+      transition: none;
+    }
+
+    .categories-card__content {
+      animation: none;
+    }
   }
 
   .categories-card__content,
@@ -120,8 +159,10 @@
     grid-template-rows: auto;
   }
 
+  /* Single row — the content holds only the drawn list; a second `auto` track
+     would add the content's row gap below it. */
   .categories-card__content--prompts-first {
-    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-rows: minmax(0, 1fr);
   }
 
   .drawn-categories {
@@ -167,7 +208,7 @@
 
   @media (min-width: 52rem) {
     .app {
-      padding: var(--space-5) 0;
+      padding: var(--space-5) 0 var(--space-2);
       gap: var(--space-5);
     }
 
@@ -185,6 +226,35 @@
       border-left: 1px solid var(--rule);
       padding-left: var(--space-5);
     }
+
+    /* Collapsed: one full-width track so the playmat centers on screen; the
+       categories header floats into the top-right corner over it (rather than
+       reserving a column that would push the playmat off-center). */
+    .play-grid--deck-collapsed {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+    }
+
+    .play-grid--deck-collapsed .playmat,
+    .play-grid--deck-collapsed .categories-card {
+      grid-row: 1;
+      grid-column: 1;
+    }
+
+    .play-grid--deck-collapsed .categories-card {
+      justify-self: end;
+      align-self: start;
+    }
+
+    /* Desktop chevron points right when open (collapses rightward), left when
+       collapsed (expands back leftward). */
+    .categories-card[data-open="true"] .categories-card__chevron {
+      transform: rotate(-90deg);
+    }
+
+    .categories-card[data-open="false"] .categories-card__chevron {
+      transform: rotate(90deg);
+    }
   }
 
   @media (max-width: 51.99rem) {
@@ -197,14 +267,17 @@
       display: none;
     }
 
-    .categories-card__content {
-      max-height: min(30rem, 52dvh);
+    /* Open deck: the categories list fills the remaining height down to the
+       footer (no dead gap) and scrolls internally for overflow. */
+    .play-grid {
+      grid-template-rows: auto minmax(0, 1fr);
+      padding-right: 0.1rem;
     }
 
-    .play-grid {
+    /* Collapsed: header-only card stays content-height, packed at the top. */
+    .play-grid--deck-collapsed {
+      grid-template-rows: auto auto;
       align-content: start;
-      grid-auto-rows: max-content;
-      padding-right: 0.1rem;
     }
 
     .playmat,
@@ -213,13 +286,51 @@
     }
 
     .controlbar {
-      padding: var(--space-2) var(--space-4);
+      padding: var(--space-1) var(--space-4);
     }
 
-    /* Stacked layout: hairline rule separates categories from the hero above. */
+    /* Open: full-width hairline separates categories from the hero above. */
     .categories-card {
       border-top: 1px solid var(--rule);
       padding-top: var(--space-4);
+    }
+
+    /* Collapsed: shorten the rule to hug just the header cluster (icon+chevron). */
+    .play-grid--deck-collapsed .categories-card {
+      border-top: 0;
+      padding-top: var(--space-3);
+    }
+
+    .play-grid--deck-collapsed .categories-card__heading {
+      border-top: 1px solid var(--rule);
+      padding-top: var(--space-2);
+    }
+
+    /* Open deck: stack the toggle + control icons in a vertical strip on the
+       left, so the category list starts at the top (a bit higher). */
+    .play-grid:not(.play-grid--deck-collapsed) .categories-card {
+      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1fr);
+      column-gap: var(--space-2);
+    }
+
+    .play-grid:not(.play-grid--deck-collapsed) .categories-card__content {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .play-grid:not(.play-grid--deck-collapsed) .categories-card__header {
+      grid-column: 1;
+      grid-row: 1;
+      flex-direction: column;
+      align-items: center;
+      align-self: start;
+      gap: var(--space-1);
+    }
+
+    .play-grid:not(.play-grid--deck-collapsed) .categories-card__heading,
+    .play-grid:not(.play-grid--deck-collapsed) .categories-card__header-actions {
+      flex-direction: column;
     }
   }
 }

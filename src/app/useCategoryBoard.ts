@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { type RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { pickRandom } from '@/domain/game/utils';
 import { prefersReducedMotion, runRoll } from '@/features/round/rollAnimation';
 import { composeDeck } from '@/shared/lib/deck';
@@ -8,11 +8,19 @@ interface UseCategoryBoardParams {
   deckBuiltins: string[];
   pinned: string[];
   count: number;
+  /**
+   * When `.current` is true (a round is in progress), deck edits are NOT applied
+   * to the drawn categories instantly — they take effect on the next redraw.
+   */
+  deferComposeRef?: RefObject<boolean>;
 }
 
 function useCategoryBoard(params: UseCategoryBoardParams) {
-  const { customCategories, deckBuiltins, pinned, count } = params;
+  const { customCategories, deckBuiltins, pinned, count, deferComposeRef } = params;
   const [displayCategories, setDisplayCategories] = useState<string[]>([]);
+  // Which drawn names were custom AT DRAW TIME. Snapshotted alongside the deck so
+  // a round's "custom" styling stays frozen even if the deck is edited mid-round.
+  const [drawnCustom, setDrawnCustom] = useState<string[]>([]);
   const [landing, setLanding] = useState(false);
   const spinIdRef = useRef(0);
 
@@ -39,11 +47,13 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
       spinIdRef.current += 1;
       setLanding(false);
 
+      const customSnapshot = deck.filter((name) => customCategories.includes(name));
       const pinnedSet = new Set(currentPinned);
       const fillSlotCount = deck.reduce((n, name) => (pinnedSet.has(name) ? n : n + 1), 0);
       const canAnimate = animate && fillSlotCount > 0 && pool.length > 0 && !prefersReducedMotion();
       if (!canAnimate) {
         setDisplayCategories(deck);
+        setDrawnCustom(customSnapshot);
         return;
       }
 
@@ -55,6 +65,7 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
         },
         onLanded: () => {
           setDisplayCategories(deck);
+          setDrawnCustom(customSnapshot);
           setLanding(true);
         },
         spinId,
@@ -68,12 +79,20 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
   // edits, count changes. Pin toggles deliberately don't recompose (they keep
   // the current order). Animated redraws come from round start / the Redraw
   // button via redrawCategories(true).
+  //
+  // While a round is in progress, deck edits are deferred: the compose is
+  // skipped so the drawn categories stay put, and the edits are picked up on the
+  // next redraw (next round / Redraw button).
   useEffect(() => {
+    if (deferComposeRef?.current) {
+      return;
+    }
     redrawCategories(false);
-  }, [redrawCategories]);
+  }, [redrawCategories, deferComposeRef]);
 
   return {
     drawnCategories: displayCategories,
+    drawnCustom,
     landing,
     redrawCategories,
   };
