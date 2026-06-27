@@ -1,13 +1,18 @@
 import { Check, Globe, Moon, Sun, Timer, Volume2, VolumeX } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  bufferSecondsDefault,
   bufferSecondsMax,
   bufferSecondsMin,
+  durationDefault,
   durationMax,
   durationMin,
 } from '@/domain/game/constants';
+import { clampInt } from '@/domain/game/utils';
 import { getEnabledLocales, isLocaleEnabled } from '@/i18n/localeHealth';
 import { getNativeName, SUPPORTED_LOCALES } from '@/i18n/localeRegistry';
+import { useDebouncedCommit } from '@/shared/lib/useDebouncedCommit';
 import { Field } from '@/shared/ui/Field';
 import { Icon } from '@/shared/ui/Icon';
 import { IconButton } from '@/shared/ui/IconButton';
@@ -68,44 +73,135 @@ function LanguageMenu({
   );
 }
 
+interface NumericTimingFieldProps {
+  field: TimingField;
+  id: string;
+  label: string;
+  value: string;
+  min: number;
+  max: number;
+  fallback: number;
+  onCommit: (field: TimingField, value: string) => void;
+}
+
+function NumericTimingField({
+  field,
+  id,
+  label,
+  value,
+  min,
+  max,
+  fallback,
+  onCommit,
+}: NumericTimingFieldProps) {
+  const [draft, setDraft] = useState(value);
+  const isFocusedRef = useRef(false);
+
+  // Reflect external changes to the prop while the user is not editing.
+  useEffect(() => {
+    if (!isFocusedRef.current) {
+      setDraft(value);
+    }
+  }, [value]);
+
+  const commit = useCallback(
+    (raw: string) => {
+      onCommit(field, String(clampInt(raw, min, max, fallback)));
+    },
+    [onCommit, field, min, max, fallback],
+  );
+
+  const { schedule, cancel } = useDebouncedCommit(commit);
+
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const next = event.target.value;
+      setDraft(next);
+      schedule(next);
+    },
+    [schedule],
+  );
+
+  const handleBlur = useCallback(() => {
+    isFocusedRef.current = false;
+    cancel();
+    const clamped = String(clampInt(draft, min, max, fallback));
+    setDraft(clamped);
+    onCommit(field, clamped);
+  }, [cancel, draft, min, max, fallback, onCommit, field]);
+
+  // Enter commits (by blurring the field).
+  const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.currentTarget.blur();
+    }
+  }, []);
+
+  // Flush a pending edit if the field unmounts before onBlur fires — e.g. the
+  // popover is closed by an outside click while the input still has focus.
+  const draftRef = useRef(draft);
+  draftRef.current = draft;
+  const valueRef = useRef(value);
+  valueRef.current = value;
+  const flushRef = useRef<() => void>(() => undefined);
+  flushRef.current = () => {
+    cancel();
+    const clamped = String(clampInt(draftRef.current, min, max, fallback));
+    if (clamped !== valueRef.current) {
+      onCommit(field, clamped);
+    }
+  };
+  useEffect(() => () => flushRef.current(), []);
+
+  return (
+    <Field
+      className="ds-field--inline"
+      id={id}
+      label={label}
+      type="number"
+      inputMode="numeric"
+      value={draft}
+      min={min}
+      max={max}
+      suffix="s"
+      onFocus={() => {
+        isFocusedRef.current = true;
+      }}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      onKeyDown={handleKeyDown}
+    />
+  );
+}
+
 function TimingFields({
   durationInput,
   bufferSecondsInput,
   onUpdateTimingField,
-  onBlurTimingField,
-}: Pick<
-  SettingsClusterProps,
-  'durationInput' | 'bufferSecondsInput' | 'onUpdateTimingField' | 'onBlurTimingField'
->) {
+}: Pick<SettingsClusterProps, 'durationInput' | 'bufferSecondsInput' | 'onUpdateTimingField'>) {
   const { t } = useTranslation();
 
   return (
     <div className="timing-fields">
-      <Field
-        className="ds-field--inline"
+      <NumericTimingField
+        field="durationInput"
         id="duration"
         label={t('settings.duration')}
-        type="number"
-        inputMode="numeric"
         value={durationInput}
         min={durationMin}
         max={durationMax}
-        suffix="s"
-        onChange={(event) => onUpdateTimingField('durationInput', event.target.value)}
-        onBlur={() => onBlurTimingField('durationInput')}
+        fallback={durationDefault}
+        onCommit={onUpdateTimingField}
       />
-      <Field
-        className="ds-field--inline"
+      <NumericTimingField
+        field="bufferSecondsInput"
         id="getReady"
         label={t('settings.getReady', { defaultValue: 'Get ready' })}
-        type="number"
-        inputMode="numeric"
         value={bufferSecondsInput}
         min={bufferSecondsMin}
         max={bufferSecondsMax}
-        suffix="s"
-        onChange={(event) => onUpdateTimingField('bufferSecondsInput', event.target.value)}
-        onBlur={() => onBlurTimingField('bufferSecondsInput')}
+        fallback={bufferSecondsDefault}
+        onCommit={onUpdateTimingField}
       />
     </div>
   );
@@ -122,7 +218,6 @@ export function SettingsCluster({
   onToggleTheme,
   onToggleMute,
   onUpdateTimingField,
-  onBlurTimingField,
 }: SettingsClusterProps) {
   const { t } = useTranslation();
   const isDark = theme === 'dark';
@@ -138,7 +233,6 @@ export function SettingsCluster({
           durationInput={durationInput}
           bufferSecondsInput={bufferSecondsInput}
           onUpdateTimingField={onUpdateTimingField}
-          onBlurTimingField={onBlurTimingField}
         />
       </Popover>
 

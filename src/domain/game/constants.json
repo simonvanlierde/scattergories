@@ -1,6 +1,6 @@
 {
   "bufferSecondsMin": 0,
-  "bufferSecondsMax": 30,
+  "bufferSecondsMax": 10,
   "bufferSecondsDefault": 3,
   "durationMin": 10,
   "durationMax": 600,

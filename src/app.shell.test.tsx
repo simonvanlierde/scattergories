@@ -61,7 +61,7 @@ it('shows default editable settings in their owning dialogs', async () => {
   const { user } = await renderApp();
 
   const timerPopover = await openTimerPopover(user);
-  expect(within(timerPopover).getByLabelText('Timer')).toHaveValue(DEFAULT_TIMER_SECONDS);
+  expect(within(timerPopover).getByLabelText('Round')).toHaveValue(DEFAULT_TIMER_SECONDS);
   expect(within(timerPopover).queryByLabelText('Rounds')).not.toBeInTheDocument();
   await user.keyboard('{Escape}');
 
