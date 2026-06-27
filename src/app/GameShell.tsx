@@ -1,5 +1,5 @@
 import { HelpCircle } from 'lucide-react';
-import { Suspense, useCallback, useEffect, useState } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { canEditDeck } from '@/domain/game/roundReducer';
 import { CategoriesPanel } from '@/features/categories/CategoriesPanel';
@@ -8,7 +8,6 @@ import { SettingsCluster } from '@/features/settings/SettingsCluster';
 import { BrandMark } from '@/shared/ui/BrandMark';
 import { Icon } from '@/shared/ui/Icon';
 import { IconButton } from '@/shared/ui/IconButton';
-import { ShortcutsSheet } from './ShortcutsSheet';
 import type { GameController } from './useGameController';
 
 function useShortcutKey(onToggle: () => void) {
@@ -147,26 +146,9 @@ function PlayGrid({ game }: PlayGridProps) {
   );
 }
 
-function useShellState() {
-  const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
-
-  const toggleShortcuts = useCallback(() => {
-    setIsShortcutsOpen((open) => !open);
-  }, []);
-  const closeShortcuts = useCallback(() => setIsShortcutsOpen(false), []);
-
-  useShortcutKey(toggleShortcuts);
-
-  return {
-    isShortcutsOpen,
-    toggleShortcuts,
-    closeShortcuts,
-  };
-}
-
 function GameShell({ game, startupLocaleWarning }: GameShellProps) {
   const { t } = useTranslation();
-  const shell = useShellState();
+  useShortcutKey(game.controls.onOpenHowToPlay);
 
   return (
     <main
@@ -185,8 +167,6 @@ function GameShell({ game, startupLocaleWarning }: GameShellProps) {
 
         <ControlBar game={game} />
       </div>
-
-      <ShortcutsSheet open={shell.isShortcutsOpen} onClose={shell.closeShortcuts} />
 
       {game.flags.isHowToPlayOpen ? (
         <Suspense

@@ -72,20 +72,14 @@ interface GameController {
 }
 
 function useGameKeyboardShortcuts(params: {
-  revealPromptDeck: () => void;
   round: ReturnType<typeof useRound>;
   togglePromptDeck: () => void;
-  focusPromptDeckInput: () => void;
 }) {
   useKeyboardShortcuts({
     onSpace: params.round.primaryAction,
     onR: params.round.newLetter,
     onP: params.round.togglePause,
     onC: params.togglePromptDeck,
-    onA: () => {
-      params.revealPromptDeck();
-      params.focusPromptDeckInput();
-    },
   });
 }
 
@@ -137,8 +131,6 @@ function useGameController(): GameController {
   });
 
   useGameKeyboardShortcuts({
-    focusPromptDeckInput: controls.focusNewCategoryInput,
-    revealPromptDeck: promptDeck.revealPromptDeck,
     round,
     togglePromptDeck: promptDeck.togglePromptDeck,
   });

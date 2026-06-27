@@ -43,13 +43,6 @@ describe('useKeyboardShortcuts', () => {
     expect(onC).toHaveBeenCalledOnce();
   });
 
-  it('calls onA when A is pressed', () => {
-    const onA = vi.fn();
-    renderHook(() => useKeyboardShortcuts({ onA }));
-    fireKey('a');
-    expect(onA).toHaveBeenCalledOnce();
-  });
-
   it('ignores keys when an INPUT is focused', () => {
     const onSpace = vi.fn();
     renderHook(() => useKeyboardShortcuts({ onSpace }));
