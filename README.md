@@ -4,9 +4,11 @@
 [![codecov](https://codecov.io/gh/simonvanlierde/scattergories/branch/main/graph/badge.svg)](https://codecov.io/gh/simonvanlierde/scattergories)
 [![License: MIT](https://img.shields.io/github/license/simonvanlierde/scattergories)](LICENSE)
 
-A browser-based companion for playing Scattergories at the table — no physical timer, die, or category cards needed. Single-page React app, no backend.
+A browser-based companion for playing Scattergories at the table: no physical timer, die, or category cards needed. Single-page React app, no backend.
 
-![The home screen, ready to start a round, in light theme](docs/screenshots/home-light.png)
+**Live demo:** [scattergories.duinlab.nl](https://scattergories.duinlab.nl)
+
+![The game screen](docs/screenshots/desktop.png)
 
 ## Features
 
@@ -15,17 +17,11 @@ A browser-based companion for playing Scattergories at the table — no physical
 - Redraw categories on each new letter, or pin a fixed board
 - Built-in and custom category packs, persisted locally in the browser
 - 9 fully-translated languages: English, Spanish, French, German, Italian, Dutch, Polish, Portuguese, Greek
-- Installable as a PWA — no account or server required
-
-A round in progress (dark theme), and the settings panel:
-
-| In a round | Settings |
-| --- | --- |
-| ![A round in progress in dark theme, showing the rolled letter, countdown, and category board](docs/screenshots/round-dark.png) | ![The settings panel with timer, category pack, language, and appearance controls](docs/screenshots/settings.png) |
+- Installable as a PWA, with no account or server required
 
 ## Status
 
-Feature-complete as a play aid. It runs fully client-side and stores everything in the browser — local-first by design, so there's no backend to host and your settings and custom categories never leave your device. It's a companion for in-person play, so it deliberately doesn't track scores or validate answers.
+Feature-complete as a play aid. It runs fully client-side and stores everything in the browser; local-first by design, so there's no backend to host and your settings and custom categories never leave your device. It's a companion for in-person play, so it deliberately doesn't track scores or validate answers.
 
 ## Stack
 
@@ -70,9 +66,9 @@ bundle is capped at an 80 KiB gzip budget ([`scripts/check-bundle-budgets.mjs`](
 
 ## Project layout
 
-- [`src/`](src/) — the React app: `domain/game/` (pure game logic), `features/` (round, categories, settings), `app/` (shell and controller hooks), `i18n/` (locales and registry)
-- [`tools/`](tools/README.md) — Python CLI (`sg-tools`) for inspecting and regenerating locale assets
-- [`tests/`](tests/) — Playwright end-to-end specs
+- [`src/`](src/): the React app, containing `domain/game/` (pure game logic), `features/` (round, categories, settings), `app/` (shell and controller hooks), and `i18n/` (locales and registry)
+- [`tools/`](tools/README.md): Python CLI (`sg-tools`) for inspecting and regenerating locale assets
+- [`tests/`](tests/): Playwright end-to-end specs
 
 ## License
 
