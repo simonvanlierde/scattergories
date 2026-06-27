@@ -16,20 +16,18 @@
   },
   "overrides": [
     {
-      "includes": [
-        "src/app.test.tsx",
-        "src/game/roundReducer.test.ts",
-        "src/hooks/useAudio.test.ts",
-        "src/hooks/useGameSession.ts",
-        "src/hooks/useKeyboardShortcuts.test.ts",
-        "src/hooks/useLetterRoller.test.ts",
-        "src/hooks/useRound.test.ts",
-        "src/hooks/useSettings.test.ts"
-      ],
+      "includes": ["**/*.test.ts", "**/*.test.tsx", "tests/**"],
       "linter": {
         "rules": {
           "complexity": {
             "noExcessiveLinesPerFunction": "off"
+          },
+          "performance": {
+            "useTopLevelRegex": "off"
+          },
+          "style": {
+            "noMagicNumbers": "off",
+            "noNonNullAssertion": "off"
           }
         }
       }
