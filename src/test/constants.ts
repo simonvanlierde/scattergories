@@ -35,7 +35,6 @@ export const ROUND_STATE_TIMEOUT_MS = 10_000;
 export const ROUND_MESSAGE_TIMEOUT_MS = 30_000;
 export const LETTER_CHANGE_TIMEOUT_MS = 5000;
 export const MULTI_ROUND_TEST_TIMEOUT_MS = 70_000;
-export const LOCALE_VALIDATION_TIMEOUT_MS = 15_000;
 
 export const HEADING_LEVEL = 1;
 export const SCATTERGORIES_HEADING = 'Scattergories';

@@ -13,10 +13,6 @@ function normalizeLocale(locale: string | null | undefined): string {
   return locale.toLowerCase().split('-')[0];
 }
 
-function isSupportedLocale(locale: string | null | undefined): boolean {
-  return SUPPORTED_LOCALES_VALUE.includes(normalizeLocale(locale));
-}
-
 function getLocaleLetters(locale: string | null | undefined): string[] {
   const normalized = normalizeLocale(locale);
   const letters =
@@ -26,10 +22,10 @@ function getLocaleLetters(locale: string | null | undefined): string[] {
 
 function getNativeName(locale: string | null | undefined): string {
   const normalized = normalizeLocale(locale);
-  return NATIVE_NAMES_VALUE[normalized] ?? normalized ?? FALLBACK_LOCALE_VALUE;
+  return NATIVE_NAMES_VALUE[normalized] ?? normalized;
 }
 
 export const SUPPORTED_LOCALES = SUPPORTED_LOCALES_VALUE;
 export const FALLBACK_LOCALE = FALLBACK_LOCALE_VALUE;
 
-export { getLocaleLetters, getNativeName, isSupportedLocale, normalizeLocale };
+export { getLocaleLetters, getNativeName, normalizeLocale };

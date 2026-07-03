@@ -1,10 +1,14 @@
 import i18nInstance from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { getBootstrapLocaleWarning, resolveLocale } from './localeHealth';
-import { FALLBACK_LOCALE } from './localeRegistry';
+import { FALLBACK_LOCALE, normalizeLocale, SUPPORTED_LOCALES } from './localeRegistry';
 import { loadLocaleNamespaces } from './locales/resources';
 
 const LANGUAGE_STORAGE_KEY = 'scattergories.language';
+
+function resolveLocale(locale: string | null | undefined): string {
+  const normalized = normalizeLocale(locale);
+  return SUPPORTED_LOCALES.includes(normalized) ? normalized : FALLBACK_LOCALE;
+}
 
 function getSavedLanguage(): string {
   return typeof window === 'undefined'
@@ -14,7 +18,9 @@ function getSavedLanguage(): string {
 
 const savedLanguage = getSavedLanguage();
 const resolvedLanguage = resolveLocale(savedLanguage);
-const startupLocaleWarning = getBootstrapLocaleWarning(savedLanguage);
+// All supported locales are complete by construction; unsupported saved values
+// fall back silently, so there is no startup warning to surface.
+const startupLocaleWarning: string | null = null;
 const i18n = i18nInstance;
 let initPromise: Promise<typeof i18n> | null = null;
 
