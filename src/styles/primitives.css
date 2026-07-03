@@ -68,17 +68,6 @@
     background: var(--accent-strong);
   }
 
-  .ds-button--secondary {
-    background: transparent;
-    color: var(--text-primary);
-    border-color: var(--border-default);
-  }
-
-  .ds-button--secondary:where(:not(:disabled)):hover {
-    background: var(--bg-sunken);
-    border-color: var(--text-primary);
-  }
-
   .ds-button--ghost {
     background: transparent;
     color: var(--text-primary);
@@ -86,16 +75,6 @@
 
   .ds-button--ghost:where(:not(:disabled)):hover {
     background: color-mix(in oklch, var(--text-primary) 6%, transparent);
-  }
-
-  .ds-button--danger {
-    background: var(--danger);
-    color: oklch(100% 0 0);
-    box-shadow: var(--elevation-1);
-  }
-
-  .ds-button--danger:where(:not(:disabled)):hover {
-    background: color-mix(in oklch, var(--danger) 88%, black);
   }
 
   /* Icon-only button — square, min 44×44 */
@@ -138,12 +117,6 @@
     opacity: 0.5;
   }
 
-  .ds-icon-button--solid {
-    background: var(--bg-raised);
-    border-color: var(--border-default);
-    color: var(--text-primary);
-  }
-
   /* ─────────────────────────────────────────────────────────────
      Field primitive — label + input + helper
      ───────────────────────────────────────────────────────────── */
@@ -184,15 +157,6 @@
   .ds-field__control:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-  }
-
-  .ds-field__helper {
-    font-size: var(--text-xs);
-    color: var(--text-muted);
-  }
-
-  .ds-field__helper--error {
-    color: var(--danger);
   }
 
   .ds-field__inline {

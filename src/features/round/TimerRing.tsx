@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import type { Phase } from '@/domain/game/roundReducer';
 import { formatSeconds } from '@/domain/game/utils';
 import { vibrate } from '@/shared/lib/haptics';
+import { cx } from '@/shared/ui/cx';
 
 const URGENT_THRESHOLD_SECONDS = 15;
 const CRITICAL_THRESHOLD_SECONDS = 5;
@@ -16,10 +17,6 @@ interface TimerRingProps {
   isPaused: boolean;
   secondsLeft: number;
   gameSeconds: number;
-}
-
-function joinClassNames(...tokens: (string | false | null | undefined)[]): string {
-  return tokens.filter(Boolean).join(' ');
 }
 
 function getTimerStage(phase: Phase, secondsLeft: number): Stage {
@@ -107,7 +104,7 @@ function TimerRing({ phase, isPaused, secondsLeft, gameSeconds }: TimerRingProps
 
   return (
     <div
-      className={joinClassNames(
+      className={cx(
         'timer-ring',
         `timer-ring--${stage}`,
         isRunning && isPaused && 'timer-ring--paused',

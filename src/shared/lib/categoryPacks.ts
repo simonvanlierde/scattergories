@@ -8,8 +8,6 @@ interface CategoryPack {
   id: string;
   labelKey: string;
   fallbackLabel: string;
-  descriptionKey: string;
-  fallbackDescription: string;
   /* Empty list means "every category" (Classic). */
   keys: readonly string[];
 }
@@ -184,59 +182,39 @@ const PACKS: readonly CategoryPack[] = Object.freeze([
     id: CLASSIC_PACK_ID,
     labelKey: 'packs.classic.label',
     fallbackLabel: 'All',
-    descriptionKey: 'packs.classic.description',
-    fallbackDescription: 'Every category — the full deck.',
     keys: [],
   },
   {
     id: 'foodie',
     labelKey: 'packs.foodie.label',
     fallbackLabel: 'Foodie',
-    descriptionKey: 'packs.foodie.description',
-    fallbackDescription: 'Dishes, drinks, ingredients, and kitchens.',
     keys: FOODIE_KEYS,
   },
   {
     id: 'pop-culture',
     labelKey: 'packs.popCulture.label',
     fallbackLabel: 'Pop Culture',
-    descriptionKey: 'packs.popCulture.description',
-    fallbackDescription: 'Movies, TV, music, celebrities, books.',
     keys: POP_CULTURE_KEYS,
   },
   {
     id: 'travel',
     labelKey: 'packs.travel.label',
     fallbackLabel: 'Travel',
-    descriptionKey: 'packs.travel.description',
-    fallbackDescription: 'Places, transport, and everything in a suitcase.',
     keys: TRAVEL_KEYS,
   },
   {
     id: 'kids',
     labelKey: 'packs.kids.label',
     fallbackLabel: 'Kids',
-    descriptionKey: 'packs.kids.description',
-    fallbackDescription: 'Friendly categories for younger players.',
     keys: KIDS_KEYS,
   },
   {
     id: 'household',
     labelKey: 'packs.household.label',
     fallbackLabel: 'Around the House',
-    descriptionKey: 'packs.household.description',
-    fallbackDescription: 'Rooms, tools, furniture, and gadgets.',
     keys: HOUSEHOLD_KEYS,
   },
 ]);
-
-function getPackIds(): string[] {
-  return PACKS.map((pack) => pack.id);
-}
-
-function isValidPackId(id: string): boolean {
-  return PACKS.some((pack) => pack.id === id);
-}
 
 function getPackById(id: string): CategoryPack | undefined {
   return PACKS.find((pack) => pack.id === id);
@@ -255,4 +233,4 @@ function getPackCategories(packId: string, allKeys: readonly string[]): string[]
 }
 
 export type { CategoryPack };
-export { CLASSIC_PACK_ID, getPackById, getPackCategories, getPackIds, isValidPackId, PACKS };
+export { CLASSIC_PACK_ID, getPackById, getPackCategories, PACKS };

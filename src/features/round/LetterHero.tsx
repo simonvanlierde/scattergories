@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { cx } from '@/shared/ui/cx';
 
 interface LetterHeroProps {
   letter: string;
@@ -6,15 +7,11 @@ interface LetterHeroProps {
   landing: boolean;
 }
 
-function joinClassNames(...tokens: (string | false | null | undefined)[]): string {
-  return tokens.filter(Boolean).join(' ');
-}
-
 export function LetterHero({ letter, visible, landing }: LetterHeroProps) {
   const { t } = useTranslation();
   return (
     <div
-      className={joinClassNames('letter-hero', landing && 'letter-hero--landing')}
+      className={cx('letter-hero', landing && 'letter-hero--landing')}
       aria-live="polite"
       aria-atomic="true"
     >
@@ -22,7 +19,7 @@ export function LetterHero({ letter, visible, landing }: LetterHeroProps) {
       <span
         data-testid="current-letter"
         aria-hidden={visible ? undefined : true}
-        className={joinClassNames(
+        className={cx(
           'letter-hero__glyph',
           !visible && 'letter-hero__glyph--hidden',
           landing && 'letter-hero__glyph--landing',

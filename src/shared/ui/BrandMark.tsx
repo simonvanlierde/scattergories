@@ -1,22 +1,13 @@
-interface BrandMarkProps {
-  className?: string;
-  size?: number;
-  title?: string;
-}
-
-export function BrandMark({ className, size = 24, title }: BrandMarkProps) {
-  const hasTitle = Boolean(title);
+export function BrandMark() {
   return (
     <svg
-      className={className ? `brand-mark ${className}` : 'brand-mark'}
-      width={size}
-      height={size}
+      className="brand-mark"
+      width={24}
+      height={24}
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      role={hasTitle ? 'img' : undefined}
-      aria-hidden={hasTitle ? undefined : true}
-      aria-label={hasTitle ? title : undefined}
+      aria-hidden={true}
       focusable="false"
     >
       {/* Isometric die — three faces rendered via opacity stepping so the mark

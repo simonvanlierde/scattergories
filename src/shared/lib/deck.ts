@@ -85,5 +85,4 @@ function composeDeck({
   return { deck, pool };
 }
 
-export type { ComposeDeckParams, ComposedDeck };
 export { composeDeck };
