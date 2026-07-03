@@ -4,7 +4,6 @@ import gameConstants from './constants.json';
 
 // The default letter set used for English and as a baseline for tests.
 export const englishLetters = getLocaleLetters('en');
-export const letters = englishLetters;
 
 export const categories = Object.freeze(Object.keys(categoriesResourceEn));
 

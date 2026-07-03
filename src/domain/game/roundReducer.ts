@@ -43,14 +43,9 @@ const initialRoundState: RoundState = {
   drawnLetters: [],
 };
 
-/** Actively counting down — deck edits and redraws are blocked here. */
-function isActivePlay(phase: Phase, isPaused: boolean): boolean {
-  return (phase === 'buffer' || phase === 'running') && !isPaused;
-}
-
-/** Deck edits / redraws allowed: idle, done, or any paused state. */
+/** Deck edits / redraws allowed: idle, done, or any paused state — i.e. not actively counting down. */
 function canEditDeck(phase: Phase, isPaused: boolean): boolean {
-  return !isActivePlay(phase, isPaused);
+  return !((phase === 'buffer' || phase === 'running') && !isPaused);
 }
 
 function enterCountdown(state: RoundState): RoundState {
@@ -70,44 +65,6 @@ function enterCountdown(state: RoundState): RoundState {
     isPaused: false,
     statusKey: 'timer.getReady',
   };
-}
-
-function handleStartSpin(
-  state: RoundState,
-  action: Extract<RoundAction, { type: 'START_SPIN' }>,
-): RoundState {
-  return {
-    ...state,
-    phase: 'spinning',
-    secondsLeft: 0,
-    isPaused: false,
-    alarmOn: false,
-    statusKey: null,
-    gameSeconds: action.gameSeconds,
-    bufferSeconds: action.bufferSeconds,
-    remainingLetters: action.remainingLetters,
-    drawnLetters: action.drawnLetters,
-  };
-}
-
-function handleLetterLanded(state: RoundState): RoundState {
-  if (state.phase !== 'spinning') {
-    return state;
-  }
-
-  return enterCountdown(state);
-}
-
-function handleSetGameSeconds(
-  state: RoundState,
-  action: Extract<RoundAction, { type: 'SET_GAME_SECONDS' }>,
-): RoundState {
-  const next = { ...state, gameSeconds: action.gameSeconds };
-  if (state.phase === 'running') {
-    // Shrink an in-flight clock; never extend.
-    next.secondsLeft = Math.min(state.secondsLeft, action.gameSeconds);
-  }
-  return next;
 }
 
 function handleTick(state: RoundState): RoundState {
@@ -153,40 +110,31 @@ function handlePauseToggle(state: RoundState): RoundState {
   return { ...state, isPaused: !state.isPaused };
 }
 
-function handleReset(state: RoundState): RoundState {
-  return {
-    ...state,
-    phase: 'idle',
-    secondsLeft: 0,
-    isPaused: false,
-    alarmOn: false,
-    statusKey: null,
-  };
-}
-
-function handleAlarmOff(state: RoundState): RoundState {
-  return { ...state, alarmOn: false };
-}
-
-function handleSyncBags(
-  state: RoundState,
-  action: Extract<RoundAction, { type: 'SYNC_BAGS' }>,
-): RoundState {
-  return {
-    ...state,
-    remainingLetters: action.remainingLetters,
-    drawnLetters: action.drawnLetters,
-  };
-}
-
 function roundReducer(state: RoundState, action: RoundAction): RoundState {
   switch (action.type) {
     case 'START_SPIN':
-      return handleStartSpin(state, action);
+      return {
+        ...state,
+        phase: 'spinning',
+        secondsLeft: 0,
+        isPaused: false,
+        alarmOn: false,
+        statusKey: null,
+        gameSeconds: action.gameSeconds,
+        bufferSeconds: action.bufferSeconds,
+        remainingLetters: action.remainingLetters,
+        drawnLetters: action.drawnLetters,
+      };
     case 'LETTER_LANDED':
-      return handleLetterLanded(state);
-    case 'SET_GAME_SECONDS':
-      return handleSetGameSeconds(state, action);
+      return state.phase === 'spinning' ? enterCountdown(state) : state;
+    case 'SET_GAME_SECONDS': {
+      const next = { ...state, gameSeconds: action.gameSeconds };
+      if (state.phase === 'running') {
+        // Shrink an in-flight clock; never extend.
+        next.secondsLeft = Math.min(state.secondsLeft, action.gameSeconds);
+      }
+      return next;
+    }
     case 'SET_BUFFER_SECONDS':
       return { ...state, bufferSeconds: action.bufferSeconds };
     case 'TICK':
@@ -194,11 +142,22 @@ function roundReducer(state: RoundState, action: RoundAction): RoundState {
     case 'PAUSE_TOGGLE':
       return handlePauseToggle(state);
     case 'RESET':
-      return handleReset(state);
+      return {
+        ...state,
+        phase: 'idle',
+        secondsLeft: 0,
+        isPaused: false,
+        alarmOn: false,
+        statusKey: null,
+      };
     case 'ALARM_OFF':
-      return handleAlarmOff(state);
+      return { ...state, alarmOn: false };
     case 'SYNC_BAGS':
-      return handleSyncBags(state, action);
+      return {
+        ...state,
+        remainingLetters: action.remainingLetters,
+        drawnLetters: action.drawnLetters,
+      };
 
     default:
       return state;
@@ -206,4 +165,4 @@ function roundReducer(state: RoundState, action: RoundAction): RoundState {
 }
 
 export type { Phase, RoundAction, RoundState, StatusKey };
-export { canEditDeck, initialRoundState, isActivePlay, roundReducer };
+export { canEditDeck, initialRoundState, roundReducer };
