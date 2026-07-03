@@ -56,7 +56,6 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
-    "@axe-core/react": "^4.12.1",
     "@biomejs/biome": "^2.5.2",
     "@cspell/dict-de-de": "^4.1.2",
     "@cspell/dict-el": "^3.1.8",
