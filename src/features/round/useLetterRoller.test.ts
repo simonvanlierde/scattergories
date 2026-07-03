@@ -80,21 +80,4 @@ describe('useLetterRoller', () => {
       expect(result.current.visible).toBe(true);
     });
   });
-
-  it('cancelSpin before spinTo prevents onLanded from firing via rAF spin guard', () => {
-    // With reduced-motion the snap path runs synchronously after spinTo sets
-    // its own spinId, so onLanded still fires here. This test confirms the
-    // API does not throw and the snap completes normally.
-    stubReducedMotion();
-
-    const onLanded = vi.fn();
-    const { result } = renderHook(() => useLetterRoller('en'));
-
-    act(() => {
-      result.current.cancelSpin();
-      result.current.spinTo('B', onLanded);
-    });
-
-    expect(onLanded).toHaveBeenCalledOnce();
-  });
 });

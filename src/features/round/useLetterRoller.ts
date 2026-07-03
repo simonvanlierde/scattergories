@@ -11,10 +11,6 @@ export function useLetterRoller(locale: string) {
   const [landing, setLanding] = useState(false);
   const spinIdRef = useRef(0);
 
-  const cancelSpin = useCallback(() => {
-    spinIdRef.current += 1;
-  }, []);
-
   const spinTo = useCallback(
     (finalLetter: string, onLanded: () => void) => {
       const spinId = spinIdRef.current + 1;
@@ -55,5 +51,5 @@ export function useLetterRoller(locale: string) {
     setLanding(false);
   }, []);
 
-  return { letter, visible, landing, spinTo, reset, cancelSpin };
+  return { letter, visible, landing, spinTo, reset };
 }

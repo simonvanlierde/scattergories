@@ -17,7 +17,6 @@ const mockPlayAlarm = vi.fn();
 const mockPlayLetterLand = vi.fn();
 const mockSpinTo = vi.fn();
 const mockResetRoller = vi.fn();
-const mockCancelSpin = vi.fn();
 
 beforeEach(() => {
   vi.useFakeTimers();
@@ -33,7 +32,6 @@ beforeEach(() => {
     landing: false,
     spinTo: mockSpinTo,
     reset: mockResetRoller,
-    cancelSpin: mockCancelSpin,
   } satisfies ReturnType<typeof useLetterRoller>);
 });
 
