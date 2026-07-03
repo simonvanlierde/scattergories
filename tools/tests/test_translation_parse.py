@@ -10,7 +10,6 @@ from scattergories_tools.translate.parse import (
     load_category_names,
     load_locale_payload,
     mask_placeholders,
-    render_json,
     translate_categories,
     translate_locale_payload,
     translate_string,
@@ -157,8 +156,3 @@ def test_translate_locale_payload_preserves_lists_scalars_and_placeholders(
     cache.close()
 
 
-def test_render_json_appends_newline() -> None:
-    """JSON rendering is stable and newline-terminated."""
-    rendered = render_json({"Animals": "Animales"})
-    assert rendered.endswith("\n")
-    assert '"Animals": "Animales"' in rendered

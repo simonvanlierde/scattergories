@@ -1,5 +1,6 @@
 """Translation CLI commands."""
 
+import json
 from pathlib import Path  # noqa: TC003 - annotations may be evaluated by CLI tooling.
 from typing import TYPE_CHECKING, Annotated
 
@@ -7,12 +8,11 @@ import typer
 
 from scattergories_tools.shared.context import create_context
 from scattergories_tools.translate.cache import open_translation_cache
-from scattergories_tools.translate.engine import build_provider
+from scattergories_tools.translate.engine import ArgosProvider
 from scattergories_tools.translate.parse import (
     JSONValue,
     load_category_names,
     load_locale_payload,
-    render_json,
     translate_categories,
     translate_locale_payload,
 )
@@ -30,13 +30,13 @@ def write_translation_outputs(
     """Write JSON payloads to disk."""
     for locale, output_path in output_paths.items():
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        output_path.write_text(render_json(dict(payloads[locale])), encoding="utf-8")
+        rendered = json.dumps(dict(payloads[locale]), indent=2, ensure_ascii=False) + "\n"
+        output_path.write_text(rendered, encoding="utf-8")
 
 
 @app.command("categories")
 def categories(
     target_locales: Annotated[list[str], typer.Option(..., help="Target locales.")],
-    provider: Annotated[str, typer.Option(help="Translation provider.")] = "argos",
     from_locale: Annotated[str, typer.Option(help="Source locale.")] = "en",
     *,
     write_app_files: Annotated[
@@ -47,7 +47,7 @@ def categories(
     context = create_context()
     selected_locales = context.registry.validate_locales(target_locales)
     category_names = load_category_names(context.paths.categories_source_path)
-    provider_instance = build_provider(provider)
+    provider_instance = ArgosProvider()
 
     output_paths = {
         locale: context.paths.locale_dir / f"categories.{locale}.json"
@@ -81,7 +81,6 @@ def categories(
 @app.command("locales")
 def locales(
     target_locales: Annotated[list[str], typer.Option(..., help="Target locales.")],
-    provider: Annotated[str, typer.Option(help="Translation provider.")] = "argos",
     from_locale: Annotated[str, typer.Option(help="Source locale.")] = "en",
     *,
     write_app_files: Annotated[
@@ -92,7 +91,7 @@ def locales(
     context = create_context()
     selected_locales = context.registry.validate_locales(target_locales)
     source_payload = load_locale_payload(context.paths.locale_payload_source_path)
-    provider_instance = build_provider(provider)
+    provider_instance = ArgosProvider()
 
     output_paths = {
         locale: context.paths.locale_dir / f"{locale}.json" for locale in selected_locales

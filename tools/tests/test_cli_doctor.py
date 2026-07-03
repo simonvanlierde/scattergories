@@ -26,11 +26,11 @@ def test_doctor_reports_missing_optional_bits(
     monkeypatch.setattr(doctor, "create_context", lambda: AppContext(paths, registry))
     monkeypatch.delenv("HF_TOKEN", raising=False)
 
-    def fail_provider(_name: str) -> object:
+    def fail_provider() -> object:
         msg = "Argos missing for test"
         raise RuntimeError(msg)
 
-    monkeypatch.setattr(doctor, "build_provider", fail_provider)
+    monkeypatch.setattr(doctor, "ArgosProvider", fail_provider)
 
     result = runner.invoke(cli.app, ["doctor"])
 
@@ -49,7 +49,7 @@ def test_doctor_reports_healthy_environment(
     """Doctor succeeds when the repo layout and optional dependencies are ready."""
     paths, registry = repo_context
     monkeypatch.setattr(doctor, "create_context", lambda: AppContext(paths, registry))
-    monkeypatch.setattr(doctor, "build_provider", lambda _name: fake_provider_factory())
+    monkeypatch.setattr(doctor, "ArgosProvider", fake_provider_factory)
     monkeypatch.setenv("HF_TOKEN", "token-for-test")
 
     result = runner.invoke(cli.app, ["doctor"])

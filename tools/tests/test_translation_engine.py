@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Any
 
 import pytest
 
-from scattergories_tools.translate.engine import ArgosProvider, build_provider
+from scattergories_tools.translate.engine import ArgosProvider
 from tests.fakes import (
     FakeArgosPackage,
     FakeArgosPackageApi,
@@ -45,12 +45,6 @@ def install_fake_argos(
     monkeypatch.setitem(sys.modules, "argostranslate", root_module)
     monkeypatch.setitem(sys.modules, "argostranslate.package", package_module)
     monkeypatch.setitem(sys.modules, "argostranslate.translate", translate_module)
-
-
-def test_build_provider_rejects_unknown_provider_name() -> None:
-    """Unsupported providers fail fast."""
-    with pytest.raises(ValueError, match="Unsupported translation provider: noop"):
-        build_provider("noop")
 
 
 def test_argos_provider_reports_missing_optional_dependency(

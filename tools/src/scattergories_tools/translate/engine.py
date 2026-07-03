@@ -2,16 +2,7 @@
 
 import importlib
 from dataclasses import dataclass
-from typing import Any, Protocol
-
-
-class TranslationProvider(Protocol):
-    """Interface used by translation commands."""
-
-    name: str
-
-    def translate(self, from_locale: str, to_locale: str, text: str) -> str:
-        """Translate one string."""
+from typing import Any
 
 
 @dataclass
@@ -72,11 +63,3 @@ class ArgosProvider:
         translator = self.argos_translate.get_translation_from_codes(from_locale, to_locale)
         result = translator.translate(text)
         return result.strip() if result else text
-
-
-def build_provider(name: str) -> TranslationProvider:
-    """Instantiate a configured translation provider by name."""
-    if name == "argos":
-        return ArgosProvider()
-    msg = f"Unsupported translation provider: {name}"
-    raise ValueError(msg)

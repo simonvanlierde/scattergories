@@ -6,7 +6,7 @@ from typing import Annotated
 import typer
 
 from scattergories_tools.shared.context import create_context
-from scattergories_tools.shared.registry import LocaleRegistry, parse_locale_args
+from scattergories_tools.shared.registry import parse_locale_args
 from scattergories_tools.weights.analyze import (
     DEFAULT_MAX_BYTES,
     SAMPLE_DATASETS,
@@ -23,11 +23,6 @@ from scattergories_tools.weights.render import (
 )
 
 app = typer.Typer(help="Letter-weight commands")
-
-
-def resolve_locales(raw_locales: list[str] | None, registry: LocaleRegistry) -> list[str]:
-    """Resolve CLI locale args."""
-    return parse_locale_args(raw_locales, registry)
 
 
 def print_rows_summary(rows: list[LetterRow], *, label: str) -> None:
@@ -82,7 +77,7 @@ def locales(
 ) -> None:
     """Analyze locale corpora and optionally update the app weight file."""
     context = create_context()
-    selected_locales = resolve_locales(locales_arg, context.registry)
+    selected_locales = parse_locale_args(locales_arg, context.registry)
     analyses = {
         locale: analyze_locale(
             locale, registry=context.registry, hf_token=hf_token, max_bytes=max_bytes

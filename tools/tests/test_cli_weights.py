@@ -119,7 +119,7 @@ def test_weights_locales_preview_supports_multiple_locales(
     """Preview mode reports one summary block per selected locale."""
     paths, registry = repo_context
     monkeypatch.setattr(weights, "create_context", lambda: AppContext(paths, registry))
-    monkeypatch.setattr(weights, "resolve_locales", _resolve_two_locales)
+    monkeypatch.setattr(weights, "parse_locale_args", _resolve_two_locales)
 
     def analyze_locale(
         locale: str,
@@ -151,7 +151,7 @@ def test_weights_locales_write_updates_generated_app_file(
     """Write mode updates the generated letter-weight artifact."""
     paths, registry = repo_context
     monkeypatch.setattr(weights, "create_context", lambda: AppContext(paths, registry))
-    monkeypatch.setattr(weights, "resolve_locales", _resolve_two_locales)
+    monkeypatch.setattr(weights, "parse_locale_args", _resolve_two_locales)
 
     def analyze_locale(
         locale: str,

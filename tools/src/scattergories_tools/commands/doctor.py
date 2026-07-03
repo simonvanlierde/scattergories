@@ -6,7 +6,7 @@ import sys
 import typer
 
 from scattergories_tools.shared.context import create_context
-from scattergories_tools.translate.engine import build_provider
+from scattergories_tools.translate.engine import ArgosProvider
 
 
 def doctor() -> None:
@@ -55,7 +55,7 @@ def doctor() -> None:
     )
 
     try:
-        build_provider("argos")
+        ArgosProvider()
     except RuntimeError as error:
         checks.append(("argos", False, str(error)))
     else:  # pragma: no cover - exercised only when optional deps are installed
@@ -63,7 +63,8 @@ def doctor() -> None:
 
     overall_ok = True
     for name, ok, detail in checks:
-        overall_ok = overall_ok and ok if name != "hf_token" else overall_ok
+        if not ok and name != "hf_token":  # hf_token is non-gating
+            overall_ok = False
         status = "OK" if ok else "WARN"
         typer.echo(f"[{status}] {name}: {detail}")
 
