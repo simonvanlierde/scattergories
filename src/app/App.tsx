@@ -7,8 +7,6 @@ import { ErrorBoundary } from './ErrorBoundary';
 import { GameShell } from './GameShell';
 import { useGameController } from './useGameController';
 
-initI18n().catch(() => undefined);
-
 interface ErrorViewProps {
   eyebrow: string;
   title: string;
@@ -77,7 +75,7 @@ function AppProviders() {
   );
 }
 
-function AppBootstrap() {
+function App() {
   const [isReady, setIsReady] = useState(false);
   const [bootstrapError, setBootstrapError] = useState<Error | null>(null);
 
@@ -113,10 +111,6 @@ function AppBootstrap() {
   }
 
   return <AppProviders />;
-}
-
-function App() {
-  return <AppBootstrap />;
 }
 
 export { App };

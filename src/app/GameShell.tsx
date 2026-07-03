@@ -1,5 +1,5 @@
 import { HelpCircle } from 'lucide-react';
-import { Suspense, useEffect } from 'react';
+import { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { canEditDeck } from '@/domain/game/roundReducer';
 import { CategoriesPanel } from '@/features/categories/CategoriesPanel';
@@ -9,27 +9,6 @@ import { BrandMark } from '@/shared/ui/BrandMark';
 import { Icon } from '@/shared/ui/Icon';
 import { IconButton } from '@/shared/ui/IconButton';
 import type { GameController } from './useGameController';
-
-function useShortcutKey(onToggle: () => void) {
-  useEffect(() => {
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key !== '?' || event.defaultPrevented) {
-        return;
-      }
-      const target = event.target as HTMLElement | null;
-      if (
-        target &&
-        (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)
-      ) {
-        return;
-      }
-      event.preventDefault();
-      onToggle();
-    }
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [onToggle]);
-}
 
 interface GameShellProps {
   game: GameController;
@@ -152,7 +131,6 @@ function PlayGrid({ game }: PlayGridProps) {
 
 function GameShell({ game, startupLocaleWarning }: GameShellProps) {
   const { t } = useTranslation();
-  useShortcutKey(game.controls.onOpenHowToPlay);
 
   return (
     <main

@@ -56,25 +56,6 @@ function useLanguageSwitcher(
   );
 }
 
-function useCustomCategoryInput(isPromptDeckOpen: boolean) {
-  const [shouldFocusPromptInput, setShouldFocusPromptInput] = useState(false);
-  const newCategoryInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (!(shouldFocusPromptInput && isPromptDeckOpen && newCategoryInputRef.current)) {
-      return;
-    }
-
-    newCategoryInputRef.current.focus();
-    setShouldFocusPromptInput(false);
-  }, [isPromptDeckOpen, shouldFocusPromptInput]);
-
-  return {
-    focusNewCategoryInput: () => setShouldFocusPromptInput(true),
-    newCategoryInputRef,
-  };
-}
-
 function useAppControls(params: {
   i18n: I18nInstance;
   settings: {
@@ -83,12 +64,11 @@ function useAppControls(params: {
     bufferSecondsInput: string;
   };
   update: ReturnType<typeof useSettings>['update'];
-  isPromptDeckOpen: boolean;
 }) {
   const [hasChunkError, setHasChunkError] = useState(false);
   const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
   const [isLanguagePending, setIsLanguagePending] = useState(false);
-  const customInput = useCustomCategoryInput(params.isPromptDeckOpen);
+  const newCategoryInputRef = useRef<HTMLInputElement>(null);
   const blurNumericField = useCallback(
     (field: NumericFieldName) => {
       params.update(field, sanitizeNumericField(field, params.settings[field]));
@@ -104,7 +84,7 @@ function useAppControls(params: {
   useChunkErrorListener(setHasChunkError);
 
   return {
-    ...customInput,
+    newCategoryInputRef,
     blurNumericField,
     handleLanguageChange,
     hasChunkError,

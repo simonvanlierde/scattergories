@@ -19,9 +19,7 @@ interface GameController {
     drawnCategories: string[];
     drawnCustomCategories: string[];
     isLanding: boolean;
-    isCompactLayout: boolean;
     isPromptDeckOpen: boolean;
-    normalizedCategoryCount: number;
     inputRef: RefObject<HTMLInputElement>;
   };
   controls: {
@@ -50,7 +48,6 @@ interface GameController {
   };
   flags: {
     hasChunkError: boolean;
-    isCompactLayout: boolean;
     isHowToPlayOpen: boolean;
     isLanguagePending: boolean;
     isPromptDeckOpen: boolean;
@@ -70,18 +67,6 @@ interface GameController {
     gameSeconds: number;
   };
   howToPlayDialog: ComponentType<{ onClose: () => void }>;
-}
-
-function useGameKeyboardShortcuts(params: {
-  round: ReturnType<typeof useRound>;
-  togglePromptDeck: () => void;
-}) {
-  useKeyboardShortcuts({
-    onSpace: params.round.primaryAction,
-    onR: params.round.newLetter,
-    onP: params.round.togglePause,
-    onC: params.togglePromptDeck,
-  });
 }
 
 const HowToPlayDialog = lazy(async () => {
@@ -134,12 +119,14 @@ function useGameController(): GameController {
     i18n,
     settings,
     update,
-    isPromptDeckOpen: promptDeck.isPromptDeckOpen,
   });
 
-  useGameKeyboardShortcuts({
-    round,
-    togglePromptDeck: promptDeck.togglePromptDeck,
+  useKeyboardShortcuts({
+    onSpace: round.primaryAction,
+    onR: round.newLetter,
+    onP: round.togglePause,
+    onC: promptDeck.togglePromptDeck,
+    onHelp: () => controls.setIsHowToPlayOpen(true),
   });
 
   return {
@@ -148,9 +135,7 @@ function useGameController(): GameController {
       drawnCategories: board.drawnCategories,
       drawnCustomCategories: board.drawnCustom,
       isLanding: board.landing,
-      isCompactLayout: promptDeck.isCompactLayout,
       isPromptDeckOpen: promptDeck.isPromptDeckOpen,
-      normalizedCategoryCount: roundSetup.normalizedCategoryCount,
       inputRef: controls.newCategoryInputRef as RefObject<HTMLInputElement>,
     },
     controls: {
@@ -179,7 +164,6 @@ function useGameController(): GameController {
     },
     flags: {
       hasChunkError: controls.hasChunkError,
-      isCompactLayout: promptDeck.isCompactLayout,
       isHowToPlayOpen: controls.isHowToPlayOpen,
       isLanguagePending: controls.isLanguagePending,
       isPromptDeckOpen: promptDeck.isPromptDeckOpen,

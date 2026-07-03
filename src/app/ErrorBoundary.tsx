@@ -1,11 +1,9 @@
 import type { ErrorInfo, ReactNode } from 'react';
 import { Component } from 'react';
 
-type Fallback = ReactNode | ((error: Error) => ReactNode);
-
 interface Props {
   children: ReactNode;
-  fallback?: Fallback;
+  fallback?: ReactNode;
 }
 
 interface State {
@@ -28,7 +26,7 @@ export class ErrorBoundary extends Component<Props, State> {
     const { error } = this.state;
     const { fallback, children } = this.props;
     if (error) {
-      return typeof fallback === 'function' ? fallback(error) : (fallback ?? null);
+      return fallback ?? null;
     }
     return children;
   }

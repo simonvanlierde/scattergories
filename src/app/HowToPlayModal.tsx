@@ -27,13 +27,13 @@ interface ShortcutDefinition {
   fallbackLabel: string;
 }
 
-const SHORTCUTS: readonly ShortcutDefinition[] = Object.freeze([
+const SHORTCUTS: readonly ShortcutDefinition[] = [
   { keys: 'Space', labelKey: 'rail.shortcuts.space', fallbackLabel: 'Start or advance a round' },
   { keys: 'R', labelKey: 'rail.shortcuts.r', fallbackLabel: 'Re-roll the current letter' },
   { keys: 'P', labelKey: 'rail.shortcuts.p', fallbackLabel: 'Pause or resume' },
   { keys: 'C', labelKey: 'rail.shortcuts.c', fallbackLabel: 'Toggle the categories panel' },
   { keys: '?', labelKey: 'rail.shortcuts.help', fallbackLabel: 'Open this help dialog' },
-]);
+];
 
 // One icon per setting, matching the order of `modal.settingsItems`
 // (round timer, language, sound, theme) and the controls in the footer.

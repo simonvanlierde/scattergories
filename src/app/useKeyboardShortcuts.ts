@@ -5,6 +5,7 @@ export interface ShortcutHandlers {
   onR?: () => void;
   onP?: () => void;
   onC?: () => void;
+  onHelp?: () => void;
 }
 
 export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
@@ -31,6 +32,10 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
         break;
       case 'c':
         handlers.onC?.();
+        break;
+      case '?':
+        event.preventDefault();
+        handlers.onHelp?.();
         break;
       default:
         break;

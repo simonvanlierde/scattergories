@@ -52,16 +52,10 @@ function usePromptDeckState(
   const togglePromptDeck = useCallback(() => {
     setPromptDeckPreference(!isPromptDeckOpen);
   }, [isPromptDeckOpen, setPromptDeckPreference]);
-  const revealPromptDeck = useCallback(() => {
-    if (!isPromptDeckOpen) {
-      setPromptDeckPreference(true);
-    }
-  }, [isPromptDeckOpen, setPromptDeckPreference]);
 
   return {
     isCompactLayout,
     isPromptDeckOpen,
-    revealPromptDeck,
     togglePromptDeck,
   };
 }
