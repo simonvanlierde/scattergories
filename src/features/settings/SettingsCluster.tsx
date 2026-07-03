@@ -10,7 +10,6 @@ import {
   durationMin,
 } from '@/domain/game/constants';
 import { clampInt } from '@/domain/game/utils';
-import { getEnabledLocales, isLocaleEnabled } from '@/i18n/localeHealth';
 import { getNativeName, SUPPORTED_LOCALES } from '@/i18n/localeRegistry';
 import { useDebouncedCommit } from '@/shared/lib/useDebouncedCommit';
 import { Field } from '@/shared/ui/Field';
@@ -42,7 +41,6 @@ function LanguageMenu({
   onSelect: (code: string) => void;
 }) {
   const { t } = useTranslation();
-  const enabledLocales = getEnabledLocales();
 
   return (
     <div
@@ -51,7 +49,6 @@ function LanguageMenu({
       aria-label={t('language.label', { defaultValue: 'Language' })}
     >
       {SUPPORTED_LOCALES.map((code) => {
-        const available = enabledLocales.includes(code) && isLocaleEnabled(code);
         const selected = code === language;
         return (
           <button
@@ -61,7 +58,7 @@ function LanguageMenu({
             aria-checked={selected}
             data-locale={code}
             className="lang-menu__item"
-            disabled={!available || isLanguagePending}
+            disabled={isLanguagePending}
             onClick={() => onSelect(code)}
           >
             <span>{getNativeName(code)}</span>
@@ -105,14 +102,21 @@ function NumericTimingField({
     }
   }, [value]);
 
-  const commit = useCallback(
-    (raw: string) => {
-      onCommit(field, String(clampInt(raw, min, max, fallback)));
-    },
-    [onCommit, field, min, max, fallback],
+  const { schedule, cancel } = useDebouncedCommit((raw: string) =>
+    onCommit(field, String(clampInt(raw, min, max, fallback))),
   );
 
-  const { schedule, cancel } = useDebouncedCommit(commit);
+  // Cancel any pending debounce and commit the clamped value now.
+  // Shared by blur and the flush-on-unmount effect below.
+  const commitClamped = useCallback(
+    (raw: string) => {
+      cancel();
+      const clamped = String(clampInt(raw, min, max, fallback));
+      onCommit(field, clamped);
+      return clamped;
+    },
+    [cancel, onCommit, field, min, max, fallback],
+  );
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -125,11 +129,8 @@ function NumericTimingField({
 
   const handleBlur = useCallback(() => {
     isFocusedRef.current = false;
-    cancel();
-    const clamped = String(clampInt(draft, min, max, fallback));
-    setDraft(clamped);
-    onCommit(field, clamped);
-  }, [cancel, draft, min, max, fallback, onCommit, field]);
+    setDraft(commitClamped(draft));
+  }, [commitClamped, draft]);
 
   // Enter commits (by blurring the field).
   const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -140,19 +141,17 @@ function NumericTimingField({
 
   // Flush a pending edit if the field unmounts before onBlur fires — e.g. the
   // popover is closed by an outside click while the input still has focus.
+  // Refs keep the unmount cleanup (empty deps) pointed at the latest values.
   const draftRef = useRef(draft);
   draftRef.current = draft;
-  const valueRef = useRef(value);
-  valueRef.current = value;
-  const flushRef = useRef<() => void>(() => undefined);
-  flushRef.current = () => {
-    cancel();
-    const clamped = String(clampInt(draftRef.current, min, max, fallback));
-    if (clamped !== valueRef.current) {
-      onCommit(field, clamped);
-    }
-  };
-  useEffect(() => () => flushRef.current(), []);
+  const commitClampedRef = useRef(commitClamped);
+  commitClampedRef.current = commitClamped;
+  useEffect(
+    () => () => {
+      commitClampedRef.current(draftRef.current);
+    },
+    [],
+  );
 
   return (
     <Field

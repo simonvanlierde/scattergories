@@ -173,10 +173,6 @@ function readStoredSettings(): Settings {
   return parseStoredSettings(window.localStorage.getItem(SETTINGS_STORAGE_KEY));
 }
 
-function serializeSettings(settings: Settings): string {
-  return JSON.stringify(settings);
-}
-
 export type { NumericFieldName, PromptDeckPreference, Settings, Theme };
 export {
   getDefaultSettings,
@@ -187,5 +183,4 @@ export {
   sanitizeCustomCategories,
   sanitizeNumericField,
   sanitizeSettings,
-  serializeSettings,
 };

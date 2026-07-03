@@ -13,7 +13,6 @@ import {
   SETTINGS_STORAGE_KEY,
   type Settings,
   sanitizeCustomCategories,
-  serializeSettings,
 } from './schema';
 
 type SettingsAction =
@@ -147,7 +146,7 @@ function SettingsProvider({ children }: PropsWithChildren) {
   const [settings, dispatch] = useReducer(settingsReducer, undefined, readStoredSettings);
 
   useEffect(() => {
-    window.localStorage.setItem(SETTINGS_STORAGE_KEY, serializeSettings(settings));
+    window.localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
   }, [settings]);
 
   useEffect(() => {
@@ -211,13 +210,7 @@ function useSettings() {
 }
 
 function resetSettingsToStorage(): Settings {
-  const stored = readStoredSettings();
-
-  if (typeof window !== 'undefined') {
-    window.localStorage.setItem(SETTINGS_STORAGE_KEY, serializeSettings(stored));
-  }
-
-  return stored;
+  return readStoredSettings();
 }
 
 export { resetSettingsToStorage, SettingsProvider, useSettings };

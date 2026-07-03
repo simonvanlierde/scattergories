@@ -5,16 +5,16 @@ import { Icon } from '@/shared/ui/Icon';
 interface CategoryChecklistProps {
   categories: string[];
   availableCount: number;
-  landing?: boolean;
-  pinnedSet?: Set<string>;
-  customSet?: Set<string>;
-  onTogglePin?: (name: string) => void;
+  landing: boolean;
+  pinnedSet: Set<string>;
+  customSet: Set<string>;
+  onTogglePin: (name: string) => void;
 }
 
 export function CategoryChecklist({
   categories,
   availableCount,
-  landing = false,
+  landing,
   pinnedSet,
   customSet,
   onTogglePin,
@@ -38,10 +38,10 @@ export function CategoryChecklist({
         aria-label={t('categories.drawnListLabel', { defaultValue: 'Selected categories' })}
       >
         {categories.map((category, index) => {
-          const isPinned = pinnedSet?.has(category) ?? false;
+          const isPinned = pinnedSet.has(category);
           // Only unpinned slots roll and land; pinned slots hold still.
           const isFillSlot = !isPinned;
-          const isCustom = customSet?.has(category) ?? false;
+          const isCustom = customSet.has(category);
           const label = isCustom ? category : t(category, { ns: 'categories' });
           const labelClass =
             landing && isFillSlot
@@ -62,7 +62,7 @@ export function CategoryChecklist({
                     ? t('categories.unpinOne', { defaultValue: 'Unpin {{name}}', name: label })
                     : t('categories.pinOne', { defaultValue: 'Pin {{name}}', name: label })
                 }
-                onClick={() => onTogglePin?.(category)}
+                onClick={() => onTogglePin(category)}
               >
                 <span className="category-checklist__mark" aria-hidden="true">
                   {index + 1}
