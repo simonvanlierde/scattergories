@@ -1,5 +1,6 @@
 import { Pin, PinOff } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { cx } from '@/shared/ui/cx';
 import { Icon } from '@/shared/ui/Icon';
 
 interface CategoryChecklistProps {
@@ -51,7 +52,11 @@ export function CategoryChecklist({
             <li
               // biome-ignore lint/suspicious/noArrayIndexKey: Stable slot positions keep the roll animation in place while labels change.
               key={index}
-              className={`category-checklist__item${isPinned ? ' category-checklist__item--pinned' : ''}${isCustom ? ' category-checklist__item--custom' : ''}`}
+              className={cx(
+                'category-checklist__item',
+                isPinned && 'category-checklist__item--pinned',
+                isCustom && 'category-checklist__item--custom',
+              )}
             >
               <button
                 type="button"

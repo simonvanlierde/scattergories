@@ -6,6 +6,7 @@ import { CategoriesPanel } from '@/features/categories/CategoriesPanel';
 import { Playmat } from '@/features/round/Playmat';
 import { SettingsCluster } from '@/features/settings/SettingsCluster';
 import { BrandMark } from '@/shared/ui/BrandMark';
+import { cx } from '@/shared/ui/cx';
 import { Icon } from '@/shared/ui/Icon';
 import { IconButton } from '@/shared/ui/IconButton';
 import type { GameController } from './useGameController';
@@ -81,7 +82,7 @@ function PlayGrid({ game }: PlayGridProps) {
 
   return (
     <section
-      className={`play-grid${game.flags.isPromptDeckOpen ? '' : ' play-grid--deck-collapsed'}`}
+      className={cx('play-grid', !game.flags.isPromptDeckOpen && 'play-grid--deck-collapsed')}
     >
       <Playmat game={game} />
 
@@ -123,7 +124,7 @@ function GameShell({ game }: GameShellProps) {
 
   return (
     <main
-      className={`app-shell${game.round.alarmOn ? ' alarm' : ''}`}
+      className={cx('app-shell', game.round.alarmOn && 'alarm')}
       data-theme={game.settings.theme}
     >
       <div className="app-shell__bg" aria-hidden="true" />

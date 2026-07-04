@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { catCountDefault, catCountMax, catCountMin } from '@/domain/game/constants';
 import { PACKS } from '@/shared/lib/categoryPacks';
 import { Button } from '@/shared/ui/Button';
+import { cx } from '@/shared/ui/cx';
 import { DebouncedNumberField } from '@/shared/ui/DebouncedNumberField';
 import { Icon } from '@/shared/ui/Icon';
 import { IconButton } from '@/shared/ui/IconButton';
@@ -198,7 +199,7 @@ function DeckListItem({
 }) {
   const { t } = useTranslation();
   return (
-    <li className={`deck-list__item${row.isCustom ? ' deck-list__item--custom' : ''}`}>
+    <li className={cx('deck-list__item', row.isCustom && 'deck-list__item--custom')}>
       <span className="deck-list__label">{row.label}</span>
       <span className="deck-list__actions">
         <IconButton
@@ -456,7 +457,7 @@ function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps
 
   return (
     <section
-      className={`categories-card${isPromptDeckOpen ? '' : ' categories-card--collapsed'}`}
+      className={cx('categories-card', !isPromptDeckOpen && 'categories-card--collapsed')}
       aria-labelledby="categories-panel-title"
       data-open={isPromptDeckOpen ? 'true' : 'false'}
     >
