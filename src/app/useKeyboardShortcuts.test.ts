@@ -73,6 +73,38 @@ describe('useKeyboardShortcuts', () => {
     document.body.removeChild(textarea);
   });
 
+  it('lets a focused button handle its own Space activation', () => {
+    const onSpace = vi.fn();
+    renderHook(() => useKeyboardShortcuts({ onSpace }));
+
+    const button = document.createElement('button');
+    document.body.appendChild(button);
+    button.focus();
+
+    const event = new KeyboardEvent('keydown', { key: ' ', code: 'Space', bubbles: true });
+    button.dispatchEvent(event);
+
+    expect(onSpace).not.toHaveBeenCalled();
+    document.body.removeChild(button);
+  });
+
+  it('ignores shortcuts while a <dialog> is open', () => {
+    const onSpace = vi.fn();
+    const onR = vi.fn();
+    renderHook(() => useKeyboardShortcuts({ onSpace, onR }));
+
+    const dialog = document.createElement('dialog');
+    document.body.appendChild(dialog);
+    dialog.setAttribute('open', '');
+
+    fireKey(' ', 'Space');
+    fireKey('r');
+
+    expect(onSpace).not.toHaveBeenCalled();
+    expect(onR).not.toHaveBeenCalled();
+    document.body.removeChild(dialog);
+  });
+
   it('removes the listener on unmount', () => {
     const onC = vi.fn();
     const { unmount } = renderHook(() => useKeyboardShortcuts({ onC }));

@@ -17,7 +17,17 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
       return;
     }
 
+    // An open <dialog> (How to play, Customize deck) traps focus but not keydown
+    // bubbling — don't let round shortcuts act on the game underneath it.
+    if (document.querySelector('dialog[open]')) {
+      return;
+    }
+
     if (event.code === 'Space') {
+      // Let a focused button/link handle its own native Space activation.
+      if (tag === 'BUTTON' || tag === 'A' || target?.getAttribute?.('role') === 'button') {
+        return;
+      }
       event.preventDefault();
       handlers.onSpace?.();
       return;
