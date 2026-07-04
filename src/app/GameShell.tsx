@@ -36,7 +36,6 @@ function ControlBar({ game }: { game: GameController }) {
           onToggleTheme={game.controls.onToggleTheme}
           onToggleMute={game.controls.onToggleMute}
           onUpdateTimingField={game.controls.onUpdateField}
-          onBlurTimingField={game.controls.onBlurNumericField}
         />
         <IconButton
           label={t('buttons.howToPlay')}
@@ -108,7 +107,6 @@ function PlayGrid({ game }: PlayGridProps) {
           onAddPack: game.controls.onAddPack,
           onRemoveAllCustom: game.controls.onRemoveAllCustom,
           onRemoveAllBuiltins: game.controls.onRemoveAllBuiltins,
-          onCatCountBlur: () => game.controls.onBlurNumericField('catCountInput'),
           onCatCountChange: (value) => game.controls.onUpdateField('catCountInput', value),
           onRedraw: game.controls.onRedrawCategories,
           onTogglePinAll: game.controls.onTogglePinAll,

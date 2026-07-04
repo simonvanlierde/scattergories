@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import type { Phase, StatusKey } from '@/domain/game/roundReducer';
 import { useRound } from '@/features/round/useRound';
 import { useSettings } from '@/features/settings/SettingsProvider';
-import type { NumericFieldName } from '@/features/settings/schema';
 import { useAppControls } from './useAppControls';
 import { useCategoryBoard } from './useCategoryBoard';
 import { useKeyboardShortcuts } from './useKeyboardShortcuts';
@@ -24,7 +23,6 @@ interface GameController {
   };
   controls: {
     onAddCustomCategory: (name: string) => void;
-    onBlurNumericField: (field: NumericFieldName) => void;
     onTogglePin: (name: string) => void;
     onTogglePinAll: (names: string[]) => void;
     onAddPack: (packId: string) => void;
@@ -115,11 +113,7 @@ function useGameController(): GameController {
     onLetterPicked: () => board.redrawCategories(true),
   });
   roundInProgressRef.current = round.phase === 'buffer' || round.phase === 'running';
-  const controls = useAppControls({
-    i18n,
-    settings,
-    update,
-  });
+  const controls = useAppControls({ i18n });
 
   useKeyboardShortcuts({
     onSpace: round.primaryAction,
@@ -140,7 +134,6 @@ function useGameController(): GameController {
     },
     controls: {
       onAddCustomCategory: addCustom,
-      onBlurNumericField: controls.blurNumericField,
       onTogglePin: togglePin,
       onTogglePinAll: togglePinAll,
       onAddPack: addPack,

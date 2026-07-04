@@ -1,16 +1,9 @@
 import {
   bufferSecondsDefault,
-  bufferSecondsMax,
-  bufferSecondsMin,
   catCountDefault,
-  catCountMax,
-  catCountMin,
   categories,
   durationDefault,
-  durationMax,
-  durationMin,
 } from '@/domain/game/constants';
-import { clampInt } from '@/domain/game/utils';
 import { CLASSIC_PACK_ID, getPackCategories } from '@/shared/lib/categoryPacks';
 
 type PromptDeckPreference = 'auto' | 'open' | 'collapsed';
@@ -32,26 +25,6 @@ interface Settings {
 }
 
 const SETTINGS_STORAGE_KEY = 'scattergories.settings.v1';
-
-type NumericFieldName = 'durationInput' | 'catCountInput' | 'bufferSecondsInput';
-
-const NUMERIC_FIELD_BOUNDS: Record<
-  NumericFieldName,
-  { min: number; max: number; fallback: number }
-> = {
-  durationInput: { min: durationMin, max: durationMax, fallback: durationDefault },
-  catCountInput: { min: catCountMin, max: catCountMax, fallback: catCountDefault },
-  bufferSecondsInput: {
-    min: bufferSecondsMin,
-    max: bufferSecondsMax,
-    fallback: bufferSecondsDefault,
-  },
-};
-
-function sanitizeNumericField(field: NumericFieldName, value: string): string {
-  const { min, max, fallback } = NUMERIC_FIELD_BOUNDS[field];
-  return String(clampInt(value, min, max, fallback));
-}
 
 function getPreferredTheme(): Theme {
   if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
@@ -173,7 +146,7 @@ function readStoredSettings(): Settings {
   return parseStoredSettings(window.localStorage.getItem(SETTINGS_STORAGE_KEY));
 }
 
-export type { NumericFieldName, PromptDeckPreference, Settings, Theme };
+export type { PromptDeckPreference, Settings, Theme };
 export {
   getDefaultSettings,
   getPreferredTheme,
@@ -181,6 +154,5 @@ export {
   readStoredSettings,
   SETTINGS_STORAGE_KEY,
   sanitizeCustomCategories,
-  sanitizeNumericField,
   sanitizeSettings,
 };

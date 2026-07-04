@@ -11,10 +11,10 @@ import {
 import type { RefObject } from 'react';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { catCountMax, catCountMin } from '@/domain/game/constants';
+import { catCountDefault, catCountMax, catCountMin } from '@/domain/game/constants';
 import { PACKS } from '@/shared/lib/categoryPacks';
 import { Button } from '@/shared/ui/Button';
-import { Field } from '@/shared/ui/Field';
+import { DebouncedNumberField } from '@/shared/ui/DebouncedNumberField';
 import { Icon } from '@/shared/ui/Icon';
 import { IconButton } from '@/shared/ui/IconButton';
 import { Sheet } from '@/shared/ui/Sheet';
@@ -43,7 +43,6 @@ interface CategoriesActions {
   onRemoveAllCustom: () => void;
   onRemoveAllBuiltins: () => void;
   onCatCountChange: (value: string) => void;
-  onCatCountBlur: () => void;
   onRedraw: () => void;
   onTogglePinAll: (names: string[]) => void;
   onTogglePromptDeck: () => void;
@@ -65,18 +64,15 @@ function DeckSettings({
   const { t } = useTranslation();
   return (
     <div className="deck-settings">
-      <Field
-        className="ds-field--inline"
+      <DebouncedNumberField
         id="catCount"
         label={t('settings.categoryDraw')}
-        type="number"
-        inputMode="numeric"
+        value={catCountInput}
         min={catCountMin}
         max={catCountMax}
+        fallback={catCountDefault}
         suffix={t('categories.drawUnit', { defaultValue: 'cards' })}
-        value={catCountInput}
-        onChange={(event) => actions.onCatCountChange(event.target.value)}
-        onBlur={actions.onCatCountBlur}
+        onCommit={actions.onCatCountChange}
       />
     </div>
   );

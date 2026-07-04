@@ -1,5 +1,4 @@
 import { Check, Globe, Moon, Sun, Timer, Volume2, VolumeX } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   bufferSecondsDefault,
@@ -9,10 +8,8 @@ import {
   durationMax,
   durationMin,
 } from '@/domain/game/constants';
-import { clampInt } from '@/domain/game/utils';
 import { getNativeName, SUPPORTED_LOCALES } from '@/i18n/localeRegistry';
-import { useDebouncedCommit } from '@/shared/lib/useDebouncedCommit';
-import { Field } from '@/shared/ui/Field';
+import { DebouncedNumberField } from '@/shared/ui/DebouncedNumberField';
 import { Icon } from '@/shared/ui/Icon';
 import { IconButton } from '@/shared/ui/IconButton';
 import { Popover } from '@/shared/ui/Popover';
@@ -30,7 +27,6 @@ interface SettingsClusterProps {
   onToggleTheme: () => void;
   onToggleMute: () => void;
   onUpdateTimingField: (field: TimingField, value: string) => void;
-  onBlurTimingField: (field: TimingField) => void;
 }
 
 function LanguageMenu({
@@ -70,110 +66,6 @@ function LanguageMenu({
   );
 }
 
-interface NumericTimingFieldProps {
-  field: TimingField;
-  id: string;
-  label: string;
-  value: string;
-  min: number;
-  max: number;
-  fallback: number;
-  onCommit: (field: TimingField, value: string) => void;
-}
-
-// biome-ignore lint/complexity/noExcessiveLinesPerFunction: self-contained debounced numeric input; the draft/commit/flush-on-unmount logic is one cohesive unit.
-function NumericTimingField({
-  field,
-  id,
-  label,
-  value,
-  min,
-  max,
-  fallback,
-  onCommit,
-}: NumericTimingFieldProps) {
-  const [draft, setDraft] = useState(value);
-  const isFocusedRef = useRef(false);
-
-  // Reflect external changes to the prop while the user is not editing.
-  useEffect(() => {
-    if (!isFocusedRef.current) {
-      setDraft(value);
-    }
-  }, [value]);
-
-  const { schedule, cancel } = useDebouncedCommit((raw: string) =>
-    onCommit(field, String(clampInt(raw, min, max, fallback))),
-  );
-
-  // Cancel any pending debounce and commit the clamped value now.
-  // Shared by blur and the flush-on-unmount effect below.
-  const commitClamped = useCallback(
-    (raw: string) => {
-      cancel();
-      const clamped = String(clampInt(raw, min, max, fallback));
-      onCommit(field, clamped);
-      return clamped;
-    },
-    [cancel, onCommit, field, min, max, fallback],
-  );
-
-  const handleChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const next = event.target.value;
-      setDraft(next);
-      schedule(next);
-    },
-    [schedule],
-  );
-
-  const handleBlur = useCallback(() => {
-    isFocusedRef.current = false;
-    setDraft(commitClamped(draft));
-  }, [commitClamped, draft]);
-
-  // Enter commits (by blurring the field).
-  const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      event.currentTarget.blur();
-    }
-  }, []);
-
-  // Flush a pending edit if the field unmounts before onBlur fires — e.g. the
-  // popover is closed by an outside click while the input still has focus.
-  // Refs keep the unmount cleanup (empty deps) pointed at the latest values.
-  const draftRef = useRef(draft);
-  draftRef.current = draft;
-  const commitClampedRef = useRef(commitClamped);
-  commitClampedRef.current = commitClamped;
-  useEffect(
-    () => () => {
-      commitClampedRef.current(draftRef.current);
-    },
-    [],
-  );
-
-  return (
-    <Field
-      className="ds-field--inline"
-      id={id}
-      label={label}
-      type="number"
-      inputMode="numeric"
-      value={draft}
-      min={min}
-      max={max}
-      suffix="s"
-      onFocus={() => {
-        isFocusedRef.current = true;
-      }}
-      onChange={handleChange}
-      onBlur={handleBlur}
-      onKeyDown={handleKeyDown}
-    />
-  );
-}
-
 function TimingFields({
   durationInput,
   bufferSecondsInput,
@@ -183,25 +75,25 @@ function TimingFields({
 
   return (
     <div className="timing-fields">
-      <NumericTimingField
-        field="durationInput"
+      <DebouncedNumberField
         id="duration"
         label={t('settings.duration')}
         value={durationInput}
         min={durationMin}
         max={durationMax}
         fallback={durationDefault}
-        onCommit={onUpdateTimingField}
+        suffix="s"
+        onCommit={(value) => onUpdateTimingField('durationInput', value)}
       />
-      <NumericTimingField
-        field="bufferSecondsInput"
+      <DebouncedNumberField
         id="getReady"
         label={t('settings.getReady', { defaultValue: 'Get ready' })}
         value={bufferSecondsInput}
         min={bufferSecondsMin}
         max={bufferSecondsMax}
         fallback={bufferSecondsDefault}
-        onCommit={onUpdateTimingField}
+        suffix="s"
+        onCommit={(value) => onUpdateTimingField('bufferSecondsInput', value)}
       />
     </div>
   );

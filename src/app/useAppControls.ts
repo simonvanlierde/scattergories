@@ -1,7 +1,5 @@
 import type { i18n as I18nInstance } from 'i18next';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { useSettings } from '@/features/settings/SettingsProvider';
-import { type NumericFieldName, sanitizeNumericField } from '@/features/settings/schema';
 import { ensureLanguageLoaded, persistLanguage } from '@/i18n/config';
 
 const SCATTERGORIES_PRELOAD_ERROR_EVENTS = [
@@ -56,25 +54,11 @@ function useLanguageSwitcher(
   );
 }
 
-function useAppControls(params: {
-  i18n: I18nInstance;
-  settings: {
-    catCountInput: string;
-    durationInput: string;
-    bufferSecondsInput: string;
-  };
-  update: ReturnType<typeof useSettings>['update'];
-}) {
+function useAppControls(params: { i18n: I18nInstance }) {
   const [hasChunkError, setHasChunkError] = useState(false);
   const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
   const [isLanguagePending, setIsLanguagePending] = useState(false);
   const newCategoryInputRef = useRef<HTMLInputElement>(null);
-  const blurNumericField = useCallback(
-    (field: NumericFieldName) => {
-      params.update(field, sanitizeNumericField(field, params.settings[field]));
-    },
-    [params.settings, params.update],
-  );
   const handleLanguageChange = useLanguageSwitcher(
     params.i18n,
     setIsLanguagePending,
@@ -85,7 +69,6 @@ function useAppControls(params: {
 
   return {
     newCategoryInputRef,
-    blurNumericField,
     handleLanguageChange,
     hasChunkError,
     isHowToPlayOpen,
