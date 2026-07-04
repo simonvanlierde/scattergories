@@ -135,8 +135,14 @@ function roundReducer(state: RoundState, action: RoundAction): RoundState {
       }
       return next;
     }
-    case 'SET_BUFFER_SECONDS':
-      return { ...state, bufferSeconds: action.bufferSeconds };
+    case 'SET_BUFFER_SECONDS': {
+      const next = { ...state, bufferSeconds: action.bufferSeconds };
+      if (state.phase === 'buffer') {
+        // Shrink an in-flight get-ready countdown; never extend.
+        next.secondsLeft = Math.min(state.secondsLeft, action.bufferSeconds);
+      }
+      return next;
+    }
     case 'TICK':
       return handleTick(state);
     case 'PAUSE_TOGGLE':

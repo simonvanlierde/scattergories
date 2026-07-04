@@ -168,6 +168,15 @@ describe('roundReducer', () => {
     expect(kept.gameSeconds).toBe(THIRTY);
   });
 
+  it('SET_BUFFER_SECONDS shrinks a buffer countdown but never extends it', () => {
+    const buffering = { ...initialRoundState, phase: 'buffer' as const, secondsLeft: TEN };
+    const shrunk = roundReducer(buffering, { type: 'SET_BUFFER_SECONDS', bufferSeconds: FIVE });
+    expect(shrunk.secondsLeft).toBe(FIVE);
+    const kept = roundReducer(buffering, { type: 'SET_BUFFER_SECONDS', bufferSeconds: THIRTY });
+    expect(kept.secondsLeft).toBe(TEN);
+    expect(kept.bufferSeconds).toBe(THIRTY);
+  });
+
   it('TICK is a no-op outside buffer/running', () => {
     const next = roundReducer(initialRoundState, { type: 'TICK' });
     expect(next).toBe(initialRoundState);
