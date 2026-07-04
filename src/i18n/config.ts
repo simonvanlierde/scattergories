@@ -18,9 +18,6 @@ function getSavedLanguage(): string {
 
 const savedLanguage = getSavedLanguage();
 const resolvedLanguage = resolveLocale(savedLanguage);
-// All supported locales are complete by construction; unsupported saved values
-// fall back silently, so there is no startup warning to surface.
-const startupLocaleWarning: string | null = null;
 const i18n = i18nInstance;
 let initPromise: Promise<typeof i18n> | null = null;
 
@@ -87,5 +84,4 @@ export {
   persistLanguage,
   resolvedLanguage,
   savedLanguage,
-  startupLocaleWarning,
 };

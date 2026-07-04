@@ -12,7 +12,6 @@ import type { GameController } from './useGameController';
 
 interface GameShellProps {
   game: GameController;
-  startupLocaleWarning: string | null;
 }
 
 function ControlBar({ game }: { game: GameController }) {
@@ -46,14 +45,6 @@ function ControlBar({ game }: { game: GameController }) {
         />
       </div>
     </footer>
-  );
-}
-
-function WarningBanner({ message }: { message: string }) {
-  return (
-    <p className="banner banner--warning" role="alert">
-      {message}
-    </p>
   );
 }
 
@@ -129,7 +120,7 @@ function PlayGrid({ game }: PlayGridProps) {
   );
 }
 
-function GameShell({ game, startupLocaleWarning }: GameShellProps) {
+function GameShell({ game }: GameShellProps) {
   const { t } = useTranslation();
 
   return (
@@ -139,8 +130,6 @@ function GameShell({ game, startupLocaleWarning }: GameShellProps) {
     >
       <div className="app-shell__bg" aria-hidden="true" />
       <div className="app">
-        {startupLocaleWarning ? <WarningBanner message={startupLocaleWarning} /> : null}
-
         {game.flags.hasChunkError ? (
           <ChunkErrorBanner onReload={game.controls.onReloadAfterChunkError} />
         ) : null}
