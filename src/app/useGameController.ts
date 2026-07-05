@@ -34,6 +34,7 @@ interface GameController {
     onRemoveCustomCategory: (category: string) => void;
     onRedrawCategories: () => void;
     onStartRound: () => void;
+    onToggleAvoidRepeats: () => void;
     onToggleMute: () => void;
     onTogglePause: () => void;
     onTogglePromptDeck: () => void;
@@ -101,6 +102,7 @@ function useGameController(): GameController {
     bufferSeconds: roundSetup.bufferSeconds,
     isMuted: settings.isMuted,
     locale: i18n.resolvedLanguage ?? i18n.language,
+    avoidRepeats: settings.avoidRepeats,
     onLetterPicked: () => board.redrawCategories(true),
   });
   roundInProgressRef.current = round.phase === 'buffer' || round.phase === 'running';
@@ -146,6 +148,7 @@ function useGameController(): GameController {
       onRemoveCustomCategory: removeCustom,
       onRedrawCategories: () => board.redrawCategories(true),
       onStartRound: round.primaryAction,
+      onToggleAvoidRepeats: () => update('avoidRepeats', !settings.avoidRepeats),
       onToggleMute: () => update('isMuted', !settings.isMuted),
       onTogglePause: round.togglePause,
       onTogglePromptDeck: promptDeck.togglePromptDeck,

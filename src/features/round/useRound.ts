@@ -14,17 +14,31 @@ interface UseRoundOptions {
   bufferSeconds: number;
   isMuted: boolean;
   locale: string;
+  avoidRepeats?: boolean;
   onLetterPicked?: () => void;
 }
 
 // Draws the next letter from a non-repeating weighted bag, refilling when empty
 // and avoiding an immediate repeat of the previous letter at the refill boundary.
+// When avoidRepeats is off, each draw is an independent random letter (repeats
+// allowed) and the bag is left untouched so it resumes if the setting flips back.
 function drawNextLetterFromBag(
   locale: string,
-  currentRemaining: string[],
-  currentDrawn: string[],
+  bag: { remaining: string[]; drawn: string[] },
   previousLetter: string | null,
+  avoidRepeats: boolean,
 ) {
+  const { remaining: currentRemaining, drawn: currentDrawn } = bag;
+  if (!avoidRepeats) {
+    const letters = getLocaleLetters(locale);
+    let chosen = pickRandom(letters);
+    // Still skip an immediate back-to-back repeat — it reads as "the spin did nothing".
+    while (letters.length > 1 && chosen === previousLetter) {
+      chosen = pickRandom(letters);
+    }
+    return { chosen, remaining: currentRemaining, drawn: currentDrawn };
+  }
+
   let remaining = [...currentRemaining];
   let drawn = [...currentDrawn];
 
@@ -51,6 +65,7 @@ export function useRound({
   bufferSeconds,
   isMuted,
   locale,
+  avoidRepeats = true,
   onLetterPicked = () => undefined,
 }: UseRoundOptions) {
   const [state, dispatch] = useReducer(roundReducer, initialRoundState);
@@ -181,9 +196,9 @@ export function useRound({
     tickRemainderRef.current = null;
     const { chosen, remaining, drawn } = drawNextLetterFromBag(
       locale,
-      state.remainingLetters,
-      state.drawnLetters,
+      { remaining: state.remainingLetters, drawn: state.drawnLetters },
       lastLandedLetterRef.current,
+      avoidRepeats,
     );
     if (opts.redrawCategories) {
       onLetterPicked();

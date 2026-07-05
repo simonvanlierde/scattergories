@@ -32,11 +32,13 @@ function ControlBar({ game }: { game: GameController }) {
           isLanguagePending={game.flags.isLanguagePending}
           theme={game.settings.theme}
           isMuted={game.settings.isMuted}
+          avoidRepeats={game.settings.avoidRepeats}
           durationInput={game.settings.durationInput}
           bufferSecondsInput={game.settings.bufferSecondsInput}
           onLanguageChange={game.controls.onLanguageChange}
           onToggleTheme={game.controls.onToggleTheme}
           onToggleMute={game.controls.onToggleMute}
+          onToggleAvoidRepeats={game.controls.onToggleAvoidRepeats}
           onUpdateTimingField={game.controls.onUpdateField}
         />
         <IconButton

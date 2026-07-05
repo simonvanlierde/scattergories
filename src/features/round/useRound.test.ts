@@ -190,6 +190,22 @@ it('draws letters from a non-repeating bag and tracks used letters', () => {
   expect(driver.current.usedLetters).toEqual([first, second]);
 });
 
+it('leaves the bag untouched and skips immediate repeats when avoidRepeats is off', () => {
+  const driver = createRoundDriver({ avoidRepeats: false });
+
+  driver.start();
+  const first = mockSpinTo.mock.calls[0]?.[0];
+  driver.landLetter();
+  act(() => driver.current.nextRound());
+  const second = mockSpinTo.mock.calls[1]?.[0];
+
+  // Independent random draws: no bag is consumed, so nothing accrues to usedLetters.
+  expect(driver.current.usedLetters).toEqual([]);
+  // But two consecutive draws never land on the same letter back-to-back.
+  expect(second).not.toBe(first);
+  expect(getLocaleLetters('en')).toContain(second);
+});
+
 it('new letter rerolls and auto-starts the get-ready buffer', () => {
   const driver = createRoundDriver();
 

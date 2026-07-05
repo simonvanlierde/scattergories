@@ -30,6 +30,8 @@ interface Settings {
   /** Pinned category names (custom or built-in) — always drawn each round. */
   pinned: string[];
   isMuted: boolean;
+  /** When true, letters are drawn without repeats until the alphabet is exhausted. */
+  avoidRepeats: boolean;
   theme: Theme;
   themeSource: ThemeSource;
   promptDeckPreference: PromptDeckPreference;
@@ -60,6 +62,7 @@ function getDefaultSettings(): Settings {
     customCategories: [],
     pinned: [],
     isMuted: false,
+    avoidRepeats: true,
     theme: getPreferredTheme(),
     themeSource: 'system',
     promptDeckPreference: 'auto',
@@ -144,6 +147,8 @@ function sanitizeSettings(raw: unknown): Settings {
     customCategories,
     pinned,
     isMuted: typeof parsed.isMuted === 'boolean' ? parsed.isMuted : fallback.isMuted,
+    avoidRepeats:
+      typeof parsed.avoidRepeats === 'boolean' ? parsed.avoidRepeats : fallback.avoidRepeats,
     theme: parsed.theme === 'light' || parsed.theme === 'dark' ? parsed.theme : fallback.theme,
     themeSource: parsed.themeSource === 'user' ? 'user' : 'system',
     promptDeckPreference:

@@ -21,11 +21,13 @@ interface SettingsClusterProps {
   isLanguagePending: boolean;
   theme: 'light' | 'dark';
   isMuted: boolean;
+  avoidRepeats: boolean;
   durationInput: string;
   bufferSecondsInput: string;
   onLanguageChange: (value: string) => void;
   onToggleTheme: () => void;
   onToggleMute: () => void;
+  onToggleAvoidRepeats: () => void;
   onUpdateTimingField: (field: TimingField, value: string) => void;
 }
 
@@ -65,8 +67,17 @@ function LanguageMenu({
 function TimingFields({
   durationInput,
   bufferSecondsInput,
+  avoidRepeats,
   onUpdateTimingField,
-}: Pick<SettingsClusterProps, 'durationInput' | 'bufferSecondsInput' | 'onUpdateTimingField'>) {
+  onToggleAvoidRepeats,
+}: Pick<
+  SettingsClusterProps,
+  | 'durationInput'
+  | 'bufferSecondsInput'
+  | 'avoidRepeats'
+  | 'onUpdateTimingField'
+  | 'onToggleAvoidRepeats'
+>) {
   const { t } = useTranslation();
 
   return (
@@ -91,6 +102,10 @@ function TimingFields({
         suffix="s"
         onCommit={(value) => onUpdateTimingField('bufferSecondsInput', value)}
       />
+      <label className="settings-toggle">
+        <input type="checkbox" checked={avoidRepeats} onChange={onToggleAvoidRepeats} />
+        <span>{t('settings.avoidRepeats')}</span>
+      </label>
     </div>
   );
 }
@@ -100,11 +115,13 @@ export function SettingsCluster({
   isLanguagePending,
   theme,
   isMuted,
+  avoidRepeats,
   durationInput,
   bufferSecondsInput,
   onLanguageChange,
   onToggleTheme,
   onToggleMute,
+  onToggleAvoidRepeats,
   onUpdateTimingField,
 }: SettingsClusterProps) {
   const { t } = useTranslation();
@@ -120,7 +137,9 @@ export function SettingsCluster({
         <TimingFields
           durationInput={durationInput}
           bufferSecondsInput={bufferSecondsInput}
+          avoidRepeats={avoidRepeats}
           onUpdateTimingField={onUpdateTimingField}
+          onToggleAvoidRepeats={onToggleAvoidRepeats}
         />
       </Popover>
 
