@@ -43,6 +43,21 @@ describe('useKeyboardShortcuts', () => {
     expect(onC).toHaveBeenCalledOnce();
   });
 
+  it('ignores browser chords with a modifier held', () => {
+    const onR = vi.fn();
+    const onC = vi.fn();
+    const onP = vi.fn();
+    renderHook(() => useKeyboardShortcuts({ onR, onC, onP }));
+
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'r', ctrlKey: true, bubbles: true }));
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'c', metaKey: true, bubbles: true }));
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'p', altKey: true, bubbles: true }));
+
+    expect(onR).not.toHaveBeenCalled();
+    expect(onC).not.toHaveBeenCalled();
+    expect(onP).not.toHaveBeenCalled();
+  });
+
   it('ignores keys when an INPUT is focused', () => {
     const onSpace = vi.fn();
     renderHook(() => useKeyboardShortcuts({ onSpace }));

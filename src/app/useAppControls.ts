@@ -2,11 +2,6 @@ import type { i18n as I18nInstance } from 'i18next';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ensureLanguageLoaded, persistLanguage } from '@/i18n/config';
 
-const SCATTERGORIES_PRELOAD_ERROR_EVENTS = [
-  'vite:preloadError',
-  'scattergories:chunk-error',
-] as const;
-
 function useChunkErrorListener(setHasChunkError: (value: boolean) => void): void {
   useEffect(() => {
     function onPreloadError(event: Event) {
@@ -14,15 +9,8 @@ function useChunkErrorListener(setHasChunkError: (value: boolean) => void): void
       setHasChunkError(true);
     }
 
-    for (const eventName of SCATTERGORIES_PRELOAD_ERROR_EVENTS) {
-      window.addEventListener(eventName, onPreloadError);
-    }
-
-    return () => {
-      for (const eventName of SCATTERGORIES_PRELOAD_ERROR_EVENTS) {
-        window.removeEventListener(eventName, onPreloadError);
-      }
-    };
+    window.addEventListener('vite:preloadError', onPreloadError);
+    return () => window.removeEventListener('vite:preloadError', onPreloadError);
   }, [setHasChunkError]);
 }
 

@@ -10,8 +10,6 @@ import { useKeyboardShortcuts } from './useKeyboardShortcuts';
 import { usePromptDeckState } from './usePromptDeckState';
 import { useRoundSetup } from './useRoundSetup';
 
-const howToPlayModalLoaders = import.meta.glob('./HowToPlayModal.tsx');
-
 interface GameController {
   categories: {
     availableCount: number;
@@ -67,16 +65,9 @@ interface GameController {
   howToPlayDialog: ComponentType<{ onClose: () => void }>;
 }
 
-const HowToPlayDialog = lazy(async () => {
-  const loader = howToPlayModalLoaders['./HowToPlayModal.tsx'];
-
-  if (!loader) {
-    throw new Error('Unable to load HowToPlayModal.');
-  }
-
-  const module = (await loader()) as Record<string, ComponentType<{ onClose: () => void }>>;
-  return { default: module.HowToPlayModal };
-});
+const HowToPlayDialog = lazy(async () => ({
+  default: (await import('./HowToPlayModal')).HowToPlayModal,
+}));
 
 // biome-ignore lint/complexity/noExcessiveLinesPerFunction: aggregator hook — the body wires together the sub-hooks and returns one flat controller object; splitting it would only scatter that shape.
 function useGameController(): GameController {
@@ -115,9 +106,17 @@ function useGameController(): GameController {
   roundInProgressRef.current = round.phase === 'buffer' || round.phase === 'running';
   const controls = useAppControls({ i18n });
 
+  // Same gate as ActionBar's New-letter button (isPausedRound) so the 'R'
+  // shortcut can't wipe a running round the button wouldn't let you touch.
+  const isPausedRound = (round.phase === 'buffer' || round.phase === 'running') && round.isPaused;
+
   useKeyboardShortcuts({
     onSpace: round.primaryAction,
-    onR: round.newLetter,
+    onR: () => {
+      if (isPausedRound) {
+        round.newLetter();
+      }
+    },
     onP: round.togglePause,
     onC: promptDeck.togglePromptDeck,
     onHelp: () => controls.setIsHowToPlayOpen(true),

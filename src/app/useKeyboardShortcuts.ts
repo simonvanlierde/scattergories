@@ -1,5 +1,11 @@
 import { useEffect, useEffectEvent } from 'react';
 
+function isTextEntryTarget(target: HTMLElement | null, tag: string | undefined): boolean {
+  return (
+    tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || Boolean(target?.isContentEditable)
+  );
+}
+
 export interface ShortcutHandlers {
   onSpace?: () => void;
   onR?: () => void;
@@ -10,10 +16,15 @@ export interface ShortcutHandlers {
 
 export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
   const onShortcut = useEffectEvent((event: KeyboardEvent) => {
+    // Browser/OS chords (Cmd+C, Ctrl+R, Alt+…) are never game shortcuts.
+    if (event.metaKey || event.ctrlKey || event.altKey) {
+      return;
+    }
+
     const target = event.target as HTMLElement | null;
     const tag = target?.tagName;
 
-    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target?.isContentEditable) {
+    if (isTextEntryTarget(target, tag)) {
       return;
     }
 
