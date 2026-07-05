@@ -29,6 +29,7 @@
   }
 
   .playmat__meta {
+    grid-column: 1 / -1;
     display: flex;
     align-items: baseline;
     justify-content: space-between;
@@ -186,6 +187,11 @@
     letter-spacing: var(--tracking-tight);
     color: var(--text-primary);
     font-feature-settings: "ss01" 1;
+    /* Pin Fraunces to its maximal optical size: the display cut has the
+       high-contrast, letterpress character that makes the drawn letter the
+       app's identity. Fixed (not `optical-sizing: auto`) so the hero and the
+       round-end recap share one display voice regardless of rendered size. */
+    font-variation-settings: "opsz" 144;
   }
 
   .letter-hero__glyph--hidden {
@@ -382,6 +388,12 @@
       gap: var(--space-4);
     }
 
+    /* Round over: the recap is a full-screen celebration, not a compact hero —
+       revert to one column so it (and the actions below) span the full width. */
+    .play-grid:not(.play-grid--deck-collapsed) .playmat[data-phase="done"] {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
     .play-grid:not(.play-grid--deck-collapsed) .playmat__hero {
       width: min(36vw, 9rem);
       margin: 0;
@@ -521,6 +533,7 @@
     letter-spacing: var(--tracking-tight);
     color: var(--text-primary);
     font-feature-settings: "ss01" 1;
+    font-variation-settings: "opsz" 144;
   }
 
   .round-end__stats {
@@ -551,22 +564,6 @@
     border-right: 0;
   }
 
-  .round-end__stat--emphasis {
-    background: transparent;
-    border-color: var(--rule);
-  }
-
-  .round-end[data-complete="true"] .round-end__stat--emphasis {
-    background: transparent;
-    border-color: var(--rule);
-  }
-
-  .round-end__stat--streak {
-    background: transparent;
-    border-color: var(--rule);
-    color: inherit;
-  }
-
   .round-end__stat-label {
     font-family: var(--font-ui);
     font-size: var(--text-xs);
@@ -582,29 +579,6 @@
     font-weight: 500;
     font-variant-numeric: tabular-nums;
     color: var(--text-primary);
-  }
-
-  .round-end__stat--streak .round-end__stat-label {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-1);
-    color: var(--text-muted);
-  }
-
-  .round-end__stat--streak .round-end__stat-value {
-    color: var(--accent-primary);
-  }
-
-  .round-end__stat--emphasis .round-end__stat-value {
-    color: var(--accent-primary);
-  }
-
-  .round-end__actions {
-    display: grid;
-    gap: var(--space-2);
-    width: 100%;
-    max-width: 24rem;
-    margin-top: var(--space-2);
   }
 
   @media (prefers-reduced-motion: reduce) {

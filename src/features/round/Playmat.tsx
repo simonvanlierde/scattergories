@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import type { GameController } from '@/app/useGameController';
 import { ActionBar } from './ActionBar';
 import { LetterHero } from './LetterHero';
+import { RoundEnd } from './RoundEnd';
 import { TimerRing } from './TimerRing';
 
 interface PlaymatProps {
@@ -50,26 +51,64 @@ function PlaymatStatus({ statusKey }: { statusKey: string | null }) {
   );
 }
 
+// Shown between rounds (idle/done) so players can see which letters have already
+// come up — the "have we done B yet?" question at the table. Hidden during play
+// to keep the live board focused on the clock.
+function UsedLetters({ letters }: { letters: string[] }) {
+  const { t } = useTranslation();
+
+  if (letters.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="playmat__meta">
+      <p className="playmat__used-letters">
+        {t('usedLetters', {
+          defaultValue: 'Used letters: {{letters}}',
+          letters: letters.join(' · '),
+        })}
+      </p>
+    </div>
+  );
+}
+
 function PlaymatRoundContent({
   round,
   settings,
+  categories,
   controls,
 }: {
   round: PlaymatProps['game']['round'];
   settings: PlaymatProps['game']['settings'];
+  categories: PlaymatProps['game']['categories'];
   controls: PlaymatProps['game']['controls'];
 }) {
+  const isDone = round.phase === 'done';
+  // Between rounds only — during play the strip would compete with the clock.
+  const showUsedLetters = round.phase === 'idle' || isDone;
+
   return (
     <>
-      <PlaymatHero
-        phase={round.phase}
-        isPaused={round.isPaused}
-        secondsLeft={round.secondsLeft}
-        gameSeconds={settings.gameSeconds}
-        letter={round.letter}
-        letterVisible={round.letterVisible}
-        letterLanding={round.letterLanding}
-      />
+      {showUsedLetters ? <UsedLetters letters={round.usedLetters} /> : null}
+
+      {isDone ? (
+        <RoundEnd
+          letter={round.letter}
+          categoriesCount={categories.drawnCategories.length}
+          roundsPlayed={round.usedLetters.length}
+        />
+      ) : (
+        <PlaymatHero
+          phase={round.phase}
+          isPaused={round.isPaused}
+          secondsLeft={round.secondsLeft}
+          gameSeconds={settings.gameSeconds}
+          letter={round.letter}
+          letterVisible={round.letterVisible}
+          letterLanding={round.letterLanding}
+        />
+      )}
 
       <PlaymatStatus statusKey={round.statusKey} />
 
@@ -86,7 +125,7 @@ function PlaymatRoundContent({
 
 export function Playmat({ game }: PlaymatProps) {
   const { t } = useTranslation();
-  const { round, settings, controls } = game;
+  const { round, settings, categories, controls } = game;
 
   return (
     <section
@@ -94,7 +133,12 @@ export function Playmat({ game }: PlaymatProps) {
       aria-label={t('playmat.label', { defaultValue: 'Game board' })}
       data-phase={round.phase}
     >
-      <PlaymatRoundContent round={round} settings={settings} controls={controls} />
+      <PlaymatRoundContent
+        round={round}
+        settings={settings}
+        categories={categories}
+        controls={controls}
+      />
     </section>
   );
 }
