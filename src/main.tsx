@@ -15,3 +15,10 @@ createRoot(rootElement).render(
     <App />
   </StrictMode>,
 );
+
+// Offline support for the local-first shell; registration failure is non-fatal.
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => undefined);
+  });
+}

@@ -2,11 +2,11 @@
   "name": "Scattergories Timer Helper",
   "short_name": "Scattergories",
   "description": "A compact Scattergories companion for letters, rounds, prompts, and timing.",
+  "id": "/",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#fdfdfe",
   "theme_color": "#1a1c20",
-  "orientation": "portrait-or-landscape",
   "icons": [
     {
       "src": "/icons/icon-192.png",
