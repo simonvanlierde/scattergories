@@ -241,6 +241,23 @@
     text-decoration: underline;
   }
 
+  .modal-attribution {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+
+  .about-link-inline {
+    color: var(--text-primary);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .about-link-inline:hover {
+    color: var(--accent);
+  }
+
   .modal-privacy {
     font-size: 0.92rem;
     color: var(--text-secondary);

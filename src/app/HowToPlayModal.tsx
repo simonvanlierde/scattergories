@@ -1,21 +1,27 @@
 import {
   ChevronDown,
-  ExternalLink,
   Globe,
   Info,
   Keyboard,
   ListChecks,
   type LucideIcon,
+  Pin,
+  RefreshCw,
   Settings,
+  SlidersHorizontal,
   SunMoon,
   Tags,
   Timer,
   Volume2,
 } from 'lucide-react';
 import type { ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { Icon } from '@/shared/ui/Icon';
 import { Sheet } from '@/shared/ui/Sheet';
+
+const OFFICIAL_GAME_URL = 'https://hasbrogames.com/scattergories';
+const SOURCE_CODE_URL = 'https://github.com/simonvanlierde/scattergories';
+const LICENSE_URL = 'https://github.com/simonvanlierde/scattergories/blob/main/LICENSE';
 
 interface HowToPlayModalProps {
   onClose: () => void;
@@ -38,6 +44,10 @@ const SHORTCUTS: readonly ShortcutDefinition[] = [
 // (round timer, language, sound, theme) and the controls in the footer.
 const SETTINGS_ICONS: readonly LucideIcon[] = [Timer, Globe, Volume2, SunMoon];
 
+// One icon per mechanic, matching the order of `modal.categoriesItems`
+// (customize deck, pin, reroll) and the controls in the categories panel.
+const CATEGORY_ICONS: readonly LucideIcon[] = [SlidersHorizontal, Pin, RefreshCw];
+
 function toStringArray(value: unknown): string[] {
   if (!Array.isArray(value)) {
     return [];
@@ -51,6 +61,27 @@ interface SectionProps {
   title: string;
   defaultOpen?: boolean;
   children: ReactNode;
+}
+
+function ExternalAnchor({ href, className }: { href: string; className?: string }) {
+  // Content is injected by <Trans> from the translated message, so no children here.
+  // biome-ignore lint/a11y/useAnchorContent: filled by Trans.
+  return <a href={href} target="_blank" rel="noopener noreferrer" className={className} />;
+}
+
+function Attribution() {
+  return (
+    <p className="modal-attribution">
+      <Trans
+        i18nKey="modal.attribution"
+        components={{
+          official: <ExternalAnchor href={OFFICIAL_GAME_URL} className="about-link-inline" />,
+          source: <ExternalAnchor href={SOURCE_CODE_URL} className="about-link-inline" />,
+          license: <ExternalAnchor href={LICENSE_URL} className="about-link-inline" />,
+        }}
+      />
+    </p>
+  );
 }
 
 function Section({ icon, title, defaultOpen = false, children }: SectionProps) {
@@ -69,6 +100,7 @@ function Section({ icon, title, defaultOpen = false, children }: SectionProps) {
 export function HowToPlayModal({ onClose }: HowToPlayModalProps) {
   const { t } = useTranslation();
   const gameplayPoints = toStringArray(t('modal.gameplayPoints', { returnObjects: true }));
+  const categoriesItems = toStringArray(t('modal.categoriesItems', { returnObjects: true }));
   const settingsItems = toStringArray(t('modal.settingsItems', { returnObjects: true }));
 
   return (
@@ -91,6 +123,18 @@ export function HowToPlayModal({ onClose }: HowToPlayModalProps) {
 
         <Section icon={Tags} title={t('modal.categories')}>
           <p>{t('modal.categoriesText')}</p>
+          <ul className="howto__settings">
+            {categoriesItems.map((item, index) => (
+              <li key={item}>
+                <Icon
+                  icon={CATEGORY_ICONS[index] ?? Tags}
+                  size={16}
+                  className="howto__settings-icon"
+                />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
         </Section>
 
         <Section icon={Settings} title={t('modal.settings')}>
@@ -123,34 +167,7 @@ export function HowToPlayModal({ onClose }: HowToPlayModalProps) {
         </Section>
 
         <Section icon={Info} title={t('modal.about')}>
-          <ul className="about-links">
-            <li>
-              <a
-                href="https://hasbrogames.com/scattergories"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="about-link"
-              >
-                <Icon icon={ExternalLink} size={16} />
-                {t('modal.officialGame')}
-                {/* biome-ignore lint/security/noSecrets: i18n message key, not a secret */}
-                <span className="sr-only"> {t('modal.opensInNewTab')}</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://github.com/simonvanlierde/scattergories"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="about-link"
-              >
-                <Icon icon={ExternalLink} size={16} />
-                {t('modal.sourceCode')}
-                {/* biome-ignore lint/security/noSecrets: i18n message key, not a secret */}
-                <span className="sr-only"> {t('modal.opensInNewTab')}</span>
-              </a>
-            </li>
-          </ul>
+          <Attribution />
           <p className="modal-privacy">{t('modal.privacy')}</p>
           <p className="modal-version">{t('modal.version', { version: __APP_VERSION__ })}</p>
         </Section>
