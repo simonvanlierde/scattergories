@@ -177,6 +177,19 @@ describe('roundReducer', () => {
     expect(kept.bufferSeconds).toBe(THIRTY);
   });
 
+  it('SET_BUFFER_SECONDS to 0 mid-buffer runs immediately instead of stalling', () => {
+    const buffering = {
+      ...initialRoundState,
+      phase: 'buffer' as const,
+      secondsLeft: TEN,
+      gameSeconds: DEFAULT_TIMER_SECONDS,
+    };
+    const running = roundReducer(buffering, { type: 'SET_BUFFER_SECONDS', bufferSeconds: ZERO });
+    expect(running.phase).toBe('running');
+    expect(running.secondsLeft).toBe(DEFAULT_TIMER_SECONDS);
+    expect(running.statusKey).toBe('timer.go');
+  });
+
   it('TICK is a no-op outside buffer/running', () => {
     const next = roundReducer(initialRoundState, { type: 'TICK' });
     expect(next).toBe(initialRoundState);

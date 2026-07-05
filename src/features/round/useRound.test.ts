@@ -1,5 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 import { beforeEach, expect, it, vi } from 'vitest';
+import { getLocaleLetters } from '@/i18n/localeRegistry';
 import { FIVE, ONE, ONE_SECOND_MS, TEN, TWENTY, TWO, TWO_SECONDS_MS, ZERO } from '@/test/constants';
 import { BUFFER_SECONDS } from '@/test/gameConstants';
 import { useAudio } from './useAudio';
@@ -8,6 +9,9 @@ import { useRound } from './useRound';
 
 const SHORT_ROUND_SECONDS = FIVE;
 const LONG_ROUND_SECONDS = TWENTY;
+const PARTIAL_SECOND_MS = 400;
+const REMAINDER_MS = ONE_SECOND_MS - PARTIAL_SECOND_MS;
+const PAUSED_WAIT_MS = 5000;
 
 vi.mock('./useAudio');
 vi.mock('./useLetterRoller');
@@ -197,4 +201,64 @@ it('new letter rerolls and auto-starts the get-ready buffer', () => {
   driver.landLetter();
   expect(driver.current.phase).toBe('buffer');
   expect(driver.current.secondsLeft).toBe(BUFFER_SECONDS);
+});
+
+it('keeps sub-second progress across a pause/resume', () => {
+  const driver = createRoundDriver();
+
+  driver.start();
+  driver.landLetter();
+  driver.advanceBuffer();
+  expect(driver.current.secondsLeft).toBe(SHORT_ROUND_SECONDS);
+
+  // Part-way into the current second, then pause and wait a while.
+  act(() => vi.advanceTimersByTime(PARTIAL_SECOND_MS));
+  expect(driver.current.secondsLeft).toBe(SHORT_ROUND_SECONDS);
+  act(() => driver.current.togglePause());
+  act(() => vi.advanceTimersByTime(PAUSED_WAIT_MS));
+
+  // Resuming needs only the leftover of that second — not a fresh full second.
+  act(() => driver.current.togglePause());
+  act(() => vi.advanceTimersByTime(REMAINDER_MS - ONE));
+  expect(driver.current.secondsLeft).toBe(SHORT_ROUND_SECONDS);
+  act(() => vi.advanceTimersByTime(ONE));
+  expect(driver.current.secondsLeft).toBe(SHORT_ROUND_SECONDS - ONE);
+});
+
+it('rebuilds the letter bag for the new alphabet when the locale changes', () => {
+  let landCallback: (() => void) | undefined;
+  mockSpinTo.mockImplementation((_letter: string, callback: () => void) => {
+    landCallback = callback;
+  });
+  const { result, rerender } = renderHook(
+    (props: Parameters<typeof useRound>[0]) => useRound(props),
+    {
+      initialProps: {
+        gameSeconds: SHORT_ROUND_SECONDS,
+        bufferSeconds: BUFFER_SECONDS,
+        isMuted: false,
+        locale: 'en',
+      },
+    },
+  );
+
+  act(() => result.current.nextRound());
+  const enLetter = mockSpinTo.mock.calls[0]?.[0];
+  expect(getLocaleLetters('en')).toContain(enLetter);
+  act(() => landCallback?.());
+  expect(result.current.usedLetters).toEqual([enLetter]);
+
+  rerender({
+    gameSeconds: SHORT_ROUND_SECONDS,
+    bufferSeconds: BUFFER_SECONDS,
+    isMuted: false,
+    locale: 'el',
+  });
+  // The switch clears the old-alphabet draw history and rebuilds the bag.
+  expect(result.current.usedLetters).toEqual([]);
+
+  act(() => result.current.nextRound());
+  const elLetter = mockSpinTo.mock.calls[1]?.[0];
+  expect(getLocaleLetters('el')).toContain(elLetter);
+  expect(getLocaleLetters('en')).not.toContain(elLetter);
 });

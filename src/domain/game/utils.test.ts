@@ -24,6 +24,7 @@ import {
   ZERO,
 } from '@/test/constants';
 import { englishLetters } from './constants';
+import { getLocaleLetterWeights } from './localeWeights';
 import {
   clampInt,
   formatSeconds,
@@ -166,5 +167,25 @@ describe('weightedLetterBag', () => {
 
   it('accepts an injected RNG for deterministic weighted order', () => {
     expect(weightedLetterBag('en', () => ZERO)).toEqual(englishLetters);
+  });
+
+  it('orders letters proportionally to their weights', () => {
+    const trials = 4000;
+    const highLetter = 'T';
+    const lowLetter = 'Q';
+    const toleranceDigits = 1;
+    const weights = getLocaleLetterWeights('en');
+
+    let highFirst = ZERO;
+    for (let i = ZERO; i < trials; i += ONE) {
+      const bag = weightedLetterBag('en');
+      if (bag.indexOf(highLetter) < bag.indexOf(lowLetter)) {
+        highFirst += ONE;
+      }
+    }
+
+    // Reservoir-sampling keys give P(high before low) = w_high / (w_high + w_low).
+    const expected = weights[highLetter] / (weights[highLetter] + weights[lowLetter]);
+    expect(highFirst / trials).toBeCloseTo(expected, toleranceDigits);
   });
 });

@@ -60,6 +60,14 @@ export function useRound({
 
   const tickedSecondRef = useRef<number | null>(null);
   const alarmTimeoutRef = useRef<number | null>(null);
+  // Sub-second remainder carried across a pause so resuming doesn't lose progress.
+  const tickRemainderRef = useRef<number | null>(null);
+  // Latest pause flag, read in the countdown cleanup to tell pause from a phase change.
+  const isPausedRef = useRef(state.isPaused);
+  isPausedRef.current = state.isPaused;
+  // The last letter that actually landed — used for repeat-avoidance, unlike the
+  // roller's live letter which cycles through random flip letters mid-spin.
+  const lastLandedLetterRef = useRef<string | null>(null);
   const clearAlarmTimeout = useCallback(() => {
     if (alarmTimeoutRef.current !== null) {
       window.clearTimeout(alarmTimeoutRef.current);
@@ -67,21 +75,50 @@ export function useRound({
     }
   }, []);
 
+  // Rebuild the letter bag for the current alphabet whenever the locale changes
+  // (and on mount), so a switch doesn't keep drawing the old locale's letters.
   useEffect(() => {
     resetRoller();
-  }, [resetRoller]);
+    lastLandedLetterRef.current = null;
+    dispatch({
+      type: 'SYNC_BAGS',
+      remainingLetters: weightedLetterBag(locale),
+      drawnLetters: [],
+    });
+  }, [locale, resetRoller]);
 
-  // Countdown clock: ticks once a second while in the buffer or running phase.
+  // Self-correcting countdown clock: aligns each tick to a wall-clock deadline
+  // instead of a bare interval, so pause/resume keeps sub-second progress and a
+  // long throttle (e.g. a backgrounded tab) catches up the seconds it missed.
   useEffect(() => {
     if ((state.phase !== 'buffer' && state.phase !== 'running') || state.isPaused) {
       return;
     }
 
-    const id = window.setInterval(() => {
-      dispatch({ type: 'TICK' });
-    }, ONE_SECOND_MS);
+    let timeoutId = 0;
+    let targetAt = Date.now() + (tickRemainderRef.current ?? ONE_SECOND_MS);
+    tickRemainderRef.current = null;
 
-    return () => window.clearInterval(id);
+    const runTick = () => {
+      const now = Date.now();
+      // Fire one TICK per whole second elapsed, catching up after any throttle.
+      const ticks = Math.max(1, Math.floor((now - targetAt) / ONE_SECOND_MS) + 1);
+      targetAt += ticks * ONE_SECOND_MS;
+      for (let i = 0; i < ticks; i += 1) {
+        dispatch({ type: 'TICK' });
+      }
+      timeoutId = window.setTimeout(runTick, Math.max(0, targetAt - Date.now()));
+    };
+
+    timeoutId = window.setTimeout(runTick, Math.max(0, targetAt - Date.now()));
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      // On pause (not a phase change), keep the unfinished fraction of the second.
+      if (isPausedRef.current) {
+        tickRemainderRef.current = targetAt - Date.now();
+      }
+    };
   }, [state.isPaused, state.phase]);
 
   // Sound the alarm when a round ends, then auto-clear it after the alarm window.
@@ -139,11 +176,13 @@ export function useRound({
   const runSpin = useCallback(
     (opts: { redrawCategories: boolean }) => {
       clearAlarmTimeout();
+      // A fresh spin restarts the countdown from a full second.
+      tickRemainderRef.current = null;
       const { chosen, remaining, drawn } = drawNextLetterFromBag(
         locale,
         state.remainingLetters,
         state.drawnLetters,
-        roller.letter === '?' ? null : roller.letter,
+        lastLandedLetterRef.current,
       );
       if (opts.redrawCategories) {
         onLetterPicked();
@@ -158,6 +197,7 @@ export function useRound({
       });
 
       roller.spinTo(chosen, () => {
+        lastLandedLetterRef.current = chosen;
         playLetterLand();
         dispatch({ type: 'LETTER_LANDED' });
       });

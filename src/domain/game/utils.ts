@@ -10,12 +10,15 @@ export function weightedLetterBag(
   const normalizedLocale = normalizeLocale(locale);
   const letterWeights = getLocaleLetterWeights(normalizedLocale);
   const letters = getLocaleLetters(normalizedLocale);
+  // Weight-proportional random order via reservoir-sampling keys: with
+  // key = random() ** (1 / weight), sorting by descending key gives each pair
+  // P(i before j) = wi / (wi + wj).
   return [...letters]
     .map((letter) => ({
       letter,
-      score: random() * (letterWeights[letter] ?? 1),
+      score: random() ** (1 / (letterWeights[letter] ?? 1)),
     }))
-    .sort((a, b) => a.score - b.score)
+    .sort((a, b) => b.score - a.score)
     .map((entry) => entry.letter);
 }
 

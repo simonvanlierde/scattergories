@@ -103,6 +103,25 @@ describe('useAudio', () => {
       expect(audioContextCtor).toHaveBeenCalledOnce();
     });
 
+    it('keeps play callbacks stable across mute toggles but honours the latest mute', () => {
+      const { audioContextCtor } = makeAudioContextMock();
+      vi.stubGlobal('AudioContext', audioContextCtor);
+
+      const { result, rerender } = renderHook(({ muted }) => useAudio(muted), {
+        initialProps: { muted: false },
+      });
+      const firstPlayAlarm = result.current.playAlarm;
+
+      rerender({ muted: true });
+      expect(result.current.playAlarm).toBe(firstPlayAlarm);
+
+      // The stable callback still reads the current (now muted) state.
+      act(() => {
+        result.current.playAlarm();
+      });
+      expect(audioContextCtor).not.toHaveBeenCalled();
+    });
+
     it('closes the AudioContext on unmount', () => {
       const { contextMock, audioContextCtor } = makeAudioContextMock();
       vi.stubGlobal('AudioContext', audioContextCtor);

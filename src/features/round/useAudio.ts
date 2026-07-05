@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { type RefObject, useCallback, useEffect, useRef } from 'react';
 
 type WindowWithWebkit = Window & { webkitAudioContext?: typeof AudioContext };
 
@@ -97,13 +97,15 @@ function playAlarmSound(context: AudioContext) {
   }
 }
 
+// Reads mute state from a ref so the returned callback keeps a stable identity
+// across mute toggles — effects keyed on it (e.g. the alarm) then don't re-fire.
 function useSoundPlayer(
-  isMuted: boolean,
+  mutedRef: RefObject<boolean>,
   getContext: () => AudioContext | null,
   playFn: (context: AudioContext) => void,
 ) {
   return useCallback(() => {
-    if (isMuted) {
+    if (mutedRef.current) {
       return;
     }
     const context = getContext();
@@ -111,7 +113,7 @@ function useSoundPlayer(
       return;
     }
     playFn(context);
-  }, [getContext, isMuted, playFn]);
+  }, [getContext, mutedRef, playFn]);
 }
 
 function useAudioContext() {
@@ -142,8 +144,10 @@ function useAudioContext() {
 
 export function useAudio(isMuted: boolean) {
   const getContext = useAudioContext();
-  const playTick = useSoundPlayer(isMuted, getContext, playTickSound);
-  const playAlarm = useSoundPlayer(isMuted, getContext, playAlarmSound);
-  const playLetterLand = useSoundPlayer(isMuted, getContext, playLetterLandSound);
+  const mutedRef = useRef(isMuted);
+  mutedRef.current = isMuted;
+  const playTick = useSoundPlayer(mutedRef, getContext, playTickSound);
+  const playAlarm = useSoundPlayer(mutedRef, getContext, playAlarmSound);
+  const playLetterLand = useSoundPlayer(mutedRef, getContext, playLetterLandSound);
   return { playTick, playAlarm, playLetterLand };
 }

@@ -140,6 +140,10 @@ function roundReducer(state: RoundState, action: RoundAction): RoundState {
       if (state.phase === 'buffer') {
         // Shrink an in-flight get-ready countdown; never extend.
         next.secondsLeft = Math.min(state.secondsLeft, action.bufferSeconds);
+        // A buffer clamped to nothing skips straight to running, like enterCountdown.
+        if (next.secondsLeft <= 0) {
+          return enterCountdown(next);
+        }
       }
       return next;
     }
