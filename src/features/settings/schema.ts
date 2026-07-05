@@ -1,13 +1,23 @@
 import {
   bufferSecondsDefault,
+  bufferSecondsMax,
+  bufferSecondsMin,
   catCountDefault,
+  catCountMax,
+  catCountMin,
   categories,
   durationDefault,
+  durationMax,
+  durationMin,
 } from '@/domain/game/constants';
+import { clampInt } from '@/domain/game/utils';
 import { CLASSIC_PACK_ID, getPackCategories } from '@/shared/lib/categoryPacks';
+import { safeStorage } from '@/shared/lib/safeStorage';
 
 type PromptDeckPreference = 'auto' | 'open' | 'collapsed';
 type Theme = 'light' | 'dark';
+/** Whether the current theme follows the OS ('system') or was picked explicitly ('user'). */
+type ThemeSource = 'system' | 'user';
 
 interface Settings {
   durationInput: string;
@@ -21,17 +31,24 @@ interface Settings {
   pinned: string[];
   isMuted: boolean;
   theme: Theme;
+  themeSource: ThemeSource;
   promptDeckPreference: PromptDeckPreference;
 }
 
 const SETTINGS_STORAGE_KEY = 'scattergories.settings.v1';
+const DARK_SCHEME_QUERY = '(prefers-color-scheme: dark)';
 
 function getPreferredTheme(): Theme {
   if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
     return 'light';
   }
 
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  return window.matchMedia(DARK_SCHEME_QUERY).matches ? 'dark' : 'light';
+}
+
+/** Clamp a stored numeric-input string into range so a bad value from another tab can't slip through. */
+function sanitizeNumericInput(value: unknown, min: number, max: number, fallback: number): string {
+  return typeof value === 'string' ? String(clampInt(value, min, max, fallback)) : String(fallback);
 }
 
 function getDefaultSettings(): Settings {
@@ -44,6 +61,7 @@ function getDefaultSettings(): Settings {
     pinned: [],
     isMuted: false,
     theme: getPreferredTheme(),
+    themeSource: 'system',
     promptDeckPreference: 'auto',
   };
 }
@@ -104,19 +122,30 @@ function sanitizeSettings(raw: unknown): Settings {
   ).filter((name) => inDeck.has(name));
 
   return {
-    durationInput:
-      typeof parsed.durationInput === 'string' ? parsed.durationInput : fallback.durationInput,
-    catCountInput:
-      typeof parsed.catCountInput === 'string' ? parsed.catCountInput : fallback.catCountInput,
-    bufferSecondsInput:
-      typeof parsed.bufferSecondsInput === 'string'
-        ? parsed.bufferSecondsInput
-        : fallback.bufferSecondsInput,
+    durationInput: sanitizeNumericInput(
+      parsed.durationInput,
+      durationMin,
+      durationMax,
+      durationDefault,
+    ),
+    catCountInput: sanitizeNumericInput(
+      parsed.catCountInput,
+      catCountMin,
+      catCountMax,
+      catCountDefault,
+    ),
+    bufferSecondsInput: sanitizeNumericInput(
+      parsed.bufferSecondsInput,
+      bufferSecondsMin,
+      bufferSecondsMax,
+      bufferSecondsDefault,
+    ),
     deckBuiltins,
     customCategories,
     pinned,
     isMuted: typeof parsed.isMuted === 'boolean' ? parsed.isMuted : fallback.isMuted,
     theme: parsed.theme === 'light' || parsed.theme === 'dark' ? parsed.theme : fallback.theme,
+    themeSource: parsed.themeSource === 'user' ? 'user' : 'system',
     promptDeckPreference:
       parsed.promptDeckPreference === 'open' ||
       parsed.promptDeckPreference === 'collapsed' ||
@@ -139,15 +168,12 @@ function parseStoredSettings(raw: string | null): Settings {
 }
 
 function readStoredSettings(): Settings {
-  if (typeof window === 'undefined') {
-    return getDefaultSettings();
-  }
-
-  return parseStoredSettings(window.localStorage.getItem(SETTINGS_STORAGE_KEY));
+  return parseStoredSettings(safeStorage.getItem(SETTINGS_STORAGE_KEY));
 }
 
-export type { PromptDeckPreference, Settings, Theme };
+export type { PromptDeckPreference, Settings, Theme, ThemeSource };
 export {
+  DARK_SCHEME_QUERY,
   getDefaultSettings,
   getPreferredTheme,
   parseStoredSettings,

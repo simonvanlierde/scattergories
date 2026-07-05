@@ -126,6 +126,49 @@ describe('useSettings', () => {
     });
   });
 
+  describe('system theme following', () => {
+    function stubMatchMedia(initialDark: boolean) {
+      const listeners = new Set<(event: MediaQueryListEvent) => void>();
+      vi.stubGlobal('matchMedia', (query: string) => ({
+        matches: query === '(prefers-color-scheme: dark)' ? initialDark : false,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: (_: string, cb: (event: MediaQueryListEvent) => void) =>
+          listeners.add(cb),
+        removeEventListener: (_: string, cb: (event: MediaQueryListEvent) => void) =>
+          listeners.delete(cb),
+        dispatchEvent: vi.fn(),
+      }));
+      return {
+        emit(dark: boolean) {
+          for (const cb of listeners) {
+            cb({ matches: dark } as MediaQueryListEvent);
+          }
+        },
+      };
+    }
+
+    it('follows OS theme changes while no explicit choice is made', () => {
+      const media = stubMatchMedia(false);
+      const { result } = renderHook(() => useSettings(), { wrapper });
+      expect(result.current.settings.theme).toBe('light');
+      act(() => media.emit(true));
+      expect(result.current.settings.theme).toBe('dark');
+    });
+
+    it('keeps an explicit theme when the OS theme later changes', () => {
+      const media = stubMatchMedia(false);
+      const { result } = renderHook(() => useSettings(), { wrapper });
+      // User explicitly picks light — the same value the OS currently reports.
+      act(() => result.current.update('theme', 'light'));
+      // OS flips to dark; the explicit choice must survive.
+      act(() => media.emit(true));
+      expect(result.current.settings.theme).toBe('light');
+    });
+  });
+
   describe('update', () => {
     it('updates a single field without touching others', () => {
       const { result } = renderHook(() => useSettings(), { wrapper });

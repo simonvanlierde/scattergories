@@ -8,16 +8,20 @@ import {
 } from 'react';
 import { categories } from '@/domain/game/constants';
 import { getPackCategories } from '@/shared/lib/categoryPacks';
+import { safeStorage } from '@/shared/lib/safeStorage';
 import {
+  DARK_SCHEME_QUERY,
   readStoredSettings,
   SETTINGS_STORAGE_KEY,
   type Settings,
   sanitizeCustomCategories,
+  type Theme,
 } from './schema';
 
 type SettingsAction =
   | { type: 'hydrate'; settings: Settings }
   | { type: 'update'; key: keyof Settings; value: Settings[keyof Settings] }
+  | { type: 'syncSystemTheme'; theme: Theme }
   | { type: 'addCustom'; value: string }
   | { type: 'removeCustom'; value: string }
   | { type: 'togglePin'; name: string }
@@ -57,14 +61,22 @@ function applyTogglePinAll(state: Settings, names: string[]): Settings {
   return { ...state, pinned: [...new Set([...state.pinned, ...inDeck])] };
 }
 
-// biome-ignore lint/complexity/noExcessiveLinesPerFunction: a reducer switch over 10 action types; the cases are already flat and per-case extraction would scatter the state logic.
+// biome-ignore lint/complexity/noExcessiveLinesPerFunction: a reducer switch over the action types; the cases are already flat and per-case extraction would scatter the state logic.
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: same reason — a flat switch reads as one table, not nested control flow.
 function settingsReducer(state: Settings, action: SettingsAction): Settings {
   switch (action.type) {
     case 'hydrate':
       return action.settings;
 
-    case 'update':
-      return { ...state, [action.key]: action.value };
+    case 'update': {
+      const next = { ...state, [action.key]: action.value };
+      // An explicit theme pick stops the app from following the OS afterward.
+      return action.key === 'theme' ? { ...next, themeSource: 'user' } : next;
+    }
+
+    case 'syncSystemTheme':
+      // Only follow the OS while the user hasn't overridden the theme.
+      return state.themeSource === 'system' ? { ...state, theme: action.theme } : state;
 
     case 'addCustom': {
       const trimmed = action.value.trim();
@@ -146,7 +158,7 @@ function SettingsProvider({ children }: PropsWithChildren) {
   const [settings, dispatch] = useReducer(settingsReducer, undefined, readStoredSettings);
 
   useEffect(() => {
-    window.localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+    safeStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
   }, [settings]);
 
   useEffect(() => {
@@ -159,15 +171,11 @@ function SettingsProvider({ children }: PropsWithChildren) {
     }
 
     function onThemeChange(event: MediaQueryListEvent) {
-      const nextTheme = event.matches ? 'dark' : 'light';
-      const previousSystemTheme = nextTheme === 'dark' ? 'light' : 'dark';
-
-      if (settings.theme === previousSystemTheme) {
-        dispatch({ type: 'update', key: 'theme', value: nextTheme });
-      }
+      // The reducer ignores this while the user has picked a theme explicitly.
+      dispatch({ type: 'syncSystemTheme', theme: event.matches ? 'dark' : 'light' });
     }
 
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const mediaQuery = window.matchMedia(DARK_SCHEME_QUERY);
 
     window.addEventListener('storage', onStorage);
     mediaQuery.addEventListener('change', onThemeChange);
@@ -176,7 +184,7 @@ function SettingsProvider({ children }: PropsWithChildren) {
       window.removeEventListener('storage', onStorage);
       mediaQuery.removeEventListener('change', onThemeChange);
     };
-  }, [settings.theme]);
+  }, []);
 
   const value = useMemo<SettingsContextValue>(
     () => ({
