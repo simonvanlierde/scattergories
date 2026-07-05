@@ -45,7 +45,7 @@ jobs:
     needs: app
     # Browsers + system deps are baked into the image; keep the tag in sync with @playwright/test.
     container:
-      image: mcr.microsoft.com/playwright:v1.59.1-noble
+      image: mcr.microsoft.com/playwright:v1.61.1-noble
     # Smoke (Chromium) on every push/PR; the full browser matrix on schedule or manual dispatch.
     env:
       FULL: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' }}
