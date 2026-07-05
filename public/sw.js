@@ -1,4 +1,4 @@
-// ponytail: hand-rolled precache-less service worker; upgrade path is
+// NOTE: hand-rolled precache-less service worker; upgrade path is
 // vite-plugin-pwa if precise precaching/versioned offline manifests are needed.
 const CACHE = 'scattergories-v1';
 
