@@ -404,7 +404,7 @@ function CategoriesCardHeader({
       <div className="categories-card__heading">
         <h2 id="categories-panel-title">
           <Icon icon={Tags} size={22} />
-          <span className="sr-only">{t('categories.title')}</span>
+          <span className="categories-card__title-text">{t('categories.title')}</span>
         </h2>
         <IconButton
           label={deckToggleLabel}

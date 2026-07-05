@@ -7,10 +7,6 @@
     color: var(--text-primary);
   }
 
-  .app-shell__bg {
-    display: none;
-  }
-
   .app-shell--loading,
   .app-error {
     display: grid;
@@ -76,11 +72,6 @@
     align-items: center;
     justify-content: end;
     gap: var(--space-2);
-  }
-
-  .category-toolbar {
-    display: grid;
-    gap: var(--space-3);
   }
 
   .play-grid {
@@ -334,6 +325,12 @@
     .play-grid:not(.play-grid--deck-collapsed) .categories-card__heading,
     .play-grid:not(.play-grid--deck-collapsed) .categories-card__header-actions {
       flex-direction: column;
+    }
+
+    /* The open-deck header collapses to a narrow vertical icon strip; the text
+       label won't fit there, so drop it (the visible list makes context clear). */
+    .play-grid:not(.play-grid--deck-collapsed) .categories-card__title-text {
+      display: none;
     }
   }
 }
