@@ -1,11 +1,6 @@
 {
   "title": "Scattergories",
-  "hero": {
-    "description": "Lancez la lettre, gardez le rythme et jouez sans interface envahissante.",
-    "statsLabel": "Statistiques"
-  },
   "round": {
-    "panelEyebrow": "Console de manche",
     "letterLabel": "Lettre actuelle",
     "timerLabel": "Chrono de manche"
   },
@@ -13,18 +8,13 @@
     "startRound": "Démarrer la manche",
     "nextRound": "Manche suivante",
     "spinning": "Tirage au sort...",
-    "skipLetter": "Passer la lettre",
-    "reset": "⟲ Réinitialiser",
     "pause": "Pause",
     "resume": "Reprendre",
     "mute": "Muet",
     "unmute": "Son activé",
-    "skipLetterTooltip": "Obtenir une autre lettre aléatoire pour cette manche",
-    "resetTooltip": "Redémarrer le chronomètre pour la manche actuelle",
     "shuffle": "Mélanger",
     "add": "Ajouter",
     "remove": "Supprimer",
-    "close": "✕",
     "addTooltip": "Ajouter cette catégorie à votre collection personnalisée",
     "closeTooltip": "Fermer cette fenêtre",
     "howToPlay": "Comment jouer"
@@ -36,15 +26,11 @@
     "go": "C'est parti !",
     "roundOver": "Manche terminée !"
   },
-  "status": {
-    "seconds": "secondes"
-  },
   "settings": {
     "duration": "Chronomètre",
     "categorySource": "Source",
     "categoryDraw": "Tirage",
-    "addCustom": "Ajouter une catégorie",
-    "placeholder": "ex: Langages de programmation"
+    "addCustom": "Ajouter une catégorie"
   },
   "categories": {
     "title": "Catégories",
@@ -70,8 +56,6 @@
     "drawUnit": "cartes"
   },
   "usedLetters": "Lettres utilisées : {{letters}}{{empty}}",
-  "usedLettersEmpty": "Aucune pour l'instant",
-  "shortcuts": "Raccourcis : Espace démarrer, R passer lettre, P pause, C afficher les thèmes, A ajouter catégorie",
   "modal": {
     "title": "Comment jouer",
     "objectiveText": "Marquez des points en écrivant des mots qui commencent par la lettre donnée et correspondent aux catégories.",
@@ -102,14 +86,7 @@
     "loading": "Ouverture des règles…"
   },
   "language": {
-    "label": "Langue",
-    "nativeName": "Français"
+    "label": "Langue"
   },
-  "theme": {
-    "toggle": "Changer le thème",
-    "toggleTooltip": "Basculer entre le thème clair et sombre",
-    "toggleLabel": "Thème",
-    "dark": "Sombre",
-    "light": "Clair"
-  }
+  "theme": {}
 }

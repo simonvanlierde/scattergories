@@ -18,8 +18,8 @@ it('renders the core app shell and primary controls', async () => {
   await renderApp();
 
   expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Scattergories');
-  expect(screen.getByRole('button', { name: 'Start Round' })).toBeInTheDocument();
-  expect(screen.getByRole('button', { name: 'How to Play' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Start round' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'How to play' })).toBeInTheDocument();
 });
 
 it('keeps the main surface lean and categories outside the playmat', async () => {
@@ -74,9 +74,9 @@ it('opens and dismisses the How To Play dialog', async () => {
 
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 
-  await user.click(screen.getByRole('button', { name: 'How to Play' }));
+  await user.click(screen.getByRole('button', { name: 'How to play' }));
   expect(await screen.findByRole('dialog')).toBeInTheDocument();
-  expect(await screen.findByRole('heading', { name: 'How to Play' })).toBeInTheDocument();
+  expect(await screen.findByRole('heading', { name: 'How to play' })).toBeInTheDocument();
 
   await user.keyboard('{Escape}');
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument();

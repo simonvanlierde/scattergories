@@ -1,11 +1,6 @@
 {
   "title": "Scattergories",
-  "hero": {
-    "description": "Losuj literę, kontroluj czas i graj bez zbędnego bałaganu.",
-    "statsLabel": "Statystyki"
-  },
   "round": {
-    "panelEyebrow": "Panel rundy",
     "letterLabel": "Aktualna litera",
     "timerLabel": "Zegar rundy"
   },
@@ -13,18 +8,13 @@
     "startRound": "Rozpocznij Rundę",
     "nextRound": "Następna Runda",
     "spinning": "Losowanie...",
-    "skipLetter": "Pomiń Literę",
-    "reset": "⟲ Resetuj",
     "pause": "Pauza",
     "resume": "Wznów",
     "mute": "Wycisz",
     "unmute": "Włącz Dźwięk",
-    "skipLetterTooltip": "Wybierz inną losową literę na tę rundę",
-    "resetTooltip": "Zrestartuj timer dla bieżącej rundy",
     "shuffle": "Tasuj",
     "add": "Dodaj",
     "remove": "Usuń",
-    "close": "✕",
     "addTooltip": "Dodaj tę kategorię do swojej własnej kolekcji",
     "closeTooltip": "Zamknij to okno",
     "howToPlay": "Jak grać"
@@ -36,15 +26,11 @@
     "go": "Start!",
     "roundOver": "Runda zakończona!"
   },
-  "status": {
-    "seconds": "sekundy"
-  },
   "settings": {
     "duration": "Czasomierz",
     "categorySource": "Źródło",
     "categoryDraw": "Losowanie",
-    "addCustom": "Własna kategoria",
-    "placeholder": "np. Języki programowania"
+    "addCustom": "Własna kategoria"
   },
   "categories": {
     "title": "Kategorie",
@@ -70,8 +56,6 @@
     "drawUnit": "kart"
   },
   "usedLetters": "Użyte litery: {{letters}}{{empty}}",
-  "usedLettersEmpty": "Brak",
-  "shortcuts": "Skróty: Spacja start, R pomiń literę, P pauza, C pokaż hasła, A dodaj kategorię",
   "modal": {
     "title": "Jak grać",
     "objectiveText": "Zdobywaj punkty, zapisując słowa, które zaczynają się na wylosowaną literę i pasują do wybranych kategorii.",
@@ -102,14 +86,7 @@
     "loading": "Otwieranie zasad…"
   },
   "language": {
-    "label": "Język",
-    "nativeName": "Polski"
+    "label": "Język"
   },
-  "theme": {
-    "toggle": "Zmień motyw",
-    "toggleTooltip": "Przełącz między jasnym a ciemnym motywem",
-    "toggleLabel": "Motyw",
-    "dark": "Ciemny",
-    "light": "Jasny"
-  }
+  "theme": {}
 }

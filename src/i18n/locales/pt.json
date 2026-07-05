@@ -1,11 +1,6 @@
 {
   "title": "Scattergories",
-  "hero": {
-    "description": "Sorteie a letra, controle o ritmo e jogue sem bagunça na tela.",
-    "statsLabel": "Estatísticas"
-  },
   "round": {
-    "panelEyebrow": "Painel da rodada",
     "letterLabel": "Letra atual",
     "timerLabel": "Relógio da rodada"
   },
@@ -13,18 +8,13 @@
     "startRound": "Iniciar Rodada",
     "nextRound": "Próxima Rodada",
     "spinning": "Sorteando...",
-    "skipLetter": "Pular Letra",
-    "reset": "⟲ Reiniciar",
     "pause": "Pausa",
     "resume": "Retomar",
     "mute": "Mudo",
     "unmute": "Ativar Som",
-    "skipLetterTooltip": "Escolher uma letra aleatória diferente para esta rodada",
-    "resetTooltip": "Reiniciar o temporizador para a rodada atual",
     "shuffle": "Embaralhar",
     "add": "Adicionar",
     "remove": "Remover",
-    "close": "✕",
     "addTooltip": "Adicionar esta categoria à sua coleção personalizada",
     "closeTooltip": "Fechar esta janela",
     "howToPlay": "Como Jogar"
@@ -36,15 +26,11 @@
     "go": "Vai!",
     "roundOver": "Rodada encerrada!"
   },
-  "status": {
-    "seconds": "segundos"
-  },
   "settings": {
     "duration": "Temporizador",
     "categorySource": "Fonte",
     "categoryDraw": "Sorteio",
-    "addCustom": "Categoria personalizada",
-    "placeholder": "ex: Linguagens de programação"
+    "addCustom": "Categoria personalizada"
   },
   "categories": {
     "title": "Categorias",
@@ -70,8 +56,6 @@
     "drawUnit": "cartas"
   },
   "usedLetters": "Letras usadas: {{letters}}{{empty}}",
-  "usedLettersEmpty": "Nenhuma",
-  "shortcuts": "Atalhos: Espaço iniciar, R pular letra, P pausa, C mostrar temas, A adicionar categoria",
   "modal": {
     "title": "Como Jogar",
     "objectiveText": "Acumule pontos escrevendo palavras que comecem com a letra sorteada e se encaixem nas categorias exibidas.",
@@ -102,14 +86,7 @@
     "loading": "Abrindo as regras…"
   },
   "language": {
-    "label": "Idioma",
-    "nativeName": "Português"
+    "label": "Idioma"
   },
-  "theme": {
-    "toggle": "Alternar tema",
-    "toggleTooltip": "Alternar entre os temas claro e escuro",
-    "toggleLabel": "Tema",
-    "dark": "Escuro",
-    "light": "Claro"
-  }
+  "theme": {}
 }

@@ -1,11 +1,6 @@
 {
   "title": "Scattergories",
-  "hero": {
-    "description": "Zieh den Buchstaben, behalte die Zeit im Blick und spiel ohne unnötigen Ballast.",
-    "statsLabel": "Spielwerte"
-  },
   "round": {
-    "panelEyebrow": "Rundenkonsole",
     "letterLabel": "Aktueller Buchstabe",
     "timerLabel": "Rundenuhr"
   },
@@ -13,18 +8,13 @@
     "startRound": "Runde Starten",
     "nextRound": "Nächste Runde",
     "spinning": "Wird gedreht...",
-    "skipLetter": "Buchstabe überspringen",
-    "reset": "⟲ Zurücksetzen",
     "pause": "Pause",
     "resume": "Fortsetzen",
     "mute": "Stumm",
     "unmute": "Ton an",
-    "skipLetterTooltip": "Einen anderen zufälligen Buchstaben für diese Runde wählen",
-    "resetTooltip": "Timer für die aktuelle Runde neu starten",
     "shuffle": "Mischen",
     "add": "Hinzufügen",
     "remove": "Entfernen",
-    "close": "✕",
     "addTooltip": "Diese Kategorie zu deiner Sammlung hinzufügen",
     "closeTooltip": "Dieses Fenster schließen",
     "howToPlay": "Spielanleitung"
@@ -36,15 +26,11 @@
     "go": "Los!",
     "roundOver": "Runde vorbei!"
   },
-  "status": {
-    "seconds": "Sekunden"
-  },
   "settings": {
     "duration": "Zeitlimit",
     "categorySource": "Quelle",
     "categoryDraw": "Auslosung",
-    "addCustom": "Eigene Kategorie",
-    "placeholder": "z.B. Programmiersprachen"
+    "addCustom": "Eigene Kategorie"
   },
   "categories": {
     "title": "Kategorien",
@@ -70,8 +56,6 @@
     "drawUnit": "Karten"
   },
   "usedLetters": "Benutzte Buchstaben: {{letters}}{{empty}}",
-  "usedLettersEmpty": "Keine",
-  "shortcuts": "Shortcuts: Leertaste Start, R Buchstabe überspringen, P Pause, C Prompts umschalten, A Kategorie hinzufügen",
   "modal": {
     "title": "Spielanleitung",
     "objectiveText": "Sammle Punkte, indem du Begriffe aufschreibst, die mit dem gewählten Buchstaben beginnen und in die jeweilige Kategorie passen.",
@@ -102,14 +86,7 @@
     "loading": "Regeln werden geöffnet…"
   },
   "language": {
-    "label": "Sprache",
-    "nativeName": "Deutsch"
+    "label": "Sprache"
   },
-  "theme": {
-    "toggle": "Design umschalten",
-    "toggleTooltip": "Zwischen hellem und dunklem Design wechseln",
-    "toggleLabel": "Design",
-    "dark": "Dunkel",
-    "light": "Hell"
-  }
+  "theme": {}
 }

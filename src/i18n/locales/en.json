@@ -1,90 +1,61 @@
 {
   "title": "Scattergories",
-  "hero": {
-    "eyebrow": "Party game companion",
-    "description": "Run the letter, keep the clock moving, and play without the clutter.",
-    "metaLabel": "Round timer",
-    "statsLabel": "Round stats"
-  },
   "round": {
-    "panelEyebrow": "Round console",
     "letterLabel": "Current letter",
     "timerLabel": "Round clock"
   },
   "controls": {
-    "eyebrow": "Controls",
-    "title": "Keep the round moving",
-    "body": "Start, pause, reroll, and tune pacing without leaving the board.",
-    "group": "Round controls",
-    "roundGroup": "Round controls",
-    "audioGroup": "Audio controls",
-    "settingsLegend": "Round settings"
+    "roundGroup": "Round controls"
   },
   "buttons": {
-    "startRound": "Start Round",
+    "startRound": "Start round",
     "nextRound": "Next round",
-    "spinning": "Spinning...",
-    "skipLetter": "Skip Letter",
+    "spinning": "Spinning…",
     "newLetter": "New letter",
-    "reset": "⟲ Reset",
     "pause": "Pause",
     "resume": "Resume",
     "mute": "Mute",
     "unmute": "Unmute",
-    "skipLetterTooltip": "Get a different random letter for this round",
-    "resetTooltip": "Start the timer over from the beginning",
     "redraw": "Redraw",
     "add": "Add",
     "remove": "Remove",
-    "close": "✕",
     "addTooltip": "Add this category to your custom collection",
     "closeTooltip": "Close this window",
-    "howToPlay": "How to Play"
+    "howToPlay": "How to play"
   },
   "timer": {
     "ready": "Ready",
     "paused": "Paused",
     "timeUp": "Time's up!",
-    "getReady": "Get ready...",
+    "getReady": "Get ready…",
     "go": "Go!",
     "roundOver": "Round over!"
-  },
-  "status": {
-    "seconds": "seconds"
   },
   "settings": {
     "duration": "Round",
     "getReady": "Get ready",
     "categoryDraw": "Draw",
     "addCustom": "Add custom category",
-    "placeholder": "e.g. Programming Languages",
     "roundTimerTitle": "Round timer"
   },
   "packs": {
-    "sectionTitle": "Category pack",
     "classic": {
-      "label": "All",
-      "description": "Every category — the full deck."
+      "label": "All"
     },
     "foodie": {
-      "label": "Foodie",
-      "description": "Dishes, drinks, ingredients, and kitchens."
+      "label": "Foodie"
     },
     "popCulture": {
-      "label": "Pop Culture",
-      "description": "Movies, TV, music, celebrities, books."
+      "label": "Pop Culture"
     },
     "travel": {
-      "label": "Travel",
-      "description": "Places, transport, and everything in a suitcase."
+      "label": "Travel"
     },
     "kids": {
-      "label": "Kids",
-      "description": "Friendly categories for younger players."
+      "label": "Kids"
     },
     "household": {
-      "label": "Around the House",
-      "description": "Rooms, tools, furniture, and gadgets."
+      "label": "Around the House"
     }
   },
   "playmat": {
@@ -92,8 +63,6 @@
   },
   "rail": {
     "shortcuts": {
-      "title": "Keyboard shortcuts",
-      "hint": "Keyboard shortcuts · ?",
       "space": "Start or advance a round",
       "r": "Re-roll the current letter",
       "p": "Pause or resume",
@@ -103,7 +72,6 @@
   },
   "categories": {
     "title": "Categories",
-    "description": "Mix official and custom categories, then reshuffle whenever the table needs a reset.",
     "minimumRequired": "Add categories to your deck to play.",
     "drawnListLabel": "Selected categories",
     "deckLabel": "Category deck",
@@ -125,11 +93,14 @@
     "deckSectionTitle": "Your deck",
     "drawUnit": "cards"
   },
-  "usedLetters": "Used letters: {{letters}}{{empty}}",
-  "usedLettersEmpty": "None yet",
-  "shortcuts": "Shortcuts: Space start, R skip letter, P pause, C toggle categories, A add custom",
+  "usedLetters": "Used letters: {{letters}}",
+  "roundEnd": {
+    "title": "Round over",
+    "categories": "Categories",
+    "rounds": "Rounds"
+  },
   "modal": {
-    "title": "How to Play",
+    "title": "How to play",
     "objectiveText": "Score points by writing words that fit each category and start with the drawn letter.",
     "gameplay": "Gameplay",
     "gameplayPoints": [
@@ -150,24 +121,17 @@
     ],
     "shortcuts": "Keyboard shortcuts",
     "about": "About",
-    "officialGame": "Official Game",
-    "sourceCode": "Source Code",
+    "officialGame": "Official game",
+    "sourceCode": "Source code",
     "privacy": "This app stores settings and custom categories in your browser only.",
     "version": "Version {{version}}",
     "opensInNewTab": "(opens in new tab)",
     "loading": "Opening rules…"
   },
   "language": {
-    "label": "Language",
-    "nativeName": "English"
+    "label": "Language"
   },
   "theme": {
-    "toggle": "Toggle theme",
-    "toggleTooltip": "Switch between light and dark theme",
-    "toggleLabel": "Theme",
-    "sectionTitle": "Appearance",
-    "dark": "Dark mode",
-    "light": "Light mode",
     "switchToDark": "Switch to dark mode",
     "switchToLight": "Switch to light mode"
   },

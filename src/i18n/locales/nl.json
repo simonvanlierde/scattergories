@@ -1,11 +1,6 @@
 {
   "title": "Scattergories",
-  "hero": {
-    "description": "Rol de letter, houd het tempo vast en speel zonder overbodige rommel.",
-    "statsLabel": "Spelstatistieken"
-  },
   "round": {
-    "panelEyebrow": "Rondeconsole",
     "letterLabel": "Huidige letter",
     "timerLabel": "Rondeklok"
   },
@@ -13,18 +8,13 @@
     "startRound": "Start Ronde",
     "nextRound": "Volgende Ronde",
     "spinning": "Draaien...",
-    "skipLetter": "Letter Overslaan",
-    "reset": "⟲ Resetten",
     "pause": "Pauze",
     "resume": "Hervatten",
     "mute": "Dempen",
     "unmute": "Geluid Aan",
-    "skipLetterTooltip": "Kies een andere willekeurige letter voor deze ronde",
-    "resetTooltip": "Start de timer opnieuw voor deze ronde",
     "shuffle": "Schudden",
     "add": "Toevoegen",
     "remove": "Verwijderen",
-    "close": "✕",
     "addTooltip": "Voeg deze categorie toe aan je eigen verzameling",
     "closeTooltip": "Sluit dit venster",
     "howToPlay": "Hoe te spelen"
@@ -36,15 +26,11 @@
     "go": "Gaan!",
     "roundOver": "Ronde voorbij!"
   },
-  "status": {
-    "seconds": "seconden"
-  },
   "settings": {
     "duration": "Timer",
     "categorySource": "Bron",
     "categoryDraw": "Loting",
-    "addCustom": "Eigen categorie",
-    "placeholder": "bijv. Programmeertalen"
+    "addCustom": "Eigen categorie"
   },
   "categories": {
     "title": "Categorieën",
@@ -70,8 +56,6 @@
     "drawUnit": "kaarten"
   },
   "usedLetters": "Gebruikte letters: {{letters}}{{empty}}",
-  "usedLettersEmpty": "Geen",
-  "shortcuts": "Sneltoetsen: Spatie starten, R nieuwe letter, P pauze, C categorieën tonen, A categorie toevoegen",
   "modal": {
     "title": "Hoe te spelen",
     "objectiveText": "Verdien punten door woorden op te schrijven die beginnen met de gekozen letter en passen in de categorieën.",
@@ -102,14 +86,7 @@
     "loading": "Regels openen…"
   },
   "language": {
-    "label": "Taal",
-    "nativeName": "Nederlands"
+    "label": "Taal"
   },
-  "theme": {
-    "toggle": "Thema wisselen",
-    "toggleTooltip": "Wisselen tussen licht en donker thema",
-    "toggleLabel": "Thema",
-    "dark": "Donker",
-    "light": "Licht"
-  }
+  "theme": {}
 }
