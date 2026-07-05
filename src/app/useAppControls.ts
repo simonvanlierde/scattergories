@@ -1,5 +1,5 @@
 import type { i18n as I18nInstance } from 'i18next';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ensureLanguageLoaded, persistLanguage } from '@/i18n/config';
 
 function useChunkErrorListener(setHasChunkError: (value: boolean) => void): void {
@@ -19,27 +19,24 @@ function useLanguageSwitcher(
   setIsLanguagePending: (value: boolean) => void,
   setHasChunkError: (value: boolean) => void,
 ) {
-  return useCallback(
-    (language: string) => {
-      setIsLanguagePending(true);
+  return (language: string) => {
+    setIsLanguagePending(true);
 
-      async function switchLanguage() {
-        try {
-          persistLanguage(language);
-          const resolved = await ensureLanguageLoaded(language);
-          await i18n.changeLanguage(resolved);
-          persistLanguage(resolved);
-        } catch {
-          setHasChunkError(true);
-        } finally {
-          setIsLanguagePending(false);
-        }
+    async function switchLanguage() {
+      try {
+        persistLanguage(language);
+        const resolved = await ensureLanguageLoaded(language);
+        await i18n.changeLanguage(resolved);
+        persistLanguage(resolved);
+      } catch {
+        setHasChunkError(true);
+      } finally {
+        setIsLanguagePending(false);
       }
+    }
 
-      switchLanguage().catch(() => undefined);
-    },
-    [i18n, setHasChunkError, setIsLanguagePending],
-  );
+    switchLanguage().catch(() => undefined);
+  };
 }
 
 function useAppControls(params: { i18n: I18nInstance }) {

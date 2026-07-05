@@ -68,6 +68,8 @@ export function useRound({
   // The last letter that actually landed — used for repeat-avoidance, unlike the
   // roller's live letter which cycles through random flip letters mid-spin.
   const lastLandedLetterRef = useRef<string | null>(null);
+  // Kept memoized: it's read in useEffect dependency arrays below, where a
+  // render-body function would trip biome's useExhaustiveDependencies lint.
   const clearAlarmTimeout = useCallback(() => {
     if (alarmTimeoutRef.current !== null) {
       window.clearTimeout(alarmTimeoutRef.current);
@@ -173,52 +175,40 @@ export function useRound({
   // Draws a new letter and spins. The countdown auto-starts when the letter
   // lands. `redrawCategories` composes a fresh category set (false = keep the
   // current deck — reroll).
-  const runSpin = useCallback(
-    (opts: { redrawCategories: boolean }) => {
-      clearAlarmTimeout();
-      // A fresh spin restarts the countdown from a full second.
-      tickRemainderRef.current = null;
-      const { chosen, remaining, drawn } = drawNextLetterFromBag(
-        locale,
-        state.remainingLetters,
-        state.drawnLetters,
-        lastLandedLetterRef.current,
-      );
-      if (opts.redrawCategories) {
-        onLetterPicked();
-      }
-
-      dispatch({
-        type: 'START_SPIN',
-        gameSeconds,
-        bufferSeconds,
-        remainingLetters: remaining,
-        drawnLetters: drawn,
-      });
-
-      roller.spinTo(chosen, () => {
-        lastLandedLetterRef.current = chosen;
-        playLetterLand();
-        dispatch({ type: 'LETTER_LANDED' });
-      });
-    },
-    [
-      bufferSeconds,
-      clearAlarmTimeout,
-      gameSeconds,
+  const runSpin = (opts: { redrawCategories: boolean }) => {
+    clearAlarmTimeout();
+    // A fresh spin restarts the countdown from a full second.
+    tickRemainderRef.current = null;
+    const { chosen, remaining, drawn } = drawNextLetterFromBag(
       locale,
-      onLetterPicked,
-      playLetterLand,
-      roller,
-      state,
-    ],
-  );
+      state.remainingLetters,
+      state.drawnLetters,
+      lastLandedLetterRef.current,
+    );
+    if (opts.redrawCategories) {
+      onLetterPicked();
+    }
 
-  const newLetter = useCallback(() => runSpin({ redrawCategories: false }), [runSpin]);
-  const nextRound = useCallback(() => runSpin({ redrawCategories: true }), [runSpin]);
-  const togglePause = useCallback(() => dispatch({ type: 'PAUSE_TOGGLE' }), []);
+    dispatch({
+      type: 'START_SPIN',
+      gameSeconds,
+      bufferSeconds,
+      remainingLetters: remaining,
+      drawnLetters: drawn,
+    });
 
-  const primaryAction = useCallback(() => {
+    roller.spinTo(chosen, () => {
+      lastLandedLetterRef.current = chosen;
+      playLetterLand();
+      dispatch({ type: 'LETTER_LANDED' });
+    });
+  };
+
+  const newLetter = () => runSpin({ redrawCategories: false });
+  const nextRound = () => runSpin({ redrawCategories: true });
+  const togglePause = () => dispatch({ type: 'PAUSE_TOGGLE' });
+
+  const primaryAction = () => {
     switch (state.phase) {
       case 'idle':
       case 'done':
@@ -231,7 +221,7 @@ export function useRound({
       default:
         break;
     }
-  }, [state.phase, nextRound, togglePause]);
+  };
 
   return {
     phase: state.phase,

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { clampInt } from '@/domain/game/utils';
 import { useDebouncedCommit } from '@/shared/lib/useDebouncedCommit';
 import { Field } from './Field';
@@ -45,36 +45,30 @@ export function DebouncedNumberField({
 
   // Cancel any pending debounce and commit the clamped value now.
   // Shared by blur and the flush-on-unmount effect below.
-  const commitClamped = useCallback(
-    (raw: string) => {
-      cancel();
-      const clamped = String(clampInt(raw, min, max, fallback));
-      onCommit(clamped);
-      return clamped;
-    },
-    [cancel, onCommit, min, max, fallback],
-  );
+  const commitClamped = (raw: string) => {
+    cancel();
+    const clamped = String(clampInt(raw, min, max, fallback));
+    onCommit(clamped);
+    return clamped;
+  };
 
-  const handleChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const next = event.target.value;
-      setDraft(next);
-      schedule(next);
-    },
-    [schedule],
-  );
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const next = event.target.value;
+    setDraft(next);
+    schedule(next);
+  };
 
-  const handleBlur = useCallback(() => {
+  const handleBlur = () => {
     isFocusedRef.current = false;
     setDraft(commitClamped(draft));
-  }, [commitClamped, draft]);
+  };
 
   // Enter commits (by blurring the field).
-  const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.currentTarget.blur();
     }
-  }, []);
+  };
 
   // Refs keep the unmount cleanup (empty deps) pointed at the latest values.
   const draftRef = useRef(draft);

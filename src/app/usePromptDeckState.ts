@@ -1,4 +1,4 @@
-import { useCallback, useSyncExternalStore } from 'react';
+import { useSyncExternalStore } from 'react';
 import type { useSettings } from '@/features/settings/SettingsProvider';
 import type { PromptDeckPreference } from '@/features/settings/schema';
 
@@ -43,15 +43,12 @@ function usePromptDeckState(
 ) {
   const isCompactLayout = useIsCompactLayout();
   const isPromptDeckOpen = getPromptDeckOpenState(preference, isCompactLayout);
-  const setPromptDeckPreference = useCallback(
-    (nextOpen: boolean) => {
-      update('promptDeckPreference', nextOpen ? 'open' : 'collapsed');
-    },
-    [update],
-  );
-  const togglePromptDeck = useCallback(() => {
+  const setPromptDeckPreference = (nextOpen: boolean) => {
+    update('promptDeckPreference', nextOpen ? 'open' : 'collapsed');
+  };
+  const togglePromptDeck = () => {
     setPromptDeckPreference(!isPromptDeckOpen);
-  }, [isPromptDeckOpen, setPromptDeckPreference]);
+  };
 
   return {
     isCompactLayout,

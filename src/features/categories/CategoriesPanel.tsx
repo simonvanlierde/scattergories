@@ -9,7 +9,7 @@ import {
   Trash2,
 } from 'lucide-react';
 import type { RefObject } from 'react';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { catCountDefault, catCountMax, catCountMin } from '@/domain/game/constants';
 import { PACKS } from '@/shared/lib/categoryPacks';
@@ -143,16 +143,12 @@ function AddCategories({
 
 function AddPackField({ actions }: { actions: CategoriesActions }) {
   const { t } = useTranslation();
-  const packs = useMemo(
-    () =>
-      [...PACKS]
-        .map((pack) => ({
-          id: pack.id,
-          label: t(pack.labelKey, { defaultValue: pack.fallbackLabel }),
-        }))
-        .sort((a, b) => a.label.localeCompare(b.label)),
-    [t],
-  );
+  const packs = [...PACKS]
+    .map((pack) => ({
+      id: pack.id,
+      label: t(pack.labelKey, { defaultValue: pack.fallbackLabel }),
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label));
   return (
     <label className="settings-select deck-list__pack" htmlFor="addPack">
       <span className="sr-only">{t('categories.addPack')}</span>
@@ -266,25 +262,23 @@ function DeckList({
   actions: CategoriesActions;
 }) {
   const { t } = useTranslation();
-  const pinnedSet = useMemo(() => new Set(pinned), [pinned]);
-  const rows = useMemo<DeckRow[]>(() => {
-    // Within each group: pinned first, then alphabetical.
-    const byPinThenLabel = (a: DeckRow, b: DeckRow) => {
-      const aPinned = pinnedSet.has(a.name);
-      const bPinned = pinnedSet.has(b.name);
-      if (aPinned !== bPinned) {
-        return aPinned ? -1 : 1;
-      }
-      return a.label.localeCompare(b.label);
-    };
-    const customs = customCategories
-      .map((name) => ({ name, label: name, isCustom: true }))
-      .sort(byPinThenLabel);
-    const builtins = deckBuiltins
-      .map((name) => ({ name, label: t(name, { ns: 'categories' }), isCustom: false }))
-      .sort(byPinThenLabel);
-    return [...customs, ...builtins];
-  }, [customCategories, deckBuiltins, pinnedSet, t]);
+  const pinnedSet = new Set(pinned);
+  // Within each group: pinned first, then alphabetical.
+  const byPinThenLabel = (a: DeckRow, b: DeckRow) => {
+    const aPinned = pinnedSet.has(a.name);
+    const bPinned = pinnedSet.has(b.name);
+    if (aPinned !== bPinned) {
+      return aPinned ? -1 : 1;
+    }
+    return a.label.localeCompare(b.label);
+  };
+  const customs = customCategories
+    .map((name) => ({ name, label: name, isCustom: true }))
+    .sort(byPinThenLabel);
+  const builtins = deckBuiltins
+    .map((name) => ({ name, label: t(name, { ns: 'categories' }), isCustom: false }))
+    .sort(byPinThenLabel);
+  const rows: DeckRow[] = [...customs, ...builtins];
 
   const hasCustom = customCategories.length > 0;
   const hasBuiltins = deckBuiltins.length > 0;
@@ -422,13 +416,10 @@ function CategoriesCardHeader({
 function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps) {
   const { t } = useTranslation();
   const { isPromptDeckOpen, drawnCategories } = categories;
-  const pinnedSet = useMemo(() => new Set(categories.pinned), [categories.pinned]);
+  const pinnedSet = new Set(categories.pinned);
   // Decoration uses the frozen draw-time snapshot, not the live deck, so editing
   // the deck mid-round never re-styles (or blanks) the categories already drawn.
-  const customSet = useMemo(
-    () => new Set(categories.drawnCustomCategories),
-    [categories.drawnCustomCategories],
-  );
+  const customSet = new Set(categories.drawnCustomCategories);
   const deckToggleLabel = isPromptDeckOpen ? t('categories.hideDeck') : t('categories.showDeck');
   const allPinned =
     drawnCategories.length > 0 && drawnCategories.every((name) => pinnedSet.has(name));

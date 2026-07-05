@@ -10,6 +10,8 @@ export function useDebouncedCommit<T>(commit: (value: T) => void, delay = 500) {
   const commitRef = useRef(commit);
   commitRef.current = commit;
 
+  // Kept memoized: it's read in the useEffect dependency array below, where a
+  // render-body function would trip biome's useExhaustiveDependencies lint.
   const cancel = useCallback(() => {
     if (timerRef.current !== null) {
       clearTimeout(timerRef.current);
@@ -17,16 +19,13 @@ export function useDebouncedCommit<T>(commit: (value: T) => void, delay = 500) {
     }
   }, []);
 
-  const schedule = useCallback(
-    (value: T) => {
-      cancel();
-      timerRef.current = setTimeout(() => {
-        timerRef.current = null;
-        commitRef.current(value);
-      }, delay);
-    },
-    [cancel, delay],
-  );
+  const schedule = (value: T) => {
+    cancel();
+    timerRef.current = setTimeout(() => {
+      timerRef.current = null;
+      commitRef.current(value);
+    }, delay);
+  };
 
   useEffect(() => cancel, [cancel]);
 

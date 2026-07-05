@@ -1,11 +1,4 @@
-import {
-  createContext,
-  type PropsWithChildren,
-  useContext,
-  useEffect,
-  useMemo,
-  useReducer,
-} from 'react';
+import { createContext, type PropsWithChildren, useContext, useEffect, useReducer } from 'react';
 import { categories } from '@/domain/game/constants';
 import { getPackCategories } from '@/shared/lib/categoryPacks';
 import { safeStorage } from '@/shared/lib/safeStorage';
@@ -186,23 +179,20 @@ function SettingsProvider({ children }: PropsWithChildren) {
     };
   }, []);
 
-  const value = useMemo<SettingsContextValue>(
-    () => ({
-      settings,
-      update: (key, actionValue) => {
-        dispatch({ type: 'update', key, value: actionValue });
-      },
-      addCustom: (raw) => dispatch({ type: 'addCustom', value: raw }),
-      removeCustom: (category) => dispatch({ type: 'removeCustom', value: category }),
-      togglePin: (name) => dispatch({ type: 'togglePin', name }),
-      togglePinAll: (names) => dispatch({ type: 'togglePinAll', names }),
-      addPack: (packId) => dispatch({ type: 'addPack', packId }),
-      removeBuiltin: (name) => dispatch({ type: 'removeBuiltin', name }),
-      removeAllCustom: () => dispatch({ type: 'removeAllCustom' }),
-      removeAllBuiltins: () => dispatch({ type: 'removeAllBuiltins' }),
-    }),
-    [settings],
-  );
+  const value: SettingsContextValue = {
+    settings,
+    update: (key, actionValue) => {
+      dispatch({ type: 'update', key, value: actionValue });
+    },
+    addCustom: (raw) => dispatch({ type: 'addCustom', value: raw }),
+    removeCustom: (category) => dispatch({ type: 'removeCustom', value: category }),
+    togglePin: (name) => dispatch({ type: 'togglePin', name }),
+    togglePinAll: (names) => dispatch({ type: 'togglePinAll', names }),
+    addPack: (packId) => dispatch({ type: 'addPack', packId }),
+    removeBuiltin: (name) => dispatch({ type: 'removeBuiltin', name }),
+    removeAllCustom: () => dispatch({ type: 'removeAllCustom' }),
+    removeAllBuiltins: () => dispatch({ type: 'removeAllBuiltins' }),
+  };
 
   return <SettingsContext value={value}>{children}</SettingsContext>;
 }
