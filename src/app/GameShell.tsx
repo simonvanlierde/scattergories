@@ -53,22 +53,13 @@ function ChunkErrorBanner({ onReload }: { onReload: () => void }) {
   const { t } = useTranslation();
 
   return (
-    <section
-      className="banner banner--danger"
-      role="alert"
-      aria-label={t('errors.chunkTitle', { defaultValue: 'Update available' })}
-    >
+    <section className="banner banner--danger" role="alert" aria-label={t('errors.chunkTitle')}>
       <div>
-        <strong>{t('errors.chunkTitle', { defaultValue: 'A fresh app version is ready.' })}</strong>
-        <p>
-          {t('errors.chunkBody', {
-            defaultValue:
-              'One of the interface chunks changed while the app was open. Reload to continue safely.',
-          })}
-        </p>
+        <strong>{t('errors.chunkTitle')}</strong>
+        <p>{t('errors.chunkBody')}</p>
       </div>
       <Button variant="primary" onClick={onReload}>
-        {t('errors.reload', { defaultValue: 'Reload app' })}
+        {t('errors.reload')}
       </Button>
     </section>
   );
@@ -142,7 +133,7 @@ function GameShell({ game }: GameShellProps) {
         <Suspense
           fallback={
             <div className="modal-loading" role="status" aria-live="polite">
-              {t('modal.loading', { defaultValue: 'Opening rules…' })}
+              {t('modal.loading')}
             </div>
           }
         >

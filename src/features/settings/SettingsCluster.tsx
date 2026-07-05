@@ -39,11 +39,7 @@ function LanguageMenu({
   const { t } = useTranslation();
 
   return (
-    <div
-      className="lang-menu"
-      role="menu"
-      aria-label={t('language.label', { defaultValue: 'Language' })}
-    >
+    <div className="lang-menu" role="menu" aria-label={t('language.label')}>
       {SUPPORTED_LOCALES.map((code) => {
         const selected = code === language;
         return (
@@ -87,7 +83,7 @@ function TimingFields({
       />
       <DebouncedNumberField
         id="getReady"
-        label={t('settings.getReady', { defaultValue: 'Get ready' })}
+        label={t('settings.getReady')}
         value={bufferSecondsInput}
         min={bufferSecondsMin}
         max={bufferSecondsMax}
@@ -118,8 +114,8 @@ export function SettingsCluster({
     <div className="settings-cluster">
       <Popover
         icon={Timer}
-        label={t('settings.roundTimerTitle', { defaultValue: 'Round timer' })}
-        title={t('settings.pace', { defaultValue: '{{seconds}}s', seconds: durationInput })}
+        label={t('settings.roundTimerTitle')}
+        title={t('settings.pace', { seconds: durationInput })}
       >
         <TimingFields
           durationInput={durationInput}
@@ -128,11 +124,7 @@ export function SettingsCluster({
         />
       </Popover>
 
-      <Popover
-        icon={Globe}
-        label={t('language.label', { defaultValue: 'Language' })}
-        title={getNativeName(language)}
-      >
+      <Popover icon={Globe} label={t('language.label')} title={getNativeName(language)}>
         {(close) => (
           <LanguageMenu
             language={language}
@@ -153,11 +145,7 @@ export function SettingsCluster({
       />
 
       <IconButton
-        label={
-          isDark
-            ? t('theme.switchToLight', { defaultValue: 'Switch to light mode' })
-            : t('theme.switchToDark', { defaultValue: 'Switch to dark mode' })
-        }
+        label={isDark ? t('theme.switchToLight') : t('theme.switchToDark')}
         icon={<Icon icon={isDark ? Sun : Moon} size={20} />}
         onClick={onToggleTheme}
       />

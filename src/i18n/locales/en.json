@@ -29,14 +29,16 @@
     "timeUp": "Time's up!",
     "getReady": "Get ready…",
     "go": "Go!",
-    "roundOver": "Round over!"
+    "roundOver": "Round over!",
+    "startIn": "Start in {{seconds}}s"
   },
   "settings": {
     "duration": "Round",
     "getReady": "Get ready",
     "categoryDraw": "Draw",
     "addCustom": "Add custom category",
-    "roundTimerTitle": "Round timer"
+    "roundTimerTitle": "Round timer",
+    "pace": "{{seconds}}s"
   },
   "packs": {
     "classic": {

@@ -15,7 +15,7 @@ export function LetterHero({ letter, visible, landing }: LetterHeroProps) {
       aria-live="polite"
       aria-atomic="true"
     >
-      <span className="sr-only">{t('round.letterLabel', { defaultValue: 'Current letter' })}</span>
+      <span className="sr-only">{t('round.letterLabel')}</span>
       <span
         data-testid="current-letter"
         aria-hidden={visible ? undefined : true}

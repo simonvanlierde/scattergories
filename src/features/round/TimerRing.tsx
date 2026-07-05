@@ -74,11 +74,10 @@ function getLabel(
     return t('timer.timeUp');
   }
   if (o.isRunning && o.isPaused) {
-    return t('timer.paused', { defaultValue: 'Paused' });
+    return t('timer.paused');
   }
   if (o.phase === 'buffer') {
     return t('timer.startIn', {
-      defaultValue: 'Start in {{seconds}}s',
       seconds: Math.max(0, o.secondsLeft),
     });
   }
@@ -86,9 +85,9 @@ function getLabel(
     return formatSeconds(Math.max(0, o.secondsLeft));
   }
   if (o.phase === 'spinning') {
-    return t('timer.getReady', { defaultValue: 'Get ready' });
+    return t('timer.getReady');
   }
-  return t('timer.ready', { defaultValue: 'Ready' });
+  return t('timer.ready');
 }
 
 function TimerRing({ phase, isPaused, secondsLeft, gameSeconds }: TimerRingProps) {
@@ -111,7 +110,7 @@ function TimerRing({ phase, isPaused, secondsLeft, gameSeconds }: TimerRingProps
       )}
       data-testid="round-clock"
       role="timer"
-      aria-label={t('round.timerLabel', { defaultValue: 'Round clock' })}
+      aria-label={t('round.timerLabel')}
     >
       <svg className="timer-ring__svg" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
         <circle className="timer-ring__track" cx="100" cy="100" r={RING_RADIUS} />

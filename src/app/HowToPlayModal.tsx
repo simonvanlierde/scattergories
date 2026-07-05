@@ -77,7 +77,7 @@ export function HowToPlayModal({ onClose }: HowToPlayModalProps) {
       open={true}
       onClose={onClose}
       title={t('modal.title')}
-      closeLabel={t('buttons.closeTooltip', { defaultValue: 'Close' })}
+      closeLabel={t('buttons.closeTooltip')}
     >
       <div className="howto">
         <p className="howto__lead">{t('modal.objectiveText')}</p>

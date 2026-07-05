@@ -30,7 +30,7 @@ function resolvePrimary(phase: Phase, isPaused: boolean, t: Translate) {
     return { label: t('buttons.spinning'), icon: Play };
   }
   if (phase === 'done') {
-    return { label: t('buttons.nextRound', { defaultValue: 'Next round' }), icon: Play };
+    return { label: t('buttons.nextRound'), icon: Play };
   }
   if (phase === 'buffer' || phase === 'running') {
     return isPaused
@@ -49,7 +49,7 @@ export function ActionBar({
 }: ActionBarProps) {
   const { t } = useTranslation();
   const isPausedRound = (phase === 'buffer' || phase === 'running') && isPaused;
-  const roundControlsLabel = t('controls.roundGroup', { defaultValue: 'Round controls' });
+  const roundControlsLabel = t('controls.roundGroup');
 
   // New letter (reroll) — only while paused.
   const showNewLetter = isPausedRound;
@@ -75,13 +75,13 @@ export function ActionBar({
           action isn't available in the current phase. */}
       <ControlGroup label={roundControlsLabel}>
         <IconButton
-          label={t('buttons.newLetter', { defaultValue: 'New letter' })}
+          label={t('buttons.newLetter')}
           icon={<Icon icon={RefreshCw} size={20} />}
           disabled={!showNewLetter}
           onClick={onNewLetter}
         />
         <IconButton
-          label={t('buttons.nextRound', { defaultValue: 'Next round' })}
+          label={t('buttons.nextRound')}
           icon={<Icon icon={SkipForward} size={20} />}
           disabled={!showNextRound}
           onClick={onNextRound}

@@ -34,10 +34,7 @@ export function CategoryChecklist({
 
   return (
     <section className="category-checklist">
-      <ul
-        className="category-checklist__list"
-        aria-label={t('categories.drawnListLabel', { defaultValue: 'Selected categories' })}
-      >
+      <ul className="category-checklist__list" aria-label={t('categories.drawnListLabel')}>
         {categories.map((category, index) => {
           const isPinned = pinnedSet.has(category);
           // Only unpinned slots roll and land; pinned slots hold still.
@@ -64,8 +61,8 @@ export function CategoryChecklist({
                 aria-pressed={isPinned}
                 aria-label={
                   isPinned
-                    ? t('categories.unpinOne', { defaultValue: 'Unpin {{name}}', name: label })
-                    : t('categories.pinOne', { defaultValue: 'Pin {{name}}', name: label })
+                    ? t('categories.unpinOne', { name: label })
+                    : t('categories.pinOne', { name: label })
                 }
                 onClick={() => onTogglePin(category)}
               >

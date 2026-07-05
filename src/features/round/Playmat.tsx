@@ -65,7 +65,6 @@ function UsedLetters({ letters }: { letters: string[] }) {
     <div className="playmat__meta">
       <p className="playmat__used-letters">
         {t('usedLetters', {
-          defaultValue: 'Used letters: {{letters}}',
           letters: letters.join(' · '),
         })}
       </p>
@@ -128,11 +127,7 @@ export function Playmat({ game }: PlaymatProps) {
   const { round, settings, categories, controls } = game;
 
   return (
-    <section
-      className="playmat"
-      aria-label={t('playmat.label', { defaultValue: 'Game board' })}
-      data-phase={round.phase}
-    >
+    <section className="playmat" aria-label={t('playmat.label')} data-phase={round.phase}>
       <PlaymatRoundContent
         round={round}
         settings={settings}

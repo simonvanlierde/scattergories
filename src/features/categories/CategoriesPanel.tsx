@@ -72,7 +72,7 @@ function DeckSettings({
         min={catCountMin}
         max={catCountMax}
         fallback={catCountDefault}
-        suffix={t('categories.drawUnit', { defaultValue: 'cards' })}
+        suffix={t('categories.drawUnit')}
         onCommit={actions.onCatCountChange}
       />
     </div>
@@ -116,7 +116,7 @@ function AddCustomRow({
         onClick={submit}
         leadingIcon={<Icon icon={Plus} size={18} />}
         aria-label={t('buttons.add')}
-        title={t('buttons.addTooltip', { defaultValue: t('buttons.add') })}
+        title={t('buttons.addTooltip')}
       />
     </div>
   );
@@ -132,9 +132,7 @@ function AddCategories({
   const { t } = useTranslation();
   return (
     <section className="deck-section">
-      <h3 className="deck-section__title">
-        {t('categories.addSectionTitle', { defaultValue: 'Add categories' })}
-      </h3>
+      <h3 className="deck-section__title">{t('categories.addSectionTitle')}</h3>
       <div className="deck-add">
         <AddPackField actions={actions} />
         <AddCustomRow inputRef={inputRef} onAddCustom={actions.onAddCustom} />
@@ -157,9 +155,7 @@ function AddPackField({ actions }: { actions: CategoriesActions }) {
   );
   return (
     <label className="settings-select deck-list__pack" htmlFor="addPack">
-      <span className="sr-only">
-        {t('categories.addPack', { defaultValue: 'Add a category pack' })}
-      </span>
+      <span className="sr-only">{t('categories.addPack')}</span>
       <select
         id="addPack"
         value=""
@@ -169,9 +165,7 @@ function AddPackField({ actions }: { actions: CategoriesActions }) {
           }
         }}
       >
-        <option value="">
-          {t('categories.addPackPlaceholder', { defaultValue: 'Add a pack…' })}
-        </option>
+        <option value="">{t('categories.addPackPlaceholder')}</option>
         {packs.map((pack) => (
           <option key={pack.id} value={pack.id}>
             {pack.label}
@@ -205,15 +199,15 @@ function DeckListItem({
         <IconButton
           label={
             isPinned
-              ? t('categories.unpinOne', { defaultValue: 'Unpin {{name}}', name: row.label })
-              : t('categories.pinOne', { defaultValue: 'Pin {{name}}', name: row.label })
+              ? t('categories.unpinOne', { name: row.label })
+              : t('categories.pinOne', { name: row.label })
           }
           icon={<Icon icon={isPinned ? Pin : PinOff} size={16} />}
           aria-pressed={isPinned}
           onClick={() => actions.onTogglePin(row.name)}
         />
         <IconButton
-          label={t('buttons.remove', { defaultValue: 'Remove' })}
+          label={t('buttons.remove')}
           icon={<Icon icon={Trash2} size={16} />}
           onClick={() =>
             row.isCustom ? actions.onRemoveCustom(row.name) : actions.onRemoveBuiltin(row.name)
@@ -246,7 +240,7 @@ function DeckBulkActions({
           className="deck-bulk-action"
           onClick={actions.onRemoveAllCustom}
         >
-          {t('categories.removeAllCustom', { defaultValue: 'Remove all custom' })}
+          {t('categories.removeAllCustom')}
         </Button>
       ) : null}
       {hasBuiltins ? (
@@ -256,7 +250,7 @@ function DeckBulkActions({
           className="deck-bulk-action"
           onClick={actions.onRemoveAllBuiltins}
         >
-          {t('categories.removeAllBuiltins', { defaultValue: 'Remove all built-in' })}
+          {t('categories.removeAllBuiltins')}
         </Button>
       ) : null}
     </div>
@@ -298,27 +292,17 @@ function DeckList({
   return (
     <section className="deck-section">
       <div className="deck-section__head">
-        <h3 className="deck-section__title">
-          {t('categories.deckSectionTitle', { defaultValue: 'Your deck' })}
-        </h3>
+        <h3 className="deck-section__title">{t('categories.deckSectionTitle')}</h3>
         <span className="deck-list__count">
           {t('categories.deckCount', {
-            defaultValue: '{{custom}} custom · {{builtin}} built-in',
             custom: customCategories.length,
             builtin: deckBuiltins.length,
           })}
         </span>
       </div>
-      <ul
-        className="deck-list__items"
-        aria-label={t('categories.deckLabel', { defaultValue: 'Category deck' })}
-      >
+      <ul className="deck-list__items" aria-label={t('categories.deckLabel')}>
         {rows.length === 0 ? (
-          <li className="deck-list__empty">
-            {t('categories.emptyDeck', {
-              defaultValue: 'The deck is empty. Add a pack or a custom category.',
-            })}
-          </li>
+          <li className="deck-list__empty">{t('categories.emptyDeck')}</li>
         ) : (
           rows.map((row) => (
             <DeckListItem
@@ -359,15 +343,15 @@ function CustomizeSheetBlock({
   return (
     <>
       <IconButton
-        label={t('categories.customize', { defaultValue: 'Customize deck' })}
+        label={t('categories.customize')}
         icon={<Icon icon={SlidersHorizontal} size={18} />}
         onClick={openSheet}
       />
       <Sheet
         open={isOpen}
         onClose={() => setIsOpen(false)}
-        title={t('categories.customizeTitle', { defaultValue: 'Customize deck' })}
-        closeLabel={t('buttons.closeTooltip', { defaultValue: 'Close' })}
+        title={t('categories.customizeTitle')}
+        closeLabel={t('buttons.closeTooltip')}
       >
         <DeckSettings catCountInput={categories.catCountInput} actions={actions} />
         <AddCategories actions={actions} inputRef={inputRef} />
@@ -417,17 +401,13 @@ function CategoriesCardHeader({
       {isPromptDeckOpen ? (
         <div className="categories-card__header-actions">
           <IconButton
-            label={t('buttons.redraw', { defaultValue: 'Redraw' })}
+            label={t('buttons.redraw')}
             icon={<Icon icon={RefreshCw} size={18} />}
             disabled={!canEdit}
             onClick={actions.onRedraw}
           />
           <IconButton
-            label={
-              allPinned
-                ? t('categories.unpinAll', { defaultValue: 'Unpin all' })
-                : t('categories.pinAll', { defaultValue: 'Pin all' })
-            }
+            label={allPinned ? t('categories.unpinAll') : t('categories.pinAll')}
             icon={<Icon icon={allPinned ? Pin : PinOff} size={18} />}
             aria-pressed={allPinned}
             onClick={() => actions.onTogglePinAll(drawnCategories)}
@@ -449,9 +429,7 @@ function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps
     () => new Set(categories.drawnCustomCategories),
     [categories.drawnCustomCategories],
   );
-  const deckToggleLabel = isPromptDeckOpen
-    ? t('categories.hideDeck', { defaultValue: 'Hide categories' })
-    : t('categories.showDeck', { defaultValue: 'Show categories' });
+  const deckToggleLabel = isPromptDeckOpen ? t('categories.hideDeck') : t('categories.showDeck');
   const allPinned =
     drawnCategories.length > 0 && drawnCategories.every((name) => pinnedSet.has(name));
 

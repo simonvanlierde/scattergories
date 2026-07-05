@@ -45,12 +45,10 @@ function AppErrorFallback() {
 
   return (
     <ErrorView
-      eyebrow={t('errors.boundaryEyebrow', { defaultValue: 'Recovery mode' })}
-      title={t('errors.boundaryTitle', { defaultValue: 'Something went wrong.' })}
-      message={t('errors.boundaryBody', {
-        defaultValue: 'Reload the app to reset the current round and continue playing.',
-      })}
-      actionLabel={t('errors.reload', { defaultValue: 'Reload app' })}
+      eyebrow={t('errors.boundaryEyebrow')}
+      title={t('errors.boundaryTitle')}
+      message={t('errors.boundaryBody')}
+      actionLabel={t('errors.reload')}
     />
   );
 }

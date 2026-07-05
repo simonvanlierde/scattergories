@@ -20,16 +20,13 @@ export function RoundEnd({ letter, categoriesCount, roundsPlayed }: RoundEndProp
 
   return (
     <section className="round-end" data-complete="true">
-      <p className="round-end__title">{t('roundEnd.title', { defaultValue: 'Round over' })}</p>
+      <p className="round-end__title">{t('roundEnd.title')}</p>
       <span className="round-end__letter" aria-hidden="true">
         {letter}
       </span>
       <div className="round-end__stats">
-        <Stat
-          label={t('roundEnd.categories', { defaultValue: 'Categories' })}
-          value={categoriesCount}
-        />
-        <Stat label={t('roundEnd.rounds', { defaultValue: 'Rounds' })} value={roundsPlayed} />
+        <Stat label={t('roundEnd.categories')} value={categoriesCount} />
+        <Stat label={t('roundEnd.rounds')} value={roundsPlayed} />
       </div>
     </section>
   );
