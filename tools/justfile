@@ -14,20 +14,20 @@ weights-sample dataset='wikitext-2':
 weights-sample-write dataset='wikitext-2':
     @uv run sg-tools weights sample --dataset {{ dataset }} --write
 
-weights-locales locales='en es fr de it nl pl pt el' max_bytes='150000000':
+weights-locales locales='en,es,fr,de,it,nl,pl,pt,el' max_bytes='150000000':
     @uv run sg-tools weights locales --locales {{ locales }} --max-bytes {{ max_bytes }}
 
-weights-locales-write locales='en es fr de it nl pl pt el' max_bytes='150000000':
+weights-locales-write locales='en,es,fr,de,it,nl,pl,pt,el' max_bytes='150000000':
     @uv run sg-tools weights locales --locales {{ locales }} --max-bytes {{ max_bytes }} --write-app-file
 
-translate-categories *locales='es':
+translate-categories locales='es':
     @uv run --group translation sg-tools translate categories --target-locales {{ locales }}
 
-translate-categories-write *locales='es':
+translate-categories-write locales='es':
     @uv run --group translation sg-tools translate categories --target-locales {{ locales }} --write-app-files
 
-translate-locales *locales='es':
+translate-locales locales='es':
     @uv run --group translation sg-tools translate locales --target-locales {{ locales }}
 
-translate-locales-write *locales='es':
+translate-locales-write locales='es':
     @uv run --group translation sg-tools translate locales --target-locales {{ locales }} --write-app-files

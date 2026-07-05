@@ -103,3 +103,14 @@ class FakeArgosTranslateApi:
         if pair not in self.translators:
             raise LookupError(pair)
         return self.translators[pair]
+
+
+@dataclass
+class FakeNoneTranslateApi:
+    """Fake translate API that returns None (pair absent, no exception)."""
+
+    lookups: list[tuple[str, str]] = field(default_factory=list)
+
+    def get_translation_from_codes(self, from_locale: str, to_locale: str) -> None:
+        """Record the lookup; returns None like Argos when a pair package is missing."""
+        self.lookups.append((from_locale, to_locale))

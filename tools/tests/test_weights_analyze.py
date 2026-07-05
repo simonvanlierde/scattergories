@@ -1,5 +1,5 @@
 """Tests for weight analysis and rendering helpers."""
-# spell-checker: ignore Árbol, Über
+# spell-checker: ignore Árbol, Über, Łatwy
 
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -36,6 +36,14 @@ def test_analyze_texts_normalizes_accented_initials() -> None:
     assert total == 2  # noqa: PLR2004
     assert rows[0] == LetterRow("A", 0.5, 1)
     assert rows[1] == LetterRow("U", 0.5, 1)
+
+
+def test_analyze_texts_folds_stroked_latin_initials() -> None:
+    """Stroked letters (Ł) NFKD cannot decompose still count toward their base letter."""
+    rows, total = analyze_texts(["Łatwy"], "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+    letter_row = next(row for row in rows if row.letter == "L")
+    assert total == 1
+    assert letter_row.count == 1
 
 
 def test_analyze_texts_returns_zero_frequency_rows_when_no_letters_match() -> None:
@@ -162,6 +170,9 @@ def test_render_locale_weight_source_is_deterministic() -> None:
     )
     assert source.index('"en"') < source.index('"es"')
     assert source.index('["A", 0.60000000]') < source.index('["B", 0.40000000]')
+    # `satisfies` lets TS flag an incomplete record instead of an unsafe `as` cast.
+    assert "satisfies Record<LocaleCode, Record<string, number>>" in source
+    assert " as Record<LocaleCode" not in source
 
 
 def test_write_sample_output_writes_ephemeral_files(tmp_path: Path) -> None:

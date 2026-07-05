@@ -66,7 +66,7 @@ def sample(
 @app.command("locales")
 def locales(
     locales_arg: Annotated[
-        list[str] | None, typer.Option("--locales", help="Locale codes.")
+        str | None, typer.Option("--locales", help="Comma-separated locale codes.")
     ] = None,
     max_bytes: Annotated[int, typer.Option(help="Byte cap per locale.")] = DEFAULT_MAX_BYTES,
     hf_token: Annotated[str | None, typer.Option(help="Optional Hugging Face token.")] = None,
@@ -96,6 +96,13 @@ def locales(
         print_rows_summary(analysis.rows, label=f"[{locale}] top letters:")
 
     if write_app_file:
+        missing = sorted(set(context.registry.locales) - analyses.keys())
+        if missing:
+            msg = (
+                "--write-app-file requires every registry locale; "
+                f"missing: {', '.join(missing)}"
+            )
+            raise typer.BadParameter(msg)
         output_path = write_locale_app_file(context.paths.generated_weights_path, analyses)
         typer.echo(f"Wrote {output_path}")
     else:

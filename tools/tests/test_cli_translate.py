@@ -43,6 +43,28 @@ def test_translate_categories_preview_uses_fake_provider(
     assert provider.calls == [("en", "es", "Animals"), ("en", "es", "Foods")]
 
 
+def test_translate_categories_accepts_comma_separated_locales(
+    runner: CliRunner,
+    repo_context: tuple[RepoPaths, LocaleRegistry],
+    fake_provider_factory: FakeProviderFactory,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A single comma-separated value expands into multiple target locales."""
+    paths, registry = repo_context
+    provider = fake_provider_factory()
+    monkeypatch.setattr(translate, "create_context", lambda: AppContext(paths, registry))
+    monkeypatch.setattr(translate, "ArgosProvider", lambda: provider)
+
+    result = runner.invoke(
+        cli.app,
+        ["translate", "categories", "--target-locales", "es,el"],
+    )
+
+    assert result.exit_code == 0
+    assert "[es] translated 2 categories" in result.stdout
+    assert "[el] translated 2 categories" in result.stdout
+
+
 def test_translate_categories_write_updates_app_files(
     runner: CliRunner,
     repo_context: tuple[RepoPaths, LocaleRegistry],

@@ -1,8 +1,10 @@
 """Streaming corpus analysis for letter weights."""
 
+import re
 import unicodedata
 from collections import Counter
 from dataclasses import dataclass
+from functools import cache
 from typing import TYPE_CHECKING
 
 from datasets import load_dataset
@@ -64,25 +66,34 @@ class DatasetStreamOptions:
     max_bytes: int | None = None
 
 
+# NFKD leaves stroked Latin letters undecomposed, so fold them explicitly.
+_STROKE_FOLD = {"Ł": "L", "ł": "l", "Ø": "O", "ø": "o", "Đ": "D", "đ": "d"}
+
+# A word-initial letter: a letter not preceded by another letter.
+_WORD_INITIAL_RE = re.compile(r"(?<![^\W\d_])[^\W\d_]")
+
+
 def iter_word_initials(text: str) -> Iterator[str]:
     """Yield the first letter of each word using Unicode-aware scanning."""
-    previous_was_letter = False
-    for char in text:
-        is_letter = char.isalpha()
-        if is_letter and not previous_was_letter:
-            yield char
-        previous_was_letter = is_letter
+    for match in _WORD_INITIAL_RE.finditer(text):
+        yield match.group(0)
+
+
+@cache
+def _fold_initial(letter: str) -> tuple[str, ...]:
+    """Return uppercase candidate symbols for one initial character."""
+    base = _STROKE_FOLD.get(letter, letter)
+    normalized = unicodedata.normalize("NFKD", base)
+    return tuple(
+        char.upper() for char in normalized if unicodedata.category(char) != "Mn"
+    )
 
 
 def normalize_initial(letter: str, alphabet_set: set[str]) -> str | None:
     """Fold a Unicode initial to a locale-specific alphabet symbol when possible."""
-    normalized = unicodedata.normalize("NFKD", letter)
-    for char in normalized:
-        if unicodedata.category(char) == "Mn":
-            continue
-        upper = char.upper()
-        if upper in alphabet_set:
-            return upper
+    for candidate in _fold_initial(letter):
+        if candidate in alphabet_set:
+            return candidate
     return None
 
 
