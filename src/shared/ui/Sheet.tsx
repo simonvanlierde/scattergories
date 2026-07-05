@@ -47,19 +47,30 @@ export function Sheet({ open, onClose, title, closeLabel = 'Close', children }: 
       onClose();
     }
 
+    // A drag from the sheet body released over the backdrop produces a click
+    // targeting the dialog; only dismiss when the press started on the backdrop.
+    let pressedBackdrop = false;
+
+    function handlePointerDown(event: PointerEvent) {
+      pressedBackdrop = event.target === dialog;
+    }
+
     function handleBackdropClick(event: MouseEvent) {
-      if (event.target === dialog) {
+      if (event.target === dialog && pressedBackdrop) {
         onClose();
       }
+      pressedBackdrop = false;
     }
 
     dialog.addEventListener('cancel', handleCancel);
     dialog.addEventListener('close', handleClose);
+    dialog.addEventListener('pointerdown', handlePointerDown);
     dialog.addEventListener('click', handleBackdropClick);
 
     return () => {
       dialog.removeEventListener('cancel', handleCancel);
       dialog.removeEventListener('close', handleClose);
+      dialog.removeEventListener('pointerdown', handlePointerDown);
       dialog.removeEventListener('click', handleBackdropClick);
     };
   }, [onClose]);
@@ -73,7 +84,7 @@ export function Sheet({ open, onClose, title, closeLabel = 'Close', children }: 
         </h2>
         <IconButton label={closeLabel} icon={<Icon icon={X} size={22} />} onClick={onClose} />
       </header>
-      <div className="ds-sheet__body">{children}</div>
+      <div className="ds-sheet__body">{open ? children : null}</div>
     </dialog>
   );
 }

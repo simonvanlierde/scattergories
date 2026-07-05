@@ -11,14 +11,12 @@ import type { MutableRefObject } from 'react';
 const SPIN_MS = 1200;
 const BASE_FLIP_INTERVAL_MS = 60;
 const FLIP_INTERVAL_SPREAD_MS = 260;
-const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
-export function getFlipInterval(progress: number): number {
+// Re-exported so existing importers keep a single rollAnimation entry point.
+export { prefersReducedMotion } from '@/shared/lib/prefersReducedMotion';
+
+function getFlipInterval(progress: number): number {
   return BASE_FLIP_INTERVAL_MS + progress * progress * FLIP_INTERVAL_SPREAD_MS;
-}
-
-export function prefersReducedMotion(): boolean {
-  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
 }
 
 export function runRoll(params: {
@@ -62,5 +60,3 @@ export function runRoll(params: {
 
   window.requestAnimationFrame(frame);
 }
-
-export { SPIN_MS };

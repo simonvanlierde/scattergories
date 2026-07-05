@@ -38,11 +38,11 @@ export function Popover({ icon, label, title, children }: PopoverProps) {
       }
     }
 
-    window.addEventListener('pointerdown', onPointerDown);
-    window.addEventListener('keydown', onKeyDown);
+    const controller = new AbortController();
+    window.addEventListener('pointerdown', onPointerDown, { signal: controller.signal });
+    window.addEventListener('keydown', onKeyDown, { signal: controller.signal });
     return () => {
-      window.removeEventListener('pointerdown', onPointerDown);
-      window.removeEventListener('keydown', onKeyDown);
+      controller.abort();
     };
   }, [open]);
 
