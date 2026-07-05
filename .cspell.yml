@@ -61,8 +61,11 @@ words:
   # Biome rule name
   - Filenaming
   # Common technical terms
+  - backgrounded
   - CICD
   - geolocation
+  - precaching
+  - undecomposed
   - oklch
   - htmlcov
   - nosniff

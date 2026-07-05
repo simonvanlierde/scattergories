@@ -16,6 +16,12 @@
   },
   "overrides": [
     {
+      "includes": ["public/sw.js"],
+      "javascript": {
+        "globals": ["self", "caches", "clients"]
+      }
+    },
+    {
       "includes": ["**/*.test.ts", "**/*.test.tsx", "tests/**"],
       "linter": {
         "rules": {
