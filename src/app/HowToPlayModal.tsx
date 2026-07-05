@@ -63,10 +63,13 @@ interface SectionProps {
   children: ReactNode;
 }
 
-function ExternalAnchor({ href, className }: { href: string; className?: string }) {
-  // Content is injected by <Trans> from the translated message, so no children here.
-  // biome-ignore lint/a11y/useAnchorContent: filled by Trans.
-  return <a href={href} target="_blank" rel="noopener noreferrer" className={className} />;
+function ExternalAnchor({ href, children }: { href: string; children?: ReactNode }) {
+  // `children` is the link text <Trans> injects from the translated message.
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className="about-link-inline">
+      {children}
+    </a>
+  );
 }
 
 function Attribution() {
@@ -75,9 +78,9 @@ function Attribution() {
       <Trans
         i18nKey="modal.attribution"
         components={{
-          official: <ExternalAnchor href={OFFICIAL_GAME_URL} className="about-link-inline" />,
-          source: <ExternalAnchor href={SOURCE_CODE_URL} className="about-link-inline" />,
-          license: <ExternalAnchor href={LICENSE_URL} className="about-link-inline" />,
+          official: <ExternalAnchor href={OFFICIAL_GAME_URL} />,
+          repo: <ExternalAnchor href={SOURCE_CODE_URL} />,
+          license: <ExternalAnchor href={LICENSE_URL} />,
         }}
       />
     </p>

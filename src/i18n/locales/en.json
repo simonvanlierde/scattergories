@@ -96,9 +96,6 @@
     "deckSectionTitle": "Your deck",
     "drawUnit": "cards"
   },
-  "roundEnd": {
-    "title": "Round over"
-  },
   "modal": {
     "title": "How to play",
     "objectiveText": "Score points by writing words that fit each category and start with the drawn letter.",
@@ -126,7 +123,7 @@
     ],
     "shortcuts": "Keyboard shortcuts",
     "about": "About",
-    "attribution": "Scattergories is the original party game by Hasbro. This is a free, unofficial companion for playing it around the table — browse the <official>official game</official> or this app's <source>source code</source>, released under the <license>MIT license</license>.",
+    "attribution": "Scattergories is the original party game by Hasbro. This is a free, unofficial companion for playing it around the table — browse the <official>official game</official> or this app's <repo>source code</repo>, released under the <license>MIT license</license>.",
     "privacy": "This app stores settings and custom categories in your browser only.",
     "version": "Version {{version}}",
     "loading": "Opening rules…"

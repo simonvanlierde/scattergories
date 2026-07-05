@@ -96,9 +96,6 @@
     "deckSectionTitle": "Dein Deck",
     "drawUnit": "Karten"
   },
-  "roundEnd": {
-    "title": "Runde vorbei"
-  },
   "modal": {
     "title": "Spielanleitung",
     "objectiveText": "Sammle Punkte, indem du Begriffe aufschreibst, die mit dem gewählten Buchstaben beginnen und in die jeweilige Kategorie passen.",
@@ -126,7 +123,7 @@
     ],
     "shortcuts": "Tastenkürzel",
     "about": "Über",
-    "attribution": "Scattergories ist das Original-Partyspiel von Hasbro. Dies ist ein kostenloser, inoffizieller Begleiter fürs Spielen am Tisch — sieh dir das <official>offizielle Spiel</official> oder den <source>Quellcode</source> dieser App an, veröffentlicht unter der <license>MIT-Lizenz</license>.",
+    "attribution": "Scattergories ist das Original-Partyspiel von Hasbro. Dies ist ein kostenloser, inoffizieller Begleiter fürs Spielen am Tisch — sieh dir das <official>offizielle Spiel</official> oder den <repo>Quellcode</repo> dieser App an, veröffentlicht unter der <license>MIT-Lizenz</license>.",
     "privacy": "Diese App speichert Einstellungen und Kategorien nur lokal im Browser.",
     "version": "Version {{version}}",
     "loading": "Regeln werden geöffnet…"

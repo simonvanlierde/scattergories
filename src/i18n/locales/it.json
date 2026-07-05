@@ -96,9 +96,6 @@
     "deckSectionTitle": "Il tuo mazzo",
     "drawUnit": "carte"
   },
-  "roundEnd": {
-    "title": "Round terminato"
-  },
   "modal": {
     "title": "Come giocare",
     "objectiveText": "Guadagna punti scrivendo parole che iniziano con la lettera data e rientrano nelle categorie selezionate.",
@@ -126,7 +123,7 @@
     ],
     "shortcuts": "Scorciatoie da tastiera",
     "about": "Informazioni",
-    "attribution": "Scattergories è il gioco di società originale di Hasbro. Questo è un supporto gratuito e non ufficiale per giocarci al tavolo — sfoglia il <official>gioco ufficiale</official> o il <source>codice sorgente</source> di questa app, rilasciata sotto la <license>licenza MIT</license>.",
+    "attribution": "Scattergories è il gioco di società originale di Hasbro. Questo è un supporto gratuito e non ufficiale per giocarci al tavolo — sfoglia il <official>gioco ufficiale</official> o il <repo>codice sorgente</repo> di questa app, rilasciata sotto la <license>licenza MIT</license>.",
     "privacy": "Questa app salva impostazioni e categorie solo nel tuo browser.",
     "version": "Versione {{version}}",
     "loading": "Apertura delle regole…"

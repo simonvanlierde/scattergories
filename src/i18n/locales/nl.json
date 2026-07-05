@@ -96,9 +96,6 @@
     "deckSectionTitle": "Jouw stapel",
     "drawUnit": "kaarten"
   },
-  "roundEnd": {
-    "title": "Ronde voorbij"
-  },
   "modal": {
     "title": "Hoe te spelen",
     "objectiveText": "Verdien punten door woorden op te schrijven die beginnen met de gekozen letter en passen in de categorieën.",
@@ -126,7 +123,7 @@
     ],
     "shortcuts": "Sneltoetsen",
     "about": "Over",
-    "attribution": "Scattergories is het originele partyspel van Hasbro. Dit is een gratis, onofficiële hulp om het aan tafel te spelen — bekijk het <official>officiële spel</official> of de <source>broncode</source> van deze app, uitgebracht onder de <license>MIT-licentie</license>.",
+    "attribution": "Scattergories is het originele partyspel van Hasbro. Dit is een gratis, onofficiële hulp om het aan tafel te spelen — bekijk het <official>officiële spel</official> of de <repo>broncode</repo> van deze app, uitgebracht onder de <license>MIT-licentie</license>.",
     "privacy": "Deze app bewaart instellingen en categorieën alleen in je browser.",
     "version": "Versie {{version}}",
     "loading": "Regels openen…"

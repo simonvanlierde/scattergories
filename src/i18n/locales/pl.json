@@ -96,9 +96,6 @@
     "deckSectionTitle": "Twoja talia",
     "drawUnit": "kart"
   },
-  "roundEnd": {
-    "title": "Runda zakończona"
-  },
   "modal": {
     "title": "Jak grać",
     "objectiveText": "Zdobywaj punkty, zapisując słowa, które zaczynają się na wylosowaną literę i pasują do wybranych kategorii.",
@@ -126,7 +123,7 @@
     ],
     "shortcuts": "Skróty klawiszowe",
     "about": "O aplikacji",
-    "attribution": "Scattergories to oryginalna gra imprezowa firmy Hasbro. To bezpłatny, nieoficjalny dodatek do gry przy stole — przejrzyj <official>oficjalną grę</official> lub <source>kod źródłowy</source> tej aplikacji, wydany na <license>licencji MIT</license>.",
+    "attribution": "Scattergories to oryginalna gra imprezowa firmy Hasbro. To bezpłatny, nieoficjalny dodatek do gry przy stole — przejrzyj <official>oficjalną grę</official> lub <repo>kod źródłowy</repo> tej aplikacji, wydany na <license>licencji MIT</license>.",
     "privacy": "Ta aplikacja zapisuje ustawienia i kategorie wyłącznie w Twojej przeglądarce.",
     "version": "Wersja {{version}}",
     "loading": "Otwieranie zasad…"

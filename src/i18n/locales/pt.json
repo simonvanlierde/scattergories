@@ -96,9 +96,6 @@
     "deckSectionTitle": "Seu baralho",
     "drawUnit": "cartas"
   },
-  "roundEnd": {
-    "title": "Rodada encerrada"
-  },
   "modal": {
     "title": "Como jogar",
     "objectiveText": "Acumule pontos escrevendo palavras que comecem com a letra sorteada e se encaixem nas categorias exibidas.",
@@ -126,7 +123,7 @@
     ],
     "shortcuts": "Atalhos de teclado",
     "about": "Sobre",
-    "attribution": "Scattergories é o jogo de festa original da Hasbro. Este é um complemento gratuito e não oficial para jogá-lo à mesa — veja o <official>jogo oficial</official> ou o <source>código-fonte</source> deste app, lançado sob a <license>licença MIT</license>.",
+    "attribution": "Scattergories é o jogo de festa original da Hasbro. Este é um complemento gratuito e não oficial para jogá-lo à mesa — veja o <official>jogo oficial</official> ou o <repo>código-fonte</repo> deste app, lançado sob a <license>licença MIT</license>.",
     "privacy": "Este aplicativo salva configurações e categorias personalizadas apenas no seu navegador.",
     "version": "Versão {{version}}",
     "loading": "Abrindo as regras…"
