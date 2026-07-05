@@ -58,7 +58,6 @@ interface GameController {
     phase: Phase;
     secondsLeft: number;
     statusKey: StatusKey;
-    usedLetters: string[];
   };
   settings: ReturnType<typeof useSettings>['settings'] & {
     gameSeconds: number;
@@ -172,7 +171,6 @@ function useGameController(): GameController {
       phase: round.phase,
       secondsLeft: round.secondsLeft,
       statusKey: round.statusKey,
-      usedLetters: round.usedLetters,
     },
     settings: {
       ...settings,

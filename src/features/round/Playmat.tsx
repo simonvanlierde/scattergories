@@ -51,52 +51,21 @@ function PlaymatStatus({ statusKey }: { statusKey: string | null }) {
   );
 }
 
-// Shown between rounds (idle/done) so players can see which letters have already
-// come up — the "have we done B yet?" question at the table. Hidden during play
-// to keep the live board focused on the clock.
-function UsedLetters({ letters }: { letters: string[] }) {
-  const { t } = useTranslation();
-
-  if (letters.length === 0) {
-    return null;
-  }
-
-  return (
-    <div className="playmat__meta">
-      <p className="playmat__used-letters">
-        {t('usedLetters', {
-          letters: letters.join(' · '),
-        })}
-      </p>
-    </div>
-  );
-}
-
 function PlaymatRoundContent({
   round,
   settings,
-  categories,
   controls,
 }: {
   round: PlaymatProps['game']['round'];
   settings: PlaymatProps['game']['settings'];
-  categories: PlaymatProps['game']['categories'];
   controls: PlaymatProps['game']['controls'];
 }) {
   const isDone = round.phase === 'done';
-  // Between rounds only — during play the strip would compete with the clock.
-  const showUsedLetters = round.phase === 'idle' || isDone;
 
   return (
     <>
-      {showUsedLetters ? <UsedLetters letters={round.usedLetters} /> : null}
-
       {isDone ? (
-        <RoundEnd
-          letter={round.letter}
-          categoriesCount={categories.drawnCategories.length}
-          roundsPlayed={round.usedLetters.length}
-        />
+        <RoundEnd letter={round.letter} />
       ) : (
         <PlaymatHero
           phase={round.phase}
@@ -124,16 +93,11 @@ function PlaymatRoundContent({
 
 export function Playmat({ game }: PlaymatProps) {
   const { t } = useTranslation();
-  const { round, settings, categories, controls } = game;
+  const { round, settings, controls } = game;
 
   return (
     <section className="playmat" aria-label={t('playmat.label')} data-phase={round.phase}>
-      <PlaymatRoundContent
-        round={round}
-        settings={settings}
-        categories={categories}
-        controls={controls}
-      />
+      <PlaymatRoundContent round={round} settings={settings} controls={controls} />
     </section>
   );
 }
