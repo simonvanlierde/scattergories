@@ -6,6 +6,7 @@ import { CategoriesPanel } from '@/features/categories/CategoriesPanel';
 import { Playmat } from '@/features/round/Playmat';
 import { SettingsCluster } from '@/features/settings/SettingsCluster';
 import { BrandMark } from '@/shared/ui/BrandMark';
+import { Button } from '@/shared/ui/Button';
 import { cx } from '@/shared/ui/cx';
 import { Icon } from '@/shared/ui/Icon';
 import { IconButton } from '@/shared/ui/IconButton';
@@ -66,9 +67,9 @@ function ChunkErrorBanner({ onReload }: { onReload: () => void }) {
           })}
         </p>
       </div>
-      <button type="button" onClick={onReload}>
+      <Button variant="primary" onClick={onReload}>
         {t('errors.reload', { defaultValue: 'Reload app' })}
-      </button>
+      </Button>
     </section>
   );
 }
@@ -127,7 +128,6 @@ function GameShell({ game }: GameShellProps) {
       className={cx('app-shell', game.round.alarmOn && 'alarm')}
       data-theme={game.settings.theme}
     >
-      <div className="app-shell__bg" aria-hidden="true" />
       <div className="app">
         {game.flags.hasChunkError ? (
           <ChunkErrorBanner onReload={game.controls.onReloadAfterChunkError} />
