@@ -1,19 +1,13 @@
 import i18nInstance from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { FALLBACK_LOCALE, normalizeLocale, SUPPORTED_LOCALES } from './localeRegistry';
+import { safeStorage } from '@/shared/lib/safeStorage';
+import { FALLBACK_LOCALE, resolveLocale } from './localeRegistry';
 import { loadLocaleNamespaces } from './locales/resources';
 
 const LANGUAGE_STORAGE_KEY = 'scattergories.language';
 
-function resolveLocale(locale: string | null | undefined): string {
-  const normalized = normalizeLocale(locale);
-  return SUPPORTED_LOCALES.includes(normalized) ? normalized : FALLBACK_LOCALE;
-}
-
 function getSavedLanguage(): string {
-  return typeof window === 'undefined'
-    ? FALLBACK_LOCALE
-    : window.localStorage.getItem(LANGUAGE_STORAGE_KEY) || FALLBACK_LOCALE;
+  return safeStorage.getItem(LANGUAGE_STORAGE_KEY) || FALLBACK_LOCALE;
 }
 
 const savedLanguage = getSavedLanguage();
@@ -40,8 +34,8 @@ function initI18n(): Promise<typeof i18n> {
 
       await ensureLanguageLoaded(resolvedLanguage);
 
-      if (typeof window !== 'undefined' && resolvedLanguage !== savedLanguage) {
-        window.localStorage.setItem(LANGUAGE_STORAGE_KEY, resolvedLanguage);
+      if (resolvedLanguage !== savedLanguage) {
+        safeStorage.setItem(LANGUAGE_STORAGE_KEY, resolvedLanguage);
       }
 
       return i18n;
@@ -69,19 +63,7 @@ async function ensureLanguageLoaded(language: string): Promise<string> {
 }
 
 function persistLanguage(language: string): void {
-  if (typeof window === 'undefined') {
-    return;
-  }
-
-  window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+  safeStorage.setItem(LANGUAGE_STORAGE_KEY, language);
 }
 
-export {
-  ensureLanguageLoaded,
-  i18n,
-  initI18n,
-  LANGUAGE_STORAGE_KEY,
-  persistLanguage,
-  resolvedLanguage,
-  savedLanguage,
-};
+export { ensureLanguageLoaded, i18n, initI18n, persistLanguage };

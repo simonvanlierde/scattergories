@@ -1,4 +1,4 @@
-import { FALLBACK_LOCALE, normalizeLocale, SUPPORTED_LOCALES } from '../localeRegistry';
+import { FALLBACK_LOCALE, resolveLocale, type SUPPORTED_LOCALES } from '../localeRegistry';
 import categoriesResourceEn from './categories.en.json';
 import enTranslation from './en.json';
 
@@ -26,8 +26,7 @@ const categoryLoaders = import.meta.glob<CategoriesResource>(
 );
 
 async function loadLocaleNamespaces(locale: string): Promise<LocaleNamespaces> {
-  const normalized = normalizeLocale(locale);
-  const loc = (SUPPORTED_LOCALES.includes(normalized) ? normalized : FALLBACK_LOCALE) as LocaleCode;
+  const loc = resolveLocale(locale) as LocaleCode;
 
   // The default locale is bundled synchronously; no async chunk needed.
   if (loc === FALLBACK_LOCALE) {

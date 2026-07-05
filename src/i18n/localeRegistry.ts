@@ -13,6 +13,12 @@ function normalizeLocale(locale: string | null | undefined): string {
   return locale.toLowerCase().split('-')[0];
 }
 
+/** Normalize, then fall back when the locale isn't supported. */
+function resolveLocale(locale: string | null | undefined): string {
+  const normalized = normalizeLocale(locale);
+  return SUPPORTED_LOCALES_VALUE.includes(normalized) ? normalized : FALLBACK_LOCALE_VALUE;
+}
+
 function getLocaleLetters(locale: string | null | undefined): string[] {
   const normalized = normalizeLocale(locale);
   const letters =
@@ -28,4 +34,4 @@ function getNativeName(locale: string | null | undefined): string {
 export const SUPPORTED_LOCALES = SUPPORTED_LOCALES_VALUE;
 export const FALLBACK_LOCALE = FALLBACK_LOCALE_VALUE;
 
-export { getLocaleLetters, getNativeName, normalizeLocale };
+export { getLocaleLetters, getNativeName, normalizeLocale, resolveLocale };
