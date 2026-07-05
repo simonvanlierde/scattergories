@@ -251,7 +251,7 @@
   @media (max-width: 51.99rem) {
     .app {
       width: min(100% - 1rem, 38rem);
-      gap: var(--space-3);
+      gap: var(--space-2);
     }
 
     .controlbar h1 {
@@ -263,6 +263,7 @@
     .play-grid {
       grid-template-rows: auto minmax(0, 1fr);
       padding-right: 0.1rem;
+      gap: var(--space-3);
     }
 
     /* Collapsed: header-only card stays content-height, packed at the top. */
@@ -283,10 +284,13 @@
       padding: var(--space-1) var(--space-4);
     }
 
-    /* Open: full-width hairline separates categories from the hero above. */
+    /* Open: full-width hairline separates categories from the hero above.
+       Tighter vertical rhythm on mobile — hug the divider to the header, and the
+       header to the first card. */
     .categories-card {
       border-top: 1px solid var(--rule);
-      padding-top: var(--space-4);
+      padding-top: var(--space-2);
+      gap: var(--space-2);
     }
 
     /* Collapsed: shorten the rule to hug just the header cluster (icon+chevron). */
@@ -300,37 +304,9 @@
       padding-top: var(--space-2);
     }
 
-    /* Open deck: stack the toggle + control icons in a vertical strip on the
-       left, so the category list starts at the top (a bit higher). */
-    .play-grid:not(.play-grid--deck-collapsed) .categories-card {
-      grid-template-columns: auto minmax(0, 1fr);
-      grid-template-rows: minmax(0, 1fr);
-      column-gap: var(--space-2);
-    }
-
-    .play-grid:not(.play-grid--deck-collapsed) .categories-card__content {
-      grid-column: 2;
-      grid-row: 1;
-    }
-
-    .play-grid:not(.play-grid--deck-collapsed) .categories-card__header {
-      grid-column: 1;
-      grid-row: 1;
-      flex-direction: column;
-      align-items: center;
-      align-self: start;
-      gap: var(--space-1);
-    }
-
-    .play-grid:not(.play-grid--deck-collapsed) .categories-card__heading,
-    .play-grid:not(.play-grid--deck-collapsed) .categories-card__header-actions {
-      flex-direction: column;
-    }
-
-    /* The open-deck header collapses to a narrow vertical icon strip; the text
-       label won't fit there, so drop it (the visible list makes context clear). */
-    .play-grid:not(.play-grid--deck-collapsed) .categories-card__title-text {
-      display: none;
-    }
+    /* Open deck: header (title + controls) sits in a full-width row above the
+       drawn list, so the list gets the whole screen width and its cards read
+       larger. The base .categories-card grid (auto / 1fr rows) already stacks
+       them; nothing to override here. */
   }
 }
