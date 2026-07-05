@@ -4,62 +4,105 @@
     "letterLabel": "Letra actual",
     "timerLabel": "Reloj de ronda"
   },
+  "controls": {
+    "roundGroup": "Controles de ronda"
+  },
   "buttons": {
-    "startRound": "Empezar Ronda",
-    "nextRound": "Siguiente Ronda",
-    "spinning": "Girando...",
+    "startRound": "Empezar ronda",
+    "nextRound": "Siguiente ronda",
+    "spinning": "Girando…",
+    "newLetter": "Nueva letra",
     "pause": "Pausa",
     "resume": "Reanudar",
     "mute": "Silenciar",
-    "unmute": "Activar Sonido",
-    "shuffle": "Mezclar",
+    "unmute": "Activar sonido",
+    "redraw": "Volver a sortear",
     "add": "Añadir",
     "remove": "Quitar",
     "addTooltip": "Añadir esta categoría a tu colección personalizada",
     "closeTooltip": "Cerrar esta ventana",
-    "howToPlay": "Cómo Jugar"
+    "howToPlay": "Cómo jugar"
   },
   "timer": {
     "ready": "Listo",
+    "paused": "En pausa",
     "timeUp": "¡Tiempo agotado!",
-    "getReady": "Prepárate...",
+    "getReady": "Prepárate…",
     "go": "¡Ya!",
-    "roundOver": "¡Ronda terminada!"
+    "roundOver": "¡Ronda terminada!",
+    "startIn": "Empieza en {{seconds}}s"
   },
   "settings": {
-    "duration": "Temporizador",
-    "categorySource": "Fuente",
+    "duration": "Ronda",
+    "getReady": "Preparación",
+    "avoidRepeats": "Evitar letras repetidas",
     "categoryDraw": "Sorteo",
-    "addCustom": "Añadir categoría propia"
+    "addCustom": "Añadir categoría propia",
+    "roundTimerTitle": "Temporizador de ronda",
+    "pace": "{{seconds}}s"
+  },
+  "packs": {
+    "classic": {
+      "label": "Todo"
+    },
+    "foodie": {
+      "label": "Comida"
+    },
+    "popCulture": {
+      "label": "Cultura pop"
+    },
+    "travel": {
+      "label": "Viajes"
+    },
+    "kids": {
+      "label": "Niños"
+    },
+    "household": {
+      "label": "En casa"
+    }
+  },
+  "playmat": {
+    "label": "Tablero de juego"
+  },
+  "rail": {
+    "shortcuts": {
+      "space": "Empezar o avanzar una ronda",
+      "r": "Volver a sortear la letra actual",
+      "p": "Pausar o reanudar",
+      "c": "Mostrar u ocultar el panel de categorías",
+      "help": "Abrir esta lista de atajos"
+    }
   },
   "categories": {
     "title": "Categorías",
-    "default": "Estándar",
-    "custom": "Propias",
-    "mixed": "Mezcladas",
-    "noCustom": "No hay categorías propias todavía.",
-    "minimumRequired": "Añade al menos una categoría propia para usar el modo Personalizado.",
-    "availableSummary": "{{count}} temas listos",
-    "customListLabel": "Categorías propias",
-    "drawnListLabel": "Tablero de categorías",
-    "showDeck": "Abrir temas",
-    "hideDeck": "Ocultar temas",
-    "summaryMode": "Fuente: {{mode}}",
-    "summaryDraw": "Sorteo: {{count}}",
-    "pin": "Fijar categorías",
-    "unpin": "Desfijar categorías",
-    "addSectionTitle": "Añadir categorías",
-    "deckSectionTitle": "Tu baraja",
+    "minimumRequired": "Añade categorías a tu baraja para jugar.",
+    "drawnListLabel": "Categorías seleccionadas",
+    "deckLabel": "Baraja de categorías",
     "deckCount": "{{custom}} propias · {{builtin}} estándar",
+    "emptyDeck": "La baraja está vacía. Añade un paquete o una categoría propia.",
+    "showDeck": "Abrir categorías",
+    "hideDeck": "Ocultar categorías",
+    "customize": "Personalizar baraja",
+    "customizeTitle": "Personalizar baraja",
+    "addPack": "Añadir un paquete de categorías",
+    "addPackPlaceholder": "Añadir un paquete…",
     "removeAllCustom": "Quitar todas las propias",
     "removeAllBuiltins": "Quitar todas las estándar",
+    "pinOne": "Fijar {{name}}",
+    "unpinOne": "Desfijar {{name}}",
+    "pinAll": "Fijar todas",
+    "unpinAll": "Desfijar todas",
+    "addSectionTitle": "Añadir categorías",
+    "deckSectionTitle": "Tu baraja",
     "drawUnit": "cartas"
   },
-  "usedLetters": "Letras usadas: {{letters}}{{empty}}",
+  "roundEnd": {
+    "title": "Ronda terminada"
+  },
   "modal": {
-    "title": "Cómo Jugar",
+    "title": "Cómo jugar",
     "objectiveText": "Gana puntos escribiendo palabras que empiecen por la letra dada y encajen en las categorías.",
-    "gameplay": "Reglas de Juego",
+    "gameplay": "Reglas de juego",
     "gameplayPoints": [
       "Se sortea una letra al azar: todas las respuestas deben empezar por ella.",
       "Antes de que acabe el tiempo (90 s por defecto), escribe una palabra para cada categoría.",
@@ -67,26 +110,40 @@
       "¿Juegas con otros? Ganas 1 punto por cada respuesta que nadie más escribió; las repetidas valen 0, así que busca respuestas originales."
     ],
     "categories": "Categorías",
-    "categoriesText": "Esta herramienta utiliza categorías del juego oficial. También puedes crear las tuyas propias y mezclarlas.",
+    "categoriesText": "El juego incluye un amplio conjunto de categorías integrado, y puedes añadir tus propias categorías — o paquetes temáticos enteros — a la baraja.",
+    "categoriesItems": [
+      "Personaliza la baraja para añadir categorías y paquetes, o quita las que prefieras omitir.",
+      "Fija una categoría para asegurarla en cada ronda; las no fijadas se sortean al azar para completar el resto.",
+      "Vuelve a sortear para obtener un conjunto nuevo de categorías para la letra actual, sin cambiar la letra."
+    ],
     "settings": "Ajustes",
     "settingsIntro": "Los encontrarás en la parte inferior de la pantalla; todo se guarda automáticamente.",
     "settingsItems": [
-      "Temporizador — cuánto dura cada ronda y la cuenta atrás de preparación antes de empezar.",
+      "Temporizador de ronda — cuánto dura cada ronda y la cuenta atrás de preparación antes de empezar. También incluye Evitar letras repetidas: déjalo activado para sortear cada letra una vez antes de que se repita. El conjunto de letras se reinicia al recargar la página o cuando se ha usado todo el alfabeto.",
       "Idioma — cambia el idioma de la interfaz y de las categorías.",
       "Sonido — silencia o activa el temporizador y la alarma.",
       "Tema — cambia entre el modo claro y oscuro."
     ],
     "shortcuts": "Atajos de teclado",
     "about": "Acerca de",
-    "officialGame": "Juego Oficial",
-    "sourceCode": "Código Fuente",
-    "privacy": "Esta aplicación guarda los ajustes y categorías solo en tu navegador.",
+    "attribution": "Scattergories es el juego de fiesta original de Hasbro. Esta es una herramienta gratuita y no oficial para jugarlo en la mesa — explora el <official>juego oficial</official> o el <source>código fuente</source> de esta app, publicado bajo la <license>licencia MIT</license>.",
+    "privacy": "Esta aplicación guarda los ajustes y las categorías propias solo en tu navegador.",
     "version": "Versión {{version}}",
-    "opensInNewTab": "(se abre en una pestaña nueva)",
     "loading": "Abriendo las reglas…"
   },
   "language": {
     "label": "Idioma"
   },
-  "theme": {}
+  "theme": {
+    "switchToDark": "Cambiar al modo oscuro",
+    "switchToLight": "Cambiar al modo claro"
+  },
+  "errors": {
+    "chunkTitle": "Hay una nueva versión de la app lista.",
+    "chunkBody": "Una parte de la interfaz cambió mientras la app estaba abierta. Recarga para continuar de forma segura.",
+    "boundaryEyebrow": "Modo de recuperación",
+    "boundaryTitle": "Algo salió mal.",
+    "boundaryBody": "Recarga la app para reiniciar la ronda actual y seguir jugando.",
+    "reload": "Recargar la app"
+  }
 }

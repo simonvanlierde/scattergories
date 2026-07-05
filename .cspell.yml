@@ -73,6 +73,11 @@ words:
   - tmpfs
   - unmute
   - zstd
+  # Translated UI strings (compound / inflected forms the language dicts lack)
+  - Rundentimer
+  - Rondetimer
+  - Partyspiel
+  - επαναφόρτωση
   # Native language names shown in UI language picker
   - Deutsch
   - Español
@@ -82,9 +87,6 @@ words:
   - Polski
   - Português
   - Ελληνικά
-  # Product-specific coinages
-  - Childrens
-  - Footware
   # Tools ecosystem
   - addopts
   - argostranslate
@@ -112,15 +114,26 @@ words:
   # Greek letters used in locale registry
   - ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ
   # Words not in the above dictionaries but used in the app or tests
-  - Kategorienliste
-  - Souvenirshop
-  - Spielebegriffe
+  - Ammazzatempo
+  - Cartoonfiguren
+  - finde
+  - Fireable
+  - Flitterwochenziele
+  - Glücklichmacher
+  - Huwelijksreisplekken
+  - Jssmaken
+  - letterpot
+  - Mathebegriffe
+  - Partyaktivitäten
+  - Partysachen
+  - Pizzabeläge
+  - Portemonneespullen
+  - Rauswurfgründe
+  - Verspätungsausreden
+  - Γκάτζετ
+  - Ξεκαρφίτσωμα
+  - Τηλεαστέρες
   - Celebryci
-  - Kozennamen
-  - Snackfood
-  - gerenciar
-  - mezclarlas
-  - stummschalten
   - Υπερήρωες
   - Σίγαση
   - Ήχος

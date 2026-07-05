@@ -4,15 +4,19 @@
     "letterLabel": "Lettre actuelle",
     "timerLabel": "Chrono de manche"
   },
+  "controls": {
+    "roundGroup": "Commandes de manche"
+  },
   "buttons": {
     "startRound": "Démarrer la manche",
     "nextRound": "Manche suivante",
-    "spinning": "Tirage au sort...",
+    "spinning": "Tirage…",
+    "newLetter": "Nouvelle lettre",
     "pause": "Pause",
     "resume": "Reprendre",
-    "mute": "Muet",
-    "unmute": "Son activé",
-    "shuffle": "Mélanger",
+    "mute": "Couper le son",
+    "unmute": "Activer le son",
+    "redraw": "Relancer",
     "add": "Ajouter",
     "remove": "Supprimer",
     "addTooltip": "Ajouter cette catégorie à votre collection personnalisée",
@@ -21,41 +25,80 @@
   },
   "timer": {
     "ready": "Prêt",
+    "paused": "En pause",
     "timeUp": "Temps écoulé !",
-    "getReady": "Préparez-vous...",
+    "getReady": "Préparez-vous…",
     "go": "C'est parti !",
-    "roundOver": "Manche terminée !"
+    "roundOver": "Manche terminée !",
+    "startIn": "Départ dans {{seconds}}s"
   },
   "settings": {
-    "duration": "Chronomètre",
-    "categorySource": "Source",
+    "duration": "Manche",
+    "getReady": "Préparation",
+    "avoidRepeats": "Éviter les lettres répétées",
     "categoryDraw": "Tirage",
-    "addCustom": "Ajouter une catégorie"
+    "addCustom": "Ajouter une catégorie perso",
+    "roundTimerTitle": "Minuteur de manche",
+    "pace": "{{seconds}}s"
+  },
+  "packs": {
+    "classic": {
+      "label": "Tout"
+    },
+    "foodie": {
+      "label": "Gourmand"
+    },
+    "popCulture": {
+      "label": "Culture pop"
+    },
+    "travel": {
+      "label": "Voyage"
+    },
+    "kids": {
+      "label": "Enfants"
+    },
+    "household": {
+      "label": "À la maison"
+    }
+  },
+  "playmat": {
+    "label": "Plateau de jeu"
+  },
+  "rail": {
+    "shortcuts": {
+      "space": "Démarrer ou avancer une manche",
+      "r": "Relancer la lettre actuelle",
+      "p": "Mettre en pause ou reprendre",
+      "c": "Afficher ou masquer le panneau des catégories",
+      "help": "Ouvrir cette liste de raccourcis"
+    }
   },
   "categories": {
     "title": "Catégories",
-    "default": "Standard",
-    "custom": "Perso",
-    "mixed": "Mélangées",
-    "noCustom": "Aucune catégorie personnalisée.",
-    "minimumRequired": "Ajoutez au moins une catégorie pour utiliser le mode Perso.",
-    "availableSummary": "{{count}} thèmes prêts",
-    "customListLabel": "Catégories personnalisées",
-    "drawnListLabel": "Liste des catégories",
-    "showDeck": "Ouvrir les thèmes",
-    "hideDeck": "Masquer les thèmes",
-    "summaryMode": "Source : {{mode}}",
-    "summaryDraw": "Tirage : {{count}}",
-    "pin": "Épingler les catégories",
-    "unpin": "Désépingler les catégories",
-    "addSectionTitle": "Ajouter des catégories",
-    "deckSectionTitle": "Votre paquet",
+    "minimumRequired": "Ajoutez des catégories à votre paquet pour jouer.",
+    "drawnListLabel": "Catégories sélectionnées",
+    "deckLabel": "Paquet de catégories",
     "deckCount": "{{custom}} perso · {{builtin}} standard",
+    "emptyDeck": "Le paquet est vide. Ajoutez un lot ou une catégorie personnalisée.",
+    "showDeck": "Ouvrir les catégories",
+    "hideDeck": "Masquer les catégories",
+    "customize": "Modifier le paquet",
+    "customizeTitle": "Modifier le paquet",
+    "addPack": "Ajouter un lot de catégories",
+    "addPackPlaceholder": "Ajouter un lot…",
     "removeAllCustom": "Supprimer toutes les perso",
     "removeAllBuiltins": "Supprimer toutes les standard",
+    "pinOne": "Épingler {{name}}",
+    "unpinOne": "Désépingler {{name}}",
+    "pinAll": "Tout épingler",
+    "unpinAll": "Tout désépingler",
+    "addSectionTitle": "Ajouter des catégories",
+    "deckSectionTitle": "Votre paquet",
     "drawUnit": "cartes"
   },
-  "usedLetters": "Lettres utilisées : {{letters}}{{empty}}",
+  "roundEnd": {
+    "title": "Manche terminée"
+  },
   "modal": {
     "title": "Comment jouer",
     "objectiveText": "Marquez des points en écrivant des mots qui commencent par la lettre donnée et correspondent aux catégories.",
@@ -67,26 +110,40 @@
       "À plusieurs ? Vous marquez 1 point par réponse que personne d'autre n'a écrite ; les doublons valent 0, alors privilégiez les réponses originales."
     ],
     "categories": "Catégories",
-    "categoriesText": "Cet outil utilise les catégories du jeu officiel. Vous pouvez aussi créer les vôtres et les mélanger aux autres.",
+    "categoriesText": "Le jeu est fourni avec un grand ensemble de catégories intégré, et vous pouvez ajouter vos propres catégories — ou des lots thématiques entiers — au paquet.",
+    "categoriesItems": [
+      "Modifiez le paquet pour ajouter des catégories et des lots, ou retirez celles que vous préférez éviter.",
+      "Épinglez une catégorie pour la garantir à chaque manche ; les catégories non épinglées sont tirées au hasard pour compléter.",
+      "Relancez pour tirer un nouvel ensemble de catégories pour la lettre en cours, sans changer la lettre."
+    ],
     "settings": "Paramètres",
     "settingsIntro": "Vous les trouverez en bas de l'écran ; tout est sauvegardé automatiquement.",
     "settingsItems": [
-      "Minuteur — la durée de chaque manche et le compte à rebours de préparation avant le départ.",
+      "Minuteur de manche — la durée de chaque manche et le compte à rebours de préparation avant le départ. On y trouve aussi Éviter les lettres répétées : laissez-le activé pour tirer chaque lettre une fois avant toute répétition. La réserve de lettres se réinitialise quand vous rechargez la page ou une fois tout l'alphabet utilisé.",
       "Langue — changez la langue de l'interface et des catégories.",
-      "Son — activez ou coupez le minuteur et l'alarme.",
-      "Thème — basculez entre le mode clair et sombre."
+      "Son — coupez ou activez le tic-tac du minuteur et l'alarme.",
+      "Thème — basculez entre mode clair et mode sombre."
     ],
     "shortcuts": "Raccourcis clavier",
     "about": "À propos",
-    "officialGame": "Jeu Officiel",
-    "sourceCode": "Code Source",
+    "attribution": "Scattergories est le jeu de société original de Hasbro. Ceci est un compagnon gratuit et non officiel pour y jouer autour de la table — parcourez le <official>jeu officiel</official> ou le <source>code source</source> de cette application, publié sous la <license>licence MIT</license>.",
     "privacy": "Cette application enregistre les réglages et catégories uniquement dans votre navigateur.",
     "version": "Version {{version}}",
-    "opensInNewTab": "(s'ouvre dans un nouvel onglet)",
     "loading": "Ouverture des règles…"
   },
   "language": {
     "label": "Langue"
   },
-  "theme": {}
+  "theme": {
+    "switchToDark": "Passer au mode sombre",
+    "switchToLight": "Passer au mode clair"
+  },
+  "errors": {
+    "chunkTitle": "Une nouvelle version de l'application est prête.",
+    "chunkBody": "Une partie de l'interface a changé pendant que l'application était ouverte. Rechargez pour continuer en toute sécurité.",
+    "boundaryEyebrow": "Mode de récupération",
+    "boundaryTitle": "Une erreur est survenue.",
+    "boundaryBody": "Rechargez l'application pour réinitialiser la manche en cours et continuer à jouer.",
+    "reload": "Recharger l'application"
+  }
 }

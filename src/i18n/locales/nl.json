@@ -4,15 +4,19 @@
     "letterLabel": "Huidige letter",
     "timerLabel": "Rondeklok"
   },
+  "controls": {
+    "roundGroup": "Rondebediening"
+  },
   "buttons": {
-    "startRound": "Start Ronde",
-    "nextRound": "Volgende Ronde",
-    "spinning": "Draaien...",
+    "startRound": "Start ronde",
+    "nextRound": "Volgende ronde",
+    "spinning": "Draaien…",
+    "newLetter": "Nieuwe letter",
     "pause": "Pauze",
     "resume": "Hervatten",
     "mute": "Dempen",
-    "unmute": "Geluid Aan",
-    "shuffle": "Schudden",
+    "unmute": "Geluid aan",
+    "redraw": "Opnieuw loten",
     "add": "Toevoegen",
     "remove": "Verwijderen",
     "addTooltip": "Voeg deze categorie toe aan je eigen verzameling",
@@ -21,41 +25,80 @@
   },
   "timer": {
     "ready": "Klaar",
+    "paused": "Gepauzeerd",
     "timeUp": "Tijd om!",
-    "getReady": "Maak je klaar...",
-    "go": "Gaan!",
-    "roundOver": "Ronde voorbij!"
+    "getReady": "Maak je klaar…",
+    "go": "Start!",
+    "roundOver": "Ronde voorbij!",
+    "startIn": "Start over {{seconds}}s"
   },
   "settings": {
-    "duration": "Timer",
-    "categorySource": "Bron",
+    "duration": "Ronde",
+    "getReady": "Klaarmaken",
+    "avoidRepeats": "Herhaalde letters vermijden",
     "categoryDraw": "Loting",
-    "addCustom": "Eigen categorie"
+    "addCustom": "Eigen categorie",
+    "roundTimerTitle": "Rondetimer",
+    "pace": "{{seconds}}s"
+  },
+  "packs": {
+    "classic": {
+      "label": "Alles"
+    },
+    "foodie": {
+      "label": "Eten"
+    },
+    "popCulture": {
+      "label": "Popcultuur"
+    },
+    "travel": {
+      "label": "Reizen"
+    },
+    "kids": {
+      "label": "Kinderen"
+    },
+    "household": {
+      "label": "In huis"
+    }
+  },
+  "playmat": {
+    "label": "Speelbord"
+  },
+  "rail": {
+    "shortcuts": {
+      "space": "Ronde starten of doorgaan",
+      "r": "Huidige letter opnieuw loten",
+      "p": "Pauzeren of hervatten",
+      "c": "Categorieënpaneel tonen of verbergen",
+      "help": "Deze lijst met sneltoetsen openen"
+    }
   },
   "categories": {
     "title": "Categorieën",
-    "default": "Standaard",
-    "custom": "Eigen",
-    "mixed": "Gemengd",
-    "noCustom": "Nog geen eigen categorieën toegevoegd.",
-    "minimumRequired": "Voeg minimaal één categorie toe om de 'Eigen' modus te gebruiken.",
-    "availableSummary": "{{count}} categorieën beschikbaar",
-    "customListLabel": "Eigen categorieën",
-    "drawnListLabel": "Categoriebord",
+    "minimumRequired": "Voeg categorieën toe aan je stapel om te spelen.",
+    "drawnListLabel": "Gekozen categorieën",
+    "deckLabel": "Categorieënstapel",
+    "deckCount": "{{custom}} eigen · {{builtin}} standaard",
+    "emptyDeck": "De stapel is leeg. Voeg een pakket of eigen categorie toe.",
     "showDeck": "Categorieën openen",
     "hideDeck": "Categorieën verbergen",
-    "summaryMode": "Bron: {{mode}}",
-    "summaryDraw": "Loting: {{count}}",
-    "pin": "Categorieën vastzetten",
-    "unpin": "Categorieën losmaken",
-    "addSectionTitle": "Categorieën toevoegen",
-    "deckSectionTitle": "Jouw stapel",
-    "deckCount": "{{custom}} eigen · {{builtin}} standaard",
+    "customize": "Stapel aanpassen",
+    "customizeTitle": "Stapel aanpassen",
+    "addPack": "Voeg een categoriepakket toe",
+    "addPackPlaceholder": "Voeg een pakket toe…",
     "removeAllCustom": "Alle eigen verwijderen",
     "removeAllBuiltins": "Alle standaard verwijderen",
+    "pinOne": "{{name}} vastzetten",
+    "unpinOne": "{{name}} losmaken",
+    "pinAll": "Alles vastzetten",
+    "unpinAll": "Alles losmaken",
+    "addSectionTitle": "Categorieën toevoegen",
+    "deckSectionTitle": "Jouw stapel",
     "drawUnit": "kaarten"
   },
-  "usedLetters": "Gebruikte letters: {{letters}}{{empty}}",
+  "roundEnd": {
+    "title": "Ronde voorbij"
+  },
   "modal": {
     "title": "Hoe te spelen",
     "objectiveText": "Verdien punten door woorden op te schrijven die beginnen met de gekozen letter en passen in de categorieën.",
@@ -67,26 +110,40 @@
       "Speel je met anderen? Je scoort 1 punt voor elk antwoord dat niemand anders had; dubbele antwoorden leveren 0 op, dus kies originele woorden."
     ],
     "categories": "Categorieën",
-    "categoriesText": "Deze tool gebruikt categorieën uit het officiële spel. Je kunt ook eigen categorieën maken en mixen met de rest.",
+    "categoriesText": "Het spel wordt geleverd met een grote ingebouwde set categorieën, en je kunt je eigen categorieën — of hele themapakketten — aan de stapel toevoegen.",
+    "categoriesItems": [
+      "Pas de stapel aan om categorieën en pakketten toe te voegen, of verwijder wat je liever overslaat.",
+      "Zet een categorie vast zodat die elke ronde meedoet; de rest wordt willekeurig aangevuld met niet-vastgezette categorieën.",
+      "Loot opnieuw om een nieuwe set categorieën voor de huidige letter te trekken, zonder de letter te veranderen."
+    ],
     "settings": "Instellingen",
     "settingsIntro": "Je vindt ze onderaan het scherm — alles wordt automatisch opgeslagen.",
     "settingsItems": [
-      "Timer — hoe lang elke ronde duurt en de afteltijd om klaar te staan ervoor.",
+      "Rondetimer — hoe lang elke ronde duurt en de afteltijd voordat de ronde begint. Hier staat ook Herhaalde letters vermijden: laat dit aan om elke letter één keer te trekken voordat er een herhaald wordt. De letterpot wordt gereset wanneer je de pagina ververst of zodra het hele alfabet is gebruikt.",
       "Taal — wijzig de taal van de interface en de categorieën.",
       "Geluid — demp of activeer de timer en het alarm.",
       "Thema — wissel tussen lichte en donkere modus."
     ],
     "shortcuts": "Sneltoetsen",
     "about": "Over",
-    "officialGame": "Officieel Spel",
-    "sourceCode": "Broncode",
+    "attribution": "Scattergories is het originele partyspel van Hasbro. Dit is een gratis, onofficiële hulp om het aan tafel te spelen — bekijk het <official>officiële spel</official> of de <source>broncode</source> van deze app, uitgebracht onder de <license>MIT-licentie</license>.",
     "privacy": "Deze app bewaart instellingen en categorieën alleen in je browser.",
     "version": "Versie {{version}}",
-    "opensInNewTab": "(opent in een nieuw tabblad)",
     "loading": "Regels openen…"
   },
   "language": {
     "label": "Taal"
   },
-  "theme": {}
+  "theme": {
+    "switchToDark": "Naar donkere modus",
+    "switchToLight": "Naar lichte modus"
+  },
+  "errors": {
+    "chunkTitle": "Er is een nieuwe versie klaar.",
+    "chunkBody": "Een deel van de interface is veranderd terwijl de app openstond. Herlaad om veilig door te gaan.",
+    "boundaryEyebrow": "Herstelmodus",
+    "boundaryTitle": "Er ging iets mis.",
+    "boundaryBody": "Herlaad de app om de huidige ronde te resetten en verder te spelen.",
+    "reload": "App herladen"
+  }
 }
