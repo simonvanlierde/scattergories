@@ -38,12 +38,10 @@ function getTimerStage(phase: Phase, secondsLeft: number): Stage {
 }
 
 function computeFraction(phase: Phase, secondsLeft: number, gameSeconds: number): number {
-  // Only the live round drains the ring; get-ready shows a full, calm ring.
+  // Only the live round drains the ring; get-ready and done both show a full
+  // ring (done in the accent color — a completed round, not a drained clock).
   if (phase === 'running' && gameSeconds > 0) {
     return Math.max(0, Math.min(1, secondsLeft / gameSeconds));
-  }
-  if (phase === 'done') {
-    return 0;
   }
   return 1;
 }

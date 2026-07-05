@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import type { GameController } from '@/app/useGameController';
 import { ActionBar } from './ActionBar';
 import { LetterHero } from './LetterHero';
-import { RoundEnd } from './RoundEnd';
 import { TimerRing } from './TimerRing';
 
 interface PlaymatProps {
@@ -60,23 +59,17 @@ function PlaymatRoundContent({
   settings: PlaymatProps['game']['settings'];
   controls: PlaymatProps['game']['controls'];
 }) {
-  const isDone = round.phase === 'done';
-
   return (
     <>
-      {isDone ? (
-        <RoundEnd letter={round.letter} />
-      ) : (
-        <PlaymatHero
-          phase={round.phase}
-          isPaused={round.isPaused}
-          secondsLeft={round.secondsLeft}
-          gameSeconds={settings.gameSeconds}
-          letter={round.letter}
-          letterVisible={round.letterVisible}
-          letterLanding={round.letterLanding}
-        />
-      )}
+      <PlaymatHero
+        phase={round.phase}
+        isPaused={round.isPaused}
+        secondsLeft={round.secondsLeft}
+        gameSeconds={settings.gameSeconds}
+        letter={round.letter}
+        letterVisible={round.letterVisible}
+        letterLanding={round.letterLanding}
+      />
 
       <PlaymatStatus statusKey={round.statusKey} />
 
