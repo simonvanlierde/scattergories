@@ -10,7 +10,7 @@ function normalizeLocale(locale: string | null | undefined): string {
     return FALLBACK_LOCALE_VALUE;
   }
 
-  return locale.toLowerCase().split('-')[0];
+  return locale.toLowerCase().split('-')[0] ?? FALLBACK_LOCALE_VALUE;
 }
 
 /** Normalize, then fall back when the locale isn't supported. */

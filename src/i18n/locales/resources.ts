@@ -33,10 +33,14 @@ async function loadLocaleNamespaces(locale: string): Promise<LocaleNamespaces> {
     return { translation: translationResourceEn, categories: categoriesResourceEnValue };
   }
 
-  const [translation, categories] = await Promise.all([
-    translationLoaders[`./${loc}.json`](),
-    categoryLoaders[`./categories.${loc}.json`](),
-  ]);
+  const translationLoader = translationLoaders[`./${loc}.json`];
+  const categoryLoader = categoryLoaders[`./categories.${loc}.json`];
+  if (!(translationLoader && categoryLoader)) {
+    // Unreachable for a resolved locale; fall back to the bundled English resources.
+    return { translation: translationResourceEn, categories: categoriesResourceEnValue };
+  }
+
+  const [translation, categories] = await Promise.all([translationLoader(), categoryLoader()]);
   return { translation, categories };
 }
 

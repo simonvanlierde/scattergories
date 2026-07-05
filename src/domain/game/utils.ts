@@ -45,7 +45,11 @@ export function formatSeconds(totalSeconds: number): string {
 }
 
 export function pickRandom<T>(items: readonly T[], random: RandomSource = Math.random): T {
-  return items[Math.floor(random() * items.length)];
+  const item = items[Math.floor(random() * items.length)];
+  if (item === undefined) {
+    throw new Error('pickRandom called on an empty array');
+  }
+  return item;
 }
 
 export function shuffleFisherYates<T>(
@@ -56,7 +60,12 @@ export function shuffleFisherYates<T>(
 
   for (let i = shuffled.length - 1; i > 0; i -= 1) {
     const j = Math.floor(random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    const a = shuffled[i];
+    const b = shuffled[j];
+    if (a !== undefined && b !== undefined) {
+      shuffled[i] = b;
+      shuffled[j] = a;
+    }
   }
 
   return shuffled;

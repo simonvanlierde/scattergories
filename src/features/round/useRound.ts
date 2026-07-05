@@ -34,9 +34,9 @@ function drawNextLetterFromBag(
   }
 
   let chosen = remaining.pop() ?? pickRandom(getLocaleLetters(locale));
-  if (chosen === previousLetter && remaining.length > 0) {
-    const swapIndex = remaining.length - 1;
-    const swap = remaining[swapIndex];
+  const swapIndex = remaining.length - 1;
+  const swap = remaining[swapIndex];
+  if (chosen === previousLetter && swap !== undefined) {
     remaining[swapIndex] = chosen;
     chosen = swap;
   }

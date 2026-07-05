@@ -149,7 +149,9 @@ describe('weightedLetterBag', () => {
     }
 
     // Reservoir-sampling keys give P(high before low) = w_high / (w_high + w_low).
-    const expected = weights[highLetter] / (weights[highLetter] + weights[lowLetter]);
+    const highWeight = weights[highLetter]!;
+    const lowWeight = weights[lowLetter]!;
+    const expected = highWeight / (highWeight + lowWeight);
     expect(highFirst / trials).toBeCloseTo(expected, toleranceDigits);
   });
 });

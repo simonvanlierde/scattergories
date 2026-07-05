@@ -16,6 +16,18 @@ interface ComposedDeck {
   pool: string[];
 }
 
+/** Fill the still-empty slots with a random sample of the unpinned pool, in place. */
+function fillEmptySlots(slots: (string | null)[], pool: string[]): void {
+  const emptyIndices = slots.flatMap((slot, index) => (slot === null ? [index] : []));
+  const fill = shuffleFisherYates(pool).slice(0, emptyIndices.length);
+  fill.forEach((name, i) => {
+    const slot = emptyIndices[i];
+    if (slot !== undefined) {
+      slots[slot] = name;
+    }
+  });
+}
+
 /**
  * Builds a round's drawn deck. All pinned categories are always included, and
  * each one keeps the slot it currently occupies in `previous` so a redraw never
@@ -51,7 +63,7 @@ function composeDeck({
   const carryOver = Math.min(previous.length, count);
   for (let i = 0; i < carryOver; i += 1) {
     const name = previous[i];
-    if (pinnedSet.has(name) && !placed.has(name)) {
+    if (name !== undefined && pinnedSet.has(name) && !placed.has(name)) {
       slots[i] = name;
       placed.add(name);
     }
@@ -62,23 +74,15 @@ function composeDeck({
   const remainingPinned = pinnedOrdered.filter((name) => !placed.has(name));
   let nextPinned = 0;
   for (let i = 0; i < count && nextPinned < remainingPinned.length; i += 1) {
-    if (slots[i] === null) {
-      slots[i] = remainingPinned[nextPinned];
+    const name = remainingPinned[nextPinned];
+    if (slots[i] === null && name !== undefined) {
+      slots[i] = name;
       nextPinned += 1;
     }
   }
 
   // 3. Fill the rest with a random sample of the unpinned pool.
-  const emptySlots: number[] = [];
-  for (let i = 0; i < count; i += 1) {
-    if (slots[i] === null) {
-      emptySlots.push(i);
-    }
-  }
-  const fill = shuffleFisherYates(pool).slice(0, emptySlots.length);
-  for (let i = 0; i < fill.length; i += 1) {
-    slots[emptySlots[i]] = fill[i];
-  }
+  fillEmptySlots(slots, pool);
 
   // Drop any slots the pool was too small to fill, preserving order.
   const deck = slots.filter((name): name is string => name !== null);
