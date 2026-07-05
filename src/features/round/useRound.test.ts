@@ -1,14 +1,14 @@
 import { act, renderHook } from '@testing-library/react';
 import { beforeEach, expect, it, vi } from 'vitest';
 import { getLocaleLetters } from '@/i18n/localeRegistry';
-import { FIVE, ONE, ONE_SECOND_MS, TEN, TWENTY, TWO, TWO_SECONDS_MS, ZERO } from '@/test/constants';
+import { ONE_SECOND_MS, TWO_SECONDS_MS } from '@/test/constants';
 import { BUFFER_SECONDS } from '@/test/gameConstants';
 import { useAudio } from './useAudio';
 import { useLetterRoller } from './useLetterRoller';
 import { useRound } from './useRound';
 
-const SHORT_ROUND_SECONDS = FIVE;
-const LONG_ROUND_SECONDS = TWENTY;
+const SHORT_ROUND_SECONDS = 5;
+const LONG_ROUND_SECONDS = 20;
 const PARTIAL_SECOND_MS = 400;
 const REMAINDER_MS = ONE_SECOND_MS - PARTIAL_SECOND_MS;
 const PAUSED_WAIT_MS = 5000;
@@ -56,7 +56,7 @@ function createRoundDriver(options: Partial<Parameters<typeof useRound>[0]> = {}
   );
 
   const advanceSeconds = (seconds: number) => {
-    for (let elapsed = ZERO; elapsed < seconds; elapsed += ONE) {
+    for (let elapsed = 0; elapsed < seconds; elapsed += 1) {
       act(() => vi.advanceTimersByTime(ONE_SECOND_MS));
     }
   };
@@ -137,12 +137,12 @@ it('plays tick sounds during the final 10 running seconds', () => {
   expect(driver.current.secondsLeft).toBe(LONG_ROUND_SECONDS);
   expect(mockPlayTick).not.toHaveBeenCalled();
 
-  driver.advanceSeconds(TEN);
-  expect(driver.current.secondsLeft).toBe(TEN);
-  expect(mockPlayTick).toHaveBeenCalledTimes(ONE);
+  driver.advanceSeconds(10);
+  expect(driver.current.secondsLeft).toBe(10);
+  expect(mockPlayTick).toHaveBeenCalledTimes(1);
 
-  driver.advanceSeconds(ONE);
-  expect(mockPlayTick).toHaveBeenCalledTimes(TWO);
+  driver.advanceSeconds(1);
+  expect(mockPlayTick).toHaveBeenCalledTimes(2);
 });
 
 it('pauses and resumes without losing countdown time', () => {
@@ -159,10 +159,10 @@ it('pauses and resumes without losing countdown time', () => {
   expect(driver.current.secondsLeft).toBe(SHORT_ROUND_SECONDS);
 
   act(() => driver.current.togglePause());
-  driver.advanceSeconds(ONE);
+  driver.advanceSeconds(1);
 
   expect(driver.current.isPaused).toBe(false);
-  expect(driver.current.secondsLeft).toBe(SHORT_ROUND_SECONDS - ONE);
+  expect(driver.current.secondsLeft).toBe(SHORT_ROUND_SECONDS - 1);
 });
 
 it('uses the plain round-over status when time runs out', () => {
@@ -219,10 +219,10 @@ it('keeps sub-second progress across a pause/resume', () => {
 
   // Resuming needs only the leftover of that second — not a fresh full second.
   act(() => driver.current.togglePause());
-  act(() => vi.advanceTimersByTime(REMAINDER_MS - ONE));
+  act(() => vi.advanceTimersByTime(REMAINDER_MS - 1));
   expect(driver.current.secondsLeft).toBe(SHORT_ROUND_SECONDS);
-  act(() => vi.advanceTimersByTime(ONE));
-  expect(driver.current.secondsLeft).toBe(SHORT_ROUND_SECONDS - ONE);
+  act(() => vi.advanceTimersByTime(1));
+  expect(driver.current.secondsLeft).toBe(SHORT_ROUND_SECONDS - 1);
 });
 
 it('rebuilds the letter bag for the new alphabet when the locale changes', () => {

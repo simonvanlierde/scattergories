@@ -2,7 +2,6 @@ import { screen, waitFor, within } from '@testing-library/react';
 import { beforeEach, expect, it } from 'vitest';
 import {
   CUSTOM_CATEGORY,
-  FOUR,
   KEYBOARD_CATEGORY,
   ONLY_CUSTOM_CATEGORY,
   PERSISTED_CATEGORY,
@@ -103,10 +102,10 @@ it('updates the drawn category count', async () => {
   const dialog = await openCustomizeDeck(user);
   const drawInput = within(dialog).getByLabelText('Draw');
   await user.clear(drawInput);
-  await user.type(drawInput, String(FOUR));
+  await user.type(drawInput, String(4));
   await user.tab();
 
-  expect(selectedCategoryItems()).toHaveLength(FOUR);
+  expect(selectedCategoryItems()).toHaveLength(4);
 });
 
 it('persists custom categories across remount with the same localStorage', async () => {
