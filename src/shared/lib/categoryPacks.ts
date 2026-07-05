@@ -7,7 +7,6 @@ const CLASSIC_PACK_ID = 'classic';
 interface CategoryPack {
   id: string;
   labelKey: string;
-  fallbackLabel: string;
   /* Empty list means "every category" (Classic). */
   keys: readonly string[];
 }
@@ -181,37 +180,31 @@ const PACKS: readonly CategoryPack[] = Object.freeze([
   {
     id: CLASSIC_PACK_ID,
     labelKey: 'packs.classic.label',
-    fallbackLabel: 'All',
     keys: [],
   },
   {
     id: 'foodie',
     labelKey: 'packs.foodie.label',
-    fallbackLabel: 'Foodie',
     keys: FOODIE_KEYS,
   },
   {
     id: 'pop-culture',
     labelKey: 'packs.popCulture.label',
-    fallbackLabel: 'Pop Culture',
     keys: POP_CULTURE_KEYS,
   },
   {
     id: 'travel',
     labelKey: 'packs.travel.label',
-    fallbackLabel: 'Travel',
     keys: TRAVEL_KEYS,
   },
   {
     id: 'kids',
     labelKey: 'packs.kids.label',
-    fallbackLabel: 'Kids',
     keys: KIDS_KEYS,
   },
   {
     id: 'household',
     labelKey: 'packs.household.label',
-    fallbackLabel: 'Around the House',
     keys: HOUSEHOLD_KEYS,
   },
 ]);

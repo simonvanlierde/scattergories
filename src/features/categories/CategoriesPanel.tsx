@@ -146,7 +146,7 @@ function AddPackField({ actions }: { actions: CategoriesActions }) {
   const packs = [...PACKS]
     .map((pack) => ({
       id: pack.id,
-      label: t(pack.labelKey, { defaultValue: pack.fallbackLabel }),
+      label: t(pack.labelKey),
     }))
     .sort((a, b) => a.label.localeCompare(b.label));
   return (

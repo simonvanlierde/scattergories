@@ -24,15 +24,14 @@ interface HowToPlayModalProps {
 interface ShortcutDefinition {
   keys: string;
   labelKey: string;
-  fallbackLabel: string;
 }
 
 const SHORTCUTS: readonly ShortcutDefinition[] = [
-  { keys: 'Space', labelKey: 'rail.shortcuts.space', fallbackLabel: 'Start or advance a round' },
-  { keys: 'R', labelKey: 'rail.shortcuts.r', fallbackLabel: 'Re-roll the current letter' },
-  { keys: 'P', labelKey: 'rail.shortcuts.p', fallbackLabel: 'Pause or resume' },
-  { keys: 'C', labelKey: 'rail.shortcuts.c', fallbackLabel: 'Toggle the categories panel' },
-  { keys: '?', labelKey: 'rail.shortcuts.help', fallbackLabel: 'Open this help dialog' },
+  { keys: 'Space', labelKey: 'rail.shortcuts.space' },
+  { keys: 'R', labelKey: 'rail.shortcuts.r' },
+  { keys: 'P', labelKey: 'rail.shortcuts.p' },
+  { keys: 'C', labelKey: 'rail.shortcuts.c' },
+  { keys: '?', labelKey: 'rail.shortcuts.help' },
 ];
 
 // One icon per setting, matching the order of `modal.settingsItems`
@@ -117,9 +116,7 @@ export function HowToPlayModal({ onClose }: HowToPlayModalProps) {
                 <dt className="shortcuts-list__key">
                   <kbd>{shortcut.keys}</kbd>
                 </dt>
-                <dd className="shortcuts-list__label">
-                  {t(shortcut.labelKey, { defaultValue: shortcut.fallbackLabel })}
-                </dd>
+                <dd className="shortcuts-list__label">{t(shortcut.labelKey)}</dd>
               </div>
             ))}
           </dl>
