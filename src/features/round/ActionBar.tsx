@@ -51,8 +51,9 @@ export function ActionBar({
   const isPausedRound = (phase === 'buffer' || phase === 'running') && isPaused;
   const roundControlsLabel = t('controls.roundGroup');
 
-  // New letter (reroll) — only while paused.
-  const showNewLetter = isPausedRound;
+  // New letter (reroll) — during the get-ready countdown (no answers written yet)
+  // and while paused. Never mid-play, where it would wipe in-progress answers.
+  const showNewLetter = phase === 'buffer' || isPausedRound;
   // Next round — while actively running or paused.
   const showNextRound = phase === 'running' || isPausedRound;
 

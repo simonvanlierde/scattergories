@@ -107,14 +107,16 @@ function useGameController(): GameController {
   roundInProgressRef.current = round.phase === 'buffer' || round.phase === 'running';
   const controls = useAppControls({ i18n });
 
-  // Same gate as ActionBar's New-letter button (isPausedRound) so the 'R'
-  // shortcut can't wipe a running round the button wouldn't let you touch.
+  // Same gate as ActionBar's New-letter button so the 'R' shortcut can't wipe a
+  // running round the button wouldn't let you touch: reroll only during the
+  // get-ready countdown or while paused, never mid-play.
   const isPausedRound = (round.phase === 'buffer' || round.phase === 'running') && round.isPaused;
+  const canReroll = round.phase === 'buffer' || isPausedRound;
 
   useKeyboardShortcuts({
     onSpace: round.primaryAction,
     onR: () => {
-      if (isPausedRound) {
+      if (canReroll) {
         round.newLetter();
       }
     },
