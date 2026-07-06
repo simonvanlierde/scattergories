@@ -71,6 +71,7 @@ words:
   - nosniff
   - playmat
   - tmpfs
+  - WCAG
   - unmute
   - zstd
   # Translated UI strings (compound / inflected forms the language dicts lack)

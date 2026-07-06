@@ -66,11 +66,33 @@ Quality is enforced, not just encouraged: the core game logic in `src/domain/gam
 95%+ line and 100% function coverage (see [`vite.config.ts`](vite.config.ts)), and the production
 bundle is capped at an 80 KiB gzip budget ([`scripts/check-bundle-budgets.mjs`](scripts/check-bundle-budgets.mjs)).
 
-## Project layout
+### Accessibility
 
-- [`src/`](src/): the React app, containing `domain/game/` (pure game logic), `features/` (round, categories, settings), `app/` (shell and controller hooks), and `i18n/` (locales and registry)
-- [`tools/`](tools/README.md): Python CLI (`sg-tools`) for inspecting and regenerating locale assets
-- [`tests/`](tests/): Playwright end-to-end specs
+Two automated checks run, both wired into CI:
+
+- **Static lint** — Biome's `a11y` rule group is enabled ([`biome.json`](biome.json)), so accessibility
+  lint rules run as part of `pnpm lint`.
+- **Runtime scan** — [`tests/a11y.spec.ts`](tests/a11y.spec.ts) runs [axe-core](https://github.com/dequelabs/axe-core)
+  against the live app via `@axe-core/playwright`, asserting no violations on the idle screen, during
+  an active round, and with the prompt deck collapsed. Run it with `pnpm test:e2e:smoke` (Chromium)
+  or the full `pnpm test:e2e` matrix.
+
+In CI, the axe smoke checks run on every push and PR; the full browser matrix runs on schedule or
+manual dispatch. These catch a subset of issues automatically — they are not a claim of WCAG
+conformance.
+
+## Project structure
+
+For the layer diagram, round state machine, and data flow, see
+[`docs/architecture.md`](docs/architecture.md). The top-level map:
+
+- [`src/`](src/) — the React app: `domain/game/` (pure game logic), `features/` (round, categories,
+  settings), `app/` (shell and controller hooks), `i18n/` (locales and registry)
+- [`tools/`](tools/README.md) — Python CLI (`sg-tools`) that regenerates the locale assets
+- [`tests/`](tests/) — Playwright end-to-end specs
+- [`docs/`](docs/) — [architecture](docs/architecture.md) and [decision records](docs/adr/)
+
+Contributing? See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the dev loop, conventions, and product scope.
 
 ## License
 
