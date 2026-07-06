@@ -120,9 +120,9 @@ def test_parse_locale_args_defaults_to_all_locales(
 def test_parse_locale_args_splits_and_validates(
     write_registry: RegistryFixture,
 ) -> None:
-    """Locale args accept comma-separated input."""
+    """Locale args accept comma-separated input with surrounding whitespace."""
     registry = write_registry()
-    assert parse_locale_args(["en,es", "el"], registry) == ["en", "es", "el"]
+    assert parse_locale_args("en, es ,el", registry) == ["en", "es", "el"]
 
 
 def test_parse_locale_args_rejects_unknown_locale(
@@ -131,4 +131,4 @@ def test_parse_locale_args_rejects_unknown_locale(
     """Unknown locales fail fast."""
     registry = write_registry()
     with pytest.raises(ValueError, match="Unsupported locale code"):
-        parse_locale_args(["zz"], registry)
+        parse_locale_args("zz", registry)

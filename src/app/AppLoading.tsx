@@ -1,6 +1,6 @@
-const LOADING_EYEBROW = 'Scattergories';
-const LOADING_TITLE = 'Loading your game night...';
-const LOADING_BODY = 'Preparing locales, controls, and categories.';
+const LOADING_EYEBROW = "Scattergories";
+const LOADING_TITLE = "Loading your game night...";
+const LOADING_BODY = "Preparing locales, controls, and categories.";
 
 function AppLoading() {
   return (

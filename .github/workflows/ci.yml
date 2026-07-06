@@ -43,6 +43,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     needs: app
+    # Browsers + system deps are baked into the image; keep the tag in sync with @playwright/test.
+    container:
+      image: mcr.microsoft.com/playwright:v1.61.1-noble
     # Smoke (Chromium) on every push/PR; the full browser matrix on schedule or manual dispatch.
     env:
       FULL: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' }}
@@ -50,9 +53,6 @@ jobs:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - uses: ./.github/actions/setup-app
       - run: pnpm run build
-
-      - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps ${{ env.FULL == 'true' && '' || 'chromium' }}
 
       - name: Run E2E tests
         run: ${{ env.FULL == 'true' && 'pnpm run test:e2e' || 'pnpm run test:e2e:smoke' }}

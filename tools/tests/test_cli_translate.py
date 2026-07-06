@@ -28,7 +28,7 @@ def test_translate_categories_preview_uses_fake_provider(
     paths, registry = repo_context
     provider = fake_provider_factory({("en", "es", "Animals"): "Animales"})
     monkeypatch.setattr(translate, "create_context", lambda: AppContext(paths, registry))
-    monkeypatch.setattr(translate, "build_provider", lambda _name: provider)
+    monkeypatch.setattr(translate, "ArgosProvider", lambda: provider)
 
     result = runner.invoke(
         cli.app,
@@ -41,6 +41,28 @@ def test_translate_categories_preview_uses_fake_provider(
     assert "Preview only" in result.stdout
     assert not (paths.locale_dir / "categories.es.json").exists()
     assert provider.calls == [("en", "es", "Animals"), ("en", "es", "Foods")]
+
+
+def test_translate_categories_accepts_comma_separated_locales(
+    runner: CliRunner,
+    repo_context: tuple[RepoPaths, LocaleRegistry],
+    fake_provider_factory: FakeProviderFactory,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A single comma-separated value expands into multiple target locales."""
+    paths, registry = repo_context
+    provider = fake_provider_factory()
+    monkeypatch.setattr(translate, "create_context", lambda: AppContext(paths, registry))
+    monkeypatch.setattr(translate, "ArgosProvider", lambda: provider)
+
+    result = runner.invoke(
+        cli.app,
+        ["translate", "categories", "--target-locales", "es,el"],
+    )
+
+    assert result.exit_code == 0
+    assert "[es] translated 2 categories" in result.stdout
+    assert "[el] translated 2 categories" in result.stdout
 
 
 def test_translate_categories_write_updates_app_files(
@@ -58,7 +80,7 @@ def test_translate_categories_write_updates_app_files(
         }
     )
     monkeypatch.setattr(translate, "create_context", lambda: AppContext(paths, registry))
-    monkeypatch.setattr(translate, "build_provider", lambda _name: provider)
+    monkeypatch.setattr(translate, "ArgosProvider", lambda: provider)
 
     result = runner.invoke(
         cli.app,
@@ -72,25 +94,6 @@ def test_translate_categories_write_updates_app_files(
         "Animals": "Animales",
         "Foods": "Comidas",
     }
-
-
-def test_translate_categories_rejects_unknown_provider(
-    runner: CliRunner,
-    repo_context: tuple[RepoPaths, LocaleRegistry],
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    """CLI surfaces unsupported provider errors without mutating files."""
-    paths, registry = repo_context
-    monkeypatch.setattr(translate, "create_context", lambda: AppContext(paths, registry))
-
-    result = runner.invoke(
-        cli.app,
-        ["translate", "categories", "--target-locales", "es", "--provider", "noop"],
-    )
-
-    assert result.exit_code == 1
-    assert isinstance(result.exception, ValueError)
-    assert "Unsupported translation provider: noop" in str(result.exception)
 
 
 def test_translate_locales_preview_preserves_non_string_values(
@@ -120,7 +123,7 @@ def test_translate_locales_preview_preserves_non_string_values(
         }
     )
     monkeypatch.setattr(translate, "create_context", lambda: AppContext(paths, registry))
-    monkeypatch.setattr(translate, "build_provider", lambda _name: provider)
+    monkeypatch.setattr(translate, "ArgosProvider", lambda: provider)
 
     result = runner.invoke(
         cli.app,
@@ -148,7 +151,7 @@ def test_translate_locales_write_updates_app_files(
         }
     )
     monkeypatch.setattr(translate, "create_context", lambda: AppContext(paths, registry))
-    monkeypatch.setattr(translate, "build_provider", lambda _name: provider)
+    monkeypatch.setattr(translate, "ArgosProvider", lambda: provider)
 
     result = runner.invoke(
         cli.app,

@@ -1,13 +1,6 @@
-import type { i18n as I18nInstance } from 'i18next';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import type { useSettings } from '@/features/settings/SettingsProvider';
-import { type NumericFieldName, sanitizeNumericField } from '@/features/settings/schema';
-import { ensureLanguageLoaded, persistLanguage } from '@/i18n/config';
-
-const SCATTERGORIES_PRELOAD_ERROR_EVENTS = [
-  'vite:preloadError',
-  'scattergories:chunk-error',
-] as const;
+import type { i18n as I18nInstance } from "i18next";
+import { useEffect, useRef, useState } from "react";
+import { ensureLanguageLoaded, persistLanguage } from "@/i18n/config";
 
 function useChunkErrorListener(setHasChunkError: (value: boolean) => void): void {
   useEffect(() => {
@@ -16,15 +9,8 @@ function useChunkErrorListener(setHasChunkError: (value: boolean) => void): void
       setHasChunkError(true);
     }
 
-    for (const eventName of SCATTERGORIES_PRELOAD_ERROR_EVENTS) {
-      window.addEventListener(eventName, onPreloadError);
-    }
-
-    return () => {
-      for (const eventName of SCATTERGORIES_PRELOAD_ERROR_EVENTS) {
-        window.removeEventListener(eventName, onPreloadError);
-      }
-    };
+    window.addEventListener("vite:preloadError", onPreloadError);
+    return () => window.removeEventListener("vite:preloadError", onPreloadError);
   }, [setHasChunkError]);
 }
 
@@ -33,68 +19,31 @@ function useLanguageSwitcher(
   setIsLanguagePending: (value: boolean) => void,
   setHasChunkError: (value: boolean) => void,
 ) {
-  return useCallback(
-    (language: string) => {
-      setIsLanguagePending(true);
+  return (language: string) => {
+    setIsLanguagePending(true);
 
-      async function switchLanguage() {
-        try {
-          persistLanguage(language);
-          const resolved = await ensureLanguageLoaded(language);
-          await i18n.changeLanguage(resolved);
-          persistLanguage(resolved);
-        } catch {
-          setHasChunkError(true);
-        } finally {
-          setIsLanguagePending(false);
-        }
+    async function switchLanguage() {
+      try {
+        persistLanguage(language);
+        const resolved = await ensureLanguageLoaded(language);
+        await i18n.changeLanguage(resolved);
+        persistLanguage(resolved);
+      } catch {
+        setHasChunkError(true);
+      } finally {
+        setIsLanguagePending(false);
       }
-
-      switchLanguage().catch(() => undefined);
-    },
-    [i18n, setHasChunkError, setIsLanguagePending],
-  );
-}
-
-function useCustomCategoryInput(isPromptDeckOpen: boolean) {
-  const [shouldFocusPromptInput, setShouldFocusPromptInput] = useState(false);
-  const newCategoryInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (!(shouldFocusPromptInput && isPromptDeckOpen && newCategoryInputRef.current)) {
-      return;
     }
 
-    newCategoryInputRef.current.focus();
-    setShouldFocusPromptInput(false);
-  }, [isPromptDeckOpen, shouldFocusPromptInput]);
-
-  return {
-    focusNewCategoryInput: () => setShouldFocusPromptInput(true),
-    newCategoryInputRef,
+    switchLanguage().catch(() => undefined);
   };
 }
 
-function useAppControls(params: {
-  i18n: I18nInstance;
-  settings: {
-    catCountInput: string;
-    durationInput: string;
-    bufferSecondsInput: string;
-  };
-  update: ReturnType<typeof useSettings>['update'];
-  isPromptDeckOpen: boolean;
-}) {
+function useAppControls(params: { i18n: I18nInstance }) {
   const [hasChunkError, setHasChunkError] = useState(false);
   const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
   const [isLanguagePending, setIsLanguagePending] = useState(false);
-  const customInput = useCustomCategoryInput(params.isPromptDeckOpen);
-  const blurNumericField = useCallback(
-    (field: NumericFieldName) => {
-      params.update(field, sanitizeNumericField(field, params.settings[field]));
-    },
-    [params.settings, params.update],
-  );
+  const newCategoryInputRef = useRef<HTMLInputElement>(null);
   const handleLanguageChange = useLanguageSwitcher(
     params.i18n,
     setIsLanguagePending,
@@ -104,8 +53,7 @@ function useAppControls(params: {
   useChunkErrorListener(setHasChunkError);
 
   return {
-    ...customInput,
-    blurNumericField,
+    newCategoryInputRef,
     handleLanguageChange,
     hasChunkError,
     isHowToPlayOpen,

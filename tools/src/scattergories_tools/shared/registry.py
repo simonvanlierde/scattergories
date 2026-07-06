@@ -81,10 +81,13 @@ def load_locale_registry(registry_path: Path) -> LocaleRegistry:
     )
 
 
-def parse_locale_args(raw_locales: list[str] | None, registry: LocaleRegistry) -> list[str]:
-    """Parse space- and comma-separated locale args using the shared registry."""
+def split_locale_csv(raw: str) -> list[str]:
+    """Split a comma-separated locale string, trimming blanks."""
+    return [item.strip() for item in raw.split(",") if item.strip()]
+
+
+def parse_locale_args(raw_locales: str | None, registry: LocaleRegistry) -> list[str]:
+    """Parse a comma-separated locale arg using the shared registry."""
     if raw_locales is None:
         return list(registry.locales)
-
-    split_locales = [locale for item in raw_locales for locale in item.split(",") if locale]
-    return registry.validate_locales(split_locales)
+    return registry.validate_locales(split_locale_csv(raw_locales))

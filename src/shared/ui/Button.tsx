@@ -1,27 +1,22 @@
-import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
+import type { ButtonHTMLAttributes, ReactNode, Ref } from "react";
+import { cx } from "./cx";
 
-type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
-type Size = 'sm' | 'md' | 'lg';
+type Variant = "primary" | "ghost";
+type Size = "sm" | "md" | "lg";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
   size?: Size;
   leadingIcon?: ReactNode;
   trailingIcon?: ReactNode;
-  fullWidth?: boolean;
   ref?: Ref<HTMLButtonElement>;
 }
 
-function joinClassNames(...tokens: Array<string | false | null | undefined>): string {
-  return tokens.filter(Boolean).join(' ');
-}
-
 export function Button({
-  variant = 'primary',
-  size = 'md',
+  variant = "primary",
+  size = "md",
   leadingIcon,
   trailingIcon,
-  fullWidth = false,
   className,
   type,
   children,
@@ -31,15 +26,8 @@ export function Button({
   return (
     <button
       ref={ref}
-      type={type ?? 'button'}
-      className={joinClassNames(
-        'ds-button',
-        `ds-button--${variant}`,
-        `ds-button--${size}`,
-        fullWidth && 'ds-button--full',
-        className,
-      )}
-      style={fullWidth ? { width: '100%' } : undefined}
+      type={type ?? "button"}
+      className={cx("ds-button", `ds-button--${variant}`, `ds-button--${size}`, className)}
       {...rest}
     >
       {leadingIcon ? <span className="ds-button__icon">{leadingIcon}</span> : null}

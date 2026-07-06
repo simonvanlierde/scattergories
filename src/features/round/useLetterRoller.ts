@@ -1,19 +1,15 @@
-import { useCallback, useRef, useState } from 'react';
-import { pickRandom } from '@/domain/game/utils';
-import { getLocaleLetters } from '@/i18n/localeRegistry';
-import { prefersReducedMotion, runRoll } from './rollAnimation';
+import { useCallback, useRef, useState } from "react";
+import { pickRandom } from "@/domain/game/utils";
+import { getLocaleLetters } from "@/i18n/localeRegistry";
+import { prefersReducedMotion, runRoll } from "./rollAnimation";
 
-const INITIAL_LETTER = '?';
+const INITIAL_LETTER = "?";
 
 export function useLetterRoller(locale: string) {
   const [letter, setLetter] = useState(INITIAL_LETTER);
   const [visible, setVisible] = useState(false);
   const [landing, setLanding] = useState(false);
   const spinIdRef = useRef(0);
-
-  const cancelSpin = useCallback(() => {
-    spinIdRef.current += 1;
-  }, []);
 
   const spinTo = useCallback(
     (finalLetter: string, onLanded: () => void) => {
@@ -55,5 +51,5 @@ export function useLetterRoller(locale: string) {
     setLanding(false);
   }, []);
 
-  return { letter, visible, landing, spinTo, reset, cancelSpin };
+  return { letter, visible, landing, spinTo, reset };
 }

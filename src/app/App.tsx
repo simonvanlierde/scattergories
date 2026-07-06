@@ -1,13 +1,11 @@
-import { useEffect, useState } from 'react';
-import { I18nextProvider, useTranslation } from 'react-i18next';
-import { SettingsProvider } from '@/features/settings/SettingsProvider';
-import { i18n, initI18n, startupLocaleWarning } from '@/i18n/config';
-import { AppLoading } from './AppLoading';
-import { ErrorBoundary } from './ErrorBoundary';
-import { GameShell } from './GameShell';
-import { useGameController } from './useGameController';
-
-initI18n().catch(() => undefined);
+import { useEffect, useState } from "react";
+import { I18nextProvider, useTranslation } from "react-i18next";
+import { SettingsProvider } from "@/features/settings/SettingsProvider";
+import { i18n, initI18n } from "@/i18n/config";
+import { AppLoading } from "./AppLoading";
+import { ErrorBoundary } from "./ErrorBoundary";
+import { GameShell } from "./GameShell";
+import { useGameController } from "./useGameController";
 
 interface ErrorViewProps {
   eyebrow: string;
@@ -47,12 +45,10 @@ function AppErrorFallback() {
 
   return (
     <ErrorView
-      eyebrow={t('errors.boundaryEyebrow', { defaultValue: 'Recovery mode' })}
-      title={t('errors.boundaryTitle', { defaultValue: 'Something went wrong.' })}
-      message={t('errors.boundaryBody', {
-        defaultValue: 'Reload the app to reset the current round and continue playing.',
-      })}
-      actionLabel={t('errors.reload', { defaultValue: 'Reload app' })}
+      eyebrow={t("errors.boundaryEyebrow")}
+      title={t("errors.boundaryTitle")}
+      message={t("errors.boundaryBody")}
+      actionLabel={t("errors.reload")}
     />
   );
 }
@@ -62,7 +58,7 @@ function AppContent() {
 
   return (
     <ErrorBoundary fallback={<AppErrorFallback />}>
-      <GameShell game={game} startupLocaleWarning={startupLocaleWarning} />
+      <GameShell game={game} />
     </ErrorBoundary>
   );
 }
@@ -77,7 +73,7 @@ function AppProviders() {
   );
 }
 
-function AppBootstrap() {
+function App() {
   const [isReady, setIsReady] = useState(false);
   const [bootstrapError, setBootstrapError] = useState<Error | null>(null);
 
@@ -93,7 +89,7 @@ function AppBootstrap() {
       (error: unknown) => {
         if (isMounted) {
           setBootstrapError(
-            error instanceof Error ? error : new Error('Unable to initialize i18n'),
+            error instanceof Error ? error : new Error("Unable to initialize i18n"),
           );
         }
       },
@@ -113,10 +109,6 @@ function AppBootstrap() {
   }
 
   return <AppProviders />;
-}
-
-function App() {
-  return <AppBootstrap />;
 }
 
 export { App };

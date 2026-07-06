@@ -43,10 +43,6 @@ def _build_locale_analysis(
     )
 
 
-def _resolve_two_locales(_locales: object, _registry: object) -> list[str]:
-    return ["en", "es"]
-
-
 def test_weights_sample_preview(
     runner: CliRunner,
     repo_context: tuple[RepoPaths, LocaleRegistry],
@@ -119,7 +115,6 @@ def test_weights_locales_preview_supports_multiple_locales(
     """Preview mode reports one summary block per selected locale."""
     paths, registry = repo_context
     monkeypatch.setattr(weights, "create_context", lambda: AppContext(paths, registry))
-    monkeypatch.setattr(weights, "resolve_locales", _resolve_two_locales)
 
     def analyze_locale(
         locale: str,
@@ -133,7 +128,7 @@ def test_weights_locales_preview_supports_multiple_locales(
 
     monkeypatch.setattr(weights, "analyze_locale", analyze_locale)
 
-    result = runner.invoke(cli.app, ["weights", "locales", "--locales", "en", "--locales", "es"])
+    result = runner.invoke(cli.app, ["weights", "locales", "--locales", "en,es"])
 
     assert result.exit_code == 0
     assert f"Source dataset: {weights.WIKIPEDIA_DATASET}" in result.stdout
@@ -151,7 +146,6 @@ def test_weights_locales_write_updates_generated_app_file(
     """Write mode updates the generated letter-weight artifact."""
     paths, registry = repo_context
     monkeypatch.setattr(weights, "create_context", lambda: AppContext(paths, registry))
-    monkeypatch.setattr(weights, "resolve_locales", _resolve_two_locales)
 
     def analyze_locale(
         locale: str,
@@ -174,7 +168,7 @@ def test_weights_locales_write_updates_generated_app_file(
 
     result = runner.invoke(
         cli.app,
-        ["weights", "locales", "--locales", "en", "--locales", "es", "--write-app-file"],
+        ["weights", "locales", "--locales", "en,es,el", "--write-app-file"],
     )
 
     rendered = paths.generated_weights_path.read_text(encoding="utf-8")
@@ -182,3 +176,35 @@ def test_weights_locales_write_updates_generated_app_file(
     assert paths.generated_weights_path.exists()
     assert '"en"' in rendered
     assert '"es"' in rendered
+    assert "satisfies Record<LocaleCode, Record<string, number>>" in rendered
+
+
+def test_weights_locales_write_rejects_partial_locale_set(
+    runner: CliRunner,
+    repo_context: tuple[RepoPaths, LocaleRegistry],
+    locale_analysis_builder: Callable[..., LocaleAnalysis],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A partial --write-app-file refuses rather than dropping registry locales."""
+    paths, registry = repo_context
+    monkeypatch.setattr(weights, "create_context", lambda: AppContext(paths, registry))
+
+    def analyze_locale(
+        locale: str,
+        *,
+        registry: LocaleRegistry,
+        hf_token: str | None,
+        max_bytes: int,
+    ) -> LocaleAnalysis:
+        del registry, hf_token
+        return _build_locale_analysis(locale_analysis_builder, locale, max_bytes)
+
+    monkeypatch.setattr(weights, "analyze_locale", analyze_locale)
+
+    result = runner.invoke(
+        cli.app,
+        ["weights", "locales", "--locales", "en,es", "--write-app-file"],
+    )
+
+    assert result.exit_code == 2  # noqa: PLR2004
+    assert not paths.generated_weights_path.exists()

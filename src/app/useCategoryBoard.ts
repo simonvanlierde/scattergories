@@ -1,7 +1,7 @@
-import { type RefObject, useCallback, useEffect, useRef, useState } from 'react';
-import { pickRandom } from '@/domain/game/utils';
-import { prefersReducedMotion, runRoll } from '@/features/round/rollAnimation';
-import { composeDeck } from '@/shared/lib/deck';
+import { type RefObject, useCallback, useEffect, useRef, useState } from "react";
+import { pickRandom } from "@/domain/game/utils";
+import { prefersReducedMotion, runRoll } from "@/features/round/rollAnimation";
+import { composeDeck } from "@/shared/lib/deck";
 
 interface UseCategoryBoardParams {
   customCategories: string[];
@@ -33,6 +33,8 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
   const displayRef = useRef(displayCategories);
   displayRef.current = displayCategories;
 
+  // Kept memoized: it's read in the useEffect dependency array below, where a
+  // render-body function would trip biome's useExhaustiveDependencies lint.
   const redrawCategories = useCallback(
     (animate: boolean) => {
       const currentPinned = pinnedRef.current;

@@ -8,8 +8,8 @@ import {
   durationDefault,
   durationMax,
   durationMin,
-} from '@/domain/game/constants';
-import { clampInt } from '@/domain/game/utils';
+} from "@/domain/game/constants";
+import { clampInt } from "@/domain/game/utils";
 
 function getNormalizedCategoryCount(categoryCount: number, availableCount: number): number {
   return Math.min(categoryCount, Math.max(catCountMin, availableCount));

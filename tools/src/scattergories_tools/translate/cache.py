@@ -40,15 +40,15 @@ class TranslationCache:
         return None if row is None else str(row[0])
 
     def set(self, key: str, value: str) -> None:
-        """Store or replace a cached value."""
+        """Store or replace a cached value (committed on close)."""
         self.connection.execute(
             "INSERT OR REPLACE INTO translations (cache_key, value) VALUES (?, ?)",
             (key, value),
         )
-        self.connection.commit()
 
     def close(self) -> None:
-        """Close the SQLite connection."""
+        """Commit pending writes and close the SQLite connection."""
+        self.connection.commit()
         self.connection.close()
 
 

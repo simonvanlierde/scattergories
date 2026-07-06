@@ -1,32 +1,28 @@
+import { createContext, type PropsWithChildren, useContext, useEffect, useReducer } from "react";
+import { categories } from "@/domain/game/constants";
+import { getPackCategories } from "@/shared/lib/categoryPacks";
+import { safeStorage } from "@/shared/lib/safeStorage";
 import {
-  createContext,
-  type PropsWithChildren,
-  useContext,
-  useEffect,
-  useMemo,
-  useReducer,
-} from 'react';
-import { categories } from '@/domain/game/constants';
-import { getPackCategories } from '@/shared/lib/categoryPacks';
-import {
+  DARK_SCHEME_QUERY,
   readStoredSettings,
   SETTINGS_STORAGE_KEY,
   type Settings,
   sanitizeCustomCategories,
-  serializeSettings,
-} from './schema';
+  type Theme,
+} from "./schema";
 
 type SettingsAction =
-  | { type: 'hydrate'; settings: Settings }
-  | { type: 'update'; key: keyof Settings; value: Settings[keyof Settings] }
-  | { type: 'addCustom'; value: string }
-  | { type: 'removeCustom'; value: string }
-  | { type: 'togglePin'; name: string }
-  | { type: 'togglePinAll'; names: string[] }
-  | { type: 'addPack'; packId: string }
-  | { type: 'removeBuiltin'; name: string }
-  | { type: 'removeAllCustom' }
-  | { type: 'removeAllBuiltins' };
+  | { type: "hydrate"; settings: Settings }
+  | { type: "update"; key: keyof Settings; value: Settings[keyof Settings] }
+  | { type: "syncSystemTheme"; theme: Theme }
+  | { type: "addCustom"; value: string }
+  | { type: "removeCustom"; value: string }
+  | { type: "togglePin"; name: string }
+  | { type: "togglePinAll"; names: string[] }
+  | { type: "addPack"; packId: string }
+  | { type: "removeBuiltin"; name: string }
+  | { type: "removeAllCustom" }
+  | { type: "removeAllBuiltins" };
 
 interface SettingsContextValue {
   settings: Settings;
@@ -58,16 +54,24 @@ function applyTogglePinAll(state: Settings, names: string[]): Settings {
   return { ...state, pinned: [...new Set([...state.pinned, ...inDeck])] };
 }
 
-// biome-ignore lint/complexity/noExcessiveLinesPerFunction: a reducer switch over 10 action types; the cases are already flat and per-case extraction would scatter the state logic.
+// biome-ignore lint/complexity/noExcessiveLinesPerFunction: a reducer switch over the action types; the cases are already flat and per-case extraction would scatter the state logic.
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: same as above; the cases are already flat and per-case extraction would scatter the state logic.
 function settingsReducer(state: Settings, action: SettingsAction): Settings {
   switch (action.type) {
-    case 'hydrate':
+    case "hydrate":
       return action.settings;
 
-    case 'update':
-      return { ...state, [action.key]: action.value };
+    case "update": {
+      const next = { ...state, [action.key]: action.value };
+      // An explicit theme pick stops the app from following the OS afterward.
+      return action.key === "theme" ? { ...next, themeSource: "user" } : next;
+    }
 
-    case 'addCustom': {
+    case "syncSystemTheme":
+      // Only follow the OS while the user hasn't overridden the theme.
+      return state.themeSource === "system" ? { ...state, theme: action.theme } : state;
+
+    case "addCustom": {
       const trimmed = action.value.trim();
       if (!trimmed) {
         return state;
@@ -83,14 +87,14 @@ function settingsReducer(state: Settings, action: SettingsAction): Settings {
       };
     }
 
-    case 'removeCustom':
+    case "removeCustom":
       return {
         ...state,
         customCategories: state.customCategories.filter((entry) => entry !== action.value),
         pinned: state.pinned.filter((entry) => entry !== action.value),
       };
 
-    case 'togglePin': {
+    case "togglePin": {
       const inDeck =
         state.customCategories.includes(action.name) || state.deckBuiltins.includes(action.name);
       if (!inDeck) {
@@ -104,23 +108,23 @@ function settingsReducer(state: Settings, action: SettingsAction): Settings {
       };
     }
 
-    case 'togglePinAll':
+    case "togglePinAll":
       return applyTogglePinAll(state, action.names);
 
-    case 'addPack': {
+    case "addPack": {
       const packKeys = getPackCategories(action.packId, categories);
       const merged = Array.from(new Set([...state.deckBuiltins, ...packKeys]));
       return { ...state, deckBuiltins: merged };
     }
 
-    case 'removeBuiltin':
+    case "removeBuiltin":
       return {
         ...state,
         deckBuiltins: state.deckBuiltins.filter((entry) => entry !== action.name),
         pinned: state.pinned.filter((entry) => entry !== action.name),
       };
 
-    case 'removeAllCustom': {
+    case "removeAllCustom": {
       const customSet = new Set(state.customCategories);
       return {
         ...state,
@@ -129,7 +133,7 @@ function settingsReducer(state: Settings, action: SettingsAction): Settings {
       };
     }
 
-    case 'removeAllBuiltins': {
+    case "removeAllBuiltins": {
       const builtinSet = new Set(state.deckBuiltins);
       return {
         ...state,
@@ -147,7 +151,7 @@ function SettingsProvider({ children }: PropsWithChildren) {
   const [settings, dispatch] = useReducer(settingsReducer, undefined, readStoredSettings);
 
   useEffect(() => {
-    window.localStorage.setItem(SETTINGS_STORAGE_KEY, serializeSettings(settings));
+    safeStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
   }, [settings]);
 
   useEffect(() => {
@@ -156,46 +160,39 @@ function SettingsProvider({ children }: PropsWithChildren) {
         return;
       }
 
-      dispatch({ type: 'hydrate', settings: readStoredSettings() });
+      dispatch({ type: "hydrate", settings: readStoredSettings() });
     }
 
     function onThemeChange(event: MediaQueryListEvent) {
-      const nextTheme = event.matches ? 'dark' : 'light';
-      const previousSystemTheme = nextTheme === 'dark' ? 'light' : 'dark';
-
-      if (settings.theme === previousSystemTheme) {
-        dispatch({ type: 'update', key: 'theme', value: nextTheme });
-      }
+      // The reducer ignores this while the user has picked a theme explicitly.
+      dispatch({ type: "syncSystemTheme", theme: event.matches ? "dark" : "light" });
     }
 
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const mediaQuery = window.matchMedia(DARK_SCHEME_QUERY);
 
-    window.addEventListener('storage', onStorage);
-    mediaQuery.addEventListener('change', onThemeChange);
+    window.addEventListener("storage", onStorage);
+    mediaQuery.addEventListener("change", onThemeChange);
 
     return () => {
-      window.removeEventListener('storage', onStorage);
-      mediaQuery.removeEventListener('change', onThemeChange);
+      window.removeEventListener("storage", onStorage);
+      mediaQuery.removeEventListener("change", onThemeChange);
     };
-  }, [settings.theme]);
+  }, []);
 
-  const value = useMemo<SettingsContextValue>(
-    () => ({
-      settings,
-      update: (key, actionValue) => {
-        dispatch({ type: 'update', key, value: actionValue });
-      },
-      addCustom: (raw) => dispatch({ type: 'addCustom', value: raw }),
-      removeCustom: (category) => dispatch({ type: 'removeCustom', value: category }),
-      togglePin: (name) => dispatch({ type: 'togglePin', name }),
-      togglePinAll: (names) => dispatch({ type: 'togglePinAll', names }),
-      addPack: (packId) => dispatch({ type: 'addPack', packId }),
-      removeBuiltin: (name) => dispatch({ type: 'removeBuiltin', name }),
-      removeAllCustom: () => dispatch({ type: 'removeAllCustom' }),
-      removeAllBuiltins: () => dispatch({ type: 'removeAllBuiltins' }),
-    }),
-    [settings],
-  );
+  const value: SettingsContextValue = {
+    settings,
+    update: (key, actionValue) => {
+      dispatch({ type: "update", key, value: actionValue });
+    },
+    addCustom: (raw) => dispatch({ type: "addCustom", value: raw }),
+    removeCustom: (category) => dispatch({ type: "removeCustom", value: category }),
+    togglePin: (name) => dispatch({ type: "togglePin", name }),
+    togglePinAll: (names) => dispatch({ type: "togglePinAll", names }),
+    addPack: (packId) => dispatch({ type: "addPack", packId }),
+    removeBuiltin: (name) => dispatch({ type: "removeBuiltin", name }),
+    removeAllCustom: () => dispatch({ type: "removeAllCustom" }),
+    removeAllBuiltins: () => dispatch({ type: "removeAllBuiltins" }),
+  };
 
   return <SettingsContext value={value}>{children}</SettingsContext>;
 }
@@ -204,20 +201,14 @@ function useSettings() {
   const value = useContext(SettingsContext);
 
   if (!value) {
-    throw new Error('useSettings must be used inside SettingsProvider');
+    throw new Error("useSettings must be used inside SettingsProvider");
   }
 
   return value;
 }
 
 function resetSettingsToStorage(): Settings {
-  const stored = readStoredSettings();
-
-  if (typeof window !== 'undefined') {
-    window.localStorage.setItem(SETTINGS_STORAGE_KEY, serializeSettings(stored));
-  }
-
-  return stored;
+  return readStoredSettings();
 }
 
 export { resetSettingsToStorage, SettingsProvider, useSettings };

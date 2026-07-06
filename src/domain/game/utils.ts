@@ -1,5 +1,5 @@
-import { FALLBACK_LOCALE, getLocaleLetters, normalizeLocale } from '@/i18n/localeRegistry';
-import { getLocaleLetterWeights } from './localeWeights';
+import { FALLBACK_LOCALE, getLocaleLetters, normalizeLocale } from "@/i18n/localeRegistry";
+import { getLocaleLetterWeights } from "./localeWeights";
 
 type RandomSource = () => number;
 
@@ -10,12 +10,15 @@ export function weightedLetterBag(
   const normalizedLocale = normalizeLocale(locale);
   const letterWeights = getLocaleLetterWeights(normalizedLocale);
   const letters = getLocaleLetters(normalizedLocale);
+  // Weight-proportional random order via reservoir-sampling keys: with
+  // key = random() ** (1 / weight), sorting by descending key gives each pair
+  // P(i before j) = wi / (wi + wj).
   return [...letters]
     .map((letter) => ({
       letter,
-      score: random() * (letterWeights[letter] ?? 1),
+      score: random() ** (1 / (letterWeights[letter] ?? 1)),
     }))
-    .sort((a, b) => a.score - b.score)
+    .sort((a, b) => b.score - a.score)
     .map((entry) => entry.letter);
 }
 
@@ -25,7 +28,7 @@ export function clampInt(
   max: number,
   fallback: number,
 ): number {
-  const parsed = typeof value === 'number' ? value : Number.parseInt(value, 10);
+  const parsed = typeof value === "number" ? value : Number.parseInt(value, 10);
 
   if (Number.isNaN(parsed)) {
     return fallback;
@@ -38,11 +41,15 @@ export function formatSeconds(totalSeconds: number): string {
   const mins = Math.floor(totalSeconds / 60);
   const secs = totalSeconds % 60;
 
-  return mins > 0 ? `${mins}:${String(secs).padStart(2, '0')}` : `${secs}s`;
+  return mins > 0 ? `${mins}:${String(secs).padStart(2, "0")}` : `${secs}s`;
 }
 
 export function pickRandom<T>(items: readonly T[], random: RandomSource = Math.random): T {
-  return items[Math.floor(random() * items.length)];
+  const item = items[Math.floor(random() * items.length)];
+  if (item === undefined) {
+    throw new Error("pickRandom called on an empty array");
+  }
+  return item;
 }
 
 export function shuffleFisherYates<T>(
@@ -53,7 +60,12 @@ export function shuffleFisherYates<T>(
 
   for (let i = shuffled.length - 1; i > 0; i -= 1) {
     const j = Math.floor(random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    const a = shuffled[i];
+    const b = shuffled[j];
+    if (a !== undefined && b !== undefined) {
+      shuffled[i] = b;
+      shuffled[j] = a;
+    }
   }
 
   return shuffled;

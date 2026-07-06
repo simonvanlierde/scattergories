@@ -1,4 +1,4 @@
-import registry from './locales/registry.json';
+import registry from "./locales/registry.json";
 
 const FALLBACK_LOCALE_VALUE = registry.fallbackLocale;
 const SUPPORTED_LOCALES_VALUE = registry.locales as readonly string[];
@@ -10,26 +10,28 @@ function normalizeLocale(locale: string | null | undefined): string {
     return FALLBACK_LOCALE_VALUE;
   }
 
-  return locale.toLowerCase().split('-')[0];
+  return locale.toLowerCase().split("-")[0] ?? FALLBACK_LOCALE_VALUE;
 }
 
-function isSupportedLocale(locale: string | null | undefined): boolean {
-  return SUPPORTED_LOCALES_VALUE.includes(normalizeLocale(locale));
+/** Normalize, then fall back when the locale isn't supported. */
+function resolveLocale(locale: string | null | undefined): string {
+  const normalized = normalizeLocale(locale);
+  return SUPPORTED_LOCALES_VALUE.includes(normalized) ? normalized : FALLBACK_LOCALE_VALUE;
 }
 
 function getLocaleLetters(locale: string | null | undefined): string[] {
   const normalized = normalizeLocale(locale);
   const letters =
     LETTERS_BY_LOCALE_VALUE[normalized] ?? LETTERS_BY_LOCALE_VALUE[FALLBACK_LOCALE_VALUE];
-  return Array.from(letters ?? '');
+  return Array.from(letters ?? "");
 }
 
 function getNativeName(locale: string | null | undefined): string {
   const normalized = normalizeLocale(locale);
-  return NATIVE_NAMES_VALUE[normalized] ?? normalized ?? FALLBACK_LOCALE_VALUE;
+  return NATIVE_NAMES_VALUE[normalized] ?? normalized;
 }
 
 export const SUPPORTED_LOCALES = SUPPORTED_LOCALES_VALUE;
 export const FALLBACK_LOCALE = FALLBACK_LOCALE_VALUE;
 
-export { getLocaleLetters, getNativeName, isSupportedLocale, normalizeLocale };
+export { getLocaleLetters, getNativeName, normalizeLocale, resolveLocale };

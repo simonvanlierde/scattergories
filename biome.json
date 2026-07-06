@@ -1,12 +1,7 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.12/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.2/schema.json",
   "files": {
-    "includes": ["**", "!tools/letter_frequency/data", "!tools/letter-frequency/data"]
-  },
-  "vcs": {
-    "enabled": true,
-    "clientKind": "git",
-    "useIgnoreFile": true
+    "includes": ["**"]
   },
   "formatter": {
     "enabled": true,
@@ -14,7 +9,58 @@
     "indentWidth": 2,
     "lineWidth": 100
   },
+  "javascript": {
+    "globals": ["__APP_VERSION__"]
+  },
+  "linter": {
+    "domains": {
+      "playwright": "recommended",
+      "project": "recommended",
+      "react": "recommended",
+      "test": "recommended"
+    },
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "a11y": "on",
+      "complexity": "on",
+      "correctness": "on",
+      "security": "on",
+      "suspicious": "on"
+    }
+  },
   "overrides": [
+    {
+      "includes": ["**"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noExcessiveLinesPerFunction": {
+              "level": "on",
+              "options": {
+                "maxLines": 60
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "includes": ["public/sw.js"],
+      "javascript": {
+        "globals": ["self", "caches", "clients"]
+      }
+    },
+    {
+      "includes": ["**/*.config.ts"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noNodejsModules": "off"
+          }
+        }
+      }
+    },
     {
       "includes": ["**/*.test.ts", "**/*.test.tsx", "tests/**"],
       "linter": {
@@ -25,6 +71,9 @@
           "performance": {
             "useTopLevelRegex": "off"
           },
+          "security": {
+            "noSecrets": "off"
+          },
           "style": {
             "noMagicNumbers": "off",
             "noNonNullAssertion": "off"
@@ -33,24 +82,9 @@
       }
     }
   ],
-  "linter": {
+  "vcs": {
+    "clientKind": "git",
     "enabled": true,
-    "rules": {
-      "recommended": true,
-      "a11y": "on",
-      "complexity": "on",
-      "correctness": "on",
-      "performance": "on",
-      "security": "on",
-      "style": "on",
-      "suspicious": "on"
-    }
-  },
-  "javascript": {
-    "globals": ["__APP_VERSION__"],
-    "formatter": {
-      "quoteStyle": "single",
-      "semicolons": "always"
-    }
+    "useIgnoreFile": true
   }
 }

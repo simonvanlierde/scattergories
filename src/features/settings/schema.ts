@@ -9,12 +9,15 @@ import {
   durationDefault,
   durationMax,
   durationMin,
-} from '@/domain/game/constants';
-import { clampInt } from '@/domain/game/utils';
-import { CLASSIC_PACK_ID, getPackCategories } from '@/shared/lib/categoryPacks';
+} from "@/domain/game/constants";
+import { clampInt } from "@/domain/game/utils";
+import { CLASSIC_PACK_ID, getPackCategories } from "@/shared/lib/categoryPacks";
+import { safeStorage } from "@/shared/lib/safeStorage";
 
-type PromptDeckPreference = 'auto' | 'open' | 'collapsed';
-type Theme = 'light' | 'dark';
+type PromptDeckPreference = "auto" | "open" | "collapsed";
+type Theme = "light" | "dark";
+/** Whether the current theme follows the OS ('system') or was picked explicitly ('user'). */
+type ThemeSource = "system" | "user";
 
 interface Settings {
   durationInput: string;
@@ -27,38 +30,27 @@ interface Settings {
   /** Pinned category names (custom or built-in) — always drawn each round. */
   pinned: string[];
   isMuted: boolean;
+  /** When true, letters are drawn without repeats until the alphabet is exhausted. */
+  avoidRepeats: boolean;
   theme: Theme;
+  themeSource: ThemeSource;
   promptDeckPreference: PromptDeckPreference;
 }
 
-const SETTINGS_STORAGE_KEY = 'scattergories.settings.v1';
-
-type NumericFieldName = 'durationInput' | 'catCountInput' | 'bufferSecondsInput';
-
-const NUMERIC_FIELD_BOUNDS: Record<
-  NumericFieldName,
-  { min: number; max: number; fallback: number }
-> = {
-  durationInput: { min: durationMin, max: durationMax, fallback: durationDefault },
-  catCountInput: { min: catCountMin, max: catCountMax, fallback: catCountDefault },
-  bufferSecondsInput: {
-    min: bufferSecondsMin,
-    max: bufferSecondsMax,
-    fallback: bufferSecondsDefault,
-  },
-};
-
-function sanitizeNumericField(field: NumericFieldName, value: string): string {
-  const { min, max, fallback } = NUMERIC_FIELD_BOUNDS[field];
-  return String(clampInt(value, min, max, fallback));
-}
+const SETTINGS_STORAGE_KEY = "scattergories.settings.v1";
+const DARK_SCHEME_QUERY = "(prefers-color-scheme: dark)";
 
 function getPreferredTheme(): Theme {
-  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
-    return 'light';
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return "light";
   }
 
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  return window.matchMedia(DARK_SCHEME_QUERY).matches ? "dark" : "light";
+}
+
+/** Clamp a stored numeric-input string into range so a bad value from another tab can't slip through. */
+function sanitizeNumericInput(value: unknown, min: number, max: number, fallback: number): string {
+  return typeof value === "string" ? String(clampInt(value, min, max, fallback)) : String(fallback);
 }
 
 function getDefaultSettings(): Settings {
@@ -70,8 +62,10 @@ function getDefaultSettings(): Settings {
     customCategories: [],
     pinned: [],
     isMuted: false,
+    avoidRepeats: true,
     theme: getPreferredTheme(),
-    promptDeckPreference: 'auto',
+    themeSource: "system",
+    promptDeckPreference: "auto",
   };
 }
 
@@ -104,11 +98,11 @@ function migrateDeckBuiltins(parsed: Partial<Settings> & LegacySettings): string
     return sanitizeBuiltins(parsed.deckBuiltins);
   }
   // Migrate from the old activePack + includePackCategories model.
-  if (typeof parsed.includePackCategories === 'boolean') {
+  if (typeof parsed.includePackCategories === "boolean") {
     if (!parsed.includePackCategories) {
       return [];
     }
-    const packId = typeof parsed.activePack === 'string' ? parsed.activePack : CLASSIC_PACK_ID;
+    const packId = typeof parsed.activePack === "string" ? parsed.activePack : CLASSIC_PACK_ID;
     return sanitizeBuiltins(getPackCategories(packId, categories));
   }
   return [...categories];
@@ -117,7 +111,7 @@ function migrateDeckBuiltins(parsed: Partial<Settings> & LegacySettings): string
 function sanitizeSettings(raw: unknown): Settings {
   const fallback = getDefaultSettings();
 
-  if (!raw || typeof raw !== 'object') {
+  if (!raw || typeof raw !== "object") {
     return fallback;
   }
 
@@ -131,23 +125,36 @@ function sanitizeSettings(raw: unknown): Settings {
   ).filter((name) => inDeck.has(name));
 
   return {
-    durationInput:
-      typeof parsed.durationInput === 'string' ? parsed.durationInput : fallback.durationInput,
-    catCountInput:
-      typeof parsed.catCountInput === 'string' ? parsed.catCountInput : fallback.catCountInput,
-    bufferSecondsInput:
-      typeof parsed.bufferSecondsInput === 'string'
-        ? parsed.bufferSecondsInput
-        : fallback.bufferSecondsInput,
+    durationInput: sanitizeNumericInput(
+      parsed.durationInput,
+      durationMin,
+      durationMax,
+      durationDefault,
+    ),
+    catCountInput: sanitizeNumericInput(
+      parsed.catCountInput,
+      catCountMin,
+      catCountMax,
+      catCountDefault,
+    ),
+    bufferSecondsInput: sanitizeNumericInput(
+      parsed.bufferSecondsInput,
+      bufferSecondsMin,
+      bufferSecondsMax,
+      bufferSecondsDefault,
+    ),
     deckBuiltins,
     customCategories,
     pinned,
-    isMuted: typeof parsed.isMuted === 'boolean' ? parsed.isMuted : fallback.isMuted,
-    theme: parsed.theme === 'light' || parsed.theme === 'dark' ? parsed.theme : fallback.theme,
+    isMuted: typeof parsed.isMuted === "boolean" ? parsed.isMuted : fallback.isMuted,
+    avoidRepeats:
+      typeof parsed.avoidRepeats === "boolean" ? parsed.avoidRepeats : fallback.avoidRepeats,
+    theme: parsed.theme === "light" || parsed.theme === "dark" ? parsed.theme : fallback.theme,
+    themeSource: parsed.themeSource === "user" ? "user" : "system",
     promptDeckPreference:
-      parsed.promptDeckPreference === 'open' ||
-      parsed.promptDeckPreference === 'collapsed' ||
-      parsed.promptDeckPreference === 'auto'
+      parsed.promptDeckPreference === "open" ||
+      parsed.promptDeckPreference === "collapsed" ||
+      parsed.promptDeckPreference === "auto"
         ? parsed.promptDeckPreference
         : fallback.promptDeckPreference,
   };
@@ -166,26 +173,17 @@ function parseStoredSettings(raw: string | null): Settings {
 }
 
 function readStoredSettings(): Settings {
-  if (typeof window === 'undefined') {
-    return getDefaultSettings();
-  }
-
-  return parseStoredSettings(window.localStorage.getItem(SETTINGS_STORAGE_KEY));
+  return parseStoredSettings(safeStorage.getItem(SETTINGS_STORAGE_KEY));
 }
 
-function serializeSettings(settings: Settings): string {
-  return JSON.stringify(settings);
-}
-
-export type { NumericFieldName, PromptDeckPreference, Settings, Theme };
+export type { PromptDeckPreference, Settings, Theme, ThemeSource };
 export {
+  DARK_SCHEME_QUERY,
   getDefaultSettings,
   getPreferredTheme,
   parseStoredSettings,
   readStoredSettings,
   SETTINGS_STORAGE_KEY,
   sanitizeCustomCategories,
-  sanitizeNumericField,
   sanitizeSettings,
-  serializeSettings,
 };

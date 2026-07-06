@@ -1,77 +1,101 @@
 {
   "title": "Scattergories",
-  "hero": {
-    "description": "Losuj literę, kontroluj czas i graj bez zbędnego bałaganu.",
-    "statsLabel": "Statystyki"
-  },
   "round": {
-    "panelEyebrow": "Panel rundy",
     "letterLabel": "Aktualna litera",
     "timerLabel": "Zegar rundy"
   },
+  "controls": {
+    "roundGroup": "Sterowanie rundą"
+  },
   "buttons": {
-    "startRound": "Rozpocznij Rundę",
-    "nextRound": "Następna Runda",
+    "startRound": "Rozpocznij rundę",
+    "nextRound": "Następna runda",
     "spinning": "Losowanie...",
-    "skipLetter": "Pomiń Literę",
-    "reset": "⟲ Resetuj",
+    "newLetter": "Nowa litera",
     "pause": "Pauza",
     "resume": "Wznów",
     "mute": "Wycisz",
-    "unmute": "Włącz Dźwięk",
-    "skipLetterTooltip": "Wybierz inną losową literę na tę rundę",
-    "resetTooltip": "Zrestartuj timer dla bieżącej rundy",
-    "shuffle": "Tasuj",
+    "unmute": "Włącz dźwięk",
+    "redraw": "Losuj ponownie",
     "add": "Dodaj",
     "remove": "Usuń",
-    "close": "✕",
     "addTooltip": "Dodaj tę kategorię do swojej własnej kolekcji",
     "closeTooltip": "Zamknij to okno",
     "howToPlay": "Jak grać"
   },
   "timer": {
     "ready": "Gotowe",
+    "paused": "Wstrzymano",
     "timeUp": "Czas minął!",
     "getReady": "Przygotuj się...",
     "go": "Start!",
-    "roundOver": "Runda zakończona!"
-  },
-  "status": {
-    "seconds": "sekundy"
+    "roundOver": "Runda zakończona!",
+    "startIn": "Start za {{seconds}}s"
   },
   "settings": {
-    "duration": "Czasomierz",
-    "categorySource": "Źródło",
+    "duration": "Runda",
+    "getReady": "Przygotowanie",
+    "avoidRepeats": "Unikaj powtórzeń liter",
     "categoryDraw": "Losowanie",
     "addCustom": "Własna kategoria",
-    "placeholder": "np. Języki programowania"
+    "roundTimerTitle": "Czasomierz rundy",
+    "pace": "{{seconds}}s"
+  },
+  "packs": {
+    "classic": {
+      "label": "Wszystkie"
+    },
+    "foodie": {
+      "label": "Jedzenie"
+    },
+    "popCulture": {
+      "label": "Popkultura"
+    },
+    "travel": {
+      "label": "Podróże"
+    },
+    "kids": {
+      "label": "Dzieci"
+    },
+    "household": {
+      "label": "W domu"
+    }
+  },
+  "playmat": {
+    "label": "Plansza"
+  },
+  "rail": {
+    "shortcuts": {
+      "space": "Rozpocznij lub kontynuuj rundę",
+      "r": "Wylosuj ponownie bieżącą literę",
+      "p": "Wstrzymaj lub wznów",
+      "c": "Pokaż lub ukryj panel kategorii",
+      "help": "Otwórz tę listę skrótów"
+    }
   },
   "categories": {
     "title": "Kategorie",
-    "default": "Standardowe",
-    "custom": "Własne",
-    "mixed": "Mieszane",
-    "noCustom": "Nie dodano jeszcze własnych kategorii.",
-    "minimumRequired": "Dodaj co najmniej jedną kategorię, aby użyć trybu Własne.",
-    "availableSummary": "{{count}} haseł gotowych",
-    "customListLabel": "Własne kategorie",
-    "drawnListLabel": "Tablica kategorii",
-    "showDeck": "Otwórz hasła",
-    "hideDeck": "Ukryj hasła",
-    "summaryMode": "Źródło: {{mode}}",
-    "summaryDraw": "Losowanie: {{count}}",
-    "pin": "Przypnij kategorie",
-    "unpin": "Odepnij kategorie",
-    "addSectionTitle": "Dodaj kategorie",
-    "deckSectionTitle": "Twoja talia",
+    "minimumRequired": "Dodaj kategorie do talii, aby zagrać.",
+    "drawnListLabel": "Wybrane kategorie",
+    "deckLabel": "Talia kategorii",
     "deckCount": "{{custom}} własne · {{builtin}} standardowe",
+    "emptyDeck": "Talia jest pusta. Dodaj zestaw lub własną kategorię.",
+    "showDeck": "Otwórz kategorie",
+    "hideDeck": "Ukryj kategorie",
+    "customize": "Dostosuj talię",
+    "customizeTitle": "Dostosuj talię",
+    "addPack": "Dodaj zestaw kategorii",
+    "addPackPlaceholder": "Dodaj zestaw…",
     "removeAllCustom": "Usuń wszystkie własne",
     "removeAllBuiltins": "Usuń wszystkie standardowe",
+    "pinOne": "Przypnij {{name}}",
+    "unpinOne": "Odepnij {{name}}",
+    "pinAll": "Przypnij wszystkie",
+    "unpinAll": "Odepnij wszystkie",
+    "addSectionTitle": "Dodaj kategorie",
+    "deckSectionTitle": "Twoja talia",
     "drawUnit": "kart"
   },
-  "usedLetters": "Użyte litery: {{letters}}{{empty}}",
-  "usedLettersEmpty": "Brak",
-  "shortcuts": "Skróty: Spacja start, R pomiń literę, P pauza, C pokaż hasła, A dodaj kategorię",
   "modal": {
     "title": "Jak grać",
     "objectiveText": "Zdobywaj punkty, zapisując słowa, które zaczynają się na wylosowaną literę i pasują do wybranych kategorii.",
@@ -83,33 +107,40 @@
       "Grasz z innymi? Zdobywasz 1 punkt za każdą odpowiedź, której nikt inny nie zapisał; powtórki dają 0, więc stawiaj na oryginalne słowa."
     ],
     "categories": "Kategorie",
-    "categoriesText": "To narzędzie korzysta z kategorii z oficjalnej gry. Możesz też tworzyć własne kategorie i mieszać je ze standardowymi.",
+    "categoriesText": "Gra zawiera duży wbudowany zestaw kategorii, a do talii możesz dodać własne kategorie — lub całe zestawy tematyczne.",
+    "categoriesItems": [
+      "Dostosuj talię, aby dodać kategorie i zestawy, lub usuń te, które wolisz pominąć.",
+      "Przypnij kategorię, aby pojawiała się w każdej rundzie; nieprzypięte są losowane na resztę miejsc.",
+      "Losuj ponownie, aby wylosować nowy zestaw kategorii dla bieżącej litery, bez zmiany litery."
+    ],
     "settings": "Ustawienia",
     "settingsIntro": "Znajdziesz je na dole ekranu — wszystko zapisuje się automatycznie.",
     "settingsItems": [
-      "Czas rundy — jak długo trwa każda runda oraz odliczanie przygotowania przed startem.",
+      "Czasomierz rundy — jak długo trwa każda runda oraz odliczanie przygotowania przed startem. Znajdziesz tu też Unikaj powtórzeń liter: zostaw włączone, aby każda litera wypadła raz, zanim się powtórzy. Pula liter resetuje się po odświeżeniu strony lub gdy wykorzystasz cały alfabet.",
       "Język — zmień język interfejsu i kategorii.",
-      "Dźwięk — wycisz lub włącz timer i alarm.",
+      "Dźwięk — wycisz lub włącz tykanie zegara i alarm.",
       "Motyw — przełączaj między trybem jasnym a ciemnym."
     ],
     "shortcuts": "Skróty klawiszowe",
     "about": "O aplikacji",
-    "officialGame": "Oficjalna Gra",
-    "sourceCode": "Kod źródłowy",
+    "attribution": "Scattergories to oryginalna gra imprezowa firmy Hasbro. To bezpłatny, nieoficjalny dodatek do gry przy stole — przejrzyj <official>oficjalną grę</official> lub <repo>kod źródłowy</repo> tej aplikacji, wydany na <license>licencji MIT</license>.",
     "privacy": "Ta aplikacja zapisuje ustawienia i kategorie wyłącznie w Twojej przeglądarce.",
     "version": "Wersja {{version}}",
-    "opensInNewTab": "(otwiera się w nowej karcie)",
     "loading": "Otwieranie zasad…"
   },
   "language": {
-    "label": "Język",
-    "nativeName": "Polski"
+    "label": "Język"
   },
   "theme": {
-    "toggle": "Zmień motyw",
-    "toggleTooltip": "Przełącz między jasnym a ciemnym motywem",
-    "toggleLabel": "Motyw",
-    "dark": "Ciemny",
-    "light": "Jasny"
+    "switchToDark": "Przełącz na tryb ciemny",
+    "switchToLight": "Przełącz na tryb jasny"
+  },
+  "errors": {
+    "chunkTitle": "Nowa wersja aplikacji jest gotowa.",
+    "chunkBody": "Część interfejsu zmieniła się, gdy aplikacja była otwarta. Odśwież, aby bezpiecznie kontynuować.",
+    "boundaryEyebrow": "Tryb odzyskiwania",
+    "boundaryTitle": "Coś poszło nie tak.",
+    "boundaryBody": "Odśwież aplikację, aby zresetować bieżącą rundę i grać dalej.",
+    "reload": "Odśwież aplikację"
   }
 }

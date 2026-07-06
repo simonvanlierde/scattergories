@@ -1,77 +1,101 @@
 {
   "title": "Scattergories",
-  "hero": {
-    "description": "Zieh den Buchstaben, behalte die Zeit im Blick und spiel ohne unnötigen Ballast.",
-    "statsLabel": "Spielwerte"
-  },
   "round": {
-    "panelEyebrow": "Rundenkonsole",
     "letterLabel": "Aktueller Buchstabe",
     "timerLabel": "Rundenuhr"
   },
+  "controls": {
+    "roundGroup": "Rundensteuerung"
+  },
   "buttons": {
-    "startRound": "Runde Starten",
+    "startRound": "Runde starten",
     "nextRound": "Nächste Runde",
-    "spinning": "Wird gedreht...",
-    "skipLetter": "Buchstabe überspringen",
-    "reset": "⟲ Zurücksetzen",
+    "spinning": "Wird gedreht…",
+    "newLetter": "Neuer Buchstabe",
     "pause": "Pause",
     "resume": "Fortsetzen",
     "mute": "Stumm",
     "unmute": "Ton an",
-    "skipLetterTooltip": "Einen anderen zufälligen Buchstaben für diese Runde wählen",
-    "resetTooltip": "Timer für die aktuelle Runde neu starten",
-    "shuffle": "Mischen",
+    "redraw": "Neu ziehen",
     "add": "Hinzufügen",
     "remove": "Entfernen",
-    "close": "✕",
     "addTooltip": "Diese Kategorie zu deiner Sammlung hinzufügen",
     "closeTooltip": "Dieses Fenster schließen",
     "howToPlay": "Spielanleitung"
   },
   "timer": {
     "ready": "Bereit",
+    "paused": "Pausiert",
     "timeUp": "Zeit abgelaufen!",
-    "getReady": "Bereit machen...",
+    "getReady": "Bereit machen…",
     "go": "Los!",
-    "roundOver": "Runde vorbei!"
-  },
-  "status": {
-    "seconds": "Sekunden"
+    "roundOver": "Runde vorbei!",
+    "startIn": "Start in {{seconds}}s"
   },
   "settings": {
-    "duration": "Zeitlimit",
-    "categorySource": "Quelle",
-    "categoryDraw": "Auslosung",
+    "duration": "Runde",
+    "getReady": "Vorlauf",
+    "avoidRepeats": "Buchstabenwiederholungen vermeiden",
+    "categoryDraw": "Ziehung",
     "addCustom": "Eigene Kategorie",
-    "placeholder": "z.B. Programmiersprachen"
+    "roundTimerTitle": "Rundentimer",
+    "pace": "{{seconds}}s"
+  },
+  "packs": {
+    "classic": {
+      "label": "Alle"
+    },
+    "foodie": {
+      "label": "Essen"
+    },
+    "popCulture": {
+      "label": "Popkultur"
+    },
+    "travel": {
+      "label": "Reisen"
+    },
+    "kids": {
+      "label": "Kinder"
+    },
+    "household": {
+      "label": "Rund ums Haus"
+    }
+  },
+  "playmat": {
+    "label": "Spielfeld"
+  },
+  "rail": {
+    "shortcuts": {
+      "space": "Runde starten oder fortsetzen",
+      "r": "Aktuellen Buchstaben neu ziehen",
+      "p": "Pausieren oder fortsetzen",
+      "c": "Kategorien-Panel ein-/ausblenden",
+      "help": "Diese Kürzelliste öffnen"
+    }
   },
   "categories": {
     "title": "Kategorien",
-    "default": "Standard",
-    "custom": "Eigene",
-    "mixed": "Gemischt",
-    "noCustom": "Noch keine eigenen Kategorien vorhanden.",
-    "minimumRequired": "Füge mindestens eine Kategorie hinzu, um den Modus 'Eigene' zu nutzen.",
-    "availableSummary": "{{count}} Prompts bereit",
-    "customListLabel": "Eigene Kategorien",
-    "drawnListLabel": "Kategorienliste",
-    "showDeck": "Prompts öffnen",
-    "hideDeck": "Prompts ausblenden",
-    "summaryMode": "Quelle: {{mode}}",
-    "summaryDraw": "Ziehung: {{count}}",
-    "pin": "Kategorien fixieren",
-    "unpin": "Kategorien lösen",
-    "addSectionTitle": "Kategorien hinzufügen",
-    "deckSectionTitle": "Dein Deck",
+    "minimumRequired": "Füge Kategorien zu deinem Deck hinzu, um zu spielen.",
+    "drawnListLabel": "Ausgewählte Kategorien",
+    "deckLabel": "Kategorien-Deck",
     "deckCount": "{{custom}} eigene · {{builtin}} Standard",
+    "emptyDeck": "Das Deck ist leer. Füge ein Set oder eine eigene Kategorie hinzu.",
+    "showDeck": "Kategorien öffnen",
+    "hideDeck": "Kategorien ausblenden",
+    "customize": "Deck anpassen",
+    "customizeTitle": "Deck anpassen",
+    "addPack": "Kategorien-Set hinzufügen",
+    "addPackPlaceholder": "Set hinzufügen…",
     "removeAllCustom": "Alle eigenen entfernen",
     "removeAllBuiltins": "Alle Standard entfernen",
+    "pinOne": "{{name}} fixieren",
+    "unpinOne": "{{name}} lösen",
+    "pinAll": "Alle fixieren",
+    "unpinAll": "Alle lösen",
+    "addSectionTitle": "Kategorien hinzufügen",
+    "deckSectionTitle": "Dein Deck",
     "drawUnit": "Karten"
   },
-  "usedLetters": "Benutzte Buchstaben: {{letters}}{{empty}}",
-  "usedLettersEmpty": "Keine",
-  "shortcuts": "Shortcuts: Leertaste Start, R Buchstabe überspringen, P Pause, C Prompts umschalten, A Kategorie hinzufügen",
   "modal": {
     "title": "Spielanleitung",
     "objectiveText": "Sammle Punkte, indem du Begriffe aufschreibst, die mit dem gewählten Buchstaben beginnen und in die jeweilige Kategorie passen.",
@@ -83,33 +107,40 @@
       "Mit Mitspielern? Du bekommst 1 Punkt für jede Antwort, die sonst niemand hat; Dopplungen zählen 0, also wähle kreative, seltene Antworten."
     ],
     "categories": "Kategorien",
-    "categoriesText": "Dieses Tool nutzt Kategorien aus dem offiziellen Spiel. Du kannst auch eigene hinzufügen und diese mischen.",
+    "categoriesText": "Das Spiel bringt eine große integrierte Auswahl an Kategorien mit, und du kannst eigene Kategorien — oder ganze Themen-Sets — zum Deck hinzufügen.",
+    "categoriesItems": [
+      "Passe das Deck an, um Kategorien und Sets hinzuzufügen oder solche zu entfernen, die du überspringen möchtest.",
+      "Fixiere eine Kategorie, damit sie in jeder Runde vorkommt; nicht fixierte werden zufällig für den Rest gezogen.",
+      "Ziehe neu, um für den aktuellen Buchstaben ein frisches Set an Kategorien zu ziehen, ohne den Buchstaben zu ändern."
+    ],
     "settings": "Einstellungen",
     "settingsIntro": "Du findest sie unten auf dem Bildschirm – alles wird automatisch gespeichert.",
     "settingsItems": [
-      "Timer — wie lange jede Runde dauert und der Countdown zum Bereitmachen davor.",
+      "Rundentimer — wie lange jede Runde dauert und der Countdown zum Bereitmachen davor. Hier steht auch Buchstabenwiederholungen vermeiden: Lass es an, um jeden Buchstaben einmal zu ziehen, bevor sich einer wiederholt. Der Buchstabenpool wird zurückgesetzt, wenn du die Seite neu lädst oder sobald das ganze Alphabet verwendet wurde.",
       "Sprache — ändere die Sprache der Oberfläche und der Kategorien.",
       "Ton — schalte Timer und Alarm stumm oder wieder an.",
       "Design — wechsle zwischen hellem und dunklem Modus."
     ],
     "shortcuts": "Tastenkürzel",
     "about": "Über",
-    "officialGame": "Offizielles Spiel",
-    "sourceCode": "Quellcode",
+    "attribution": "Scattergories ist das Original-Partyspiel von Hasbro. Dies ist ein kostenloser, inoffizieller Begleiter fürs Spielen am Tisch — sieh dir das <official>offizielle Spiel</official> oder den <repo>Quellcode</repo> dieser App an, veröffentlicht unter der <license>MIT-Lizenz</license>.",
     "privacy": "Diese App speichert Einstellungen und Kategorien nur lokal im Browser.",
     "version": "Version {{version}}",
-    "opensInNewTab": "(öffnet in neuem Tab)",
     "loading": "Regeln werden geöffnet…"
   },
   "language": {
-    "label": "Sprache",
-    "nativeName": "Deutsch"
+    "label": "Sprache"
   },
   "theme": {
-    "toggle": "Design umschalten",
-    "toggleTooltip": "Zwischen hellem und dunklem Design wechseln",
-    "toggleLabel": "Design",
-    "dark": "Dunkel",
-    "light": "Hell"
+    "switchToDark": "Zum dunklen Modus wechseln",
+    "switchToLight": "Zum hellen Modus wechseln"
+  },
+  "errors": {
+    "chunkTitle": "Eine neue App-Version ist bereit.",
+    "chunkBody": "Ein Teil der Oberfläche hat sich geändert, während die App geöffnet war. Lade neu, um sicher fortzufahren.",
+    "boundaryEyebrow": "Wiederherstellungsmodus",
+    "boundaryTitle": "Etwas ist schiefgelaufen.",
+    "boundaryBody": "Lade die App neu, um die aktuelle Runde zurückzusetzen und weiterzuspielen.",
+    "reload": "App neu laden"
   }
 }

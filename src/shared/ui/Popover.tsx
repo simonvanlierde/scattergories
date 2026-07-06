@@ -1,8 +1,9 @@
-import type { LucideIcon } from 'lucide-react';
-import type { ReactNode } from 'react';
-import { useEffect, useId, useRef, useState } from 'react';
-import { Icon } from './Icon';
-import { IconButton } from './IconButton';
+import type { LucideIcon } from "lucide-react";
+import type { ReactNode } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import { Icon } from "./Icon";
+import { IconButton } from "./IconButton";
+import { useReturnFocus } from "./useReturnFocus";
 
 interface PopoverProps {
   icon: LucideIcon;
@@ -19,7 +20,22 @@ interface PopoverProps {
 export function Popover({ icon, label, title, children }: PopoverProps) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const panelId = useId();
+
+  // The panel is role="dialog"; move focus into it on open and restore focus
+  // to the trigger on close, matching what screen readers expect.
+  useReturnFocus(open);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+    const first = panelRef.current?.querySelector<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    );
+    first?.focus();
+  }, [open]);
 
   useEffect(() => {
     if (!open) {
@@ -33,16 +49,16 @@ export function Popover({ icon, label, title, children }: PopoverProps) {
     }
 
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         setOpen(false);
       }
     }
 
-    window.addEventListener('pointerdown', onPointerDown);
-    window.addEventListener('keydown', onKeyDown);
+    const controller = new AbortController();
+    window.addEventListener("pointerdown", onPointerDown, { signal: controller.signal });
+    window.addEventListener("keydown", onKeyDown, { signal: controller.signal });
     return () => {
-      window.removeEventListener('pointerdown', onPointerDown);
-      window.removeEventListener('keydown', onKeyDown);
+      controller.abort();
     };
   }, [open]);
 
@@ -58,8 +74,14 @@ export function Popover({ icon, label, title, children }: PopoverProps) {
         onClick={() => setOpen((value) => !value)}
       />
       {open ? (
-        <div className="ds-popover__panel" id={panelId} role="dialog" aria-label={label}>
-          {typeof children === 'function' ? children(() => setOpen(false)) : children}
+        <div
+          className="ds-popover__panel"
+          id={panelId}
+          role="dialog"
+          aria-label={label}
+          ref={panelRef}
+        >
+          {typeof children === "function" ? children(() => setOpen(false)) : children}
         </div>
       ) : null}
     </div>

@@ -1,11 +1,11 @@
-import AxeBuilder from '@axe-core/playwright';
-import { expect } from '@playwright/test';
-import { test } from './fixtures';
+import AxeBuilder from "@axe-core/playwright";
+import { expect } from "@playwright/test";
+import { test } from "./fixtures";
 
 const MINUTE_TO_MS = 60_000;
 test.setTimeout(MINUTE_TO_MS);
 
-test('@smoke has no detectable accessibility violations on the idle screen', async ({
+test("@smoke has no detectable accessibility violations on the idle screen", async ({
   app,
   page,
 }) => {
@@ -16,22 +16,22 @@ test('@smoke has no detectable accessibility violations on the idle screen', asy
   expect(accessibilityScanResults.violations).toEqual([]);
 });
 
-test('@smoke has no detectable accessibility violations during an active round', async ({
+test("@smoke has no detectable accessibility violations during an active round", async ({
   app,
   page,
 }) => {
   await app.toggleMute();
   await app.startRound();
   await app.expectRunning();
-  await page.getByRole('button', { name: 'Pause' }).click();
-  await expect(page.getByRole('button', { name: 'Resume', exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Pause" }).click();
+  await expect(page.getByRole("button", { name: "Resume", exact: true })).toBeVisible();
 
   const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
 
   expect(accessibilityScanResults.violations).toEqual([]);
 });
 
-test('@smoke has no detectable accessibility violations with the prompt deck collapsed', async ({
+test("@smoke has no detectable accessibility violations with the prompt deck collapsed", async ({
   app,
   page,
 }) => {
@@ -40,4 +40,32 @@ test('@smoke has no detectable accessibility violations with the prompt deck col
   const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
 
   expect(accessibilityScanResults.violations).toEqual([]);
+});
+
+test("@smoke has no detectable accessibility violations with a popover open", async ({
+  app,
+  page,
+}) => {
+  await app.openTimer();
+
+  const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
+
+  expect(accessibilityScanResults.violations).toEqual([]);
+});
+
+test("@smoke has no detectable accessibility violations with the how-to-play modal open", async ({
+  app,
+  page,
+}) => {
+  await app.openHelp();
+
+  const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
+
+  expect(accessibilityScanResults.violations).toEqual([]);
+});
+
+test("@smoke syncs the document language to the selected locale", async ({ app, page }) => {
+  await app.switchLanguage("es");
+
+  await expect(page.locator("html")).toHaveAttribute("lang", "es");
 });

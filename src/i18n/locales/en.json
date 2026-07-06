@@ -1,90 +1,64 @@
 {
   "title": "Scattergories",
-  "hero": {
-    "eyebrow": "Party game companion",
-    "description": "Run the letter, keep the clock moving, and play without the clutter.",
-    "metaLabel": "Round timer",
-    "statsLabel": "Round stats"
-  },
   "round": {
-    "panelEyebrow": "Round console",
     "letterLabel": "Current letter",
     "timerLabel": "Round clock"
   },
   "controls": {
-    "eyebrow": "Controls",
-    "title": "Keep the round moving",
-    "body": "Start, pause, reroll, and tune pacing without leaving the board.",
-    "group": "Round controls",
-    "roundGroup": "Round controls",
-    "audioGroup": "Audio controls",
-    "settingsLegend": "Round settings"
+    "roundGroup": "Round controls"
   },
   "buttons": {
-    "startRound": "Start Round",
+    "startRound": "Start round",
     "nextRound": "Next round",
-    "spinning": "Spinning...",
-    "skipLetter": "Skip Letter",
+    "spinning": "Spinning…",
     "newLetter": "New letter",
-    "reset": "⟲ Reset",
     "pause": "Pause",
     "resume": "Resume",
     "mute": "Mute",
     "unmute": "Unmute",
-    "skipLetterTooltip": "Get a different random letter for this round",
-    "resetTooltip": "Start the timer over from the beginning",
     "redraw": "Redraw",
     "add": "Add",
     "remove": "Remove",
-    "close": "✕",
     "addTooltip": "Add this category to your custom collection",
     "closeTooltip": "Close this window",
-    "howToPlay": "How to Play"
+    "howToPlay": "How to play"
   },
   "timer": {
     "ready": "Ready",
     "paused": "Paused",
     "timeUp": "Time's up!",
-    "getReady": "Get ready...",
+    "getReady": "Get ready…",
     "go": "Go!",
-    "roundOver": "Round over!"
-  },
-  "status": {
-    "seconds": "seconds"
+    "roundOver": "Round over!",
+    "startIn": "Start in {{seconds}}s"
   },
   "settings": {
     "duration": "Round",
     "getReady": "Get ready",
+    "avoidRepeats": "Avoid letter repeats",
     "categoryDraw": "Draw",
     "addCustom": "Add custom category",
-    "placeholder": "e.g. Programming Languages",
-    "roundTimerTitle": "Round timer"
+    "roundTimerTitle": "Round timer",
+    "pace": "{{seconds}}s"
   },
   "packs": {
-    "sectionTitle": "Category pack",
     "classic": {
-      "label": "All",
-      "description": "Every category — the full deck."
+      "label": "All"
     },
     "foodie": {
-      "label": "Foodie",
-      "description": "Dishes, drinks, ingredients, and kitchens."
+      "label": "Foodie"
     },
     "popCulture": {
-      "label": "Pop Culture",
-      "description": "Movies, TV, music, celebrities, books."
+      "label": "Pop Culture"
     },
     "travel": {
-      "label": "Travel",
-      "description": "Places, transport, and everything in a suitcase."
+      "label": "Travel"
     },
     "kids": {
-      "label": "Kids",
-      "description": "Friendly categories for younger players."
+      "label": "Kids"
     },
     "household": {
-      "label": "Around the House",
-      "description": "Rooms, tools, furniture, and gadgets."
+      "label": "Around the House"
     }
   },
   "playmat": {
@@ -92,8 +66,6 @@
   },
   "rail": {
     "shortcuts": {
-      "title": "Keyboard shortcuts",
-      "hint": "Keyboard shortcuts · ?",
       "space": "Start or advance a round",
       "r": "Re-roll the current letter",
       "p": "Pause or resume",
@@ -103,7 +75,6 @@
   },
   "categories": {
     "title": "Categories",
-    "description": "Mix official and custom categories, then reshuffle whenever the table needs a reset.",
     "minimumRequired": "Add categories to your deck to play.",
     "drawnListLabel": "Selected categories",
     "deckLabel": "Category deck",
@@ -125,11 +96,8 @@
     "deckSectionTitle": "Your deck",
     "drawUnit": "cards"
   },
-  "usedLetters": "Used letters: {{letters}}{{empty}}",
-  "usedLettersEmpty": "None yet",
-  "shortcuts": "Shortcuts: Space start, R skip letter, P pause, C toggle categories, A add custom",
   "modal": {
-    "title": "How to Play",
+    "title": "How to play",
     "objectiveText": "Score points by writing words that fit each category and start with the drawn letter.",
     "gameplay": "Gameplay",
     "gameplayPoints": [
@@ -139,35 +107,31 @@
       "Playing with others? Score 1 point for each answer nobody else wrote; matching answers score 0, so aim for creative, uncommon words."
     ],
     "categories": "Categories",
-    "categoriesText": "This tool draws categories from the official Scattergories game. You can also create custom categories and mix them with the defaults.",
+    "categoriesText": "The game comes with a large built-in set of categories, and you can add your own custom ones — or whole themed packs — to the deck.",
+    "categoriesItems": [
+      "Customize the deck to add categories and packs, or remove any you'd rather skip.",
+      "Pin a category to lock it into every round; unpinned ones are drawn at random to fill the rest.",
+      "Reroll to draw a fresh set of categories for the current letter, without changing the letter."
+    ],
     "settings": "Settings",
     "settingsIntro": "Find these at the bottom of the screen — everything saves automatically.",
     "settingsItems": [
-      "Round timer — how long each round lasts, plus the get-ready countdown before it begins.",
+      "Round timer — how long each round lasts and the get-ready countdown before it begins. It also holds Avoid letter repeats: leave it on to draw each letter once before any repeat. The letter pool resets when you refresh the page or once the whole alphabet has been used.",
       "Language — change the interface and category language.",
       "Sound — mute or unmute the timer ticks and alarm.",
       "Theme — switch between light and dark mode."
     ],
     "shortcuts": "Keyboard shortcuts",
     "about": "About",
-    "officialGame": "Official Game",
-    "sourceCode": "Source Code",
+    "attribution": "Scattergories is the original party game by Hasbro. This is a free, unofficial companion for playing it around the table — browse the <official>official game</official> or this app's <repo>source code</repo>, released under the <license>MIT license</license>.",
     "privacy": "This app stores settings and custom categories in your browser only.",
     "version": "Version {{version}}",
-    "opensInNewTab": "(opens in new tab)",
     "loading": "Opening rules…"
   },
   "language": {
-    "label": "Language",
-    "nativeName": "English"
+    "label": "Language"
   },
   "theme": {
-    "toggle": "Toggle theme",
-    "toggleTooltip": "Switch between light and dark theme",
-    "toggleLabel": "Theme",
-    "sectionTitle": "Appearance",
-    "dark": "Dark mode",
-    "light": "Light mode",
     "switchToDark": "Switch to dark mode",
     "switchToLight": "Switch to light mode"
   },

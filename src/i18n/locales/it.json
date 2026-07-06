@@ -1,81 +1,105 @@
 {
   "title": "Scattergories",
-  "hero": {
-    "description": "Estrai la lettera, tieni il ritmo e gioca senza ingombri.",
-    "statsLabel": "Statistiche"
-  },
   "round": {
-    "panelEyebrow": "Console del round",
     "letterLabel": "Lettera attuale",
     "timerLabel": "Timer del round"
   },
+  "controls": {
+    "roundGroup": "Comandi del round"
+  },
   "buttons": {
-    "startRound": "Inizia Round",
-    "nextRound": "Prossimo Round",
-    "spinning": "Sorteggio...",
-    "skipLetter": "Salta Lettera",
-    "reset": "⟲ Ripristina",
+    "startRound": "Inizia round",
+    "nextRound": "Prossimo round",
+    "spinning": "Sorteggio…",
+    "newLetter": "Nuova lettera",
     "pause": "Pausa",
     "resume": "Riprendi",
-    "mute": "Muta",
-    "unmute": "Attiva Audio",
-    "skipLetterTooltip": "Scegli un'altra lettera casuale per questo round",
-    "resetTooltip": "Riavvia il timer per il round attuale",
-    "shuffle": "Mischia",
+    "mute": "Silenzia",
+    "unmute": "Riattiva audio",
+    "redraw": "Rilancia",
     "add": "Aggiungi",
     "remove": "Rimuovi",
-    "close": "✕",
     "addTooltip": "Aggiungi questa categoria alla tua collezione personalizzata",
     "closeTooltip": "Chiudi questa finestra",
-    "howToPlay": "Come Giocare"
+    "howToPlay": "Come giocare"
   },
   "timer": {
     "ready": "Pronto",
+    "paused": "In pausa",
     "timeUp": "Tempo scaduto!",
-    "getReady": "Preparati...",
+    "getReady": "Preparati…",
     "go": "Via!",
-    "roundOver": "Round terminato!"
-  },
-  "status": {
-    "seconds": "secondi"
+    "roundOver": "Round terminato!",
+    "startIn": "Inizia tra {{seconds}}s"
   },
   "settings": {
-    "duration": "Timer",
-    "categorySource": "Fonte",
+    "duration": "Round",
+    "getReady": "Preparazione",
+    "avoidRepeats": "Evita lettere ripetute",
     "categoryDraw": "Sorteggio",
     "addCustom": "Aggiungi categoria",
-    "placeholder": "es. Linguaggi di programmazione"
+    "roundTimerTitle": "Timer del round",
+    "pace": "{{seconds}}s"
+  },
+  "packs": {
+    "classic": {
+      "label": "Tutte"
+    },
+    "foodie": {
+      "label": "Cibo"
+    },
+    "popCulture": {
+      "label": "Cultura pop"
+    },
+    "travel": {
+      "label": "Viaggi"
+    },
+    "kids": {
+      "label": "Bambini"
+    },
+    "household": {
+      "label": "In casa"
+    }
+  },
+  "playmat": {
+    "label": "Tavolo da gioco"
+  },
+  "rail": {
+    "shortcuts": {
+      "space": "Avvia o prosegui un round",
+      "r": "Rilancia la lettera attuale",
+      "p": "Metti in pausa o riprendi",
+      "c": "Mostra o nascondi il pannello categorie",
+      "help": "Apri questo elenco di scorciatoie"
+    }
   },
   "categories": {
     "title": "Categorie",
-    "default": "Standard",
-    "custom": "Personali",
-    "mixed": "Miste",
-    "noCustom": "Nessuna categoria personalizzata ancora.",
-    "minimumRequired": "Aggiungi almeno una categoria per usare la modalità Personalizzata.",
-    "availableSummary": "{{count}} prompt pronti",
-    "customListLabel": "Categorie personali",
-    "drawnListLabel": "Elenco categorie",
-    "showDeck": "Apri prompt",
-    "hideDeck": "Nascondi prompt",
-    "summaryMode": "Fonte: {{mode}}",
-    "summaryDraw": "Sorteggio: {{count}}",
-    "pin": "Fissa categorie",
-    "unpin": "Sblocca categorie",
-    "addSectionTitle": "Aggiungi categorie",
-    "deckSectionTitle": "Il tuo mazzo",
+    "minimumRequired": "Aggiungi categorie al mazzo per giocare.",
+    "drawnListLabel": "Categorie selezionate",
+    "deckLabel": "Mazzo di categorie",
     "deckCount": "{{custom}} personali · {{builtin}} standard",
+    "emptyDeck": "Il mazzo è vuoto. Aggiungi un pacchetto o una categoria personalizzata.",
+    "showDeck": "Apri categorie",
+    "hideDeck": "Nascondi categorie",
+    "customize": "Personalizza mazzo",
+    "customizeTitle": "Personalizza mazzo",
+    "addPack": "Aggiungi un pacchetto di categorie",
+    "addPackPlaceholder": "Aggiungi un pacchetto…",
     "removeAllCustom": "Rimuovi tutte le personali",
     "removeAllBuiltins": "Rimuovi tutte le standard",
+    "pinOne": "Fissa {{name}}",
+    "unpinOne": "Sblocca {{name}}",
+    "pinAll": "Fissa tutte",
+    "unpinAll": "Sblocca tutte",
+    "addSectionTitle": "Aggiungi categorie",
+    "deckSectionTitle": "Il tuo mazzo",
     "drawUnit": "carte"
   },
-  "usedLetters": "Lettere usate: {{letters}}{{empty}}",
-  "usedLettersEmpty": "Nessuna",
-  "shortcuts": "Scorciatoie: Spazio avvia, R salta lettera, P pausa, C mostra prompt, A aggiungi categoria",
   "modal": {
-    "title": "Come Giocare",
+    "title": "Come giocare",
     "objectiveText": "Guadagna punti scrivendo parole che iniziano con la lettera data e rientrano nelle categorie selezionate.",
-    "gameplay": "Regole del Gioco",
+    "gameplay": "Svolgimento",
     "gameplayPoints": [
       "Viene estratta una lettera a caso: tutte le risposte devono iniziare con essa.",
       "Prima che scada il timer (90 s di default), scrivi una parola per ogni categoria.",
@@ -83,33 +107,40 @@
       "Giochi con altri? Guadagni 1 punto per ogni risposta che nessun altro ha scritto; i doppioni valgono 0, quindi punta su risposte originali."
     ],
     "categories": "Categorie",
-    "categoriesText": "Questo strumento usa le categorie del gioco ufficiale. Puoi anche crearne di tue e mischiarle con quelle standard.",
+    "categoriesText": "Il gioco include un ampio set di categorie integrato, e puoi aggiungere le tue categorie — o interi pacchetti a tema — al mazzo.",
+    "categoriesItems": [
+      "Personalizza il mazzo per aggiungere categorie e pacchetti, o rimuovi quelle che preferisci saltare.",
+      "Fissa una categoria per garantirla a ogni round; quelle non fissate vengono estratte a caso per completare.",
+      "Rilancia per estrarre un nuovo set di categorie per la lettera attuale, senza cambiare la lettera."
+    ],
     "settings": "Impostazioni",
     "settingsIntro": "Le trovi in fondo allo schermo; tutto si salva automaticamente.",
     "settingsItems": [
-      "Timer — quanto dura ogni round e il conto alla rovescia di preparazione prima dell'inizio.",
+      "Timer del round — quanto dura ogni round e il conto alla rovescia di preparazione prima dell'inizio. Contiene anche Evita lettere ripetute: lascialo attivo per estrarre ogni lettera una volta prima di qualsiasi ripetizione. La riserva di lettere si azzera quando ricarichi la pagina o dopo che è stato usato tutto l'alfabeto.",
       "Lingua — cambia la lingua dell'interfaccia e delle categorie.",
-      "Audio — disattiva o attiva il timer e l'allarme.",
-      "Tema — passa dalla modalità chiara a quella scura."
+      "Audio — silenzia o riattiva i tic del timer e l'allarme.",
+      "Tema — alterna tra modalità chiara e scura."
     ],
     "shortcuts": "Scorciatoie da tastiera",
     "about": "Informazioni",
-    "officialGame": "Gioco Ufficiale",
-    "sourceCode": "Codice Sorgente",
+    "attribution": "Scattergories è il gioco di società originale di Hasbro. Questo è un supporto gratuito e non ufficiale per giocarci al tavolo — sfoglia il <official>gioco ufficiale</official> o il <repo>codice sorgente</repo> di questa app, rilasciata sotto la <license>licenza MIT</license>.",
     "privacy": "Questa app salva impostazioni e categorie solo nel tuo browser.",
     "version": "Versione {{version}}",
-    "opensInNewTab": "(si apre in una nuova scheda)",
     "loading": "Apertura delle regole…"
   },
   "language": {
-    "label": "Lingua",
-    "nativeName": "Italiano"
+    "label": "Lingua"
   },
   "theme": {
-    "toggle": "Cambia tema",
-    "toggleTooltip": "Passa dal tema chiaro a quello scuro e viceversa",
-    "toggleLabel": "Tema",
-    "dark": "Scuro",
-    "light": "Chiaro"
+    "switchToDark": "Passa alla modalità scura",
+    "switchToLight": "Passa alla modalità chiara"
+  },
+  "errors": {
+    "chunkTitle": "È pronta una nuova versione dell'app.",
+    "chunkBody": "Una parte dell'interfaccia è cambiata mentre l'app era aperta. Ricarica per continuare in sicurezza.",
+    "boundaryEyebrow": "Modalità di ripristino",
+    "boundaryTitle": "Qualcosa è andato storto.",
+    "boundaryBody": "Ricarica l'app per azzerare il round attuale e continuare a giocare.",
+    "reload": "Ricarica l'app"
   }
 }

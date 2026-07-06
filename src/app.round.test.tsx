@@ -1,31 +1,31 @@
-import { screen, waitFor, within } from '@testing-library/react';
-import { beforeEach, expect, it } from 'vitest';
-import { renderApp, resetAppTestState, SELECTED_CATEGORIES } from './test/renderApp';
+import { screen, waitFor, within } from "@testing-library/react";
+import { beforeEach, expect, it } from "vitest";
+import { renderApp, resetAppTestState, SELECTED_CATEGORIES } from "./test/renderApp";
 
 beforeEach(resetAppTestState);
 
-it('persists the category panel preference across remount with the same localStorage', async () => {
+it("persists the category panel preference across remount with the same localStorage", async () => {
   const first = await renderApp();
 
-  await first.user.click(screen.getByRole('button', { name: 'Hide categories' }));
-  expect(screen.getByRole('button', { name: 'Open categories' })).toHaveAttribute(
-    'aria-expanded',
-    'false',
+  await first.user.click(screen.getByRole("button", { name: "Hide categories" }));
+  expect(screen.getByRole("button", { name: "Open categories" })).toHaveAttribute(
+    "aria-expanded",
+    "false",
   );
 
   first.view.unmount();
 
   await renderApp();
-  expect(screen.getByRole('button', { name: 'Open categories' })).toHaveAttribute(
-    'aria-expanded',
-    'false',
+  expect(screen.getByRole("button", { name: "Open categories" })).toHaveAttribute(
+    "aria-expanded",
+    "false",
   );
 });
 
-it('redraws categories on a fresh round but keeps them when rerolling the letter', async () => {
+it("redraws categories on a fresh round but keeps them when rerolling the letter", async () => {
   // Make category redraws instant (skip the roll animation) for deterministic assertions.
   window.matchMedia = ((query: string) => ({
-    matches: query.includes('prefers-reduced-motion'),
+    matches: query.includes("prefers-reduced-motion"),
     media: query,
     onchange: null,
     addListener: () => undefined,
@@ -36,10 +36,10 @@ it('redraws categories on a fresh round but keeps them when rerolling the letter
   })) as typeof window.matchMedia;
 
   const { user } = await renderApp();
-  const drawnList = screen.getByRole('list', { name: SELECTED_CATEGORIES });
+  const drawnList = screen.getByRole("list", { name: SELECTED_CATEGORIES });
   const items = () =>
     within(drawnList)
-      .getAllByRole('listitem')
+      .getAllByRole("listitem")
       .map((item) => item.textContent);
 
   await waitFor(() => {
@@ -48,15 +48,15 @@ it('redraws categories on a fresh round but keeps them when rerolling the letter
   const initialCategories = items();
 
   // Starting a fresh round reshuffles the (unpinned) categories.
-  await user.click(screen.getByRole('button', { name: 'Start Round' }));
+  await user.click(screen.getByRole("button", { name: "Start round" }));
   await waitFor(() => {
     expect(items()).not.toEqual(initialCategories);
   });
   const afterStart = items();
 
   // Pause, then reroll the letter — categories stay the same.
-  await user.click(screen.getByRole('button', { name: 'Pause' }));
-  await user.click(screen.getByRole('button', { name: 'New letter' }));
+  await user.click(screen.getByRole("button", { name: "Pause" }));
+  await user.click(screen.getByRole("button", { name: "New letter" }));
   await waitFor(() => {
     expect(items()).toEqual(afterStart);
   });

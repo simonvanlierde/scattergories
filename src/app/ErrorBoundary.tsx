@@ -1,11 +1,9 @@
-import type { ErrorInfo, ReactNode } from 'react';
-import { Component } from 'react';
-
-type Fallback = ReactNode | ((error: Error) => ReactNode);
+import type { ErrorInfo, ReactNode } from "react";
+import { Component } from "react";
 
 interface Props {
   children: ReactNode;
-  fallback?: Fallback;
+  fallback?: ReactNode;
 }
 
 interface State {
@@ -21,14 +19,14 @@ export class ErrorBoundary extends Component<Props, State> {
 
   override componentDidCatch(error: Error, info: ErrorInfo) {
     // biome-ignore lint/suspicious/noConsole: error boundaries intentionally report uncaught render errors.
-    console.error('Uncaught error:', error, info.componentStack);
+    console.error("Uncaught error:", error, info.componentStack);
   }
 
   override render() {
     const { error } = this.state;
     const { fallback, children } = this.props;
     if (error) {
-      return typeof fallback === 'function' ? fallback(error) : (fallback ?? null);
+      return fallback ?? null;
     }
     return children;
   }

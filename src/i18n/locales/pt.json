@@ -1,81 +1,105 @@
 {
   "title": "Scattergories",
-  "hero": {
-    "description": "Sorteie a letra, controle o ritmo e jogue sem bagunça na tela.",
-    "statsLabel": "Estatísticas"
-  },
   "round": {
-    "panelEyebrow": "Painel da rodada",
     "letterLabel": "Letra atual",
     "timerLabel": "Relógio da rodada"
   },
+  "controls": {
+    "roundGroup": "Controles da rodada"
+  },
   "buttons": {
-    "startRound": "Iniciar Rodada",
-    "nextRound": "Próxima Rodada",
-    "spinning": "Sorteando...",
-    "skipLetter": "Pular Letra",
-    "reset": "⟲ Reiniciar",
-    "pause": "Pausa",
+    "startRound": "Iniciar rodada",
+    "nextRound": "Próxima rodada",
+    "spinning": "Sorteando…",
+    "newLetter": "Nova letra",
+    "pause": "Pausar",
     "resume": "Retomar",
-    "mute": "Mudo",
-    "unmute": "Ativar Som",
-    "skipLetterTooltip": "Escolher uma letra aleatória diferente para esta rodada",
-    "resetTooltip": "Reiniciar o temporizador para a rodada atual",
-    "shuffle": "Embaralhar",
+    "mute": "Silenciar",
+    "unmute": "Ativar som",
+    "redraw": "Sortear de novo",
     "add": "Adicionar",
     "remove": "Remover",
-    "close": "✕",
     "addTooltip": "Adicionar esta categoria à sua coleção personalizada",
     "closeTooltip": "Fechar esta janela",
-    "howToPlay": "Como Jogar"
+    "howToPlay": "Como jogar"
   },
   "timer": {
     "ready": "Pronto",
+    "paused": "Em pausa",
     "timeUp": "Tempo esgotado!",
-    "getReady": "Prepare-se...",
-    "go": "Vai!",
-    "roundOver": "Rodada encerrada!"
-  },
-  "status": {
-    "seconds": "segundos"
+    "getReady": "Prepare-se…",
+    "go": "Valendo!",
+    "roundOver": "Rodada encerrada!",
+    "startIn": "Começa em {{seconds}}s"
   },
   "settings": {
-    "duration": "Temporizador",
-    "categorySource": "Fonte",
+    "duration": "Rodada",
+    "getReady": "Preparação",
+    "avoidRepeats": "Evitar letras repetidas",
     "categoryDraw": "Sorteio",
     "addCustom": "Categoria personalizada",
-    "placeholder": "ex: Linguagens de programação"
+    "roundTimerTitle": "Temporizador da rodada",
+    "pace": "{{seconds}}s"
+  },
+  "packs": {
+    "classic": {
+      "label": "Tudo"
+    },
+    "foodie": {
+      "label": "Comida"
+    },
+    "popCulture": {
+      "label": "Cultura pop"
+    },
+    "travel": {
+      "label": "Viagens"
+    },
+    "kids": {
+      "label": "Crianças"
+    },
+    "household": {
+      "label": "Em casa"
+    }
+  },
+  "playmat": {
+    "label": "Tabuleiro"
+  },
+  "rail": {
+    "shortcuts": {
+      "space": "Iniciar ou avançar uma rodada",
+      "r": "Sortear a letra atual de novo",
+      "p": "Pausar ou retomar",
+      "c": "Alternar o painel de categorias",
+      "help": "Abrir esta lista de atalhos"
+    }
   },
   "categories": {
     "title": "Categorias",
-    "default": "Padrão",
-    "custom": "Próprias",
-    "mixed": "Mistas",
-    "noCustom": "Nenhuma categoria personalizada ainda.",
-    "minimumRequired": "Adicione pelo menos uma categoria para usar o modo Personalizado.",
-    "availableSummary": "{{count}} temas prontos",
-    "customListLabel": "Categorias personalizadas",
-    "drawnListLabel": "Lista de categorias",
-    "showDeck": "Abrir temas",
-    "hideDeck": "Ocultar temas",
-    "summaryMode": "Fonte: {{mode}}",
-    "summaryDraw": "Sorteio: {{count}}",
-    "pin": "Fixar categorias",
-    "unpin": "Desafixar categorias",
-    "addSectionTitle": "Adicionar categorias",
-    "deckSectionTitle": "Seu baralho",
+    "minimumRequired": "Adicione categorias ao baralho para jogar.",
+    "drawnListLabel": "Categorias selecionadas",
+    "deckLabel": "Baralho de categorias",
     "deckCount": "{{custom}} próprias · {{builtin}} padrão",
+    "emptyDeck": "O baralho está vazio. Adicione um pacote ou uma categoria personalizada.",
+    "showDeck": "Abrir categorias",
+    "hideDeck": "Ocultar categorias",
+    "customize": "Personalizar baralho",
+    "customizeTitle": "Personalizar baralho",
+    "addPack": "Adicionar um pacote de categorias",
+    "addPackPlaceholder": "Adicionar um pacote…",
     "removeAllCustom": "Remover todas as próprias",
     "removeAllBuiltins": "Remover todas as padrão",
+    "pinOne": "Fixar {{name}}",
+    "unpinOne": "Desafixar {{name}}",
+    "pinAll": "Fixar todas",
+    "unpinAll": "Desafixar todas",
+    "addSectionTitle": "Adicionar categorias",
+    "deckSectionTitle": "Seu baralho",
     "drawUnit": "cartas"
   },
-  "usedLetters": "Letras usadas: {{letters}}{{empty}}",
-  "usedLettersEmpty": "Nenhuma",
-  "shortcuts": "Atalhos: Espaço iniciar, R pular letra, P pausa, C mostrar temas, A adicionar categoria",
   "modal": {
-    "title": "Como Jogar",
+    "title": "Como jogar",
     "objectiveText": "Acumule pontos escrevendo palavras que comecem com a letra sorteada e se encaixem nas categorias exibidas.",
-    "gameplay": "Regras do Jogo",
+    "gameplay": "Regras do jogo",
     "gameplayPoints": [
       "Uma letra é sorteada ao acaso: todas as respostas devem começar com ela.",
       "Antes de o tempo acabar (90 s por padrão), escreva uma palavra para cada categoria.",
@@ -83,33 +107,40 @@
       "Joga com outros? Ganha 1 ponto por cada resposta que ninguém mais escreveu; as repetidas valem 0, então aposte em respostas originais."
     ],
     "categories": "Categorias",
-    "categoriesText": "Esta ferramenta utiliza as categorias do jogo oficial. Você também pode criar as suas e misturá-las com as padrão.",
+    "categoriesText": "O jogo vem com um grande conjunto de categorias integrado, e você pode adicionar suas próprias categorias — ou pacotes temáticos inteiros — ao baralho.",
+    "categoriesItems": [
+      "Personalize o baralho para adicionar categorias e pacotes, ou remova as que preferir pular.",
+      "Fixe uma categoria para garanti-la em todas as rodadas; as não fixadas são sorteadas ao acaso para completar o resto.",
+      "Sorteie de novo para obter um novo conjunto de categorias para a letra atual, sem mudar a letra."
+    ],
     "settings": "Configurações",
     "settingsIntro": "Você as encontra na parte inferior da tela; tudo é salvo automaticamente.",
     "settingsItems": [
-      "Temporizador — quanto dura cada rodada e a contagem regressiva de preparação antes de começar.",
+      "Temporizador da rodada — quanto dura cada rodada e a contagem regressiva de preparação antes de começar. Também contém Evitar letras repetidas: deixe ativado para sortear cada letra uma vez antes de qualquer repetição. O conjunto de letras é reiniciado ao recarregar a página ou quando todo o alfabeto for usado.",
       "Idioma — altere o idioma da interface e das categorias.",
-      "Som — silencie ou ative o temporizador e o alarme.",
+      "Som — silencie ou ative o tique-taque do temporizador e o alarme.",
       "Tema — alterne entre o modo claro e escuro."
     ],
     "shortcuts": "Atalhos de teclado",
     "about": "Sobre",
-    "officialGame": "Jogo Oficial",
-    "sourceCode": "Código Fonte",
-    "privacy": "Este aplicativo salva configurações e categorias apenas no seu navegador.",
+    "attribution": "Scattergories é o jogo de festa original da Hasbro. Este é um complemento gratuito e não oficial para jogá-lo à mesa — veja o <official>jogo oficial</official> ou o <repo>código-fonte</repo> deste app, lançado sob a <license>licença MIT</license>.",
+    "privacy": "Este aplicativo salva configurações e categorias personalizadas apenas no seu navegador.",
     "version": "Versão {{version}}",
-    "opensInNewTab": "(abre em uma nova aba)",
     "loading": "Abrindo as regras…"
   },
   "language": {
-    "label": "Idioma",
-    "nativeName": "Português"
+    "label": "Idioma"
   },
   "theme": {
-    "toggle": "Alternar tema",
-    "toggleTooltip": "Alternar entre os temas claro e escuro",
-    "toggleLabel": "Tema",
-    "dark": "Escuro",
-    "light": "Claro"
+    "switchToDark": "Mudar para o modo escuro",
+    "switchToLight": "Mudar para o modo claro"
+  },
+  "errors": {
+    "chunkTitle": "Uma nova versão do app está pronta.",
+    "chunkBody": "Uma parte da interface mudou enquanto o app estava aberto. Recarregue para continuar com segurança.",
+    "boundaryEyebrow": "Modo de recuperação",
+    "boundaryTitle": "Algo deu errado.",
+    "boundaryBody": "Recarregue o app para reiniciar a rodada atual e continuar jogando.",
+    "reload": "Recarregar o app"
   }
 }

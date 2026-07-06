@@ -28,24 +28,6 @@
     }
   }
 
-  .playmat__meta {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-3);
-    flex-wrap: wrap;
-    padding-bottom: var(--space-3);
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .playmat__used-letters {
-    margin: 0;
-    color: var(--text-muted);
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-widest);
-    text-transform: uppercase;
-  }
-
   /* Hero = TimerRing container + LetterHero as drop-cap */
   .playmat__hero {
     position: relative;
@@ -127,6 +109,7 @@
     letter-spacing: var(--tracking-tight);
     color: var(--text-primary);
     min-width: 5rem;
+    white-space: nowrap;
     text-align: center;
     transition:
       color var(--duration-normal) var(--ease-out),
@@ -186,6 +169,11 @@
     letter-spacing: var(--tracking-tight);
     color: var(--text-primary);
     font-feature-settings: "ss01" 1;
+    /* Pin Fraunces to its maximal optical size: the display cut has the
+       high-contrast, letterpress character that makes the drawn letter the
+       app's identity. Fixed (not `optical-sizing: auto`) so the hero and the
+       round-end recap share one display voice regardless of rendered size. */
+    font-variation-settings: "opsz" 144;
   }
 
   .letter-hero__glyph--hidden {
@@ -236,13 +224,13 @@
   }
 
   /* Multi-column flow fills each column top-to-bottom, then moves right — so
-     1–6 land in the left column and 7–12 in the right (not row-major). Column
-     count stays responsive (~13rem each). */
+     1–6 land in the left column and 7–12 in the right (not row-major). Narrow
+     columns (~12rem) so two fit sooner now that the card labels wrap tightly. */
   .category-checklist__list {
     list-style: none;
     padding: 0;
     margin: 0;
-    column-width: 15rem;
+    column-width: 13rem;
     column-gap: var(--space-2);
   }
 
@@ -252,6 +240,13 @@
     margin-bottom: var(--space-2);
   }
 
+  /* No trailing margin on the last card — otherwise its margin-bottom inflates
+     the scroll container's height and shows a scrollbar even when every card
+     already fits. */
+  .category-checklist__item:last-child {
+    margin-bottom: 0;
+  }
+
   /* Each drawn category is a tap-to-pin chip. */
   .category-checklist__chip {
     width: 100%;
@@ -259,8 +254,8 @@
     grid-template-columns: 1.42rem minmax(0, 1fr) auto;
     align-items: center;
     gap: var(--space-1);
-    min-height: 2.75rem;
-    padding: var(--space-2) var(--space-3);
+    min-height: 2.5rem;
+    padding: var(--space-1) var(--space-1);
     border: 1px solid var(--rule);
     border-radius: var(--radius-sm);
     background: transparent;
@@ -380,11 +375,22 @@
       grid-template-columns: auto minmax(0, 1fr);
       align-items: center;
       gap: var(--space-4);
+      padding-block: var(--space-1);
     }
 
+    /* Nudge the ring off the screen edge, keeping it full size. */
     .play-grid:not(.play-grid--deck-collapsed) .playmat__hero {
       width: min(36vw, 9rem);
-      margin: 0;
+      margin: 0 0 0 var(--space-2);
+    }
+
+    /* The primary button shares the row with the ring — shrink it (not the ring)
+       to fit: trim the lg padding/size and let the label wrap rather than overflow. */
+    .play-grid:not(.play-grid--deck-collapsed) .action-bar__primary {
+      min-height: 2.75rem;
+      padding-inline: var(--space-2);
+      font-size: var(--text-md);
+      white-space: normal;
     }
 
     /* The letter glyph + readout are sized for the full circle — scale them to
@@ -400,12 +406,11 @@
       font-size: var(--text-lg);
     }
 
-    .category-checklist__item {
-      margin-bottom: var(--space-1);
-    }
-
+    /* The list now spans the full width (header sits above it), so the cards can
+       breathe: taller tap targets and a larger label. */
     .category-checklist__chip {
       min-height: 2.5rem;
+      font-size: var(--text-lg);
     }
   }
 
@@ -418,6 +423,8 @@
     gap: var(--space-2);
   }
 
+  /* biome-ignore lint/style/noDescendingSpecificity: the compact-mobile override
+     for this button lives in the earlier max-width block; it intentionally wins. */
   .action-bar__primary {
     min-height: 3rem;
     box-shadow: none;
@@ -451,160 +458,10 @@
       padding: var(--space-6) 0;
     }
 
-    .playmat__meta {
-      width: 100%;
-    }
-
     .action-bar {
       width: min(100%, 32rem);
       margin-inline: auto;
     }
-  }
-
-  /* ─── Round End Screen — typographic celebration ─────────────── */
-  .round-end {
-    position: relative;
-    display: grid;
-    justify-items: center;
-    gap: var(--space-5);
-    padding: var(--space-8) var(--space-6);
-    background: transparent;
-    border: 0;
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-    border-radius: 0;
-    box-shadow: none;
-    text-align: center;
-    overflow: hidden;
-    animation: round-end-in var(--duration-slow) var(--ease-spring) both;
-  }
-
-  .round-end[data-complete="true"] {
-    background: transparent;
-    border-color: var(--rule);
-    box-shadow: none;
-  }
-
-  @starting-style {
-    .round-end {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-  }
-
-  @keyframes round-end-in {
-    0% {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .round-end__title {
-    margin: 0;
-    font-family: var(--font-ui);
-    font-size: var(--text-xs);
-    font-weight: 600;
-    letter-spacing: var(--tracking-widest);
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
-  .round-end__letter {
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: clamp(4.5rem, 24cqi, 8rem);
-    line-height: 0.9;
-    letter-spacing: var(--tracking-tight);
-    color: var(--text-primary);
-    font-feature-settings: "ss01" 1;
-  }
-
-  .round-end__stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-    gap: 0;
-    justify-content: center;
-    margin-top: var(--space-3);
-    width: 100%;
-    max-width: 32rem;
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .round-end__stat {
-    display: grid;
-    justify-items: center;
-    gap: var(--space-1);
-    padding: var(--space-4) var(--space-3);
-    border-radius: 0;
-    background: transparent;
-    border: 0;
-    border-right: 1px solid var(--rule);
-    min-width: 0;
-  }
-
-  .round-end__stat:last-child {
-    border-right: 0;
-  }
-
-  .round-end__stat--emphasis {
-    background: transparent;
-    border-color: var(--rule);
-  }
-
-  .round-end[data-complete="true"] .round-end__stat--emphasis {
-    background: transparent;
-    border-color: var(--rule);
-  }
-
-  .round-end__stat--streak {
-    background: transparent;
-    border-color: var(--rule);
-    color: inherit;
-  }
-
-  .round-end__stat-label {
-    font-family: var(--font-ui);
-    font-size: var(--text-xs);
-    font-weight: 600;
-    color: var(--text-muted);
-    letter-spacing: var(--tracking-widest);
-    text-transform: uppercase;
-  }
-
-  .round-end__stat-value {
-    font-family: var(--font-display);
-    font-size: var(--text-3xl);
-    font-weight: 500;
-    font-variant-numeric: tabular-nums;
-    color: var(--text-primary);
-  }
-
-  .round-end__stat--streak .round-end__stat-label {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-1);
-    color: var(--text-muted);
-  }
-
-  .round-end__stat--streak .round-end__stat-value {
-    color: var(--accent-primary);
-  }
-
-  .round-end__stat--emphasis .round-end__stat-value {
-    color: var(--accent-primary);
-  }
-
-  .round-end__actions {
-    display: grid;
-    gap: var(--space-2);
-    width: 100%;
-    max-width: 24rem;
-    margin-top: var(--space-2);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -615,9 +472,6 @@
       animation: none;
     }
     .category-checklist__label--landing {
-      animation: none;
-    }
-    .round-end {
       animation: none;
     }
   }

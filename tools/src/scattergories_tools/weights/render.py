@@ -79,14 +79,14 @@ def render_locale_weight_source(analyses: dict[str, LocaleAnalysis]) -> str:
         "  processedBytes: number;\n"
         "  maxBytes: number;\n"
         "}\n\n"
-        "export const LETTER_WEIGHTS_BY_LOCALE: Record<LocaleCode, Record<string, number>> =\n"
+        "export const LETTER_WEIGHTS_BY_LOCALE =\n"
         "  Object.fromEntries([\n"
         f"{letter_weights_lines}\n"
-        "  ]) as Record<LocaleCode, Record<string, number>>;\n\n"
-        "export const LOCALE_WEIGHT_MANIFEST: Record<LocaleCode, LocaleWeightManifest> =\n"
+        "  ]) satisfies Record<LocaleCode, Record<string, number>>;\n\n"
+        "export const LOCALE_WEIGHT_MANIFEST =\n"
         "  Object.fromEntries([\n"
         f"{manifest_entries}\n"
-        "  ]) as Record<LocaleCode, LocaleWeightManifest>;\n"
+        "  ]) satisfies Record<LocaleCode, LocaleWeightManifest>;\n"
     )
 
 

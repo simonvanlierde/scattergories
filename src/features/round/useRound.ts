@@ -1,15 +1,9 @@
-import type { Dispatch, MutableRefObject } from 'react';
-import { useCallback, useEffect, useReducer, useRef } from 'react';
-import {
-  initialRoundState,
-  type RoundAction,
-  type RoundState,
-  roundReducer,
-} from '@/domain/game/roundReducer';
-import { pickRandom, weightedLetterBag } from '@/domain/game/utils';
-import { getLocaleLetters } from '@/i18n/localeRegistry';
-import { useAudio } from './useAudio';
-import { useLetterRoller } from './useLetterRoller';
+import { useCallback, useEffect, useReducer, useRef } from "react";
+import { initialRoundState, roundReducer } from "@/domain/game/roundReducer";
+import { pickRandom, weightedLetterBag } from "@/domain/game/utils";
+import { getLocaleLetters } from "@/i18n/localeRegistry";
+import { useAudio } from "./useAudio";
+import { useLetterRoller } from "./useLetterRoller";
 
 const ALARM_DURATION_MS = 3500;
 const ONE_SECOND_MS = 1000;
@@ -20,24 +14,31 @@ interface UseRoundOptions {
   bufferSeconds: number;
   isMuted: boolean;
   locale: string;
+  avoidRepeats?: boolean;
   onLetterPicked?: () => void;
-}
-
-interface RoundActions {
-  primaryAction: () => void;
-  newLetter: () => void;
-  nextRound: () => void;
-  togglePause: () => void;
 }
 
 // Draws the next letter from a non-repeating weighted bag, refilling when empty
 // and avoiding an immediate repeat of the previous letter at the refill boundary.
+// When avoidRepeats is off, each draw is an independent random letter (repeats
+// allowed) and the bag is left untouched so it resumes if the setting flips back.
 function drawNextLetterFromBag(
   locale: string,
-  currentRemaining: string[],
-  currentDrawn: string[],
+  bag: { remaining: string[]; drawn: string[] },
   previousLetter: string | null,
+  avoidRepeats: boolean,
 ) {
+  const { remaining: currentRemaining, drawn: currentDrawn } = bag;
+  if (!avoidRepeats) {
+    const letters = getLocaleLetters(locale);
+    let chosen = pickRandom(letters);
+    // Still skip an immediate back-to-back repeat — it reads as "the spin did nothing".
+    while (letters.length > 1 && chosen === previousLetter) {
+      chosen = pickRandom(letters);
+    }
+    return { chosen, remaining: currentRemaining, drawn: currentDrawn };
+  }
+
   let remaining = [...currentRemaining];
   let drawn = [...currentDrawn];
 
@@ -47,9 +48,9 @@ function drawNextLetterFromBag(
   }
 
   let chosen = remaining.pop() ?? pickRandom(getLocaleLetters(locale));
-  if (chosen === previousLetter && remaining.length > 0) {
-    const swapIndex = remaining.length - 1;
-    const swap = remaining[swapIndex];
+  const swapIndex = remaining.length - 1;
+  const swap = remaining[swapIndex];
+  if (chosen === previousLetter && swap !== undefined) {
     remaining[swapIndex] = chosen;
     chosen = swap;
   }
@@ -58,195 +59,32 @@ function drawNextLetterFromBag(
   return { chosen, remaining, drawn };
 }
 
-function useRoundClock(phase: string, isPaused: boolean, dispatch: Dispatch<RoundAction>) {
-  useEffect(() => {
-    if ((phase !== 'buffer' && phase !== 'running') || isPaused) {
-      return;
-    }
+// biome-ignore lint/complexity/noExcessiveLinesPerFunction: composition hook — the body wires the reducer, audio, roller, and round effects together.
+export function useRound({
+  gameSeconds,
+  bufferSeconds,
+  isMuted,
+  locale,
+  avoidRepeats = true,
+  onLetterPicked = () => undefined,
+}: UseRoundOptions) {
+  const [state, dispatch] = useReducer(roundReducer, initialRoundState);
+  const roller = useLetterRoller(locale);
+  const { playTick, playAlarm, playLetterLand } = useAudio(isMuted);
+  const resetRoller = roller.reset;
 
-    const id = window.setInterval(() => {
-      dispatch({ type: 'TICK' });
-    }, ONE_SECOND_MS);
-
-    return () => window.clearInterval(id);
-  }, [dispatch, isPaused, phase]);
-}
-
-function useRoundAlarm(options: {
-  alarmOn: boolean;
-  alarmTimeoutRef: MutableRefObject<number | null>;
-  clearAlarmTimeout: () => void;
-  dispatch: Dispatch<RoundAction>;
-  playAlarm: () => void;
-}) {
-  const { alarmOn, alarmTimeoutRef, clearAlarmTimeout, dispatch, playAlarm } = options;
-  useEffect(() => {
-    if (!alarmOn) {
-      return;
-    }
-
-    playAlarm();
-    clearAlarmTimeout();
-    alarmTimeoutRef.current = window.setTimeout(() => {
-      dispatch({ type: 'ALARM_OFF' });
-      alarmTimeoutRef.current = null;
-    }, ALARM_DURATION_MS);
-  }, [alarmOn, alarmTimeoutRef, clearAlarmTimeout, dispatch, playAlarm]);
-}
-
-function useRoundTickSound(options: {
-  isPaused: boolean;
-  phase: string;
-  playTick: () => void;
-  secondsLeft: number;
-  tickedSecondRef: MutableRefObject<number | null>;
-}) {
-  const { isPaused, phase, playTick, secondsLeft, tickedSecondRef } = options;
-  useEffect(() => {
-    if (phase !== 'running' || isPaused || secondsLeft > LAST_TICK_THRESHOLD || secondsLeft <= 0) {
-      return;
-    }
-
-    if (tickedSecondRef.current === secondsLeft) {
-      return;
-    }
-
-    tickedSecondRef.current = secondsLeft;
-    playTick();
-  }, [isPaused, phase, playTick, secondsLeft, tickedSecondRef]);
-}
-
-function useRoundTickReset(phase: string, tickedSecondRef: MutableRefObject<number | null>) {
-  useEffect(() => {
-    if (phase !== 'running') {
-      tickedSecondRef.current = null;
-    }
-  }, [phase, tickedSecondRef]);
-}
-
-function useRoundCleanup(clearAlarmTimeout: () => void) {
-  useEffect(() => () => clearAlarmTimeout(), [clearAlarmTimeout]);
-}
-
-function useRoundEffects(options: {
-  alarmTimeoutRef: MutableRefObject<number | null>;
-  clearAlarmTimeout: () => void;
-  dispatch: Dispatch<RoundAction>;
-  playAlarm: () => void;
-  playTick: () => void;
-  resetRoller: () => void;
-  state: RoundState;
-  tickedSecondRef: MutableRefObject<number | null>;
-}) {
-  const {
-    alarmTimeoutRef,
-    clearAlarmTimeout,
-    dispatch,
-    playAlarm,
-    playTick,
-    resetRoller,
-    state,
-    tickedSecondRef,
-  } = options;
-
-  useEffect(() => {
-    resetRoller();
-  }, [resetRoller]);
-  useRoundClock(state.phase, state.isPaused, dispatch);
-  useRoundAlarm({
-    alarmOn: state.alarmOn,
-    alarmTimeoutRef,
-    clearAlarmTimeout,
-    dispatch,
-    playAlarm,
-  });
-  useRoundTickSound({
-    isPaused: state.isPaused,
-    phase: state.phase,
-    playTick,
-    secondsLeft: state.secondsLeft,
-    tickedSecondRef,
-  });
-  useRoundTickReset(state.phase, tickedSecondRef);
-  useRoundCleanup(clearAlarmTimeout);
-}
-
-// biome-ignore lint/complexity/noExcessiveLinesPerFunction: the runSpin callback plus its dependency list are inherent; the draw logic already lives in drawNextLetterFromBag.
-function useSpinActions(params: {
-  bufferSeconds: number;
-  clearAlarmTimeout: () => void;
-  dispatch: Dispatch<RoundAction>;
-  gameSeconds: number;
-  locale: string;
-  onLetterPicked: () => void;
-  playLetterLand: () => void;
-  roller: ReturnType<typeof useLetterRoller>;
-  state: RoundState;
-}) {
-  const {
-    bufferSeconds,
-    clearAlarmTimeout,
-    dispatch,
-    gameSeconds,
-    locale,
-    onLetterPicked,
-    playLetterLand,
-    roller,
-    state,
-  } = params;
-
-  // Draws a new letter and spins. The countdown auto-starts when the letter
-  // lands. `redrawCategories` composes a fresh category set (false = keep the
-  // current deck — reroll).
-  const runSpin = useCallback(
-    (opts: { redrawCategories: boolean }) => {
-      clearAlarmTimeout();
-      const { chosen, remaining, drawn } = drawNextLetterFromBag(
-        locale,
-        state.remainingLetters,
-        state.drawnLetters,
-        roller.letter === '?' ? null : roller.letter,
-      );
-      if (opts.redrawCategories) {
-        onLetterPicked();
-      }
-
-      dispatch({
-        type: 'START_SPIN',
-        gameSeconds,
-        bufferSeconds,
-        remainingLetters: remaining,
-        drawnLetters: drawn,
-      });
-
-      roller.spinTo(chosen, () => {
-        playLetterLand();
-        dispatch({ type: 'LETTER_LANDED' });
-      });
-    },
-    [
-      bufferSeconds,
-      clearAlarmTimeout,
-      dispatch,
-      gameSeconds,
-      locale,
-      onLetterPicked,
-      playLetterLand,
-      roller,
-      state,
-    ],
-  );
-
-  const beginRound = useCallback(() => runSpin({ redrawCategories: true }), [runSpin]);
-  const newLetter = useCallback(() => runSpin({ redrawCategories: false }), [runSpin]);
-  const nextRound = useCallback(() => runSpin({ redrawCategories: true }), [runSpin]);
-
-  return { beginRound, newLetter, nextRound };
-}
-
-function useRoundRuntime() {
   const tickedSecondRef = useRef<number | null>(null);
   const alarmTimeoutRef = useRef<number | null>(null);
+  // Sub-second remainder carried across a pause so resuming doesn't lose progress.
+  const tickRemainderRef = useRef<number | null>(null);
+  // Latest pause flag, read in the countdown cleanup to tell pause from a phase change.
+  const isPausedRef = useRef(state.isPaused);
+  isPausedRef.current = state.isPaused;
+  // The last letter that actually landed — used for repeat-avoidance, unlike the
+  // roller's live letter which cycles through random flip letters mid-spin.
+  const lastLandedLetterRef = useRef<string | null>(null);
+  // Kept memoized: it's read in useEffect dependency arrays below, where a
+  // render-body function would trip biome's useExhaustiveDependencies lint.
   const clearAlarmTimeout = useCallback(() => {
     if (alarmTimeoutRef.current !== null) {
       window.clearTimeout(alarmTimeoutRef.current);
@@ -254,20 +92,152 @@ function useRoundRuntime() {
     }
   }, []);
 
-  return {
-    alarmTimeoutRef,
-    clearAlarmTimeout,
-    tickedSecondRef,
+  // Rebuild the letter bag for the current alphabet whenever the locale changes
+  // (and on mount), so a switch doesn't keep drawing the old locale's letters.
+  useEffect(() => {
+    resetRoller();
+    lastLandedLetterRef.current = null;
+    dispatch({
+      type: "SYNC_BAGS",
+      remainingLetters: weightedLetterBag(locale),
+      drawnLetters: [],
+    });
+  }, [locale, resetRoller]);
+
+  // Self-correcting countdown clock: aligns each tick to a wall-clock deadline
+  // instead of a bare interval, so pause/resume keeps sub-second progress and a
+  // long throttle (e.g. a backgrounded tab) catches up the seconds it missed.
+  useEffect(() => {
+    if ((state.phase !== "buffer" && state.phase !== "running") || state.isPaused) {
+      return;
+    }
+
+    let timeoutId = 0;
+    let targetAt = Date.now() + (tickRemainderRef.current ?? ONE_SECOND_MS);
+    tickRemainderRef.current = null;
+
+    const runTick = () => {
+      const now = Date.now();
+      // Fire one TICK per whole second elapsed, catching up after any throttle.
+      const ticks = Math.max(1, Math.floor((now - targetAt) / ONE_SECOND_MS) + 1);
+      targetAt += ticks * ONE_SECOND_MS;
+      for (let i = 0; i < ticks; i += 1) {
+        dispatch({ type: "TICK" });
+      }
+      timeoutId = window.setTimeout(runTick, Math.max(0, targetAt - Date.now()));
+    };
+
+    timeoutId = window.setTimeout(runTick, Math.max(0, targetAt - Date.now()));
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      // On pause (not a phase change), keep the unfinished fraction of the second.
+      if (isPausedRef.current) {
+        tickRemainderRef.current = targetAt - Date.now();
+      }
+    };
+  }, [state.isPaused, state.phase]);
+
+  // Sound the alarm when a round ends, then auto-clear it after the alarm window.
+  useEffect(() => {
+    if (!state.alarmOn) {
+      return;
+    }
+
+    playAlarm();
+    clearAlarmTimeout();
+    alarmTimeoutRef.current = window.setTimeout(() => {
+      dispatch({ type: "ALARM_OFF" });
+      alarmTimeoutRef.current = null;
+    }, ALARM_DURATION_MS);
+  }, [state.alarmOn, clearAlarmTimeout, playAlarm]);
+
+  // Tick sound during the final seconds of the running phase, once per second.
+  useEffect(() => {
+    if (
+      state.phase !== "running" ||
+      state.isPaused ||
+      state.secondsLeft > LAST_TICK_THRESHOLD ||
+      state.secondsLeft <= 0
+    ) {
+      return;
+    }
+
+    if (tickedSecondRef.current === state.secondsLeft) {
+      return;
+    }
+
+    tickedSecondRef.current = state.secondsLeft;
+    playTick();
+  }, [state.isPaused, state.phase, state.secondsLeft, playTick]);
+
+  useEffect(() => {
+    if (state.phase !== "running") {
+      tickedSecondRef.current = null;
+    }
+  }, [state.phase]);
+
+  useEffect(() => () => clearAlarmTimeout(), [clearAlarmTimeout]);
+
+  // Apply live duration / get-ready changes to an in-flight round.
+  useEffect(() => {
+    dispatch({ type: "SET_GAME_SECONDS", gameSeconds });
+  }, [gameSeconds]);
+  useEffect(() => {
+    dispatch({ type: "SET_BUFFER_SECONDS", bufferSeconds });
+  }, [bufferSeconds]);
+
+  // Draws a new letter and spins. The countdown auto-starts when the letter
+  // lands. `redrawCategories` composes a fresh category set (false = keep the
+  // current deck — reroll).
+  const runSpin = (opts: { redrawCategories: boolean }) => {
+    clearAlarmTimeout();
+    // A fresh spin restarts the countdown from a full second.
+    tickRemainderRef.current = null;
+    const { chosen, remaining, drawn } = drawNextLetterFromBag(
+      locale,
+      { remaining: state.remainingLetters, drawn: state.drawnLetters },
+      lastLandedLetterRef.current,
+      avoidRepeats,
+    );
+    if (opts.redrawCategories) {
+      onLetterPicked();
+    }
+
+    dispatch({
+      type: "START_SPIN",
+      gameSeconds,
+      bufferSeconds,
+      remainingLetters: remaining,
+      drawnLetters: drawn,
+    });
+
+    roller.spinTo(chosen, () => {
+      lastLandedLetterRef.current = chosen;
+      playLetterLand();
+      dispatch({ type: "LETTER_LANDED" });
+    });
   };
-}
 
-interface CreateRoundResultOptions {
-  state: RoundState;
-  roller: ReturnType<typeof useLetterRoller>;
-  actions: RoundActions;
-}
+  const newLetter = () => runSpin({ redrawCategories: false });
+  const nextRound = () => runSpin({ redrawCategories: true });
+  const togglePause = () => dispatch({ type: "PAUSE_TOGGLE" });
 
-function createRoundResult({ state, roller, actions }: CreateRoundResultOptions) {
+  const primaryAction = () => {
+    switch (state.phase) {
+      case "idle":
+      case "done":
+        nextRound();
+        break;
+      case "buffer":
+      case "running":
+        togglePause();
+        break;
+      default:
+        break;
+    }
+  };
+
   return {
     phase: state.phase,
     secondsLeft: state.secondsLeft,
@@ -278,78 +248,9 @@ function createRoundResult({ state, roller, actions }: CreateRoundResultOptions)
     letterVisible: roller.visible,
     letterLanding: roller.landing,
     usedLetters: state.drawnLetters,
-    primaryAction: actions.primaryAction,
-    newLetter: actions.newLetter,
-    nextRound: actions.nextRound,
-    togglePause: actions.togglePause,
+    primaryAction,
+    newLetter,
+    nextRound,
+    togglePause,
   };
-}
-
-// biome-ignore lint/complexity/noExcessiveLinesPerFunction: composition hook already decomposed into useRoundEffects/useSpinActions/useRoundRuntime; what remains is hook wiring.
-export function useRound({
-  gameSeconds,
-  bufferSeconds,
-  isMuted,
-  locale,
-  onLetterPicked = () => undefined,
-}: UseRoundOptions) {
-  const [state, dispatch] = useReducer(roundReducer, initialRoundState);
-  const roller = useLetterRoller(locale);
-  const { playTick, playAlarm, playLetterLand } = useAudio(isMuted);
-  const { alarmTimeoutRef, clearAlarmTimeout, tickedSecondRef } = useRoundRuntime();
-  const resetRoller = roller.reset;
-
-  useRoundEffects({
-    alarmTimeoutRef,
-    clearAlarmTimeout,
-    dispatch,
-    playAlarm,
-    playTick,
-    resetRoller,
-    state,
-    tickedSecondRef,
-  });
-
-  // Apply live duration / get-ready changes to an in-flight round.
-  useEffect(() => {
-    dispatch({ type: 'SET_GAME_SECONDS', gameSeconds });
-  }, [gameSeconds]);
-  useEffect(() => {
-    dispatch({ type: 'SET_BUFFER_SECONDS', bufferSeconds });
-  }, [bufferSeconds]);
-
-  const { beginRound, newLetter, nextRound } = useSpinActions({
-    bufferSeconds,
-    clearAlarmTimeout,
-    dispatch,
-    gameSeconds,
-    locale,
-    onLetterPicked,
-    playLetterLand,
-    roller,
-    state,
-  });
-
-  const togglePause = useCallback(() => dispatch({ type: 'PAUSE_TOGGLE' }), []);
-
-  const primaryAction = useCallback(() => {
-    switch (state.phase) {
-      case 'idle':
-        beginRound();
-        break;
-      case 'done':
-        nextRound();
-        break;
-      case 'buffer':
-      case 'running':
-        togglePause();
-        break;
-      default:
-        break;
-    }
-  }, [state.phase, beginRound, nextRound, togglePause]);
-
-  const actions: RoundActions = { primaryAction, newLetter, nextRound, togglePause };
-
-  return createRoundResult({ state, roller, actions });
 }

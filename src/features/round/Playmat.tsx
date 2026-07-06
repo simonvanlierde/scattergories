@@ -1,14 +1,14 @@
-import { useTranslation } from 'react-i18next';
-import type { GameController } from '@/app/useGameController';
-import { ActionBar } from './ActionBar';
-import { LetterHero } from './LetterHero';
-import { TimerRing } from './TimerRing';
+import { useTranslation } from "react-i18next";
+import type { GameController } from "@/app/useGameController";
+import { ActionBar } from "./ActionBar";
+import { LetterHero } from "./LetterHero";
+import { TimerRing } from "./TimerRing";
 
 interface PlaymatProps {
   game: GameController;
 }
 
-type RoundPhase = PlaymatProps['game']['round']['phase'];
+type RoundPhase = PlaymatProps["game"]["round"]["phase"];
 
 function PlaymatHero({
   phase,
@@ -45,7 +45,7 @@ function PlaymatStatus({ statusKey }: { statusKey: string | null }) {
 
   return (
     <p data-testid="round-status" className="sr-only" aria-live="polite" aria-atomic="true">
-      {statusKey ? t(statusKey) : ''}
+      {statusKey ? t(statusKey) : ""}
     </p>
   );
 }
@@ -55,9 +55,9 @@ function PlaymatRoundContent({
   settings,
   controls,
 }: {
-  round: PlaymatProps['game']['round'];
-  settings: PlaymatProps['game']['settings'];
-  controls: PlaymatProps['game']['controls'];
+  round: PlaymatProps["game"]["round"];
+  settings: PlaymatProps["game"]["settings"];
+  controls: PlaymatProps["game"]["controls"];
 }) {
   return (
     <>
@@ -89,11 +89,7 @@ export function Playmat({ game }: PlaymatProps) {
   const { round, settings, controls } = game;
 
   return (
-    <section
-      className="playmat"
-      aria-label={t('playmat.label', { defaultValue: 'Game board' })}
-      data-phase={round.phase}
-    >
+    <section className="playmat" aria-label={t("playmat.label")} data-phase={round.phase}>
       <PlaymatRoundContent round={round} settings={settings} controls={controls} />
     </section>
   );

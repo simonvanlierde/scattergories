@@ -132,8 +132,3 @@ def translate_locale_payload(
         return value
 
     return {key: walk(value) for key, value in payload.items()}
-
-
-def render_json(value: dict[str, JSONValue] | dict[str, str]) -> str:
-    """Render a JSON payload with stable formatting."""
-    return json.dumps(value, indent=2, ensure_ascii=False) + "\n"

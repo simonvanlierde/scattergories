@@ -29,8 +29,7 @@ Feature-complete as a play aid. It runs fully client-side and stores everything 
 
 React 19 · TypeScript · Vite · i18next · Vitest · Playwright · Biome
 
-A separate Python (`uv` + Typer) tooling package in [`tools/`](tools/README.md) regenerates the
-locale assets (letter-frequency weights and translations) that the app ships.
+A separate Python (`uv` + Typer) tooling package in [`tools/`](tools/README.md) regenerates the locale assets (letter-frequency weights and translations) that the app ships.
 
 ## Getting started
 
@@ -47,30 +46,33 @@ Without mise, install Node 24+ and pnpm 10+ yourself, then run the same `pnpm` c
 
 Deploy `dist/` to any static host with an SPA fallback to `index.html`.
 
-## Reproducibility & quality
+## Deployment
 
-Every dependency is locked (`pnpm-lock.yaml`, [`tools/uv.lock`](tools/uv.lock)) and every tool
-version is pinned via [`mise.toml`](mise.toml), so a clean checkout builds identically. The same
-gates run locally, in pre-push hooks ([`lefthook.yml`](lefthook.yml)), and in
-[CI](.github/workflows/ci.yml):
+**[scattergories.duinlab.nl](https://scattergories.duinlab.nl)** is hosted on Cloudflare Pages via its Git
+integration: a push to `main` triggers a build (`pnpm build`) that publishes `dist/`. The build
+command and preview settings live in the Cloudflare dashboard; the repo only pins the output
+directory in [`wrangler.jsonc`](wrangler.jsonc).
 
-```bash
-pnpm check        # typecheck (tsc) + spellcheck (cspell) + lint (biome)
-pnpm test         # unit / component tests (vitest)
-pnpm test:e2e     # end-to-end tests (playwright)
-pnpm verify       # check + test + build + bundle-size budget
-pnpm ci           # verify, then the Python tools' ruff + ty + pytest
-```
+To deploy from a local checkout: `pnpm deploy` (`wrangler pages deploy`).
 
-Quality is enforced, not just encouraged: the core game logic in `src/domain/game/` is held to
-95%+ line and 100% function coverage (see [`vite.config.ts`](vite.config.ts)), and the production
-bundle is capped at an 80 KiB gzip budget ([`scripts/check-bundle-budgets.mjs`](scripts/check-bundle-budgets.mjs)).
+## Quality
 
-## Project layout
+Every dependency is locked and every tool version pinned, so a clean checkout builds identically.
+One gate — `pnpm verify` — runs the same way locally, in pre-push hooks, and in CI. The core game logic holds 95%+ coverage, the production bundle is capped at an 80 KiB gzip budget, and axe-core accessibility scans run against the live app in CI.
 
-- [`src/`](src/): the React app, containing `domain/game/` (pure game logic), `features/` (round, categories, settings), `app/` (shell and controller hooks), and `i18n/` (locales and registry)
-- [`tools/`](tools/README.md): Python CLI (`sg-tools`) for inspecting and regenerating locale assets
-- [`tests/`](tests/): Playwright end-to-end specs
+See [`docs/quality.md`](docs/quality.md) for the full gate breakdown, coverage and budget details, and the accessibility checks.
+
+## Project structure
+
+For the layer diagram, round state machine, and data flow, see [`docs/architecture.md`](docs/architecture.md). The top-level map:
+
+- [`src/`](src/) — the React app: `domain/game/` (pure game logic), `features/` (round, categories,
+  settings), `app/` (shell and controller hooks), `i18n/` (locales and registry)
+- [`tools/`](tools/README.md) — Python CLI (`sg-tools`) that regenerates the locale assets
+- [`tests/`](tests/) — Playwright end-to-end specs
+- [`docs/`](docs/) — [architecture](docs/architecture.md) and [decision records](docs/adr/)
+
+Contributing? See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the dev loop, conventions, and product scope.
 
 ## License
 

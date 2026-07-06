@@ -6,7 +6,7 @@ from typing import Annotated
 import typer
 
 from scattergories_tools.shared.context import create_context
-from scattergories_tools.shared.registry import LocaleRegistry, parse_locale_args
+from scattergories_tools.shared.registry import parse_locale_args
 from scattergories_tools.weights.analyze import (
     DEFAULT_MAX_BYTES,
     SAMPLE_DATASETS,
@@ -23,11 +23,6 @@ from scattergories_tools.weights.render import (
 )
 
 app = typer.Typer(help="Letter-weight commands")
-
-
-def resolve_locales(raw_locales: list[str] | None, registry: LocaleRegistry) -> list[str]:
-    """Resolve CLI locale args."""
-    return parse_locale_args(raw_locales, registry)
 
 
 def print_rows_summary(rows: list[LetterRow], *, label: str) -> None:
@@ -71,7 +66,7 @@ def sample(
 @app.command("locales")
 def locales(
     locales_arg: Annotated[
-        list[str] | None, typer.Option("--locales", help="Locale codes.")
+        str | None, typer.Option("--locales", help="Comma-separated locale codes.")
     ] = None,
     max_bytes: Annotated[int, typer.Option(help="Byte cap per locale.")] = DEFAULT_MAX_BYTES,
     hf_token: Annotated[str | None, typer.Option(help="Optional Hugging Face token.")] = None,
@@ -82,7 +77,7 @@ def locales(
 ) -> None:
     """Analyze locale corpora and optionally update the app weight file."""
     context = create_context()
-    selected_locales = resolve_locales(locales_arg, context.registry)
+    selected_locales = parse_locale_args(locales_arg, context.registry)
     analyses = {
         locale: analyze_locale(
             locale, registry=context.registry, hf_token=hf_token, max_bytes=max_bytes
@@ -101,6 +96,13 @@ def locales(
         print_rows_summary(analysis.rows, label=f"[{locale}] top letters:")
 
     if write_app_file:
+        missing = sorted(set(context.registry.locales) - analyses.keys())
+        if missing:
+            msg = (
+                "--write-app-file requires every registry locale; "
+                f"missing: {', '.join(missing)}"
+            )
+            raise typer.BadParameter(msg)
         output_path = write_locale_app_file(context.paths.generated_weights_path, analyses)
         typer.echo(f"Wrote {output_path}")
     else:

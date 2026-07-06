@@ -8,11 +8,12 @@ from typing import TYPE_CHECKING, Any
 
 import pytest
 
-from scattergories_tools.translate.engine import ArgosProvider, build_provider
+from scattergories_tools.translate.engine import ArgosProvider
 from tests.fakes import (
     FakeArgosPackage,
     FakeArgosPackageApi,
     FakeArgosTranslateApi,
+    FakeNoneTranslateApi,
     FakeTranslator,
 )
 
@@ -28,7 +29,7 @@ def install_fake_argos(
     monkeypatch: pytest.MonkeyPatch,
     *,
     package_api: FakeArgosPackageApi,
-    translate_api: FakeArgosTranslateApi,
+    translate_api: FakeArgosTranslateApi | FakeNoneTranslateApi,
 ) -> None:
     """Install fake Argos modules into `sys.modules`."""
     root_module: Any = types.SimpleNamespace()
@@ -45,12 +46,6 @@ def install_fake_argos(
     monkeypatch.setitem(sys.modules, "argostranslate", root_module)
     monkeypatch.setitem(sys.modules, "argostranslate.package", package_module)
     monkeypatch.setitem(sys.modules, "argostranslate.translate", translate_module)
-
-
-def test_build_provider_rejects_unknown_provider_name() -> None:
-    """Unsupported providers fail fast."""
-    with pytest.raises(ValueError, match="Unsupported translation provider: noop"):
-        build_provider("noop")
 
 
 def test_argos_provider_reports_missing_optional_dependency(
@@ -93,6 +88,7 @@ def test_argos_provider_short_circuits_same_locale(monkeypatch: pytest.MonkeyPat
 
     assert provider.translate("en", "en", "Play") == "Play"
     assert translate_api.lookups == []
+    assert package_api.updated is False
 
 
 def test_argos_provider_uses_existing_installed_pair(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -107,6 +103,8 @@ def test_argos_provider_uses_existing_installed_pair(monkeypatch: pytest.MonkeyP
     provider.ensure_pair("en", "es")
     assert translate_api.lookups == [("en", "es"), ("en", "es")]
     assert package_api.installed_paths == []
+    # A resolvable pair never refreshes the package index (no network).
+    assert package_api.updated is False
 
 
 def test_argos_provider_installs_missing_language_pair(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -140,3 +138,18 @@ def test_argos_provider_reports_available_targets_for_missing_pair(
 
     with pytest.raises(RuntimeError, match="Available targets from 'en': fr"):
         provider.ensure_pair("en", "es")
+
+
+def test_argos_provider_treats_none_translation_as_missing_pair(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A None translation (both languages present, pair absent) triggers install."""
+    package_api = FakeArgosPackageApi([FakeArgosPackage("en", "es", TMP_DIR_EN_ES)])
+    translate_api = FakeNoneTranslateApi()
+    install_fake_argos(monkeypatch, package_api=package_api, translate_api=translate_api)
+
+    provider = ArgosProvider()
+    provider.ensure_pair("en", "es")
+
+    assert package_api.installed_paths == [TMP_DIR_EN_ES]
+    assert ("en", "es") in provider.installed_pairs

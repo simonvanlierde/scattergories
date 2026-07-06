@@ -1,39 +1,19 @@
-import { HelpCircle } from 'lucide-react';
-import { Suspense, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { canEditDeck } from '@/domain/game/roundReducer';
-import { CategoriesPanel } from '@/features/categories/CategoriesPanel';
-import { Playmat } from '@/features/round/Playmat';
-import { SettingsCluster } from '@/features/settings/SettingsCluster';
-import { BrandMark } from '@/shared/ui/BrandMark';
-import { Icon } from '@/shared/ui/Icon';
-import { IconButton } from '@/shared/ui/IconButton';
-import type { GameController } from './useGameController';
-
-function useShortcutKey(onToggle: () => void) {
-  useEffect(() => {
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key !== '?' || event.defaultPrevented) {
-        return;
-      }
-      const target = event.target as HTMLElement | null;
-      if (
-        target &&
-        (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)
-      ) {
-        return;
-      }
-      event.preventDefault();
-      onToggle();
-    }
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [onToggle]);
-}
+import { HelpCircle } from "lucide-react";
+import { Suspense } from "react";
+import { useTranslation } from "react-i18next";
+import { canEditDeck } from "@/domain/game/roundReducer";
+import { CategoriesPanel } from "@/features/categories/CategoriesPanel";
+import { Playmat } from "@/features/round/Playmat";
+import { SettingsCluster } from "@/features/settings/SettingsCluster";
+import { BrandMark } from "@/shared/ui/BrandMark";
+import { Button } from "@/shared/ui/Button";
+import { cx } from "@/shared/ui/cx";
+import { Icon } from "@/shared/ui/Icon";
+import { IconButton } from "@/shared/ui/IconButton";
+import type { GameController } from "./useGameController";
 
 interface GameShellProps {
   game: GameController;
-  startupLocaleWarning: string | null;
 }
 
 function ControlBar({ game }: { game: GameController }) {
@@ -43,7 +23,7 @@ function ControlBar({ game }: { game: GameController }) {
     <footer className="controlbar">
       <div className="controlbar__brand">
         <BrandMark />
-        <h1>{t('title')}</h1>
+        <h1>{t("title")}</h1>
       </div>
 
       <div className="controlbar__actions">
@@ -52,16 +32,17 @@ function ControlBar({ game }: { game: GameController }) {
           isLanguagePending={game.flags.isLanguagePending}
           theme={game.settings.theme}
           isMuted={game.settings.isMuted}
+          avoidRepeats={game.settings.avoidRepeats}
           durationInput={game.settings.durationInput}
           bufferSecondsInput={game.settings.bufferSecondsInput}
           onLanguageChange={game.controls.onLanguageChange}
           onToggleTheme={game.controls.onToggleTheme}
           onToggleMute={game.controls.onToggleMute}
+          onToggleAvoidRepeats={game.controls.onToggleAvoidRepeats}
           onUpdateTimingField={game.controls.onUpdateField}
-          onBlurTimingField={game.controls.onBlurNumericField}
         />
         <IconButton
-          label={t('buttons.howToPlay')}
+          label={t("buttons.howToPlay")}
           icon={<Icon icon={HelpCircle} size={20} />}
           onClick={game.controls.onOpenHowToPlay}
         />
@@ -70,41 +51,24 @@ function ControlBar({ game }: { game: GameController }) {
   );
 }
 
-function WarningBanner({ message }: { message: string }) {
-  return (
-    <p className="banner banner--warning" role="alert">
-      {message}
-    </p>
-  );
-}
-
 function ChunkErrorBanner({ onReload }: { onReload: () => void }) {
   const { t } = useTranslation();
 
   return (
-    <section
-      className="banner banner--danger"
-      role="alert"
-      aria-label={t('errors.chunkTitle', { defaultValue: 'Update available' })}
-    >
+    <section className="banner banner--danger" role="alert" aria-label={t("errors.chunkTitle")}>
       <div>
-        <strong>{t('errors.chunkTitle', { defaultValue: 'A fresh app version is ready.' })}</strong>
-        <p>
-          {t('errors.chunkBody', {
-            defaultValue:
-              'One of the interface chunks changed while the app was open. Reload to continue safely.',
-          })}
-        </p>
+        <strong>{t("errors.chunkTitle")}</strong>
+        <p>{t("errors.chunkBody")}</p>
       </div>
-      <button type="button" onClick={onReload}>
-        {t('errors.reload', { defaultValue: 'Reload app' })}
-      </button>
+      <Button variant="primary" onClick={onReload}>
+        {t("errors.reload")}
+      </Button>
     </section>
   );
 }
 
 interface PlayGridProps {
-  game: GameShellProps['game'];
+  game: GameShellProps["game"];
 }
 
 function PlayGrid({ game }: PlayGridProps) {
@@ -112,7 +76,7 @@ function PlayGrid({ game }: PlayGridProps) {
 
   return (
     <section
-      className={`play-grid${game.flags.isPromptDeckOpen ? '' : ' play-grid--deck-collapsed'}`}
+      className={cx("play-grid", !game.flags.isPromptDeckOpen && "play-grid--deck-collapsed")}
     >
       <Playmat game={game} />
 
@@ -138,8 +102,7 @@ function PlayGrid({ game }: PlayGridProps) {
           onAddPack: game.controls.onAddPack,
           onRemoveAllCustom: game.controls.onRemoveAllCustom,
           onRemoveAllBuiltins: game.controls.onRemoveAllBuiltins,
-          onCatCountBlur: () => game.controls.onBlurNumericField('catCountInput'),
-          onCatCountChange: (value) => game.controls.onUpdateField('catCountInput', value),
+          onCatCountChange: (value) => game.controls.onUpdateField("catCountInput", value),
           onRedraw: game.controls.onRedrawCategories,
           onTogglePinAll: game.controls.onTogglePinAll,
           onTogglePromptDeck: game.controls.onTogglePromptDeck,
@@ -150,19 +113,15 @@ function PlayGrid({ game }: PlayGridProps) {
   );
 }
 
-function GameShell({ game, startupLocaleWarning }: GameShellProps) {
+function GameShell({ game }: GameShellProps) {
   const { t } = useTranslation();
-  useShortcutKey(game.controls.onOpenHowToPlay);
 
   return (
     <main
-      className={`app-shell${game.round.alarmOn ? ' alarm' : ''}`}
+      className={cx("app-shell", game.round.alarmOn && "alarm")}
       data-theme={game.settings.theme}
     >
-      <div className="app-shell__bg" aria-hidden="true" />
       <div className="app">
-        {startupLocaleWarning ? <WarningBanner message={startupLocaleWarning} /> : null}
-
         {game.flags.hasChunkError ? (
           <ChunkErrorBanner onReload={game.controls.onReloadAfterChunkError} />
         ) : null}
@@ -176,7 +135,7 @@ function GameShell({ game, startupLocaleWarning }: GameShellProps) {
         <Suspense
           fallback={
             <div className="modal-loading" role="status" aria-live="polite">
-              {t('modal.loading', { defaultValue: 'Opening rules…' })}
+              {t("modal.loading")}
             </div>
           }
         >
