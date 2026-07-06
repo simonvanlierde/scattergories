@@ -8,11 +8,11 @@ export const LETTER_CHANGE_TIMEOUT_MS = 5000;
 export const MULTI_ROUND_TEST_TIMEOUT_MS = 70_000;
 
 export const HEADING_LEVEL = 1;
-export const SCATTERGORIES_HEADING = 'Scattergories';
-export const CUSTOM_CATEGORY = 'My Custom Category';
-export const KEYBOARD_CATEGORY = 'Keyboard Enter Add';
-export const ONLY_CUSTOM_CATEGORY = 'Only Custom Category';
-export const PERSISTED_CATEGORY = 'Persisted Cat';
+export const SCATTERGORIES_HEADING = "Scattergories";
+export const CUSTOM_CATEGORY = "My Custom Category";
+export const KEYBOARD_CATEGORY = "Keyboard Enter Add";
+export const ONLY_CUSTOM_CATEGORY = "Only Custom Category";
+export const PERSISTED_CATEGORY = "Persisted Cat";
 export const USED_LETTERS_NONE_YET = /Used letters: None yet/i;
 export const USED_LETTERS_TEXT = /Used letters:/i;
 export const NO_CUSTOM_CATEGORIES = /no custom categories yet/i;
@@ -24,4 +24,4 @@ export const GO = /^go!$/i;
 export const ROUND_OVER = /round over/i;
 export const ROUND_BUTTON = /next letter|start round/i;
 // keep in sync with durationMin in constants.json
-export const APP_MIN_TIMER_SECONDS = '10';
+export const APP_MIN_TIMER_SECONDS = "10";

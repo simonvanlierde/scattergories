@@ -1,7 +1,7 @@
-import { type RefObject, useCallback, useEffect, useRef, useState } from 'react';
-import { pickRandom } from '@/domain/game/utils';
-import { prefersReducedMotion, runRoll } from '@/features/round/rollAnimation';
-import { composeDeck } from '@/shared/lib/deck';
+import { type RefObject, useCallback, useEffect, useRef, useState } from "react";
+import { pickRandom } from "@/domain/game/utils";
+import { prefersReducedMotion, runRoll } from "@/features/round/rollAnimation";
+import { composeDeck } from "@/shared/lib/deck";
 
 interface UseCategoryBoardParams {
   customCategories: string[];

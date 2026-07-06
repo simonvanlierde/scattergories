@@ -7,19 +7,19 @@ import {
   SlidersHorizontal,
   Tags,
   Trash2,
-} from 'lucide-react';
-import type { RefObject } from 'react';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { catCountDefault, catCountMax, catCountMin } from '@/domain/game/constants';
-import { PACKS } from '@/shared/lib/categoryPacks';
-import { Button } from '@/shared/ui/Button';
-import { cx } from '@/shared/ui/cx';
-import { DebouncedNumberField } from '@/shared/ui/DebouncedNumberField';
-import { Icon } from '@/shared/ui/Icon';
-import { IconButton } from '@/shared/ui/IconButton';
-import { Sheet } from '@/shared/ui/Sheet';
-import { CategoryChecklist } from './CategoryChecklist';
+} from "lucide-react";
+import type { RefObject } from "react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { catCountDefault, catCountMax, catCountMin } from "@/domain/game/constants";
+import { PACKS } from "@/shared/lib/categoryPacks";
+import { Button } from "@/shared/ui/Button";
+import { cx } from "@/shared/ui/cx";
+import { DebouncedNumberField } from "@/shared/ui/DebouncedNumberField";
+import { Icon } from "@/shared/ui/Icon";
+import { IconButton } from "@/shared/ui/IconButton";
+import { Sheet } from "@/shared/ui/Sheet";
+import { CategoryChecklist } from "./CategoryChecklist";
 
 interface CategoriesState {
   drawnCategories: string[];
@@ -59,7 +59,7 @@ interface CategoriesPanelProps {
 function DeckSettings({
   catCountInput,
   actions,
-}: Pick<CategoriesState, 'catCountInput'> & {
+}: Pick<CategoriesState, "catCountInput"> & {
   actions: CategoriesActions;
 }) {
   const { t } = useTranslation();
@@ -67,12 +67,12 @@ function DeckSettings({
     <div className="deck-settings">
       <DebouncedNumberField
         id="catCount"
-        label={t('settings.categoryDraw')}
+        label={t("settings.categoryDraw")}
         value={catCountInput}
         min={catCountMin}
         max={catCountMax}
         fallback={catCountDefault}
-        suffix={t('categories.drawUnit')}
+        suffix={t("categories.drawUnit")}
         onCommit={actions.onCatCountChange}
       />
     </div>
@@ -88,10 +88,10 @@ function AddCustomRow({
 }) {
   const { t } = useTranslation();
   // Local state keeps keystrokes from re-rendering the (large) deck list.
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   const submit = () => {
     onAddCustom(value);
-    setValue('');
+    setValue("");
   };
   return (
     <div className="deck-add__custom">
@@ -100,12 +100,12 @@ function AddCustomRow({
         id="newCategory"
         type="text"
         value={value}
-        aria-label={t('settings.addCustom')}
+        aria-label={t("settings.addCustom")}
         maxLength={50}
-        placeholder={`${t('settings.addCustom')}...`}
+        placeholder={`${t("settings.addCustom")}...`}
         onChange={(event) => setValue(event.target.value)}
         onKeyDown={(event) => {
-          if (event.key === 'Enter') {
+          if (event.key === "Enter") {
             event.preventDefault();
             submit();
           }
@@ -115,8 +115,8 @@ function AddCustomRow({
         variant="primary"
         onClick={submit}
         leadingIcon={<Icon icon={Plus} size={18} />}
-        aria-label={t('buttons.add')}
-        title={t('buttons.addTooltip')}
+        aria-label={t("buttons.add")}
+        title={t("buttons.addTooltip")}
       />
     </div>
   );
@@ -132,7 +132,7 @@ function AddCategories({
   const { t } = useTranslation();
   return (
     <section className="deck-section">
-      <h3 className="deck-section__title">{t('categories.addSectionTitle')}</h3>
+      <h3 className="deck-section__title">{t("categories.addSectionTitle")}</h3>
       <div className="deck-add">
         <AddPackField actions={actions} />
         <AddCustomRow inputRef={inputRef} onAddCustom={actions.onAddCustom} />
@@ -151,7 +151,7 @@ function AddPackField({ actions }: { actions: CategoriesActions }) {
     .sort((a, b) => a.label.localeCompare(b.label));
   return (
     <label className="settings-select deck-list__pack" htmlFor="addPack">
-      <span className="sr-only">{t('categories.addPack')}</span>
+      <span className="sr-only">{t("categories.addPack")}</span>
       <select
         id="addPack"
         value=""
@@ -161,7 +161,7 @@ function AddPackField({ actions }: { actions: CategoriesActions }) {
           }
         }}
       >
-        <option value="">{t('categories.addPackPlaceholder')}</option>
+        <option value="">{t("categories.addPackPlaceholder")}</option>
         {packs.map((pack) => (
           <option key={pack.id} value={pack.id}>
             {pack.label}
@@ -189,21 +189,21 @@ function DeckListItem({
 }) {
   const { t } = useTranslation();
   return (
-    <li className={cx('deck-list__item', row.isCustom && 'deck-list__item--custom')}>
+    <li className={cx("deck-list__item", row.isCustom && "deck-list__item--custom")}>
       <span className="deck-list__label">{row.label}</span>
       <span className="deck-list__actions">
         <IconButton
           label={
             isPinned
-              ? t('categories.unpinOne', { name: row.label })
-              : t('categories.pinOne', { name: row.label })
+              ? t("categories.unpinOne", { name: row.label })
+              : t("categories.pinOne", { name: row.label })
           }
           icon={<Icon icon={isPinned ? Pin : PinOff} size={16} />}
           aria-pressed={isPinned}
           onClick={() => actions.onTogglePin(row.name)}
         />
         <IconButton
-          label={t('buttons.remove')}
+          label={t("buttons.remove")}
           icon={<Icon icon={Trash2} size={16} />}
           onClick={() =>
             row.isCustom ? actions.onRemoveCustom(row.name) : actions.onRemoveBuiltin(row.name)
@@ -236,7 +236,7 @@ function DeckBulkActions({
           className="deck-bulk-action"
           onClick={actions.onRemoveAllCustom}
         >
-          {t('categories.removeAllCustom')}
+          {t("categories.removeAllCustom")}
         </Button>
       ) : null}
       {hasBuiltins ? (
@@ -246,7 +246,7 @@ function DeckBulkActions({
           className="deck-bulk-action"
           onClick={actions.onRemoveAllBuiltins}
         >
-          {t('categories.removeAllBuiltins')}
+          {t("categories.removeAllBuiltins")}
         </Button>
       ) : null}
     </div>
@@ -258,7 +258,7 @@ function DeckList({
   deckBuiltins,
   pinned,
   actions,
-}: Pick<CategoriesState, 'customCategories' | 'deckBuiltins' | 'pinned'> & {
+}: Pick<CategoriesState, "customCategories" | "deckBuiltins" | "pinned"> & {
   actions: CategoriesActions;
 }) {
   const { t } = useTranslation();
@@ -276,7 +276,7 @@ function DeckList({
     .map((name) => ({ name, label: name, isCustom: true }))
     .sort(byPinThenLabel);
   const builtins = deckBuiltins
-    .map((name) => ({ name, label: t(name, { ns: 'categories' }), isCustom: false }))
+    .map((name) => ({ name, label: t(name, { ns: "categories" }), isCustom: false }))
     .sort(byPinThenLabel);
   const rows: DeckRow[] = [...customs, ...builtins];
 
@@ -286,21 +286,21 @@ function DeckList({
   return (
     <section className="deck-section">
       <div className="deck-section__head">
-        <h3 className="deck-section__title">{t('categories.deckSectionTitle')}</h3>
+        <h3 className="deck-section__title">{t("categories.deckSectionTitle")}</h3>
         <span className="deck-list__count">
-          {t('categories.deckCount', {
+          {t("categories.deckCount", {
             custom: customCategories.length,
             builtin: deckBuiltins.length,
           })}
         </span>
       </div>
-      <ul className="deck-list__items" aria-label={t('categories.deckLabel')}>
+      <ul className="deck-list__items" aria-label={t("categories.deckLabel")}>
         {rows.length === 0 ? (
-          <li className="deck-list__empty">{t('categories.emptyDeck')}</li>
+          <li className="deck-list__empty">{t("categories.emptyDeck")}</li>
         ) : (
           rows.map((row) => (
             <DeckListItem
-              key={`${row.isCustom ? 'c' : 'b'}:${row.name}`}
+              key={`${row.isCustom ? "c" : "b"}:${row.name}`}
               row={row}
               isPinned={pinnedSet.has(row.name)}
               actions={actions}
@@ -337,15 +337,15 @@ function CustomizeSheetBlock({
   return (
     <>
       <IconButton
-        label={t('categories.customize')}
+        label={t("categories.customize")}
         icon={<Icon icon={SlidersHorizontal} size={18} />}
         onClick={openSheet}
       />
       <Sheet
         open={isOpen}
         onClose={() => setIsOpen(false)}
-        title={t('categories.customizeTitle')}
-        closeLabel={t('buttons.closeTooltip')}
+        title={t("categories.customizeTitle")}
+        closeLabel={t("buttons.closeTooltip")}
       >
         <DeckSettings catCountInput={categories.catCountInput} actions={actions} />
         <AddCategories actions={actions} inputRef={inputRef} />
@@ -382,7 +382,7 @@ function CategoriesCardHeader({
       <div className="categories-card__heading">
         <h2 id="categories-panel-title">
           <Icon icon={Tags} size={22} />
-          <span className="categories-card__title-text">{t('categories.title')}</span>
+          <span className="categories-card__title-text">{t("categories.title")}</span>
         </h2>
         <IconButton
           label={deckToggleLabel}
@@ -395,13 +395,13 @@ function CategoriesCardHeader({
       {isPromptDeckOpen ? (
         <div className="categories-card__header-actions">
           <IconButton
-            label={t('buttons.redraw')}
+            label={t("buttons.redraw")}
             icon={<Icon icon={RefreshCw} size={18} />}
             disabled={!canEdit}
             onClick={actions.onRedraw}
           />
           <IconButton
-            label={allPinned ? t('categories.unpinAll') : t('categories.pinAll')}
+            label={allPinned ? t("categories.unpinAll") : t("categories.pinAll")}
             icon={<Icon icon={allPinned ? Pin : PinOff} size={18} />}
             aria-pressed={allPinned}
             onClick={() => actions.onTogglePinAll(drawnCategories)}
@@ -420,15 +420,15 @@ function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps
   // Decoration uses the frozen draw-time snapshot, not the live deck, so editing
   // the deck mid-round never re-styles (or blanks) the categories already drawn.
   const customSet = new Set(categories.drawnCustomCategories);
-  const deckToggleLabel = isPromptDeckOpen ? t('categories.hideDeck') : t('categories.showDeck');
+  const deckToggleLabel = isPromptDeckOpen ? t("categories.hideDeck") : t("categories.showDeck");
   const allPinned =
     drawnCategories.length > 0 && drawnCategories.every((name) => pinnedSet.has(name));
 
   return (
     <section
-      className={cx('categories-card', !isPromptDeckOpen && 'categories-card--collapsed')}
+      className={cx("categories-card", !isPromptDeckOpen && "categories-card--collapsed")}
       aria-labelledby="categories-panel-title"
-      data-open={isPromptDeckOpen ? 'true' : 'false'}
+      data-open={isPromptDeckOpen ? "true" : "false"}
     >
       <CategoriesCardHeader
         isPromptDeckOpen={isPromptDeckOpen}

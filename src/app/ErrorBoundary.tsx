@@ -1,5 +1,5 @@
-import type { ErrorInfo, ReactNode } from 'react';
-import { Component } from 'react';
+import type { ErrorInfo, ReactNode } from "react";
+import { Component } from "react";
 
 interface Props {
   children: ReactNode;
@@ -19,7 +19,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   override componentDidCatch(error: Error, info: ErrorInfo) {
     // biome-ignore lint/suspicious/noConsole: error boundaries intentionally report uncaught render errors.
-    console.error('Uncaught error:', error, info.componentStack);
+    console.error("Uncaught error:", error, info.componentStack);
   }
 
   override render() {

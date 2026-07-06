@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from "react";
 
 /**
  * Returns a debounced version of `commit` plus a `cancel` function.

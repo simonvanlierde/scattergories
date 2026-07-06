@@ -1,6 +1,6 @@
-import '@testing-library/jest-dom';
-import { configure } from '@testing-library/react';
-import { vi } from 'vitest';
+import "@testing-library/jest-dom";
+import { configure } from "@testing-library/react";
+import { vi } from "vitest";
 
 // findBy*/waitFor default to a 1s async timeout, which is too tight for the
 // lazy-loaded dialogs (How to Play, Customize deck) to resolve when the suite
@@ -31,31 +31,31 @@ const localStorageMock = (() => {
   };
 })();
 
-vi.stubGlobal('localStorage', localStorageMock);
+vi.stubGlobal("localStorage", localStorageMock);
 // Ensure window.localStorage is also defined in jsdom
-if (typeof window !== 'undefined') {
-  Object.defineProperty(window, 'localStorage', {
+if (typeof window !== "undefined") {
+  Object.defineProperty(window, "localStorage", {
     value: localStorageMock,
     writable: true,
   });
 }
 
 // jsdom does not implement HTMLDialogElement.showModal / .close / Escape-to-close
-if (typeof HTMLDialogElement !== 'undefined') {
+if (typeof HTMLDialogElement !== "undefined") {
   const openDialogs = new Set<HTMLDialogElement>();
 
   HTMLDialogElement.prototype.showModal ??= function showModal(this: HTMLDialogElement) {
-    this.setAttribute('open', '');
+    this.setAttribute("open", "");
     openDialogs.add(this);
   };
   HTMLDialogElement.prototype.close ??= function close(this: HTMLDialogElement) {
-    this.removeAttribute('open');
+    this.removeAttribute("open");
     openDialogs.delete(this);
-    this.dispatchEvent(new Event('close'));
+    this.dispatchEvent(new Event("close"));
   };
 
-  document.addEventListener('keydown', (event: KeyboardEvent) => {
-    if (event.key === 'Escape') {
+  document.addEventListener("keydown", (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
       const topDialog = [...openDialogs].at(-1);
       if (topDialog) {
         event.preventDefault();
@@ -65,7 +65,7 @@ if (typeof HTMLDialogElement !== 'undefined') {
   });
 }
 
-vi.stubGlobal('matchMedia', (query: string) => ({
+vi.stubGlobal("matchMedia", (query: string) => ({
   matches: false,
   media: query,
   onchange: null,

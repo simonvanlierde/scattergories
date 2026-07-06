@@ -1,4 +1,4 @@
-import { type RefObject, useCallback, useEffect, useRef } from 'react';
+import { type RefObject, useCallback, useEffect, useRef } from "react";
 
 type WindowWithWebkit = Window & { webkitAudioContext?: typeof AudioContext };
 
@@ -64,7 +64,7 @@ function playTone(
 
 function playTickSound(context: AudioContext) {
   playTone(context, {
-    type: 'triangle',
+    type: "triangle",
     startTime: context.currentTime,
     frequency: TICK_FREQ_HZ,
     duration: TICK_DURATION_S,
@@ -75,7 +75,7 @@ function playTickSound(context: AudioContext) {
 
 function playLetterLandSound(context: AudioContext) {
   playTone(context, {
-    type: 'sine',
+    type: "sine",
     startTime: context.currentTime,
     frequency: LETTER_LAND_FREQ_HZ,
     duration: LETTER_LAND_DURATION_S,
@@ -87,7 +87,7 @@ function playLetterLandSound(context: AudioContext) {
 function playAlarmSound(context: AudioContext) {
   for (const [time, frequency, duration] of ALARM_TONES) {
     playTone(context, {
-      type: 'square',
+      type: "square",
       startTime: context.currentTime + time,
       frequency,
       duration,

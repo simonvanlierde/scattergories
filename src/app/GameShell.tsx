@@ -1,16 +1,16 @@
-import { HelpCircle } from 'lucide-react';
-import { Suspense } from 'react';
-import { useTranslation } from 'react-i18next';
-import { canEditDeck } from '@/domain/game/roundReducer';
-import { CategoriesPanel } from '@/features/categories/CategoriesPanel';
-import { Playmat } from '@/features/round/Playmat';
-import { SettingsCluster } from '@/features/settings/SettingsCluster';
-import { BrandMark } from '@/shared/ui/BrandMark';
-import { Button } from '@/shared/ui/Button';
-import { cx } from '@/shared/ui/cx';
-import { Icon } from '@/shared/ui/Icon';
-import { IconButton } from '@/shared/ui/IconButton';
-import type { GameController } from './useGameController';
+import { HelpCircle } from "lucide-react";
+import { Suspense } from "react";
+import { useTranslation } from "react-i18next";
+import { canEditDeck } from "@/domain/game/roundReducer";
+import { CategoriesPanel } from "@/features/categories/CategoriesPanel";
+import { Playmat } from "@/features/round/Playmat";
+import { SettingsCluster } from "@/features/settings/SettingsCluster";
+import { BrandMark } from "@/shared/ui/BrandMark";
+import { Button } from "@/shared/ui/Button";
+import { cx } from "@/shared/ui/cx";
+import { Icon } from "@/shared/ui/Icon";
+import { IconButton } from "@/shared/ui/IconButton";
+import type { GameController } from "./useGameController";
 
 interface GameShellProps {
   game: GameController;
@@ -23,7 +23,7 @@ function ControlBar({ game }: { game: GameController }) {
     <footer className="controlbar">
       <div className="controlbar__brand">
         <BrandMark />
-        <h1>{t('title')}</h1>
+        <h1>{t("title")}</h1>
       </div>
 
       <div className="controlbar__actions">
@@ -42,7 +42,7 @@ function ControlBar({ game }: { game: GameController }) {
           onUpdateTimingField={game.controls.onUpdateField}
         />
         <IconButton
-          label={t('buttons.howToPlay')}
+          label={t("buttons.howToPlay")}
           icon={<Icon icon={HelpCircle} size={20} />}
           onClick={game.controls.onOpenHowToPlay}
         />
@@ -55,20 +55,20 @@ function ChunkErrorBanner({ onReload }: { onReload: () => void }) {
   const { t } = useTranslation();
 
   return (
-    <section className="banner banner--danger" role="alert" aria-label={t('errors.chunkTitle')}>
+    <section className="banner banner--danger" role="alert" aria-label={t("errors.chunkTitle")}>
       <div>
-        <strong>{t('errors.chunkTitle')}</strong>
-        <p>{t('errors.chunkBody')}</p>
+        <strong>{t("errors.chunkTitle")}</strong>
+        <p>{t("errors.chunkBody")}</p>
       </div>
       <Button variant="primary" onClick={onReload}>
-        {t('errors.reload')}
+        {t("errors.reload")}
       </Button>
     </section>
   );
 }
 
 interface PlayGridProps {
-  game: GameShellProps['game'];
+  game: GameShellProps["game"];
 }
 
 function PlayGrid({ game }: PlayGridProps) {
@@ -76,7 +76,7 @@ function PlayGrid({ game }: PlayGridProps) {
 
   return (
     <section
-      className={cx('play-grid', !game.flags.isPromptDeckOpen && 'play-grid--deck-collapsed')}
+      className={cx("play-grid", !game.flags.isPromptDeckOpen && "play-grid--deck-collapsed")}
     >
       <Playmat game={game} />
 
@@ -102,7 +102,7 @@ function PlayGrid({ game }: PlayGridProps) {
           onAddPack: game.controls.onAddPack,
           onRemoveAllCustom: game.controls.onRemoveAllCustom,
           onRemoveAllBuiltins: game.controls.onRemoveAllBuiltins,
-          onCatCountChange: (value) => game.controls.onUpdateField('catCountInput', value),
+          onCatCountChange: (value) => game.controls.onUpdateField("catCountInput", value),
           onRedraw: game.controls.onRedrawCategories,
           onTogglePinAll: game.controls.onTogglePinAll,
           onTogglePromptDeck: game.controls.onTogglePromptDeck,
@@ -118,7 +118,7 @@ function GameShell({ game }: GameShellProps) {
 
   return (
     <main
-      className={cx('app-shell', game.round.alarmOn && 'alarm')}
+      className={cx("app-shell", game.round.alarmOn && "alarm")}
       data-theme={game.settings.theme}
     >
       <div className="app">
@@ -135,7 +135,7 @@ function GameShell({ game }: GameShellProps) {
         <Suspense
           fallback={
             <div className="modal-loading" role="status" aria-live="polite">
-              {t('modal.loading')}
+              {t("modal.loading")}
             </div>
           }
         >

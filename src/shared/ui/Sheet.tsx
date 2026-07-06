@@ -1,9 +1,9 @@
-import { X } from 'lucide-react';
-import type { ReactNode } from 'react';
-import { useEffect, useId, useRef } from 'react';
-import { Icon } from './Icon';
-import { IconButton } from './IconButton';
-import { useReturnFocus } from './useReturnFocus';
+import { X } from "lucide-react";
+import type { ReactNode } from "react";
+import { useEffect, useId, useRef } from "react";
+import { Icon } from "./Icon";
+import { IconButton } from "./IconButton";
+import { useReturnFocus } from "./useReturnFocus";
 
 interface SheetProps {
   open: boolean;
@@ -13,7 +13,7 @@ interface SheetProps {
   children: ReactNode;
 }
 
-export function Sheet({ open, onClose, title, closeLabel = 'Close', children }: SheetProps) {
+export function Sheet({ open, onClose, title, closeLabel = "Close", children }: SheetProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
 
@@ -62,16 +62,16 @@ export function Sheet({ open, onClose, title, closeLabel = 'Close', children }: 
       pressedBackdrop = false;
     }
 
-    dialog.addEventListener('cancel', handleCancel);
-    dialog.addEventListener('close', handleClose);
-    dialog.addEventListener('pointerdown', handlePointerDown);
-    dialog.addEventListener('click', handleBackdropClick);
+    dialog.addEventListener("cancel", handleCancel);
+    dialog.addEventListener("close", handleClose);
+    dialog.addEventListener("pointerdown", handlePointerDown);
+    dialog.addEventListener("click", handleBackdropClick);
 
     return () => {
-      dialog.removeEventListener('cancel', handleCancel);
-      dialog.removeEventListener('close', handleClose);
-      dialog.removeEventListener('pointerdown', handlePointerDown);
-      dialog.removeEventListener('click', handleBackdropClick);
+      dialog.removeEventListener("cancel", handleCancel);
+      dialog.removeEventListener("close", handleClose);
+      dialog.removeEventListener("pointerdown", handlePointerDown);
+      dialog.removeEventListener("click", handleBackdropClick);
     };
   }, [onClose]);
 

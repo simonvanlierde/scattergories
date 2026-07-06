@@ -1,13 +1,13 @@
-import { act, renderHook } from '@testing-library/react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
-import { useAudio } from './useAudio';
+import { act, renderHook } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { useAudio } from "./useAudio";
 
 const ALARM_TONE_COUNT = 3;
 
 function makeAudioContextMock() {
   const oscillatorMock = {
     connect: vi.fn(),
-    type: '',
+    type: "",
     frequency: { setValueAtTime: vi.fn() },
     start: vi.fn(),
     stop: vi.fn(),
@@ -38,11 +38,11 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-describe('useAudio', () => {
-  describe('when muted', () => {
-    it('playTick does not create an AudioContext', () => {
+describe("useAudio", () => {
+  describe("when muted", () => {
+    it("playTick does not create an AudioContext", () => {
       const { audioContextCtor } = makeAudioContextMock();
-      vi.stubGlobal('AudioContext', audioContextCtor);
+      vi.stubGlobal("AudioContext", audioContextCtor);
 
       const { result } = renderHook(() => useAudio(true));
       act(() => {
@@ -51,9 +51,9 @@ describe('useAudio', () => {
       expect(audioContextCtor).not.toHaveBeenCalled();
     });
 
-    it('playAlarm does not create an AudioContext', () => {
+    it("playAlarm does not create an AudioContext", () => {
       const { audioContextCtor } = makeAudioContextMock();
-      vi.stubGlobal('AudioContext', audioContextCtor);
+      vi.stubGlobal("AudioContext", audioContextCtor);
 
       const { result } = renderHook(() => useAudio(true));
       act(() => {
@@ -63,10 +63,10 @@ describe('useAudio', () => {
     });
   });
 
-  describe('when not muted', () => {
-    it('playTick creates an AudioContext and plays a tone', () => {
+  describe("when not muted", () => {
+    it("playTick creates an AudioContext and plays a tone", () => {
       const { contextMock, audioContextCtor } = makeAudioContextMock();
-      vi.stubGlobal('AudioContext', audioContextCtor);
+      vi.stubGlobal("AudioContext", audioContextCtor);
 
       const { result } = renderHook(() => useAudio(false));
       act(() => {
@@ -77,9 +77,9 @@ describe('useAudio', () => {
       expect(contextMock.createGain).toHaveBeenCalledOnce();
     });
 
-    it('playAlarm creates an AudioContext and plays three tones', () => {
+    it("playAlarm creates an AudioContext and plays three tones", () => {
       const { contextMock, audioContextCtor } = makeAudioContextMock();
-      vi.stubGlobal('AudioContext', audioContextCtor);
+      vi.stubGlobal("AudioContext", audioContextCtor);
 
       const { result } = renderHook(() => useAudio(false));
       act(() => {
@@ -90,9 +90,9 @@ describe('useAudio', () => {
       expect(contextMock.createGain).toHaveBeenCalledTimes(ALARM_TONE_COUNT);
     });
 
-    it('reuses the same AudioContext on subsequent calls', () => {
+    it("reuses the same AudioContext on subsequent calls", () => {
       const { audioContextCtor } = makeAudioContextMock();
-      vi.stubGlobal('AudioContext', audioContextCtor);
+      vi.stubGlobal("AudioContext", audioContextCtor);
 
       const { result } = renderHook(() => useAudio(false));
       act(() => {
@@ -103,9 +103,9 @@ describe('useAudio', () => {
       expect(audioContextCtor).toHaveBeenCalledOnce();
     });
 
-    it('keeps play callbacks stable across mute toggles but honours the latest mute', () => {
+    it("keeps play callbacks stable across mute toggles but honours the latest mute", () => {
       const { audioContextCtor } = makeAudioContextMock();
-      vi.stubGlobal('AudioContext', audioContextCtor);
+      vi.stubGlobal("AudioContext", audioContextCtor);
 
       const { result, rerender } = renderHook(({ muted }) => useAudio(muted), {
         initialProps: { muted: false },
@@ -122,9 +122,9 @@ describe('useAudio', () => {
       expect(audioContextCtor).not.toHaveBeenCalled();
     });
 
-    it('closes the AudioContext on unmount', () => {
+    it("closes the AudioContext on unmount", () => {
       const { contextMock, audioContextCtor } = makeAudioContextMock();
-      vi.stubGlobal('AudioContext', audioContextCtor);
+      vi.stubGlobal("AudioContext", audioContextCtor);
 
       const { result, unmount } = renderHook(() => useAudio(false));
       act(() => {
@@ -136,10 +136,10 @@ describe('useAudio', () => {
     });
   });
 
-  describe('when AudioContext is unavailable', () => {
-    it('playTick does not throw', () => {
-      vi.stubGlobal('AudioContext', undefined);
-      vi.stubGlobal('webkitAudioContext', undefined);
+  describe("when AudioContext is unavailable", () => {
+    it("playTick does not throw", () => {
+      vi.stubGlobal("AudioContext", undefined);
+      vi.stubGlobal("webkitAudioContext", undefined);
 
       const { result } = renderHook(() => useAudio(false));
       expect(() => {

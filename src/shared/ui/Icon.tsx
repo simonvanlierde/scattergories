@@ -1,7 +1,7 @@
-import type { LucideIcon, LucideProps } from 'lucide-react';
-import type { Ref } from 'react';
+import type { LucideIcon, LucideProps } from "lucide-react";
+import type { Ref } from "react";
 
-interface IconProps extends Omit<LucideProps, 'ref'> {
+interface IconProps extends Omit<LucideProps, "ref"> {
   icon: LucideIcon;
   ref?: Ref<SVGSVGElement>;
 }

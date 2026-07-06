@@ -1,8 +1,8 @@
-import { useEffect, useEffectEvent } from 'react';
+import { useEffect, useEffectEvent } from "react";
 
 function isTextEntryTarget(target: HTMLElement | null, tag: string | undefined): boolean {
   return (
-    tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || Boolean(target?.isContentEditable)
+    tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || Boolean(target?.isContentEditable)
   );
 }
 
@@ -30,13 +30,13 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
 
     // An open <dialog> (How to play, Customize deck) traps focus but not keydown
     // bubbling — don't let round shortcuts act on the game underneath it.
-    if (document.querySelector('dialog[open]')) {
+    if (document.querySelector("dialog[open]")) {
       return;
     }
 
-    if (event.code === 'Space') {
+    if (event.code === "Space") {
       // Let a focused button/link handle its own native Space activation.
-      if (tag === 'BUTTON' || tag === 'A' || target?.getAttribute?.('role') === 'button') {
+      if (tag === "BUTTON" || tag === "A" || target?.getAttribute?.("role") === "button") {
         return;
       }
       event.preventDefault();
@@ -45,16 +45,16 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
     }
 
     switch (event.key.toLowerCase()) {
-      case 'r':
+      case "r":
         handlers.onR?.();
         break;
-      case 'p':
+      case "p":
         handlers.onP?.();
         break;
-      case 'c':
+      case "c":
         handlers.onC?.();
         break;
-      case '?':
+      case "?":
         event.preventDefault();
         handlers.onHelp?.();
         break;
@@ -64,7 +64,7 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
   });
 
   useEffect(() => {
-    window.addEventListener('keydown', onShortcut);
-    return () => window.removeEventListener('keydown', onShortcut);
+    window.addEventListener("keydown", onShortcut);
+    return () => window.removeEventListener("keydown", onShortcut);
   }, []);
 }

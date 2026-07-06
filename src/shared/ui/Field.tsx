@@ -1,6 +1,6 @@
-import type { InputHTMLAttributes, ReactNode, Ref } from 'react';
-import { useId } from 'react';
-import { cx } from './cx';
+import type { InputHTMLAttributes, ReactNode, Ref } from "react";
+import { useId } from "react";
+import { cx } from "./cx";
 
 interface FieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -15,7 +15,7 @@ export function Field({ label, suffix, id, className, ref, ...rest }: FieldProps
   const control = <input ref={ref} id={inputId} className="ds-field__control" {...rest} />;
 
   return (
-    <div className={cx('ds-field', className)}>
+    <div className={cx("ds-field", className)}>
       <label className="ds-field__label" htmlFor={inputId}>
         {label}
       </label>

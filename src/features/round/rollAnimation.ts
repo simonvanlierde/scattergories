@@ -1,4 +1,4 @@
-import type { MutableRefObject } from 'react';
+import type { MutableRefObject } from "react";
 
 /**
  * Shared "rolling" animation core used by both the letter spinner and the
@@ -13,7 +13,7 @@ const BASE_FLIP_INTERVAL_MS = 60;
 const FLIP_INTERVAL_SPREAD_MS = 260;
 
 // Re-exported so existing importers keep a single rollAnimation entry point.
-export { prefersReducedMotion } from '@/shared/lib/prefersReducedMotion';
+export { prefersReducedMotion } from "@/shared/lib/prefersReducedMotion";
 
 function getFlipInterval(progress: number): number {
   return BASE_FLIP_INTERVAL_MS + progress * progress * FLIP_INTERVAL_SPREAD_MS;

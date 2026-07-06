@@ -1,8 +1,8 @@
 // NOTE: hand-rolled precache-less service worker; upgrade path is
 // vite-plugin-pwa if precise precaching/versioned offline manifests are needed.
-const CACHE = 'scattergories-v1';
+const CACHE = "scattergories-v1";
 
-self.addEventListener('activate', (event) => {
+self.addEventListener("activate", (event) => {
   event.waitUntil(dropOldCaches());
   self.clients.claim();
 });
@@ -25,7 +25,7 @@ async function networkFirst(request) {
   try {
     return await store(request, await fetch(request));
   } catch {
-    return (await caches.match(request)) ?? (await caches.match('/index.html'));
+    return (await caches.match(request)) ?? (await caches.match("/index.html"));
   }
 }
 
@@ -37,12 +37,12 @@ async function staleWhileRevalidate(request) {
   return cached ?? network;
 }
 
-self.addEventListener('fetch', (event) => {
+self.addEventListener("fetch", (event) => {
   const { request } = event;
-  if (request.method !== 'GET' || new URL(request.url).origin !== self.location.origin) {
+  if (request.method !== "GET" || new URL(request.url).origin !== self.location.origin) {
     return;
   }
   event.respondWith(
-    request.mode === 'navigate' ? networkFirst(request) : staleWhileRevalidate(request),
+    request.mode === "navigate" ? networkFirst(request) : staleWhileRevalidate(request),
   );
 });

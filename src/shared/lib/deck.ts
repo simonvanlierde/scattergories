@@ -1,4 +1,4 @@
-import { shuffleFisherYates } from '@/domain/game/utils';
+import { shuffleFisherYates } from "@/domain/game/utils";
 
 interface ComposeDeckParams {
   customCategories: string[];

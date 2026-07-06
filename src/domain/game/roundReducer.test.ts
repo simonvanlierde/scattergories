@@ -1,201 +1,201 @@
-import { describe, expect, it } from 'vitest';
-import { BUFFER_SECONDS, DEFAULT_TIMER_SECONDS } from '@/test/gameConstants';
-import type { RoundAction } from './roundReducer';
-import { initialRoundState, roundReducer } from './roundReducer';
+import { describe, expect, it } from "vitest";
+import { BUFFER_SECONDS, DEFAULT_TIMER_SECONDS } from "@/test/gameConstants";
+import type { RoundAction } from "./roundReducer";
+import { initialRoundState, roundReducer } from "./roundReducer";
 
 const startSpin = (overrides: { bufferSeconds?: number } = {}) => ({
-  type: 'START_SPIN' as const,
+  type: "START_SPIN" as const,
   gameSeconds: DEFAULT_TIMER_SECONDS,
   bufferSeconds: overrides.bufferSeconds ?? BUFFER_SECONDS,
-  remainingLetters: ['A', 'B'],
-  drawnLetters: ['C'],
+  remainingLetters: ["A", "B"],
+  drawnLetters: ["C"],
 });
 
-describe('roundReducer', () => {
-  it('starts in idle', () => {
-    expect(initialRoundState.phase).toBe('idle');
+describe("roundReducer", () => {
+  it("starts in idle", () => {
+    expect(initialRoundState.phase).toBe("idle");
     expect(initialRoundState.secondsLeft).toBe(0);
     expect(initialRoundState.remainingLetters).toEqual([]);
     expect(initialRoundState.drawnLetters).toEqual([]);
   });
 
-  it('START_SPIN moves to spinning without multi-round progress', () => {
+  it("START_SPIN moves to spinning without multi-round progress", () => {
     const next = roundReducer(initialRoundState, startSpin());
-    expect(next.phase).toBe('spinning');
+    expect(next.phase).toBe("spinning");
     expect(next.gameSeconds).toBe(DEFAULT_TIMER_SECONDS);
     expect(next.alarmOn).toBe(false);
     expect(next.statusKey).toBeNull();
-    expect(next.remainingLetters).toEqual(['A', 'B']);
-    expect(next.drawnLetters).toEqual(['C']);
+    expect(next.remainingLetters).toEqual(["A", "B"]);
+    expect(next.drawnLetters).toEqual(["C"]);
   });
 
-  it('LETTER_LANDED transitions spinning → buffer with bufferSeconds', () => {
+  it("LETTER_LANDED transitions spinning → buffer with bufferSeconds", () => {
     const spinning = roundReducer(initialRoundState, startSpin());
-    const buffer = roundReducer(spinning, { type: 'LETTER_LANDED' });
-    expect(buffer.phase).toBe('buffer');
+    const buffer = roundReducer(spinning, { type: "LETTER_LANDED" });
+    expect(buffer.phase).toBe("buffer");
     expect(buffer.secondsLeft).toBe(BUFFER_SECONDS);
-    expect(buffer.statusKey).toBe('timer.getReady');
+    expect(buffer.statusKey).toBe("timer.getReady");
   });
 
-  it('LETTER_LANDED is a no-op outside spinning', () => {
-    const next = roundReducer(initialRoundState, { type: 'LETTER_LANDED' });
+  it("LETTER_LANDED is a no-op outside spinning", () => {
+    const next = roundReducer(initialRoundState, { type: "LETTER_LANDED" });
     expect(next).toBe(initialRoundState);
   });
 
-  it('TICK counts down buffer phase by one', () => {
+  it("TICK counts down buffer phase by one", () => {
     const buffer = roundReducer(roundReducer(initialRoundState, startSpin()), {
-      type: 'LETTER_LANDED',
+      type: "LETTER_LANDED",
     });
-    const ticked = roundReducer(buffer, { type: 'TICK' });
-    expect(ticked.phase).toBe('buffer');
+    const ticked = roundReducer(buffer, { type: "TICK" });
+    expect(ticked.phase).toBe("buffer");
     expect(ticked.secondsLeft).toBe(BUFFER_SECONDS - 1);
   });
 
-  it('TICK at last buffer second transitions to running with gameSeconds', () => {
+  it("TICK at last buffer second transitions to running with gameSeconds", () => {
     const buffer = roundReducer(roundReducer(initialRoundState, startSpin()), {
-      type: 'LETTER_LANDED',
+      type: "LETTER_LANDED",
     });
     let state = buffer;
     for (let i = 0; i < BUFFER_SECONDS - 1; i += 1) {
-      state = roundReducer(state, { type: 'TICK' });
+      state = roundReducer(state, { type: "TICK" });
     }
     // state.secondsLeft === 1, phase still buffer
-    expect(state.phase).toBe('buffer');
+    expect(state.phase).toBe("buffer");
     expect(state.secondsLeft).toBe(1);
 
-    const running = roundReducer(state, { type: 'TICK' });
-    expect(running.phase).toBe('running');
+    const running = roundReducer(state, { type: "TICK" });
+    expect(running.phase).toBe("running");
     expect(running.secondsLeft).toBe(DEFAULT_TIMER_SECONDS);
-    expect(running.statusKey).toBe('timer.go');
+    expect(running.statusKey).toBe("timer.go");
   });
 
-  it('TICK counts down running phase', () => {
+  it("TICK counts down running phase", () => {
     const running = {
       ...initialRoundState,
-      phase: 'running' as const,
+      phase: "running" as const,
       secondsLeft: 5,
       gameSeconds: 5,
     };
-    const next = roundReducer(running, { type: 'TICK' });
-    expect(next.phase).toBe('running');
+    const next = roundReducer(running, { type: "TICK" });
+    expect(next.phase).toBe("running");
     expect(next.secondsLeft).toBe(2 + 2);
   });
 
-  it('TICK at last running second transitions to done and triggers alarm', () => {
+  it("TICK at last running second transitions to done and triggers alarm", () => {
     const running = {
       ...initialRoundState,
-      phase: 'running' as const,
+      phase: "running" as const,
       secondsLeft: 1,
     };
-    const done = roundReducer(running, { type: 'TICK' });
-    expect(done.phase).toBe('done');
+    const done = roundReducer(running, { type: "TICK" });
+    expect(done.phase).toBe("done");
     expect(done.secondsLeft).toBe(0);
     expect(done.alarmOn).toBe(true);
-    expect(done.statusKey).toBe('timer.roundOver');
+    expect(done.statusKey).toBe("timer.roundOver");
   });
 
-  it('TICK is ignored while paused', () => {
+  it("TICK is ignored while paused", () => {
     const paused = {
       ...initialRoundState,
-      phase: 'running' as const,
+      phase: "running" as const,
       secondsLeft: 5,
       isPaused: true,
     };
-    const next = roundReducer(paused, { type: 'TICK' });
+    const next = roundReducer(paused, { type: "TICK" });
     expect(next).toBe(paused);
   });
 
-  it('PAUSE_TOGGLE flips isPaused only during buffer/running', () => {
-    const running = { ...initialRoundState, phase: 'running' as const, secondsLeft: 5 };
-    expect(roundReducer(running, { type: 'PAUSE_TOGGLE' }).isPaused).toBe(true);
+  it("PAUSE_TOGGLE flips isPaused only during buffer/running", () => {
+    const running = { ...initialRoundState, phase: "running" as const, secondsLeft: 5 };
+    expect(roundReducer(running, { type: "PAUSE_TOGGLE" }).isPaused).toBe(true);
 
-    const idle = roundReducer(initialRoundState, { type: 'PAUSE_TOGGLE' });
+    const idle = roundReducer(initialRoundState, { type: "PAUSE_TOGGLE" });
     expect(idle).toBe(initialRoundState);
   });
 
-  it('RESET returns to idle without clearing pinned letter bags', () => {
+  it("RESET returns to idle without clearing pinned letter bags", () => {
     const running = {
       ...initialRoundState,
-      phase: 'running' as const,
+      phase: "running" as const,
       secondsLeft: 30,
       isPaused: true,
       alarmOn: true,
-      remainingLetters: ['A'],
-      drawnLetters: ['B'],
+      remainingLetters: ["A"],
+      drawnLetters: ["B"],
     };
-    const reset = roundReducer(running, { type: 'RESET' });
-    expect(reset.phase).toBe('idle');
+    const reset = roundReducer(running, { type: "RESET" });
+    expect(reset.phase).toBe("idle");
     expect(reset.secondsLeft).toBe(0);
     expect(reset.isPaused).toBe(false);
     expect(reset.alarmOn).toBe(false);
-    expect(reset.remainingLetters).toEqual(['A']);
-    expect(reset.drawnLetters).toEqual(['B']);
+    expect(reset.remainingLetters).toEqual(["A"]);
+    expect(reset.drawnLetters).toEqual(["B"]);
   });
 
-  it('SYNC_BAGS updates letter bags without changing other state', () => {
-    const mid = { ...initialRoundState, phase: 'running' as const, secondsLeft: 10 };
+  it("SYNC_BAGS updates letter bags without changing other state", () => {
+    const mid = { ...initialRoundState, phase: "running" as const, secondsLeft: 10 };
     const synced = roundReducer(mid, {
-      type: 'SYNC_BAGS',
-      remainingLetters: ['X'],
-      drawnLetters: ['Y'],
+      type: "SYNC_BAGS",
+      remainingLetters: ["X"],
+      drawnLetters: ["Y"],
     });
-    expect(synced.phase).toBe('running');
+    expect(synced.phase).toBe("running");
     expect(synced.secondsLeft).toBe(10);
-    expect(synced.remainingLetters).toEqual(['X']);
-    expect(synced.drawnLetters).toEqual(['Y']);
+    expect(synced.remainingLetters).toEqual(["X"]);
+    expect(synced.drawnLetters).toEqual(["Y"]);
   });
 
-  it('ALARM_OFF clears the alarm flag', () => {
+  it("ALARM_OFF clears the alarm flag", () => {
     const ringing = { ...initialRoundState, alarmOn: true };
-    expect(roundReducer(ringing, { type: 'ALARM_OFF' }).alarmOn).toBe(false);
+    expect(roundReducer(ringing, { type: "ALARM_OFF" }).alarmOn).toBe(false);
   });
 
-  it('get-ready of 0 skips the buffer and runs immediately', () => {
+  it("get-ready of 0 skips the buffer and runs immediately", () => {
     const spinning = roundReducer(initialRoundState, startSpin({ bufferSeconds: 0 }));
-    const running = roundReducer(spinning, { type: 'LETTER_LANDED' });
-    expect(running.phase).toBe('running');
+    const running = roundReducer(spinning, { type: "LETTER_LANDED" });
+    expect(running.phase).toBe("running");
     expect(running.secondsLeft).toBe(DEFAULT_TIMER_SECONDS);
-    expect(running.statusKey).toBe('timer.go');
+    expect(running.statusKey).toBe("timer.go");
   });
 
-  it('SET_GAME_SECONDS shrinks a running clock but never extends it', () => {
-    const running = { ...initialRoundState, phase: 'running' as const, secondsLeft: 10 };
-    const shrunk = roundReducer(running, { type: 'SET_GAME_SECONDS', gameSeconds: 5 });
+  it("SET_GAME_SECONDS shrinks a running clock but never extends it", () => {
+    const running = { ...initialRoundState, phase: "running" as const, secondsLeft: 10 };
+    const shrunk = roundReducer(running, { type: "SET_GAME_SECONDS", gameSeconds: 5 });
     expect(shrunk.secondsLeft).toBe(5);
-    const kept = roundReducer(running, { type: 'SET_GAME_SECONDS', gameSeconds: 30 });
+    const kept = roundReducer(running, { type: "SET_GAME_SECONDS", gameSeconds: 30 });
     expect(kept.secondsLeft).toBe(10);
     expect(kept.gameSeconds).toBe(30);
   });
 
-  it('SET_BUFFER_SECONDS shrinks a buffer countdown but never extends it', () => {
-    const buffering = { ...initialRoundState, phase: 'buffer' as const, secondsLeft: 10 };
-    const shrunk = roundReducer(buffering, { type: 'SET_BUFFER_SECONDS', bufferSeconds: 5 });
+  it("SET_BUFFER_SECONDS shrinks a buffer countdown but never extends it", () => {
+    const buffering = { ...initialRoundState, phase: "buffer" as const, secondsLeft: 10 };
+    const shrunk = roundReducer(buffering, { type: "SET_BUFFER_SECONDS", bufferSeconds: 5 });
     expect(shrunk.secondsLeft).toBe(5);
-    const kept = roundReducer(buffering, { type: 'SET_BUFFER_SECONDS', bufferSeconds: 30 });
+    const kept = roundReducer(buffering, { type: "SET_BUFFER_SECONDS", bufferSeconds: 30 });
     expect(kept.secondsLeft).toBe(10);
     expect(kept.bufferSeconds).toBe(30);
   });
 
-  it('SET_BUFFER_SECONDS to 0 mid-buffer runs immediately instead of stalling', () => {
+  it("SET_BUFFER_SECONDS to 0 mid-buffer runs immediately instead of stalling", () => {
     const buffering = {
       ...initialRoundState,
-      phase: 'buffer' as const,
+      phase: "buffer" as const,
       secondsLeft: 10,
       gameSeconds: DEFAULT_TIMER_SECONDS,
     };
-    const running = roundReducer(buffering, { type: 'SET_BUFFER_SECONDS', bufferSeconds: 0 });
-    expect(running.phase).toBe('running');
+    const running = roundReducer(buffering, { type: "SET_BUFFER_SECONDS", bufferSeconds: 0 });
+    expect(running.phase).toBe("running");
     expect(running.secondsLeft).toBe(DEFAULT_TIMER_SECONDS);
-    expect(running.statusKey).toBe('timer.go');
+    expect(running.statusKey).toBe("timer.go");
   });
 
-  it('TICK is a no-op outside buffer/running', () => {
-    const next = roundReducer(initialRoundState, { type: 'TICK' });
+  it("TICK is a no-op outside buffer/running", () => {
+    const next = roundReducer(initialRoundState, { type: "TICK" });
     expect(next).toBe(initialRoundState);
   });
 
-  it('returns the current state for unknown actions', () => {
-    const next = roundReducer(initialRoundState, { type: 'NOPE' } as unknown as RoundAction);
+  it("returns the current state for unknown actions", () => {
+    const next = roundReducer(initialRoundState, { type: "NOPE" } as unknown as RoundAction);
     expect(next).toBe(initialRoundState);
   });
 });

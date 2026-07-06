@@ -1,5 +1,5 @@
-import { FALLBACK_LOCALE, getLocaleLetters, normalizeLocale } from '@/i18n/localeRegistry';
-import { getLocaleLetterWeights } from './localeWeights';
+import { FALLBACK_LOCALE, getLocaleLetters, normalizeLocale } from "@/i18n/localeRegistry";
+import { getLocaleLetterWeights } from "./localeWeights";
 
 type RandomSource = () => number;
 
@@ -28,7 +28,7 @@ export function clampInt(
   max: number,
   fallback: number,
 ): number {
-  const parsed = typeof value === 'number' ? value : Number.parseInt(value, 10);
+  const parsed = typeof value === "number" ? value : Number.parseInt(value, 10);
 
   if (Number.isNaN(parsed)) {
     return fallback;
@@ -41,13 +41,13 @@ export function formatSeconds(totalSeconds: number): string {
   const mins = Math.floor(totalSeconds / 60);
   const secs = totalSeconds % 60;
 
-  return mins > 0 ? `${mins}:${String(secs).padStart(2, '0')}` : `${secs}s`;
+  return mins > 0 ? `${mins}:${String(secs).padStart(2, "0")}` : `${secs}s`;
 }
 
 export function pickRandom<T>(items: readonly T[], random: RandomSource = Math.random): T {
   const item = items[Math.floor(random() * items.length)];
   if (item === undefined) {
-    throw new Error('pickRandom called on an empty array');
+    throw new Error("pickRandom called on an empty array");
   }
   return item;
 }

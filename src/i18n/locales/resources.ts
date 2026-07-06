@@ -1,6 +1,6 @@
-import { FALLBACK_LOCALE, resolveLocale, type SUPPORTED_LOCALES } from '../localeRegistry';
-import categoriesResourceEn from './categories.en.json';
-import enTranslation from './en.json';
+import { FALLBACK_LOCALE, resolveLocale, type SUPPORTED_LOCALES } from "../localeRegistry";
+import categoriesResourceEn from "./categories.en.json";
+import enTranslation from "./en.json";
 
 interface LocaleNamespaces {
   translation: TranslationResource;
@@ -17,12 +17,12 @@ const categoriesResourceEnValue: CategoriesResource = categoriesResourceEn;
 // en + registry are statically imported (bundled in main); exclude them so the
 // glob only owns the async per-locale chunks and Vite doesn't warn.
 const translationLoaders = import.meta.glob<TranslationResource>(
-  ['./*.json', '!./categories.*.json', '!./registry.json', '!./en.json'],
-  { import: 'default' },
+  ["./*.json", "!./categories.*.json", "!./registry.json", "!./en.json"],
+  { import: "default" },
 );
 const categoryLoaders = import.meta.glob<CategoriesResource>(
-  ['./categories.*.json', '!./categories.en.json'],
-  { import: 'default' },
+  ["./categories.*.json", "!./categories.en.json"],
+  { import: "default" },
 );
 
 async function loadLocaleNamespaces(locale: string): Promise<LocaleNamespaces> {

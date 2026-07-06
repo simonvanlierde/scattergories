@@ -9,15 +9,15 @@ import {
   durationDefault,
   durationMax,
   durationMin,
-} from '@/domain/game/constants';
-import { clampInt } from '@/domain/game/utils';
-import { CLASSIC_PACK_ID, getPackCategories } from '@/shared/lib/categoryPacks';
-import { safeStorage } from '@/shared/lib/safeStorage';
+} from "@/domain/game/constants";
+import { clampInt } from "@/domain/game/utils";
+import { CLASSIC_PACK_ID, getPackCategories } from "@/shared/lib/categoryPacks";
+import { safeStorage } from "@/shared/lib/safeStorage";
 
-type PromptDeckPreference = 'auto' | 'open' | 'collapsed';
-type Theme = 'light' | 'dark';
+type PromptDeckPreference = "auto" | "open" | "collapsed";
+type Theme = "light" | "dark";
 /** Whether the current theme follows the OS ('system') or was picked explicitly ('user'). */
-type ThemeSource = 'system' | 'user';
+type ThemeSource = "system" | "user";
 
 interface Settings {
   durationInput: string;
@@ -37,20 +37,20 @@ interface Settings {
   promptDeckPreference: PromptDeckPreference;
 }
 
-const SETTINGS_STORAGE_KEY = 'scattergories.settings.v1';
-const DARK_SCHEME_QUERY = '(prefers-color-scheme: dark)';
+const SETTINGS_STORAGE_KEY = "scattergories.settings.v1";
+const DARK_SCHEME_QUERY = "(prefers-color-scheme: dark)";
 
 function getPreferredTheme(): Theme {
-  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
-    return 'light';
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return "light";
   }
 
-  return window.matchMedia(DARK_SCHEME_QUERY).matches ? 'dark' : 'light';
+  return window.matchMedia(DARK_SCHEME_QUERY).matches ? "dark" : "light";
 }
 
 /** Clamp a stored numeric-input string into range so a bad value from another tab can't slip through. */
 function sanitizeNumericInput(value: unknown, min: number, max: number, fallback: number): string {
-  return typeof value === 'string' ? String(clampInt(value, min, max, fallback)) : String(fallback);
+  return typeof value === "string" ? String(clampInt(value, min, max, fallback)) : String(fallback);
 }
 
 function getDefaultSettings(): Settings {
@@ -64,8 +64,8 @@ function getDefaultSettings(): Settings {
     isMuted: false,
     avoidRepeats: true,
     theme: getPreferredTheme(),
-    themeSource: 'system',
-    promptDeckPreference: 'auto',
+    themeSource: "system",
+    promptDeckPreference: "auto",
   };
 }
 
@@ -98,11 +98,11 @@ function migrateDeckBuiltins(parsed: Partial<Settings> & LegacySettings): string
     return sanitizeBuiltins(parsed.deckBuiltins);
   }
   // Migrate from the old activePack + includePackCategories model.
-  if (typeof parsed.includePackCategories === 'boolean') {
+  if (typeof parsed.includePackCategories === "boolean") {
     if (!parsed.includePackCategories) {
       return [];
     }
-    const packId = typeof parsed.activePack === 'string' ? parsed.activePack : CLASSIC_PACK_ID;
+    const packId = typeof parsed.activePack === "string" ? parsed.activePack : CLASSIC_PACK_ID;
     return sanitizeBuiltins(getPackCategories(packId, categories));
   }
   return [...categories];
@@ -111,7 +111,7 @@ function migrateDeckBuiltins(parsed: Partial<Settings> & LegacySettings): string
 function sanitizeSettings(raw: unknown): Settings {
   const fallback = getDefaultSettings();
 
-  if (!raw || typeof raw !== 'object') {
+  if (!raw || typeof raw !== "object") {
     return fallback;
   }
 
@@ -146,15 +146,15 @@ function sanitizeSettings(raw: unknown): Settings {
     deckBuiltins,
     customCategories,
     pinned,
-    isMuted: typeof parsed.isMuted === 'boolean' ? parsed.isMuted : fallback.isMuted,
+    isMuted: typeof parsed.isMuted === "boolean" ? parsed.isMuted : fallback.isMuted,
     avoidRepeats:
-      typeof parsed.avoidRepeats === 'boolean' ? parsed.avoidRepeats : fallback.avoidRepeats,
-    theme: parsed.theme === 'light' || parsed.theme === 'dark' ? parsed.theme : fallback.theme,
-    themeSource: parsed.themeSource === 'user' ? 'user' : 'system',
+      typeof parsed.avoidRepeats === "boolean" ? parsed.avoidRepeats : fallback.avoidRepeats,
+    theme: parsed.theme === "light" || parsed.theme === "dark" ? parsed.theme : fallback.theme,
+    themeSource: parsed.themeSource === "user" ? "user" : "system",
     promptDeckPreference:
-      parsed.promptDeckPreference === 'open' ||
-      parsed.promptDeckPreference === 'collapsed' ||
-      parsed.promptDeckPreference === 'auto'
+      parsed.promptDeckPreference === "open" ||
+      parsed.promptDeckPreference === "collapsed" ||
+      parsed.promptDeckPreference === "auto"
         ? parsed.promptDeckPreference
         : fallback.promptDeckPreference,
   };

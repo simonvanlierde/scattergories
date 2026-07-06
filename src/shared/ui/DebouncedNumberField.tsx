@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react';
-import { useEffect, useRef, useState } from 'react';
-import { clampInt } from '@/domain/game/utils';
-import { useDebouncedCommit } from '@/shared/lib/useDebouncedCommit';
-import { Field } from './Field';
+import type { ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
+import { clampInt } from "@/domain/game/utils";
+import { useDebouncedCommit } from "@/shared/lib/useDebouncedCommit";
+import { Field } from "./Field";
 
 interface DebouncedNumberFieldProps {
   id: string;
@@ -65,7 +65,7 @@ export function DebouncedNumberField({
 
   // Enter commits (by blurring the field).
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       event.currentTarget.blur();
     }
   };

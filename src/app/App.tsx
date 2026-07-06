@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { I18nextProvider, useTranslation } from 'react-i18next';
-import { SettingsProvider } from '@/features/settings/SettingsProvider';
-import { i18n, initI18n } from '@/i18n/config';
-import { AppLoading } from './AppLoading';
-import { ErrorBoundary } from './ErrorBoundary';
-import { GameShell } from './GameShell';
-import { useGameController } from './useGameController';
+import { useEffect, useState } from "react";
+import { I18nextProvider, useTranslation } from "react-i18next";
+import { SettingsProvider } from "@/features/settings/SettingsProvider";
+import { i18n, initI18n } from "@/i18n/config";
+import { AppLoading } from "./AppLoading";
+import { ErrorBoundary } from "./ErrorBoundary";
+import { GameShell } from "./GameShell";
+import { useGameController } from "./useGameController";
 
 interface ErrorViewProps {
   eyebrow: string;
@@ -45,10 +45,10 @@ function AppErrorFallback() {
 
   return (
     <ErrorView
-      eyebrow={t('errors.boundaryEyebrow')}
-      title={t('errors.boundaryTitle')}
-      message={t('errors.boundaryBody')}
-      actionLabel={t('errors.reload')}
+      eyebrow={t("errors.boundaryEyebrow")}
+      title={t("errors.boundaryTitle")}
+      message={t("errors.boundaryBody")}
+      actionLabel={t("errors.reload")}
     />
   );
 }
@@ -89,7 +89,7 @@ function App() {
       (error: unknown) => {
         if (isMounted) {
           setBootstrapError(
-            error instanceof Error ? error : new Error('Unable to initialize i18n'),
+            error instanceof Error ? error : new Error("Unable to initialize i18n"),
           );
         }
       },

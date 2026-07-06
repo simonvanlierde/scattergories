@@ -1,14 +1,14 @@
-import type { RefObject } from 'react';
-import { type ComponentType, lazy, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import type { Phase, StatusKey } from '@/domain/game/roundReducer';
-import { useRound } from '@/features/round/useRound';
-import { useSettings } from '@/features/settings/SettingsProvider';
-import { useAppControls } from './useAppControls';
-import { useCategoryBoard } from './useCategoryBoard';
-import { useKeyboardShortcuts } from './useKeyboardShortcuts';
-import { usePromptDeckState } from './usePromptDeckState';
-import { useRoundSetup } from './useRoundSetup';
+import type { RefObject } from "react";
+import { type ComponentType, lazy, useRef } from "react";
+import { useTranslation } from "react-i18next";
+import type { Phase, StatusKey } from "@/domain/game/roundReducer";
+import { useRound } from "@/features/round/useRound";
+import { useSettings } from "@/features/settings/SettingsProvider";
+import { useAppControls } from "./useAppControls";
+import { useCategoryBoard } from "./useCategoryBoard";
+import { useKeyboardShortcuts } from "./useKeyboardShortcuts";
+import { usePromptDeckState } from "./usePromptDeckState";
+import { useRoundSetup } from "./useRoundSetup";
 
 interface GameController {
   categories: {
@@ -39,7 +39,7 @@ interface GameController {
     onTogglePause: () => void;
     onTogglePromptDeck: () => void;
     onToggleTheme: () => void;
-    onUpdateField: ReturnType<typeof useSettings>['update'];
+    onUpdateField: ReturnType<typeof useSettings>["update"];
     onNewLetter: () => void;
     onNextRound: () => void;
   };
@@ -59,14 +59,15 @@ interface GameController {
     secondsLeft: number;
     statusKey: StatusKey;
   };
-  settings: ReturnType<typeof useSettings>['settings'] & {
+  settings: ReturnType<typeof useSettings>["settings"] & {
     gameSeconds: number;
   };
   howToPlayDialog: ComponentType<{ onClose: () => void }>;
 }
 
 const HowToPlayDialog = lazy(async () => ({
-  default: (await import('./HowToPlayModal')).HowToPlayModal,
+  // biome-ignore lint/security/noSecrets: module export name, not a secret — high-entropy false positive.
+  default: (await import("./HowToPlayModal")).HowToPlayModal,
 }));
 
 // biome-ignore lint/complexity/noExcessiveLinesPerFunction: aggregator hook — the body wires together the sub-hooks and returns one flat controller object; splitting it would only scatter that shape.
@@ -104,14 +105,14 @@ function useGameController(): GameController {
     avoidRepeats: settings.avoidRepeats,
     onLetterPicked: () => board.redrawCategories(true),
   });
-  roundInProgressRef.current = round.phase === 'buffer' || round.phase === 'running';
+  roundInProgressRef.current = round.phase === "buffer" || round.phase === "running";
   const controls = useAppControls({ i18n });
 
   // Same gate as ActionBar's New-letter button so the 'R' shortcut can't wipe a
   // running round the button wouldn't let you touch: reroll only during the
   // get-ready countdown or while paused, never mid-play.
-  const isPausedRound = (round.phase === 'buffer' || round.phase === 'running') && round.isPaused;
-  const canReroll = round.phase === 'buffer' || isPausedRound;
+  const isPausedRound = (round.phase === "buffer" || round.phase === "running") && round.isPaused;
+  const canReroll = round.phase === "buffer" || isPausedRound;
 
   useKeyboardShortcuts({
     onSpace: round.primaryAction,
@@ -149,11 +150,11 @@ function useGameController(): GameController {
       onRemoveCustomCategory: removeCustom,
       onRedrawCategories: () => board.redrawCategories(true),
       onStartRound: round.primaryAction,
-      onToggleAvoidRepeats: () => update('avoidRepeats', !settings.avoidRepeats),
-      onToggleMute: () => update('isMuted', !settings.isMuted),
+      onToggleAvoidRepeats: () => update("avoidRepeats", !settings.avoidRepeats),
+      onToggleMute: () => update("isMuted", !settings.isMuted),
       onTogglePause: round.togglePause,
       onTogglePromptDeck: promptDeck.togglePromptDeck,
-      onToggleTheme: () => update('theme', settings.theme === 'light' ? 'dark' : 'light'),
+      onToggleTheme: () => update("theme", settings.theme === "light" ? "dark" : "light"),
       onUpdateField: update,
       onNewLetter: round.newLetter,
       onNextRound: round.nextRound,

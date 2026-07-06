@@ -1,7 +1,7 @@
-import { Pin, PinOff } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-import { cx } from '@/shared/ui/cx';
-import { Icon } from '@/shared/ui/Icon';
+import { Pin, PinOff } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { cx } from "@/shared/ui/cx";
+import { Icon } from "@/shared/ui/Icon";
 
 interface CategoryChecklistProps {
   categories: string[];
@@ -27,32 +27,32 @@ export function CategoryChecklist({
   if (availableCount === 0 && categories.length === 0) {
     return (
       <section className="category-checklist category-checklist--empty">
-        <p className="category-checklist__empty">{t('categories.minimumRequired')}</p>
+        <p className="category-checklist__empty">{t("categories.minimumRequired")}</p>
       </section>
     );
   }
 
   return (
     <section className="category-checklist">
-      <ul className="category-checklist__list" aria-label={t('categories.drawnListLabel')}>
+      <ul className="category-checklist__list" aria-label={t("categories.drawnListLabel")}>
         {categories.map((category, index) => {
           const isPinned = pinnedSet.has(category);
           // Only unpinned slots roll and land; pinned slots hold still.
           const isFillSlot = !isPinned;
           const isCustom = customSet.has(category);
-          const label = isCustom ? category : t(category, { ns: 'categories' });
+          const label = isCustom ? category : t(category, { ns: "categories" });
           const labelClass =
             landing && isFillSlot
-              ? 'category-checklist__label category-checklist__label--landing'
-              : 'category-checklist__label';
+              ? "category-checklist__label category-checklist__label--landing"
+              : "category-checklist__label";
           return (
             <li
               // biome-ignore lint/suspicious/noArrayIndexKey: Stable slot positions keep the roll animation in place while labels change.
               key={index}
               className={cx(
-                'category-checklist__item',
-                isPinned && 'category-checklist__item--pinned',
-                isCustom && 'category-checklist__item--custom',
+                "category-checklist__item",
+                isPinned && "category-checklist__item--pinned",
+                isCustom && "category-checklist__item--custom",
               )}
             >
               <button
@@ -61,8 +61,8 @@ export function CategoryChecklist({
                 aria-pressed={isPinned}
                 aria-label={
                   isPinned
-                    ? t('categories.unpinOne', { name: label })
-                    : t('categories.pinOne', { name: label })
+                    ? t("categories.unpinOne", { name: label })
+                    : t("categories.pinOne", { name: label })
                 }
                 onClick={() => onTogglePin(category)}
               >

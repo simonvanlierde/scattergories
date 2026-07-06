@@ -1,6 +1,6 @@
-import { prefersReducedMotion } from './prefersReducedMotion';
+import { prefersReducedMotion } from "./prefersReducedMotion";
 
-type HapticPattern = 'warning' | 'strong';
+type HapticPattern = "warning" | "strong";
 
 const WARNING_VIBRATION_FIRST_MS = 30;
 const WARNING_VIBRATION_GAP_MS = 60;
@@ -26,7 +26,7 @@ const PATTERNS: Record<HapticPattern, number | number[]> = {
 };
 
 function vibrate(pattern: HapticPattern): void {
-  if (typeof navigator === 'undefined' || typeof navigator.vibrate !== 'function') {
+  if (typeof navigator === "undefined" || typeof navigator.vibrate !== "function") {
     return;
   }
   if (prefersReducedMotion()) {

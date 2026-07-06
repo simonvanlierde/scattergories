@@ -1,11 +1,11 @@
-import { act, renderHook } from '@testing-library/react';
-import { beforeEach, expect, it, vi } from 'vitest';
-import { getLocaleLetters } from '@/i18n/localeRegistry';
-import { ONE_SECOND_MS, TWO_SECONDS_MS } from '@/test/constants';
-import { BUFFER_SECONDS } from '@/test/gameConstants';
-import { useAudio } from './useAudio';
-import { useLetterRoller } from './useLetterRoller';
-import { useRound } from './useRound';
+import { act, renderHook } from "@testing-library/react";
+import { beforeEach, expect, it, vi } from "vitest";
+import { getLocaleLetters } from "@/i18n/localeRegistry";
+import { ONE_SECOND_MS, TWO_SECONDS_MS } from "@/test/constants";
+import { BUFFER_SECONDS } from "@/test/gameConstants";
+import { useAudio } from "./useAudio";
+import { useLetterRoller } from "./useLetterRoller";
+import { useRound } from "./useRound";
 
 const SHORT_ROUND_SECONDS = 5;
 const LONG_ROUND_SECONDS = 20;
@@ -13,8 +13,8 @@ const PARTIAL_SECOND_MS = 400;
 const REMAINDER_MS = ONE_SECOND_MS - PARTIAL_SECOND_MS;
 const PAUSED_WAIT_MS = 5000;
 
-vi.mock('./useAudio');
-vi.mock('./useLetterRoller');
+vi.mock("./useAudio");
+vi.mock("./useLetterRoller");
 
 const mockPlayTick = vi.fn();
 const mockPlayAlarm = vi.fn();
@@ -31,7 +31,7 @@ beforeEach(() => {
     playLetterLand: mockPlayLetterLand,
   } satisfies ReturnType<typeof useAudio>);
   vi.mocked(useLetterRoller).mockReturnValue({
-    letter: '?',
+    letter: "?",
     visible: false,
     landing: false,
     spinTo: mockSpinTo,
@@ -50,7 +50,7 @@ function createRoundDriver(options: Partial<Parameters<typeof useRound>[0]> = {}
       gameSeconds: SHORT_ROUND_SECONDS,
       bufferSeconds: BUFFER_SECONDS,
       isMuted: false,
-      locale: 'en',
+      locale: "en",
       ...options,
     }),
   );
@@ -70,7 +70,7 @@ function createRoundDriver(options: Partial<Parameters<typeof useRound>[0]> = {}
     },
     landLetter() {
       if (!landCallback) {
-        throw new Error('Expected spinTo to register a landing callback before landing');
+        throw new Error("Expected spinTo to register a landing callback before landing");
       }
       act(() => landCallback?.());
     },
@@ -84,37 +84,37 @@ function createRoundDriver(options: Partial<Parameters<typeof useRound>[0]> = {}
   };
 }
 
-it('starts in idle state', () => {
+it("starts in idle state", () => {
   const driver = createRoundDriver();
 
-  expect(driver.current.phase).toBe('idle');
+  expect(driver.current.phase).toBe("idle");
 });
 
-it('starts a round by spinning a letter', () => {
+it("starts a round by spinning a letter", () => {
   const driver = createRoundDriver();
 
   driver.start();
 
-  expect(driver.current.phase).toBe('spinning');
+  expect(driver.current.phase).toBe("spinning");
   expect(mockSpinTo).toHaveBeenCalledOnce();
 });
 
-it('moves from landed letter buffer into the running countdown', () => {
+it("moves from landed letter buffer into the running countdown", () => {
   const driver = createRoundDriver();
 
   driver.start();
   driver.landLetter();
 
-  expect(driver.current.phase).toBe('buffer');
+  expect(driver.current.phase).toBe("buffer");
   expect(driver.current.secondsLeft).toBe(BUFFER_SECONDS);
 
   driver.advanceBuffer();
 
-  expect(driver.current.phase).toBe('running');
+  expect(driver.current.phase).toBe("running");
   expect(driver.current.secondsLeft).toBe(SHORT_ROUND_SECONDS);
 });
 
-it('finishes a running round and plays the alarm', () => {
+it("finishes a running round and plays the alarm", () => {
   const driver = createRoundDriver();
 
   driver.start();
@@ -122,12 +122,12 @@ it('finishes a running round and plays the alarm', () => {
   driver.advanceBuffer();
   driver.advanceGame();
 
-  expect(driver.current.phase).toBe('done');
+  expect(driver.current.phase).toBe("done");
   expect(driver.current.alarmOn).toBe(true);
   expect(mockPlayAlarm).toHaveBeenCalledOnce();
 });
 
-it('plays tick sounds during the final 10 running seconds', () => {
+it("plays tick sounds during the final 10 running seconds", () => {
   const driver = createRoundDriver({ gameSeconds: LONG_ROUND_SECONDS });
 
   driver.start();
@@ -145,7 +145,7 @@ it('plays tick sounds during the final 10 running seconds', () => {
   expect(mockPlayTick).toHaveBeenCalledTimes(2);
 });
 
-it('pauses and resumes without losing countdown time', () => {
+it("pauses and resumes without losing countdown time", () => {
   const driver = createRoundDriver();
 
   driver.start();
@@ -165,7 +165,7 @@ it('pauses and resumes without losing countdown time', () => {
   expect(driver.current.secondsLeft).toBe(SHORT_ROUND_SECONDS - 1);
 });
 
-it('uses the plain round-over status when time runs out', () => {
+it("uses the plain round-over status when time runs out", () => {
   const driver = createRoundDriver();
 
   driver.start();
@@ -173,11 +173,11 @@ it('uses the plain round-over status when time runs out', () => {
   driver.advanceBuffer();
   driver.advanceGame();
 
-  expect(driver.current.phase).toBe('done');
-  expect(driver.current.statusKey).toBe('timer.roundOver');
+  expect(driver.current.phase).toBe("done");
+  expect(driver.current.statusKey).toBe("timer.roundOver");
 });
 
-it('draws letters from a non-repeating bag and tracks used letters', () => {
+it("draws letters from a non-repeating bag and tracks used letters", () => {
   const driver = createRoundDriver();
 
   driver.start();
@@ -190,7 +190,7 @@ it('draws letters from a non-repeating bag and tracks used letters', () => {
   expect(driver.current.usedLetters).toEqual([first, second]);
 });
 
-it('leaves the bag untouched and skips immediate repeats when avoidRepeats is off', () => {
+it("leaves the bag untouched and skips immediate repeats when avoidRepeats is off", () => {
   const driver = createRoundDriver({ avoidRepeats: false });
 
   driver.start();
@@ -203,23 +203,23 @@ it('leaves the bag untouched and skips immediate repeats when avoidRepeats is of
   expect(driver.current.usedLetters).toEqual([]);
   // But two consecutive draws never land on the same letter back-to-back.
   expect(second).not.toBe(first);
-  expect(getLocaleLetters('en')).toContain(second);
+  expect(getLocaleLetters("en")).toContain(second);
 });
 
-it('new letter rerolls and auto-starts the get-ready buffer', () => {
+it("new letter rerolls and auto-starts the get-ready buffer", () => {
   const driver = createRoundDriver();
 
   driver.start();
   driver.landLetter();
   // From buffer, reroll the letter — should re-spin then auto-start the buffer.
   act(() => driver.current.newLetter());
-  expect(driver.current.phase).toBe('spinning');
+  expect(driver.current.phase).toBe("spinning");
   driver.landLetter();
-  expect(driver.current.phase).toBe('buffer');
+  expect(driver.current.phase).toBe("buffer");
   expect(driver.current.secondsLeft).toBe(BUFFER_SECONDS);
 });
 
-it('keeps sub-second progress across a pause/resume', () => {
+it("keeps sub-second progress across a pause/resume", () => {
   const driver = createRoundDriver();
 
   driver.start();
@@ -241,7 +241,7 @@ it('keeps sub-second progress across a pause/resume', () => {
   expect(driver.current.secondsLeft).toBe(SHORT_ROUND_SECONDS - 1);
 });
 
-it('rebuilds the letter bag for the new alphabet when the locale changes', () => {
+it("rebuilds the letter bag for the new alphabet when the locale changes", () => {
   let landCallback: (() => void) | undefined;
   mockSpinTo.mockImplementation((_letter: string, callback: () => void) => {
     landCallback = callback;
@@ -253,14 +253,14 @@ it('rebuilds the letter bag for the new alphabet when the locale changes', () =>
         gameSeconds: SHORT_ROUND_SECONDS,
         bufferSeconds: BUFFER_SECONDS,
         isMuted: false,
-        locale: 'en',
+        locale: "en",
       },
     },
   );
 
   act(() => result.current.nextRound());
   const enLetter = mockSpinTo.mock.calls[0]?.[0];
-  expect(getLocaleLetters('en')).toContain(enLetter);
+  expect(getLocaleLetters("en")).toContain(enLetter);
   act(() => landCallback?.());
   expect(result.current.usedLetters).toEqual([enLetter]);
 
@@ -268,13 +268,13 @@ it('rebuilds the letter bag for the new alphabet when the locale changes', () =>
     gameSeconds: SHORT_ROUND_SECONDS,
     bufferSeconds: BUFFER_SECONDS,
     isMuted: false,
-    locale: 'el',
+    locale: "el",
   });
   // The switch clears the old-alphabet draw history and rebuilds the bag.
   expect(result.current.usedLetters).toEqual([]);
 
   act(() => result.current.nextRound());
   const elLetter = mockSpinTo.mock.calls[1]?.[0];
-  expect(getLocaleLetters('el')).toContain(elLetter);
-  expect(getLocaleLetters('en')).not.toContain(elLetter);
+  expect(getLocaleLetters("el")).toContain(elLetter);
+  expect(getLocaleLetters("en")).not.toContain(elLetter);
 });

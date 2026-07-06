@@ -1,6 +1,6 @@
-import type { i18n as I18nInstance } from 'i18next';
-import { useEffect, useRef, useState } from 'react';
-import { ensureLanguageLoaded, persistLanguage } from '@/i18n/config';
+import type { i18n as I18nInstance } from "i18next";
+import { useEffect, useRef, useState } from "react";
+import { ensureLanguageLoaded, persistLanguage } from "@/i18n/config";
 
 function useChunkErrorListener(setHasChunkError: (value: boolean) => void): void {
   useEffect(() => {
@@ -9,8 +9,8 @@ function useChunkErrorListener(setHasChunkError: (value: boolean) => void): void
       setHasChunkError(true);
     }
 
-    window.addEventListener('vite:preloadError', onPreloadError);
-    return () => window.removeEventListener('vite:preloadError', onPreloadError);
+    window.addEventListener("vite:preloadError", onPreloadError);
+    return () => window.removeEventListener("vite:preloadError", onPreloadError);
   }, [setHasChunkError]);
 }
 
