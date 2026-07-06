@@ -46,6 +46,15 @@ Without mise, install Node 24+ and pnpm 10+ yourself, then run the same `pnpm` c
 
 Deploy `dist/` to any static host with an SPA fallback to `index.html`.
 
+## Deployment
+
+**[scattergories.duinlab.nl](https://scattergories.duinlab.nl)** is hosted on Cloudflare Pages via its Git
+integration: a push to `main` triggers a build (`pnpm build`) that publishes `dist/`. The build
+command and preview settings live in the Cloudflare dashboard; the repo only pins the output
+directory in [`wrangler.jsonc`](wrangler.jsonc).
+
+To deploy from a local checkout: `pnpm deploy` (`wrangler pages deploy`).
+
 ## Quality
 
 Every dependency is locked and every tool version pinned, so a clean checkout builds identically.
