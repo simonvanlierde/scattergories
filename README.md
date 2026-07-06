@@ -29,8 +29,7 @@ Feature-complete as a play aid. It runs fully client-side and stores everything 
 
 React 19 · TypeScript · Vite · i18next · Vitest · Playwright · Biome
 
-A separate Python (`uv` + Typer) tooling package in [`tools/`](tools/README.md) regenerates the
-locale assets (letter-frequency weights and translations) that the app ships.
+A separate Python (`uv` + Typer) tooling package in [`tools/`](tools/README.md) regenerates the locale assets (letter-frequency weights and translations) that the app ships.
 
 ## Getting started
 
@@ -47,44 +46,16 @@ Without mise, install Node 24+ and pnpm 10+ yourself, then run the same `pnpm` c
 
 Deploy `dist/` to any static host with an SPA fallback to `index.html`.
 
-## Reproducibility & quality
+## Quality
 
-Every dependency is locked (`pnpm-lock.yaml`, [`tools/uv.lock`](tools/uv.lock)) and every tool
-version is pinned via [`mise.toml`](mise.toml), so a clean checkout builds identically. The same
-gates run locally, in pre-push hooks ([`lefthook.yml`](lefthook.yml)), and in
-[CI](.github/workflows/ci.yml):
+Every dependency is locked and every tool version pinned, so a clean checkout builds identically.
+One gate — `pnpm verify` — runs the same way locally, in pre-push hooks, and in CI. The core game logic holds 95%+ coverage, the production bundle is capped at an 80 KiB gzip budget, and axe-core accessibility scans run against the live app in CI.
 
-```bash
-pnpm check        # typecheck (tsc) + spellcheck (cspell) + lint (biome)
-pnpm test         # unit / component tests (vitest)
-pnpm test:e2e     # end-to-end tests (playwright)
-pnpm verify       # check + test + build + bundle-size budget
-pnpm ci           # verify, then the Python tools' ruff + ty + pytest
-```
-
-Quality is enforced, not just encouraged: the core game logic in `src/domain/game/` is held to
-95%+ line and 100% function coverage (see [`vite.config.ts`](vite.config.ts)), and the production
-bundle is capped at an 80 KiB gzip budget ([`scripts/check-bundle-budgets.mjs`](scripts/check-bundle-budgets.mjs)).
-
-### Accessibility
-
-Two automated checks run, both wired into CI:
-
-- **Static lint** — Biome's `a11y` rule group is enabled ([`biome.json`](biome.json)), so accessibility
-  lint rules run as part of `pnpm lint`.
-- **Runtime scan** — [`tests/a11y.spec.ts`](tests/a11y.spec.ts) runs [axe-core](https://github.com/dequelabs/axe-core)
-  against the live app via `@axe-core/playwright`, asserting no violations on the idle screen, during
-  an active round, and with the prompt deck collapsed. Run it with `pnpm test:e2e:smoke` (Chromium)
-  or the full `pnpm test:e2e` matrix.
-
-In CI, the axe smoke checks run on every push and PR; the full browser matrix runs on schedule or
-manual dispatch. These catch a subset of issues automatically — they are not a claim of WCAG
-conformance.
+See [`docs/quality.md`](docs/quality.md) for the full gate breakdown, coverage and budget details, and the accessibility checks.
 
 ## Project structure
 
-For the layer diagram, round state machine, and data flow, see
-[`docs/architecture.md`](docs/architecture.md). The top-level map:
+For the layer diagram, round state machine, and data flow, see [`docs/architecture.md`](docs/architecture.md). The top-level map:
 
 - [`src/`](src/) — the React app: `domain/game/` (pure game logic), `features/` (round, categories,
   settings), `app/` (shell and controller hooks), `i18n/` (locales and registry)
