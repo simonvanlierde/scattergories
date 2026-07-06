@@ -15,7 +15,11 @@ vi.mock("@/features/round/rollAnimation", async (importActual) => {
   };
 });
 
+// Stable references: redrawCategories memoizes on these, and its mount effect
+// depends on that callback — fresh array literals per render would loop forever.
 const BUILTINS = ["a", "b", "c", "d", "e", "f"];
+const NO_CUSTOM: string[] = [];
+const NO_PINS: string[] = [];
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -24,7 +28,12 @@ afterEach(() => {
 describe("useCategoryBoard", () => {
   it("composes the deck on mount", () => {
     const { result } = renderHook(() =>
-      useCategoryBoard({ customCategories: [], deckBuiltins: BUILTINS, pinned: [], count: 3 }),
+      useCategoryBoard({
+        customCategories: NO_CUSTOM,
+        deckBuiltins: BUILTINS,
+        pinned: NO_PINS,
+        count: 3,
+      }),
     );
     expect(result.current.drawnCategories).toHaveLength(3);
   });
@@ -33,9 +42,9 @@ describe("useCategoryBoard", () => {
     const deferComposeRef = { current: true };
     const { result } = renderHook(() =>
       useCategoryBoard({
-        customCategories: [],
+        customCategories: NO_CUSTOM,
         deckBuiltins: BUILTINS,
-        pinned: [],
+        pinned: NO_PINS,
         count: 3,
         deferComposeRef,
       }),
@@ -45,7 +54,12 @@ describe("useCategoryBoard", () => {
 
   it("lands on the final deck after an animated redraw", () => {
     const { result } = renderHook(() =>
-      useCategoryBoard({ customCategories: [], deckBuiltins: BUILTINS, pinned: [], count: 3 }),
+      useCategoryBoard({
+        customCategories: NO_CUSTOM,
+        deckBuiltins: BUILTINS,
+        pinned: NO_PINS,
+        count: 3,
+      }),
     );
 
     act(() => {
