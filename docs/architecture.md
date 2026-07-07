@@ -8,13 +8,13 @@ Source is layered so that the game rules never depend on React, and the UI never
 
 ```mermaid
 flowchart TD
-    App["src/app/ — shell + useGameController (the boundary)"]
-    Features["src/features/ — round · categories · settings"]
-    Domain["src/domain/game/ — pure rules + roundReducer"]
-    Shared["src/shared/ — ui + lib"]
-    I18n["src/i18n/ — locales + generated weights"]
+    App["src/app/: shell + useGameController (the boundary)"]
+    Features["src/features/: round · categories · settings"]
+    Domain["src/domain/game/: pure rules + roundReducer"]
+    Shared["src/shared/: ui + lib"]
+    I18n["src/i18n/: locales + generated weights"]
     Storage[("localStorage")]
-    Tools["tools/ — Python CLI"]
+    Tools["tools/: Python CLI"]
 
     App --> Features
     Features --> Domain
@@ -39,11 +39,11 @@ stateDiagram-v2
     running --> idle: reset
 ```
 
-## Data flow, in one paragraph
+## Data flow
 
-`useGameController` composes the feature hooks and exposes a single typed surface to the shell. Round progress lives in the `roundReducer` state machine; letters are rolled with locale-aware weights drawn from `i18n/__generated__/letterWeights` (produced offline by `tools/`). Settings and custom category packs are the only persisted state, written through `localStorage`-backed hooks in `shared/lib`. There is no network call at runtime — closing the tab loses nothing that mattered, and nothing leaves the device.
+`useGameController` composes the feature hooks and exposes a single typed surface to the shell. Round progress lives in the `roundReducer` state machine; letters are rolled with locale-aware weights drawn from `i18n/__generated__/letterWeights` (produced offline by `tools/`). Settings and custom category packs are the only persisted state, written through `localStorage`-backed hooks in `shared/lib`. There is no network call at runtime: closing the tab loses nothing that mattered, and nothing leaves the device.
 
 ## Design decisions
 
-The reasoning behind the load-bearing choices lives in [`adr/`](adr/) — starting with
+The reasoning behind the load-bearing choices lives in [`adr/`](adr/), starting with
 [why there is no backend](adr/0001-local-first-no-backend.md).

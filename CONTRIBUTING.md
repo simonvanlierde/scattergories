@@ -4,14 +4,15 @@ Thanks for taking a look. This is a small personal project, but issues and pull 
 
 ## Prerequisites
 
-Tool versions are pinned in [`mise.toml`](mise.toml). With [mise](https://mise.jdx.dev):
+Install [Node and pnpm](https://nodejs.org/en/download), then:
 
 ```bash
-mise install     # Node 24.13.0, pnpm 10.33.2, Python 3.14
 pnpm install
 ```
 
-Without mise, install Node 24+ and pnpm 10+ yourself.
+Node is pinned in [`.node-version`](.node-version) and pnpm in the `packageManager` field of [`package.json`](package.json); Corepack applies both automatically.
+
+The Python tooling in [`tools/`](tools/README.md) is managed separately by [uv](https://docs.astral.sh/uv/), which installs the version pinned in [`tools/.python-version`](tools/.python-version) on `uv sync`.
 
 ## Development loop
 
@@ -38,7 +39,7 @@ pnpm ci           # verify, then the tools' ruff + ty + pytest
 A [Lefthook](lefthook.yml) pre-commit hook auto-formats staged files and spell-checks them; the
 pre-push hook runs `pnpm verify`. New project-specific words go in [`.cspell.yml`](.cspell.yml).
 
-What each gate enforces — coverage thresholds, the bundle budget, and the accessibility checks — is
+What each gate enforces (coverage thresholds, the bundle budget, and the accessibility checks) is
 documented in [`docs/quality.md`](docs/quality.md).
 
 ## Architecture
@@ -53,20 +54,20 @@ Recording a non-obvious design decision? Add an ADR under [`docs/adr/`](docs/adr
 
 ## Product contract
 
-Lean by design: a round companion for letter, timer, and prompts — not a scorekeeper. Categories are read-only during play. Don't reintroduce strike-through, per-round scoring, completion counting, or similar mechanics unless explicitly asked. Prefer removing state and indirection over adding nice-to-haves; avoid new abstractions unless they remove duplication across call sites.
+Lean by design: a round companion for letter, timer, and prompts, not a scorekeeper. Categories are read-only during play. Don't reintroduce strike-through, per-round scoring, completion counting, or similar mechanics unless explicitly asked. Prefer removing state and indirection over adding nice-to-haves; avoid new abstractions unless they remove duplication across call sites.
 
 ## Conventions
 
-- **TypeScript** — strict mode, no `any` (use `unknown`), verbatim module syntax.
-- **React** — small single-purpose components; prefer plain state/props before custom hooks; test
+- **TypeScript**: strict mode, no `any` (use `unknown`), verbatim module syntax.
+- **React**: small single-purpose components; prefer plain state/props before custom hooks; test
   user-visible behavior.
-- **Biome** — 2-space indent, single quotes, semicolons, 100-char lines; `pnpm lint:fix` to auto-fix.
-- **CSS** — plain CSS only, reuse the tokens in `src/styles/`.
-- **Accessibility** — semantic HTML and correct ARIA; respect `prefers-reduced-motion`; query tests by
+- **Biome**: 2-space indent, single quotes, semicolons, 100-char lines; `pnpm lint:fix` to auto-fix.
+- **CSS**: plain CSS only, reuse the tokens in `src/styles/`.
+- **Accessibility**: semantic HTML and correct ARIA; respect `prefers-reduced-motion`; query tests by
   ARIA role/label/text first.
-- **Tests** — Vitest (jsdom) for unit/component, Playwright (Chromium) for E2E; 95% line coverage in
+- **Tests**: Vitest (jsdom) for unit/component, Playwright (Chromium) for E2E; 95% line coverage in
   `src/domain/game/`, 60% elsewhere.
-- **i18n** — when changing user-visible wording, update tests and every locale in the same change;
+- **i18n**: when changing user-visible wording, update tests and every locale in the same change;
   `completeness.test.ts` enforces parity.
 
 Commits follow [Conventional Commits](https://www.conventionalcommits.org/).

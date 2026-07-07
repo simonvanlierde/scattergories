@@ -10,69 +10,60 @@ A browser-based companion for playing Scattergories at the table: no physical ti
 
 **Live demo:** [scattergories.duinlab.nl](https://scattergories.duinlab.nl)
 
-![The game screen](docs/screenshots/desktop.png)
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/desktop-dark.png"><img alt="The game screen" src="docs/screenshots/desktop-light.png" width="300"></picture>
 
 ## Features
 
-- Rolls a letter with locale-aware weighting, so common, playable letters come up more often
+Roll a letter, draw a board of categories, and race the timer to name one thing per category; the app handles the die, the cards, and the clock.
+
+- Rolls a letter from each language's own alphabet, weighted by that language's letter frequencies, so common, playable letters come up more often
+- 9 fully-translated languages: English, Spanish, French, German, Italian, Dutch, Polish, Portuguese, Greek
 - Draws a round of categories, with a built-in timer, pause, and end-of-round screen
 - Redraw categories on each new letter, or pin a fixed board
 - Built-in and custom category packs, persisted locally in the browser
-- 9 fully-translated languages: English, Spanish, French, German, Italian, Dutch, Polish, Portuguese, Greek
 - Installable as a PWA, with no account or server required
 
-## Status
+## Architecture
 
-Feature-complete as a play aid. It runs fully client-side and stores everything in the browser; local-first by design, so there's no backend to host and your settings and custom categories never leave your device. It's a companion for in-person play, so it deliberately doesn't track scores or validate answers.
+**Stack**: React 19 · TypeScript · Vite · i18next · Vitest · Playwright · Biome. A separate Python (`uv` + Typer) package regenerates the locale assets.
 
-## Stack
+### Project structure
 
-React 19 · TypeScript · Vite · i18next · Vitest · Playwright · Biome
+For the layer diagram, round state machine, and data flow, see [`docs/architecture.md`](docs/architecture.md). The top-level map:
 
-A separate Python (`uv` + Typer) tooling package in [`tools/`](tools/README.md) regenerates the locale assets (letter-frequency weights and translations) that the app ships.
+- [`src/`](src/): the React app: `domain/game/` (pure game logic), `features/` (round, categories,
+  settings), `app/` (shell and controller hooks), `i18n/` (locales and registry)
+- [`tools/`](tools/README.md): Python CLI (`sg-tools`) that regenerates the locale assets: per-language alphabets, letter-frequency weights, and translations
+- [`tests/`](tests/): Playwright end-to-end specs
+- [`docs/`](docs/): [architecture](docs/architecture.md) and [decision records](docs/adr/)
 
-## Getting started
+## Self hosting
 
-Tool versions are pinned in [`mise.toml`](mise.toml) (Node 24.13.0, pnpm 10.33.2, Python 3.14). With [mise](https://mise.jdx.dev) installed:
+Want your own instance? Install [Node and pnpm](https://nodejs.org/en/download), then:
 
 ```bash
-mise install     # provisions the pinned Node, pnpm, and Python
 pnpm install
 pnpm dev          # http://localhost:5173
 pnpm build        # static build to dist/
 ```
 
-Without mise, install Node 24+ and pnpm 10+ yourself, then run the same `pnpm` commands.
+Node is pinned in [`.node-version`](.node-version) and pnpm in the `packageManager` field of [`package.json`](package.json); Corepack applies both automatically.
 
 Deploy `dist/` to any static host with an SPA fallback to `index.html`.
 
-## Deployment
+### Deployment
 
-**[scattergories.duinlab.nl](https://scattergories.duinlab.nl)** is hosted on Cloudflare Pages via its Git
-integration: a push to `main` triggers a build (`pnpm build`) that publishes `dist/`. The build
-command and preview settings live in the Cloudflare dashboard; the repo only pins the output
-directory in [`wrangler.jsonc`](wrangler.jsonc).
+Cloudflare Pages builds and publishes on every push to `main`. Build and preview settings live in the Cloudflare dashboard; the repo only pins the output directory in [`wrangler.jsonc`](wrangler.jsonc).
 
 To deploy from a local checkout: `pnpm deploy` (`wrangler pages deploy`).
 
-## Quality
+### Quality
 
-Every dependency is locked and every tool version pinned, so a clean checkout builds identically.
-One gate — `pnpm verify` — runs the same way locally, in pre-push hooks, and in CI. The core game logic holds 95%+ coverage, the production bundle is capped at an 80 KiB gzip budget, and axe-core accessibility scans run against the live app in CI.
+A single `pnpm verify` gate (typecheck, lint, tests, build, bundle budget) runs identically locally, in pre-push hooks, and in CI, so a clean checkout builds the same everywhere. See [`docs/quality.md`](docs/quality.md) for coverage thresholds, the bundle budget, and the accessibility checks.
 
-See [`docs/quality.md`](docs/quality.md) for the full gate breakdown, coverage and budget details, and the accessibility checks.
+## Contributing
 
-## Project structure
-
-For the layer diagram, round state machine, and data flow, see [`docs/architecture.md`](docs/architecture.md). The top-level map:
-
-- [`src/`](src/) — the React app: `domain/game/` (pure game logic), `features/` (round, categories,
-  settings), `app/` (shell and controller hooks), `i18n/` (locales and registry)
-- [`tools/`](tools/README.md) — Python CLI (`sg-tools`) that regenerates the locale assets
-- [`tests/`](tests/) — Playwright end-to-end specs
-- [`docs/`](docs/) — [architecture](docs/architecture.md) and [decision records](docs/adr/)
-
-Contributing? See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the dev loop, conventions, and product scope.
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the dev loop, conventions, and product scope.
 
 ## License
 

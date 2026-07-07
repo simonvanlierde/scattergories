@@ -5,7 +5,7 @@
 
 ## Context
 
-Scattergories is a companion for in-person play — it rolls a letter, runs a timer, and draws
+Scattergories is a companion for in-person play: it rolls a letter, runs a timer, and draws
 category prompts for people sitting around one table. It needs to remember a player's settings and
 custom category packs between sessions, and be reachable from a phone without setup.
 
@@ -21,11 +21,11 @@ Ship a single-page app with **no backend**. All state lives in the browser and p
 
 ### Good
 
-- Nothing to host, secure, or pay for beyond static file serving — a clean checkout builds a
+- Nothing to host, secure, or pay for beyond static file serving: a clean checkout builds a
   deployable artifact with `pnpm build`.
 - Privacy by construction: settings and custom categories never leave the device, so there is no
   personal data to store or protect.
-- No auth, no network error states, no offline/online reconciliation — the whole class of
+- No auth, no network error states, no offline/online reconciliation: the whole class of
   distributed-state bugs simply does not exist.
 - The game rules stay pure and framework-free (see [`architecture.md`](../architecture.md)), which
   keeps them trivially unit-testable.
@@ -34,7 +34,7 @@ Ship a single-page app with **no backend**. All state lives in the browser and p
 
 - No cross-device sync: your packs live on the browser that created them.
 - Clearing site data resets everything; there is no server-side backup.
-- Genuinely online/multiplayer play would require revisiting this decision — it is not a small
+- Genuinely online/multiplayer play would require revisiting this decision; it is not a small
   add-on to this design.
 
 These limits are consistent with the product's scope (a table-side aid, not a platform), so we
