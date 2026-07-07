@@ -1,5 +1,6 @@
 allowBuilds:
   lefthook: true
+minimumReleaseAge: 4320 # minutes (3 days); blocks installing very fresh (often compromised) releases
 overrides:
   "undici@>=7.0.0 <7.28.0": "^7.28.0"
   "@babel/core": "7.29.7"
