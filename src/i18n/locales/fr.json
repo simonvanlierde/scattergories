@@ -7,8 +7,13 @@
   "controls": {
     "roundGroup": "Commandes de manche"
   },
+  "welcome": {
+    "roll": "Tirez une lettre",
+    "write": "Écrivez un mot par catégorie commençant par cette lettre",
+    "race": "Battez le chrono, puis comparez vos réponses"
+  },
   "buttons": {
-    "startRound": "Démarrer la manche",
+    "startRound": "Tirer une lettre",
     "nextRound": "Manche suivante",
     "spinning": "Tirage…",
     "newLetter": "Nouvelle lettre",

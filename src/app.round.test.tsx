@@ -48,7 +48,7 @@ it("redraws categories on a fresh round but keeps them when rerolling the letter
   const initialCategories = items();
 
   // Starting a fresh round reshuffles the (unpinned) categories.
-  await user.click(screen.getByRole("button", { name: "Start round" }));
+  await user.click(screen.getByRole("button", { name: "Roll a letter" }));
   await waitFor(() => {
     expect(items()).not.toEqual(initialCategories);
   });

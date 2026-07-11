@@ -11,6 +11,7 @@ import { cx } from "@/shared/ui/cx";
 import { Icon } from "@/shared/ui/Icon";
 import { IconButton } from "@/shared/ui/IconButton";
 import type { GameController } from "./useGameController";
+import { useOnboarding, WelcomeOverlay } from "./WelcomeOverlay";
 
 interface GameShellProps {
   game: GameController;
@@ -115,6 +116,7 @@ function PlayGrid({ game }: PlayGridProps) {
 
 function GameShell({ game }: GameShellProps) {
   const { t } = useTranslation();
+  const onboarding = useOnboarding();
 
   return (
     <main
@@ -130,6 +132,20 @@ function GameShell({ game }: GameShellProps) {
 
         <ControlBar game={game} />
       </div>
+
+      {onboarding.needsOnboarding ? (
+        <WelcomeOverlay
+          onStart={() => {
+            onboarding.complete();
+            game.controls.onStartRound();
+          }}
+          onHowToPlay={() => {
+            onboarding.complete();
+            game.controls.onOpenHowToPlay();
+          }}
+          onDismiss={onboarding.complete}
+        />
+      ) : null}
 
       {game.flags.isHowToPlayOpen ? (
         <Suspense

@@ -18,7 +18,7 @@ it("renders the core app shell and primary controls", async () => {
   await renderApp();
 
   expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Scattergories");
-  expect(screen.getByRole("button", { name: "Start round" })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Roll a letter" })).toBeInTheDocument();
   expect(screen.getByRole("button", { name: "How to play" })).toBeInTheDocument();
 });
 

@@ -7,8 +7,13 @@
   "controls": {
     "roundGroup": "Comandi del round"
   },
+  "welcome": {
+    "roll": "Estrai una lettera",
+    "write": "Scrivi una parola per ogni categoria che inizia con quella lettera",
+    "race": "Batti il tempo, poi confrontate le risposte"
+  },
   "buttons": {
-    "startRound": "Inizia round",
+    "startRound": "Estrai lettera",
     "nextRound": "Prossimo round",
     "spinning": "Sorteggio…",
     "newLetter": "Nuova lettera",

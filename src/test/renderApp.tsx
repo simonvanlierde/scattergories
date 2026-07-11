@@ -1,6 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { App } from "@/app/App";
+import { ONBOARDED_KEY } from "@/app/WelcomeOverlay";
 import { resetSettingsToStorage } from "@/features/settings/SettingsProvider";
 import { HEADING_LEVEL, SCATTERGORIES_HEADING } from "./constants";
 
@@ -11,6 +12,9 @@ export const READY_SUMMARY_PATTERN = /categories ready/i;
 
 export function resetAppTestState() {
   window.localStorage.clear();
+  // Default to a returning player: most app tests exercise the board directly,
+  // not the first-run welcome. Suites that test onboarding clear this themselves.
+  window.localStorage.setItem(ONBOARDED_KEY, "1");
   resetSettingsToStorage();
 }
 

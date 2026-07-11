@@ -7,8 +7,13 @@
   "controls": {
     "roundGroup": "Controles da rodada"
   },
+  "welcome": {
+    "roll": "Sorteie uma letra",
+    "write": "Escreva uma palavra para cada categoria começando por ela",
+    "race": "Corra contra o tempo e depois comparem as respostas"
+  },
   "buttons": {
-    "startRound": "Iniciar rodada",
+    "startRound": "Sortear letra",
     "nextRound": "Próxima rodada",
     "spinning": "Sorteando…",
     "newLetter": "Nova letra",

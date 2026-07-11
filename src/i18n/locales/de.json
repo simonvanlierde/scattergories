@@ -7,8 +7,13 @@
   "controls": {
     "roundGroup": "Rundensteuerung"
   },
+  "welcome": {
+    "roll": "Ziehe einen Buchstaben",
+    "write": "Schreibe zu jeder Kategorie ein Wort, das damit beginnt",
+    "race": "Schlag die Uhr und vergleicht dann eure Antworten"
+  },
   "buttons": {
-    "startRound": "Runde starten",
+    "startRound": "Buchstabe ziehen",
     "nextRound": "Nächste Runde",
     "spinning": "Wird gedreht…",
     "newLetter": "Neuer Buchstabe",

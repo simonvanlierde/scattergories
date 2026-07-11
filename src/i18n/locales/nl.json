@@ -7,8 +7,13 @@
   "controls": {
     "roundGroup": "Rondebediening"
   },
+  "welcome": {
+    "roll": "Loot een letter",
+    "write": "Schrijf bij elke categorie een woord dat ermee begint",
+    "race": "Race tegen de klok en vergelijk jullie antwoorden"
+  },
   "buttons": {
-    "startRound": "Start ronde",
+    "startRound": "Loot een letter",
     "nextRound": "Volgende ronde",
     "spinning": "Draaien…",
     "newLetter": "Nieuwe letter",

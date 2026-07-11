@@ -7,8 +7,13 @@
   "controls": {
     "roundGroup": "Round controls"
   },
+  "welcome": {
+    "roll": "Roll a letter",
+    "write": "Write a word for each category that starts with it",
+    "race": "Race the timer, then compare answers"
+  },
   "buttons": {
-    "startRound": "Start round",
+    "startRound": "Roll a letter",
     "nextRound": "Next round",
     "spinning": "Spinning…",
     "newLetter": "New letter",

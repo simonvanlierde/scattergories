@@ -7,8 +7,13 @@
   "controls": {
     "roundGroup": "Sterowanie rundą"
   },
+  "welcome": {
+    "roll": "Wylosuj literę",
+    "write": "Do każdej kategorii wpisz słowo zaczynające się na tę literę",
+    "race": "Ścigaj się z czasem, potem porównajcie odpowiedzi"
+  },
   "buttons": {
-    "startRound": "Rozpocznij rundę",
+    "startRound": "Wylosuj literę",
     "nextRound": "Następna runda",
     "spinning": "Losowanie...",
     "newLetter": "Nowa litera",

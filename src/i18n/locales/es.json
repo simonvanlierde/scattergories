@@ -7,8 +7,13 @@
   "controls": {
     "roundGroup": "Controles de ronda"
   },
+  "welcome": {
+    "roll": "Saca una letra",
+    "write": "Escribe una palabra que empiece por ella en cada categoría",
+    "race": "Vence al reloj y comparad las respuestas"
+  },
   "buttons": {
-    "startRound": "Empezar ronda",
+    "startRound": "Sortear letra",
     "nextRound": "Siguiente ronda",
     "spinning": "Girando…",
     "newLetter": "Nueva letra",
