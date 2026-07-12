@@ -12,7 +12,7 @@ const READY_SUMMARY_PATTERN = /categories ready/i;
 test("@smoke loads with the correct title and primary controls", async ({ app, page }) => {
   await expect(page).toHaveTitle(TITLE);
   await expect(app.readyHeading).toBeVisible();
-  await expect(page.getByRole("button", { name: "Start round" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Roll a letter" })).toBeVisible();
   await expect(page.getByRole("button", { name: "How to play" })).toBeVisible();
   await app.openTimer();
   await expect(app.timerPopover.getByLabel("Round", { exact: true })).toHaveValue("90");
