@@ -7,7 +7,7 @@ on:
     branches: [main]
   workflow_dispatch:
   schedule:
-    - cron: '24 4 * * 1'
+    - cron: '24 4 1 * *'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -46,7 +46,7 @@ jobs:
     # Browsers + system deps are baked into the image; keep the tag in sync with @playwright/test.
     container:
       image: mcr.microsoft.com/playwright:v1.61.1-noble
-    # Smoke (Chromium) on every push/PR; the full browser matrix on schedule or manual dispatch.
+    # Every Chromium test on each push/PR; the full browser matrix monthly or on manual dispatch.
     env:
       FULL: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' }}
     steps:
@@ -55,7 +55,7 @@ jobs:
       - run: pnpm run build
 
       - name: Run E2E tests
-        run: ${{ env.FULL == 'true' && 'pnpm run test:e2e' || 'pnpm run test:e2e:smoke' }}
+        run: ${{ env.FULL == 'true' && 'pnpm run test:e2e' || 'pnpm run test:e2e:chromium' }}
 
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         if: failure()
