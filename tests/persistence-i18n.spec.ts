@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 import { test } from "./fixtures";
 
-// spell-checker: ignore Configuración, Idioma
+// spell-checker: ignore Configuración, Idioma, Sortear, Letra
 
 test("@smoke persists the timer setting across reload", async ({ app, page }) => {
   await app.openTimer();
@@ -19,7 +19,7 @@ test("@smoke persists the timer setting across reload", async ({ app, page }) =>
 
 test("@smoke persists a non-English language selection across reload", async ({ app, page }) => {
   await app.switchLanguage("es");
-  await expect(page.getByRole("button", { name: "Empezar Ronda" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Sortear Letra" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Cómo Jugar" })).toBeVisible();
   await app.openLanguage();
   await expect(app.languagePopover.locator('[data-locale="es"]')).toHaveAttribute(
@@ -32,7 +32,7 @@ test("@smoke persists a non-English language selection across reload", async ({ 
   await app.waitUntilReady();
   await app.openLanguage();
 
-  await expect(page.getByRole("button", { name: "Empezar Ronda" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Sortear Letra" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Cómo Jugar" })).toBeVisible();
   await expect(app.languagePopover.locator('[data-locale="es"]')).toHaveAttribute(
     "aria-checked",

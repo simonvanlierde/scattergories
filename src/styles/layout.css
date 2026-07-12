@@ -254,8 +254,18 @@
       gap: var(--space-2);
     }
 
+    /* Hide the wordmark visually — the brand mark carries it at this width — but
+       keep the page's only <h1> in the a11y tree instead of `display: none`. */
     .controlbar h1 {
-      display: none;
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     /* Open deck: the categories list fills the remaining height down to the

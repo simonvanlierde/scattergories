@@ -1,13 +1,16 @@
 import { test as base, expect, type Locator, type Page } from "@playwright/test";
+import { ONBOARDED_KEY } from "../src/app/WelcomeOverlay";
 import { GO, ROUND_STATE_TIMEOUT_MS, SCATTERGORIES_HEADING } from "../src/test/constants";
 
-// spell-checker: ignore Configuración, Idioma
+// spell-checker: ignore Configuración, Idioma, Fijar, Idiomas
 
 type RoundButtonLabel = RegExp | string;
-const START_OR_NEXT_ROUND_BUTTON_LABEL = /Start round|Next round/;
+const START_OR_NEXT_ROUND_BUTTON_LABEL = /Roll a letter|Next round/;
 const MUTE_BUTTON_LABEL = /Mute|Unmute/;
 const TIMER_NAME = /Round timer/i;
-const LANGUAGE_NAME = /Language|Idioma/i;
+// Anchored: an unanchored /Idioma/ also matches the "Fijar Idiomas" category chip
+// whenever the Languages category happens to be drawn, which is a strict-mode violation.
+const LANGUAGE_NAME = /^(Language|Idioma)$/i;
 
 interface AppFixture {
   currentLetter: Locator;
@@ -25,7 +28,7 @@ interface AppFixture {
   openTimer: () => Promise<void>;
   openLanguage: () => Promise<void>;
   closePopover: () => Promise<void>;
-  setTimer: (value: string) => Promise<void>;
+  setTimer: (value: string, getReadySeconds?: string) => Promise<void>;
   startRound: (label?: RoundButtonLabel) => Promise<void>;
   startRoundSafely: (label?: RoundButtonLabel) => Promise<void>;
   switchLanguage: (language: string) => Promise<void>;
@@ -99,9 +102,17 @@ function createAppFixture(page: Page): AppFixture {
     async openLanguage() {
       await openPopover(page, languagePopover, LANGUAGE_NAME);
     },
-    async setTimer(value: string) {
+    async setTimer(value: string, getReadySeconds?: string) {
       await openPopover(page, timerPopover, TIMER_NAME);
       await fillNumericField(timerPopover.getByLabel("Round", { exact: true }), value);
+      if (getReadySeconds !== undefined) {
+        // The get-ready countdown is real wall-clock time; "0" skips it so a test
+        // waiting out a full round doesn't also sit through the buffer.
+        await fillNumericField(
+          timerPopover.getByLabel("Get ready", { exact: true }),
+          getReadySeconds,
+        );
+      }
       await closePopover(page);
     },
     async startRound(label: RoundButtonLabel = START_OR_NEXT_ROUND_BUTTON_LABEL) {
@@ -130,12 +141,30 @@ function createAppFixture(page: Page): AppFixture {
   };
 }
 
-export const test = base.extend<{ app: AppFixture }>({
+export const test = base.extend<{ app: AppFixture; onboarded: boolean }>({
+  // Default to a returning player: these suites exercise the board directly, not the
+  // first-run welcome, whose modal would otherwise swallow every click. The onboarding
+  // suite opts out with `test.use({ onboarded: false })`.
+  onboarded: [true, { option: true }],
+
   app: [
-    async ({ page }, use) => {
+    async ({ page, onboarded }, use) => {
+      if (onboarded) {
+        // Runs on every navigation, so the flag survives the reloads these tests do.
+        await page.addInitScript(
+          ([key]) => {
+            window.localStorage.setItem(key, "1");
+          },
+          [ONBOARDED_KEY],
+        );
+      }
       await page.goto("/");
       const app = createAppFixture(page);
-      await app.waitUntilReady();
+      if (onboarded) {
+        // With the welcome up, the modal renders the rest of the page inert, so the
+        // heading is out of the a11y tree — the onboarding suite waits on the dialog.
+        await app.waitUntilReady();
+      }
       await use(app);
     },
     { box: true },
