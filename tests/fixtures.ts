@@ -103,7 +103,7 @@ function createAppFixture(page: Page): AppFixture {
     },
     async setTimer(value: string, getReadySeconds?: string) {
       await openSheet(page, settingsSheet, SETTINGS_NAME);
-      await fillNumericField(settingsSheet.getByLabel("Round", { exact: true }), value);
+      await fillNumericField(settingsSheet.getByLabel("Round length", { exact: true }), value);
       if (getReadySeconds !== undefined) {
         // The get-ready countdown is real wall-clock time; "0" skips it so a test
         // waiting out a full round doesn't also sit through the buffer.

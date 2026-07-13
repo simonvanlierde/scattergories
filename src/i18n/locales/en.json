@@ -34,7 +34,7 @@
   },
   "settings": {
     "title": "Settings",
-    "duration": "Round",
+    "duration": "Round length",
     "getReady": "Get ready",
     "avoidRepeats": "Avoid letter repeats",
     "categoryDraw": "Draw",
@@ -42,7 +42,7 @@
     "gameplay": "Gameplay",
     "durationHint": "How long each round lasts.",
     "getReadyHint": "Countdown before the timer starts.",
-    "avoidRepeatsHint": "Draw every letter once before any repeats."
+    "avoidRepeatsHint": "Every letter is drawn once before any repeats."
   },
   "packs": {
     "classic": {
@@ -103,12 +103,12 @@
     "title": "How to play",
     "objectiveText": "Score points by writing words that fit each category and start with the drawn letter.",
     "gameplayPoints": [
-      "A random letter is drawn — every answer must start with it.",
-      "Before the timer runs out (90 seconds by default), write one word for each category.",
-      "Playing with others? Score 1 point for each answer nobody else wrote; matching answers score 0, so aim for creative, uncommon words."
+      "A random letter is drawn. Every answer must start with it.",
+      "Write one word for each category before the timer runs out (90 seconds by default).",
+      "Playing with others: answers nobody else wrote score 1 point, matching answers score 0."
     ],
     "categories": "Categories",
-    "categoriesText": "The game comes with a large built-in set of categories, and you can add your own custom ones to the deck.",
+    "categoriesText": "The deck comes with a set of built-in categories, and you can add your own.",
     "categoriesItems": [
       "Customize the deck to add categories and built-in packs, or remove any you'd rather skip.",
       "Pin a category to lock it into every round; unpinned ones are drawn at random to fill the rest.",
@@ -116,7 +116,7 @@
     ],
     "shortcuts": "Keyboard shortcuts",
     "about": "About",
-    "attribution": "Scattergories is the original party game by Hasbro. This is a free, unofficial companion for playing it around the table — browse the <official>official game</official> or this app's <repo>source code</repo>, released under the <license>MIT license</license>.",
+    "attribution": "Scattergories is the original party game by Hasbro. This is a free, unofficial companion for playing it around the table. Browse the <official>official game</official> or this app's <repo>source code</repo>, released under the <license>MIT license</license>.",
     "privacy": "This app stores settings and custom categories in your browser only.",
     "version": "Version {{version}}",
     "loading": "Opening rules…"
@@ -127,9 +127,7 @@
   "theme": {
     "label": "Appearance",
     "light": "Light",
-    "dark": "Dark",
-    "switchToDark": "Switch to dark mode",
-    "switchToLight": "Switch to light mode"
+    "dark": "Dark"
   },
   "errors": {
     "chunkTitle": "A fresh app version is ready.",

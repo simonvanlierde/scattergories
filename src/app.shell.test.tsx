@@ -61,7 +61,7 @@ it("shows default editable settings in their owning dialogs", async () => {
   const { user } = await renderApp();
 
   const settings = await openSettings(user);
-  expect(within(settings).getByLabelText("Round")).toHaveValue(DEFAULT_TIMER_SECONDS);
+  expect(within(settings).getByLabelText("Round length")).toHaveValue(DEFAULT_TIMER_SECONDS);
   expect(within(settings).queryByLabelText("Rounds")).not.toBeInTheDocument();
   await user.keyboard("{Escape}");
 

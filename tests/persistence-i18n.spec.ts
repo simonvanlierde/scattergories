@@ -5,7 +5,7 @@ import { test } from "./fixtures";
 
 test("@smoke persists the timer setting across reload", async ({ app, page }) => {
   await app.openSettings();
-  await expect(app.settingsSheet.getByLabel("Round", { exact: true })).toHaveValue("90");
+  await expect(app.settingsSheet.getByLabel("Round length", { exact: true })).toHaveValue("90");
   await app.closeSettings();
 
   await app.setTimer("130");
@@ -13,7 +13,7 @@ test("@smoke persists the timer setting across reload", async ({ app, page }) =>
   await app.waitUntilReady();
 
   await app.openSettings();
-  await expect(app.settingsSheet.getByLabel("Round", { exact: true })).toHaveValue("130");
+  await expect(app.settingsSheet.getByLabel("Round length", { exact: true })).toHaveValue("130");
   await app.closeSettings();
 });
 

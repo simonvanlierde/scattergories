@@ -34,7 +34,7 @@
   },
   "settings": {
     "title": "Impostazioni",
-    "duration": "Round",
+    "duration": "Durata del round",
     "getReady": "Preparazione",
     "avoidRepeats": "Evita lettere ripetute",
     "categoryDraw": "Sorteggio",
@@ -42,7 +42,7 @@
     "gameplay": "Svolgimento",
     "durationHint": "Quanto dura ogni round.",
     "getReadyHint": "Conto alla rovescia prima dell'avvio del timer.",
-    "avoidRepeatsHint": "Estrarre ogni lettera una volta prima di ripeterle."
+    "avoidRepeatsHint": "Ogni lettera esce una volta prima di ripetersi."
   },
   "packs": {
     "classic": {
@@ -104,11 +104,11 @@
     "objectiveText": "Guadagna punti scrivendo parole che iniziano con la lettera data e rientrano nelle categorie selezionate.",
     "gameplayPoints": [
       "Viene estratta una lettera a caso: tutte le risposte devono iniziare con essa.",
-      "Prima che scada il timer (90 s di default), scrivi una parola per ogni categoria.",
-      "Giochi con altri? Guadagni 1 punto per ogni risposta che nessun altro ha scritto; i doppioni valgono 0, quindi punta su risposte originali."
+      "Scrivi una parola per ogni categoria prima che scada il timer (90 s di default).",
+      "Con altri giocatori: le risposte che nessun altro ha scritto valgono 1 punto, i doppioni 0."
     ],
     "categories": "Categorie",
-    "categoriesText": "Il gioco include un ampio set di categorie integrato, e puoi aggiungere le tue categorie — o interi pacchetti a tema — al mazzo.",
+    "categoriesText": "Il mazzo include categorie integrate, e puoi aggiungere le tue.",
     "categoriesItems": [
       "Personalizza il mazzo per aggiungere categorie e pacchetti, o rimuovi quelle che preferisci saltare.",
       "Fissa una categoria per garantirla a ogni round; quelle non fissate vengono estratte a caso per completare.",
@@ -116,7 +116,7 @@
     ],
     "shortcuts": "Scorciatoie da tastiera",
     "about": "Informazioni",
-    "attribution": "Scattergories è il gioco di società originale di Hasbro. Questo è un supporto gratuito e non ufficiale per giocarci al tavolo — sfoglia il <official>gioco ufficiale</official> o il <repo>codice sorgente</repo> di questa app, rilasciata sotto la <license>licenza MIT</license>.",
+    "attribution": "Scattergories è il gioco di società originale di Hasbro. Questo è un supporto gratuito e non ufficiale per giocarci al tavolo. Sfoglia il <official>gioco ufficiale</official> o il <repo>codice sorgente</repo> di questa app, rilasciata sotto la <license>licenza MIT</license>.",
     "privacy": "Questa app salva impostazioni e categorie solo nel tuo browser.",
     "version": "Versione {{version}}",
     "loading": "Apertura delle regole…"
@@ -127,9 +127,7 @@
   "theme": {
     "label": "Aspetto",
     "light": "Chiaro",
-    "dark": "Scuro",
-    "switchToDark": "Passa alla modalità scura",
-    "switchToLight": "Passa alla modalità chiara"
+    "dark": "Scuro"
   },
   "errors": {
     "chunkTitle": "È pronta una nuova versione dell'app.",

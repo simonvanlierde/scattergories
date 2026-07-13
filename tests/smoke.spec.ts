@@ -15,7 +15,7 @@ test("@smoke loads with the correct title and primary controls", async ({ app, p
   await expect(page.getByRole("button", { name: "Roll a letter" })).toBeVisible();
   await expect(page.getByRole("button", { name: "How to play" })).toBeVisible();
   await app.openSettings();
-  await expect(app.settingsSheet.getByLabel("Round", { exact: true })).toHaveValue("90");
+  await expect(app.settingsSheet.getByLabel("Round length", { exact: true })).toHaveValue("90");
   await expect(app.settingsSheet.getByLabel("Rounds", { exact: true })).toHaveCount(0);
   await app.closeSettings();
 });

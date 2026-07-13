@@ -34,7 +34,7 @@
   },
   "settings": {
     "title": "Ajustes",
-    "duration": "Ronda",
+    "duration": "Duración de la ronda",
     "getReady": "Preparación",
     "avoidRepeats": "Evitar letras repetidas",
     "categoryDraw": "Sorteo",
@@ -42,7 +42,7 @@
     "gameplay": "Reglas de juego",
     "durationHint": "Cuánto dura cada ronda.",
     "getReadyHint": "Cuenta atrás antes de iniciar el temporizador.",
-    "avoidRepeatsHint": "Sacar cada letra una vez antes de repetir."
+    "avoidRepeatsHint": "Cada letra sale una vez antes de repetirse."
   },
   "packs": {
     "classic": {
@@ -104,11 +104,11 @@
     "objectiveText": "Gana puntos escribiendo palabras que empiecen por la letra dada y encajen en las categorías.",
     "gameplayPoints": [
       "Se sortea una letra al azar: todas las respuestas deben empezar por ella.",
-      "Antes de que acabe el tiempo (90 s por defecto), escribe una palabra para cada categoría.",
-      "¿Juegas con otros? Ganas 1 punto por cada respuesta que nadie más escribió; las repetidas valen 0, así que busca respuestas originales."
+      "Escribe una palabra para cada categoría antes de que acabe el tiempo (90 s por defecto).",
+      "Con otros jugadores: las respuestas que nadie más escribió valen 1 punto, las repetidas 0."
     ],
     "categories": "Categorías",
-    "categoriesText": "El juego incluye un amplio conjunto de categorías integrado, y puedes añadir tus propias categorías — o paquetes temáticos enteros — a la baraja.",
+    "categoriesText": "La baraja incluye categorías integradas, y puedes añadir las tuyas.",
     "categoriesItems": [
       "Personaliza la baraja para añadir categorías y paquetes, o quita las que prefieras omitir.",
       "Fija una categoría para asegurarla en cada ronda; las no fijadas se sortean al azar para completar el resto.",
@@ -116,7 +116,7 @@
     ],
     "shortcuts": "Atajos de teclado",
     "about": "Acerca de",
-    "attribution": "Scattergories es el juego de fiesta original de Hasbro. Esta es una herramienta gratuita y no oficial para jugarlo en la mesa — explora el <official>juego oficial</official> o el <repo>código fuente</repo> de esta app, publicado bajo la <license>licencia MIT</license>.",
+    "attribution": "Scattergories es el juego de fiesta original de Hasbro. Esta es una herramienta gratuita y no oficial para jugarlo en la mesa. Explora el <official>juego oficial</official> o el <repo>código fuente</repo> de esta app, publicado bajo la <license>licencia MIT</license>.",
     "privacy": "Esta aplicación guarda los ajustes y las categorías propias solo en tu navegador.",
     "version": "Versión {{version}}",
     "loading": "Abriendo las reglas…"
@@ -127,9 +127,7 @@
   "theme": {
     "label": "Apariencia",
     "light": "Claro",
-    "dark": "Oscuro",
-    "switchToDark": "Cambiar al modo oscuro",
-    "switchToLight": "Cambiar al modo claro"
+    "dark": "Oscuro"
   },
   "errors": {
     "chunkTitle": "Hay una nueva versión de la app lista.",

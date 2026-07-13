@@ -34,7 +34,7 @@
   },
   "settings": {
     "title": "Paramètres",
-    "duration": "Manche",
+    "duration": "Durée de la manche",
     "getReady": "Préparation",
     "avoidRepeats": "Éviter les lettres répétées",
     "categoryDraw": "Tirage",
@@ -42,7 +42,7 @@
     "gameplay": "Déroulement",
     "durationHint": "Durée de chaque manche.",
     "getReadyHint": "Décompte avant le départ du chrono.",
-    "avoidRepeatsHint": "Tirer chaque lettre une fois avant toute répétition."
+    "avoidRepeatsHint": "Chaque lettre sort une fois avant toute répétition."
   },
   "packs": {
     "classic": {
@@ -104,11 +104,11 @@
     "objectiveText": "Marquez des points en écrivant des mots qui commencent par la lettre donnée et correspondent aux catégories.",
     "gameplayPoints": [
       "Une lettre est tirée au hasard : toutes les réponses doivent commencer par elle.",
-      "Avant la fin du minuteur (90 s par défaut), écrivez un mot pour chaque catégorie.",
-      "À plusieurs ? Vous marquez 1 point par réponse que personne d'autre n'a écrite ; les doublons valent 0, alors privilégiez les réponses originales."
+      "Écrivez un mot pour chaque catégorie avant la fin du minuteur (90 s par défaut).",
+      "À plusieurs : les réponses que personne d'autre n'a écrites valent 1 point, les doublons 0."
     ],
     "categories": "Catégories",
-    "categoriesText": "Le jeu est fourni avec un grand ensemble de catégories intégré, et vous pouvez ajouter vos propres catégories — ou des lots thématiques entiers — au paquet.",
+    "categoriesText": "Le paquet contient des catégories intégrées, et vous pouvez ajouter les vôtres.",
     "categoriesItems": [
       "Modifiez le paquet pour ajouter des catégories et des lots, ou retirez celles que vous préférez éviter.",
       "Épinglez une catégorie pour la garantir à chaque manche ; les catégories non épinglées sont tirées au hasard pour compléter.",
@@ -116,7 +116,7 @@
     ],
     "shortcuts": "Raccourcis clavier",
     "about": "À propos",
-    "attribution": "Scattergories est le jeu de société original de Hasbro. Ceci est un compagnon gratuit et non officiel pour y jouer autour de la table — parcourez le <official>jeu officiel</official> ou le <repo>code source</repo> de cette application, publié sous la <license>licence MIT</license>.",
+    "attribution": "Scattergories est le jeu de société original de Hasbro. Ceci est un compagnon gratuit et non officiel pour y jouer autour de la table. Parcourez le <official>jeu officiel</official> ou le <repo>code source</repo> de cette application, publié sous la <license>licence MIT</license>.",
     "privacy": "Cette application enregistre les réglages et catégories uniquement dans votre navigateur.",
     "version": "Version {{version}}",
     "loading": "Ouverture des règles…"
@@ -127,9 +127,7 @@
   "theme": {
     "label": "Apparence",
     "light": "Clair",
-    "dark": "Sombre",
-    "switchToDark": "Passer au mode sombre",
-    "switchToLight": "Passer au mode clair"
+    "dark": "Sombre"
   },
   "errors": {
     "chunkTitle": "Une nouvelle version de l'application est prête.",

@@ -34,7 +34,7 @@
   },
   "settings": {
     "title": "Ustawienia",
-    "duration": "Runda",
+    "duration": "Długość rundy",
     "getReady": "Przygotowanie",
     "avoidRepeats": "Unikaj powtórzeń liter",
     "categoryDraw": "Losowanie",
@@ -42,7 +42,7 @@
     "gameplay": "Zasady",
     "durationHint": "Jak długo trwa runda.",
     "getReadyHint": "Odliczanie przed startem stopera.",
-    "avoidRepeatsHint": "Losuj każdą literę raz, zanim się powtórzy."
+    "avoidRepeatsHint": "Każda litera pojawia się raz, zanim się powtórzy."
   },
   "packs": {
     "classic": {
@@ -103,12 +103,12 @@
     "title": "Jak grać",
     "objectiveText": "Zdobywaj punkty, zapisując słowa, które zaczynają się na wylosowaną literę i pasują do wybranych kategorii.",
     "gameplayPoints": [
-      "Losowana jest litera — każda odpowiedź musi się od niej zaczynać.",
-      "Zanim skończy się czas (domyślnie 90 s), wpisz jedno słowo do każdej kategorii.",
-      "Grasz z innymi? Zdobywasz 1 punkt za każdą odpowiedź, której nikt inny nie zapisał; powtórki dają 0, więc stawiaj na oryginalne słowa."
+      "Losowana jest litera. Każda odpowiedź musi się od niej zaczynać.",
+      "Wpisz jedno słowo do każdej kategorii, zanim skończy się czas (domyślnie 90 s).",
+      "Z innymi graczami: odpowiedzi, których nikt inny nie zapisał, dają 1 punkt, powtórki 0."
     ],
     "categories": "Kategorie",
-    "categoriesText": "Gra zawiera duży wbudowany zestaw kategorii, a do talii możesz dodać własne kategorie — lub całe zestawy tematyczne.",
+    "categoriesText": "Talia zawiera wbudowane kategorie, a Ty możesz dodać własne.",
     "categoriesItems": [
       "Dostosuj talię, aby dodać kategorie i zestawy, lub usuń te, które wolisz pominąć.",
       "Przypnij kategorię, aby pojawiała się w każdej rundzie; nieprzypięte są losowane na resztę miejsc.",
@@ -116,7 +116,7 @@
     ],
     "shortcuts": "Skróty klawiszowe",
     "about": "O aplikacji",
-    "attribution": "Scattergories to oryginalna gra imprezowa firmy Hasbro. To bezpłatny, nieoficjalny dodatek do gry przy stole — przejrzyj <official>oficjalną grę</official> lub <repo>kod źródłowy</repo> tej aplikacji, wydany na <license>licencji MIT</license>.",
+    "attribution": "Scattergories to oryginalna gra imprezowa firmy Hasbro. To bezpłatny, nieoficjalny dodatek do gry przy stole. Przejrzyj <official>oficjalną grę</official> lub <repo>kod źródłowy</repo> tej aplikacji, wydany na <license>licencji MIT</license>.",
     "privacy": "Ta aplikacja zapisuje ustawienia i kategorie wyłącznie w Twojej przeglądarce.",
     "version": "Wersja {{version}}",
     "loading": "Otwieranie zasad…"
@@ -127,9 +127,7 @@
   "theme": {
     "label": "Wygląd",
     "light": "Jasny",
-    "dark": "Ciemny",
-    "switchToDark": "Przełącz na tryb ciemny",
-    "switchToLight": "Przełącz na tryb jasny"
+    "dark": "Ciemny"
   },
   "errors": {
     "chunkTitle": "Nowa wersja aplikacji jest gotowa.",

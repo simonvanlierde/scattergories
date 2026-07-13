@@ -34,7 +34,7 @@
   },
   "settings": {
     "title": "Instellingen",
-    "duration": "Ronde",
+    "duration": "Rondeduur",
     "getReady": "Klaarmaken",
     "avoidRepeats": "Herhaalde letters vermijden",
     "categoryDraw": "Loting",
@@ -42,7 +42,7 @@
     "gameplay": "Spelregels",
     "durationHint": "Hoe lang een ronde duurt.",
     "getReadyHint": "Aftellen voordat de timer start.",
-    "avoidRepeatsHint": "Trek elke letter één keer voordat er herhaling komt."
+    "avoidRepeatsHint": "Elke letter komt één keer voordat er een herhaling volgt."
   },
   "packs": {
     "classic": {
@@ -103,12 +103,12 @@
     "title": "Hoe te spelen",
     "objectiveText": "Verdien punten door woorden op te schrijven die beginnen met de gekozen letter en passen in de categorieën.",
     "gameplayPoints": [
-      "Er wordt willekeurig een letter getrokken — elk antwoord moet daarmee beginnen.",
-      "Schrijf vóór het einde van de timer (standaard 90 seconden) een woord voor elke categorie.",
-      "Speel je met anderen? Je scoort 1 punt voor elk antwoord dat niemand anders had; dubbele antwoorden leveren 0 op, dus kies originele woorden."
+      "Er wordt willekeurig een letter getrokken. Elk antwoord moet daarmee beginnen.",
+      "Schrijf een woord voor elke categorie voordat de timer afloopt (standaard 90 seconden).",
+      "Met anderen: antwoorden die niemand anders had leveren 1 punt op, dubbele antwoorden 0."
     ],
     "categories": "Categorieën",
-    "categoriesText": "Het spel wordt geleverd met een grote ingebouwde set categorieën, en je kunt je eigen categorieën — of hele themapakketten — aan de stapel toevoegen.",
+    "categoriesText": "De stapel bevat ingebouwde categorieën, en je kunt je eigen categorieën toevoegen.",
     "categoriesItems": [
       "Pas de stapel aan om categorieën en pakketten toe te voegen, of verwijder wat je liever overslaat.",
       "Zet een categorie vast zodat die elke ronde meedoet; de rest wordt willekeurig aangevuld met niet-vastgezette categorieën.",
@@ -116,7 +116,7 @@
     ],
     "shortcuts": "Sneltoetsen",
     "about": "Over",
-    "attribution": "Scattergories is het originele partyspel van Hasbro. Dit is een gratis, onofficiële hulp om het aan tafel te spelen — bekijk het <official>officiële spel</official> of de <repo>broncode</repo> van deze app, uitgebracht onder de <license>MIT-licentie</license>.",
+    "attribution": "Scattergories is het originele partyspel van Hasbro. Dit is een gratis, onofficiële hulp om het aan tafel te spelen. Bekijk het <official>officiële spel</official> of de <repo>broncode</repo> van deze app, uitgebracht onder de <license>MIT-licentie</license>.",
     "privacy": "Deze app bewaart instellingen en categorieën alleen in je browser.",
     "version": "Versie {{version}}",
     "loading": "Regels openen…"
@@ -127,9 +127,7 @@
   "theme": {
     "label": "Weergave",
     "light": "Licht",
-    "dark": "Donker",
-    "switchToDark": "Naar donkere modus",
-    "switchToLight": "Naar lichte modus"
+    "dark": "Donker"
   },
   "errors": {
     "chunkTitle": "Er is een nieuwe versie klaar.",
