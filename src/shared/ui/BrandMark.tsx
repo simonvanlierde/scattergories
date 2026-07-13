@@ -4,10 +4,11 @@
  * Keep the two in sync by hand; the SVG is the source the icons are built from.
  */
 
-/** Below this the side-face glyphs are mud, so the mark drops to the plain die. */
-const GLYPH_FLOOR = 28;
-
-export function BrandMark({ size = 24 }: { size?: number }) {
+/**
+ * `size` is required: the glyphs are mud below ~28px, so a caller has to choose a
+ * size that can carry them rather than inherit one that can't.
+ */
+export function BrandMark({ size }: { size: number }) {
   return (
     <svg
       className="brand-mark"
@@ -41,31 +42,27 @@ export function BrandMark({ size = 24 }: { size?: number }) {
           />
         </g>
 
-        {size >= GLYPH_FLOOR && (
-          <>
-            {/* the prompt — starts on the left face */}
-            <g
-              className="brand-mark__glyph brand-mark__glyph--ask"
-              transform="matrix(0.36 0.2 0 0.4 7.5 14.5)"
-            >
-              <path
-                d="M-3.4 -3.6C-3.4 -7.4 3.8 -7.6 3.8 -3.4C3.8 -0.4 0 -0.2 0 2.8"
-                fill="none"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-              />
-              <circle cx="0" cy="6.6" r="1.4" stroke="none" />
-            </g>
+        {/* the prompt — starts on the left face */}
+        <g
+          className="brand-mark__glyph brand-mark__glyph--ask"
+          transform="matrix(0.36 0.2 0 0.4 7.5 14.5)"
+        >
+          <path
+            d="M-3.4 -3.6C-3.4 -7.4 3.8 -7.6 3.8 -3.4C3.8 -0.4 0 -0.2 0 2.8"
+            fill="none"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+          />
+          <circle cx="0" cy="6.6" r="1.4" stroke="none" />
+        </g>
 
-            {/* the roll — starts on the right face */}
-            <g
-              className="brand-mark__glyph brand-mark__glyph--go"
-              transform="matrix(0.36 -0.2 0 0.4 16.5 14.5)"
-            >
-              <path d="M-3.2 -6.2 5.6 0 -3.2 6.2Z" strokeWidth="1.8" strokeLinejoin="round" />
-            </g>
-          </>
-        )}
+        {/* the roll — starts on the right face */}
+        <g
+          className="brand-mark__glyph brand-mark__glyph--go"
+          transform="matrix(0.36 -0.2 0 0.4 16.5 14.5)"
+        >
+          <path d="M-3.2 -6.2 5.6 0 -3.2 6.2Z" strokeWidth="1.8" strokeLinejoin="round" />
+        </g>
       </g>
     </svg>
   );
