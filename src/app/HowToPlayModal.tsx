@@ -131,7 +131,13 @@ export function HowToPlayModal({ onClose, onStart }: HowToPlayModalProps) {
         </ol>
 
         {onStart ? (
-          <Button variant="primary" size="lg" className="howto__start" onClick={onStart} autoFocus>
+          <Button
+            variant="primary"
+            size="lg"
+            className="howto__start"
+            onClick={onStart}
+            data-autofocus
+          >
             {t("buttons.startRound")}
           </Button>
         ) : null}

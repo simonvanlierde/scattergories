@@ -13,6 +13,23 @@ import { chromium } from "@playwright/test";
 const FIELD = "oklch(34% 0.11 260)"; // --accent-primary (ink navy)
 const ROOT = new URL("..", import.meta.url);
 
+/** Wraps a PNG in a single-image ICO container — the format allows a raw PNG payload per entry. */
+function pngToIco(png, size) {
+  const header = Buffer.alloc(6);
+  header.writeUInt16LE(1, 2); // type: icon
+  header.writeUInt16LE(1, 4); // image count
+
+  const entry = Buffer.alloc(16);
+  entry.writeUInt8(size, 0); // width (0 means 256, unused at our sizes)
+  entry.writeUInt8(size, 1); // height
+  entry.writeUInt16LE(1, 4); // color planes
+  entry.writeUInt16LE(32, 6); // bits per pixel
+  entry.writeUInt32LE(png.length, 8); // image data size
+  entry.writeUInt32LE(header.length + entry.length, 12); // offset to image data
+
+  return Buffer.concat([header, entry, png]);
+}
+
 /** Icon field + mark, scaled so the mark occupies `scale` of a `size`-wide canvas. */
 function compose(art, { scale, radius, size = 24 }) {
   const inset = ((24 * (1 - scale)) / 2).toFixed(2);
@@ -62,3 +79,9 @@ for (const { file, size, scale, radius } of OUTPUTS) {
 }
 await browser.close();
 process.stdout.write("wrote public/favicon.svg\n");
+
+// Legacy fallback: some browsers/bots/scanners request /favicon.ico directly,
+// ignoring <link rel="icon">. Reuse the 32px PNG already generated above.
+const favicon32 = await readFile(fileURLToPath(new URL("public/icons/favicon-32.png", ROOT)));
+await writeFile(new URL("public/favicon.ico", ROOT), pngToIco(favicon32, 32));
+process.stdout.write("wrote public/favicon.ico\n");

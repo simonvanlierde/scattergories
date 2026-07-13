@@ -42,7 +42,7 @@
     "gameplay": "Ablauf",
     "durationHint": "Wie lange eine Runde dauert.",
     "getReadyHint": "Countdown, bevor der Timer startet.",
-    "avoidRepeatsHint": "Jeder Buchstabe kommt einmal vor, bevor sich einer wiederholt."
+    "avoidRepeatsHint": "Jeder Buchstabe kommt einmal vor, bevor sich einer wiederholt; der Vorrat setzt sich beim Neuladen oder nach dem ganzen Alphabet zurück."
   },
   "packs": {
     "classic": {
@@ -105,6 +105,7 @@
     "gameplayPoints": [
       "Ein zufälliger Buchstabe wird gezogen. Jede Antwort muss damit beginnen.",
       "Schreibe ein Wort für jede Kategorie, bevor der Timer abläuft (standardmäßig 90 Sek.).",
+      "Verwende für jede Kategorie ein anderes Wort – keine Wiederholungen in deiner eigenen Liste.",
       "Mit Mitspielern: Antworten, die sonst niemand hat, geben 1 Punkt, Dopplungen 0."
     ],
     "categories": "Kategorien",

@@ -42,7 +42,7 @@
     "gameplay": "Reglas de juego",
     "durationHint": "Cuánto dura cada ronda.",
     "getReadyHint": "Cuenta atrás antes de iniciar el temporizador.",
-    "avoidRepeatsHint": "Cada letra sale una vez antes de repetirse."
+    "avoidRepeatsHint": "Cada letra sale una vez antes de repetirse; el conjunto se reinicia al recargar la página o al agotar todo el alfabeto."
   },
   "packs": {
     "classic": {
@@ -105,6 +105,7 @@
     "gameplayPoints": [
       "Se sortea una letra al azar: todas las respuestas deben empezar por ella.",
       "Escribe una palabra para cada categoría antes de que acabe el tiempo (90 s por defecto).",
+      "Usa una palabra distinta para cada categoría: sin repetir dentro de tu propia lista.",
       "Con otros jugadores: las respuestas que nadie más escribió valen 1 punto, las repetidas 0."
     ],
     "categories": "Categorías",

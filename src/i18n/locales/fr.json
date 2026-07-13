@@ -42,7 +42,7 @@
     "gameplay": "Déroulement",
     "durationHint": "Durée de chaque manche.",
     "getReadyHint": "Décompte avant le départ du chrono.",
-    "avoidRepeatsHint": "Chaque lettre sort une fois avant toute répétition."
+    "avoidRepeatsHint": "Chaque lettre sort une fois avant toute répétition ; la réserve se réinitialise en rechargeant la page ou une fois tout l'alphabet utilisé."
   },
   "packs": {
     "classic": {
@@ -105,6 +105,7 @@
     "gameplayPoints": [
       "Une lettre est tirée au hasard : toutes les réponses doivent commencer par elle.",
       "Écrivez un mot pour chaque catégorie avant la fin du minuteur (90 s par défaut).",
+      "Utilisez un mot différent pour chaque catégorie : aucune répétition dans votre propre liste.",
       "À plusieurs : les réponses que personne d'autre n'a écrites valent 1 point, les doublons 0."
     ],
     "categories": "Catégories",

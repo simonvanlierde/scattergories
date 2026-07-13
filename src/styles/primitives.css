@@ -392,16 +392,6 @@
     content: none;
   }
 
-  /* Every row's label reads the same — the checkbox row uses the field label
-     class too, so it must not fall back to the uppercase micro-label style. */
-  .settings-rows .ds-field__label {
-    text-transform: none;
-    letter-spacing: var(--tracking-normal);
-    font-size: var(--text-sm);
-    font-weight: 500;
-    color: var(--text-secondary);
-  }
-
   .settings-rows .ds-field__inline {
     grid-template-columns: auto auto;
   }

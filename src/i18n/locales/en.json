@@ -42,7 +42,7 @@
     "gameplay": "Gameplay",
     "durationHint": "How long each round lasts.",
     "getReadyHint": "Countdown before the timer starts.",
-    "avoidRepeatsHint": "Every letter is drawn once before any repeats."
+    "avoidRepeatsHint": "Every letter is drawn once before any repeats; the pool resets on refresh or once the whole alphabet is used."
   },
   "packs": {
     "classic": {
@@ -105,6 +105,7 @@
     "gameplayPoints": [
       "A random letter is drawn. Every answer must start with it.",
       "Write one word for each category before the timer runs out (90 seconds by default).",
+      "Use a different word for each category — no repeats within your own list.",
       "Playing with others: answers nobody else wrote score 1 point, matching answers score 0."
     ],
     "categories": "Categories",

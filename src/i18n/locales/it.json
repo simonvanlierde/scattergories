@@ -42,7 +42,7 @@
     "gameplay": "Svolgimento",
     "durationHint": "Quanto dura ogni round.",
     "getReadyHint": "Conto alla rovescia prima dell'avvio del timer.",
-    "avoidRepeatsHint": "Ogni lettera esce una volta prima di ripetersi."
+    "avoidRepeatsHint": "Ogni lettera esce una volta prima di ripetersi; il mazzo si azzera ricaricando la pagina o dopo aver usato tutto l'alfabeto."
   },
   "packs": {
     "classic": {
@@ -105,6 +105,7 @@
     "gameplayPoints": [
       "Viene estratta una lettera a caso: tutte le risposte devono iniziare con essa.",
       "Scrivi una parola per ogni categoria prima che scada il timer (90 s di default).",
+      "Usa una parola diversa per ogni categoria: nessuna ripetizione nella tua lista.",
       "Con altri giocatori: le risposte che nessun altro ha scritto valgono 1 punto, i doppioni 0."
     ],
     "categories": "Categorie",

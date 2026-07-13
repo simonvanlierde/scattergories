@@ -126,7 +126,12 @@ function createAppFixture(page: Page): AppFixture {
     },
     async switchTheme(mode: "Light" | "Dark") {
       await openSheet(page, settingsSheet, SETTINGS_NAME);
-      await settingsSheet.getByRole("radio", { name: mode, exact: true }).click();
+      const radio = settingsSheet.getByRole("radio", { name: mode, exact: true });
+      // Clicking an already-checked radio fires no change event — skip the
+      // click rather than rely on a no-op silently "succeeding".
+      if (!(await radio.isChecked())) {
+        await radio.click();
+      }
       await closeSheet(page, settingsSheet);
     },
     async switchLanguage(language: string) {

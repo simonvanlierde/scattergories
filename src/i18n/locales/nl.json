@@ -42,7 +42,7 @@
     "gameplay": "Spelregels",
     "durationHint": "Hoe lang een ronde duurt.",
     "getReadyHint": "Aftellen voordat de timer start.",
-    "avoidRepeatsHint": "Elke letter komt één keer voordat er een herhaling volgt."
+    "avoidRepeatsHint": "Elke letter komt één keer voordat er een herhaling volgt; de voorraad wordt gereset bij een pagina-vernieuwing of zodra het hele alfabet is gebruikt."
   },
   "packs": {
     "classic": {
@@ -105,6 +105,7 @@
     "gameplayPoints": [
       "Er wordt willekeurig een letter getrokken. Elk antwoord moet daarmee beginnen.",
       "Schrijf een woord voor elke categorie voordat de timer afloopt (standaard 90 seconden).",
+      "Gebruik voor elke categorie een ander woord — geen herhalingen binnen je eigen lijst.",
       "Met anderen: antwoorden die niemand anders had leveren 1 punt op, dubbele antwoorden 0."
     ],
     "categories": "Categorieën",

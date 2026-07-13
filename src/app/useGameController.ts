@@ -66,9 +66,13 @@ interface GameController {
   howToPlayDialog: ComponentType<{ onClose: () => void; onStart?: () => void }>;
 }
 
+// NOTE: fetch starts at module load (app boot), not at first Suspense — first-run
+// visitors need this chunk immediately, so warming it early avoids a loading flash
+// while keeping it split out of the main bundle for the budget check.
+// biome-ignore lint/security/noSecrets: module export name, not a secret — high-entropy false positive.
+const howToPlayModalPromise = import("./HowToPlayModal");
 const HowToPlayDialog = lazy(async () => ({
-  // biome-ignore lint/security/noSecrets: module export name, not a secret — high-entropy false positive.
-  default: (await import("./HowToPlayModal")).HowToPlayModal,
+  default: (await howToPlayModalPromise).HowToPlayModal,
 }));
 
 // biome-ignore lint/complexity/noExcessiveLinesPerFunction: aggregator hook — the body wires together the sub-hooks and returns one flat controller object; splitting it would only scatter that shape.

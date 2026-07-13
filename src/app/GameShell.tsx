@@ -1,5 +1,5 @@
 import { HelpCircle } from "lucide-react";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { canEditDeck } from "@/domain/game/roundReducer";
 import { CategoriesPanel } from "@/features/categories/CategoriesPanel";
@@ -16,6 +16,14 @@ import { useOnboarding } from "./useOnboarding";
 interface GameShellProps {
   game: GameController;
 }
+
+// Must match the two <meta name="theme-color"> tags in index.html — those cover
+// the pre-JS/OS-default paint, this effect corrects them once the user's actual
+// theme (which can diverge from the OS, e.g. after an in-app override) is known.
+// The manifest's static theme_color can't be made conditional at all (no media
+// support in that spec), so this is the only place installed/standalone chrome
+// color can track the real theme.
+const THEME_COLORS = { light: "#faf7f2", dark: "#1f1a14" } as const;
 
 function ControlBar({ game }: { game: GameController }) {
   const { t, i18n } = useTranslation();
@@ -126,6 +134,13 @@ function PlayGrid({ game }: PlayGridProps) {
 function GameShell({ game }: GameShellProps) {
   const { t } = useTranslation();
   const onboarding = useOnboarding();
+
+  useEffect(() => {
+    const color = THEME_COLORS[game.settings.theme];
+    for (const meta of document.querySelectorAll('meta[name="theme-color"]')) {
+      meta.setAttribute("content", color);
+    }
+  }, [game.settings.theme]);
 
   return (
     <main

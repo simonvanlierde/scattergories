@@ -147,12 +147,19 @@ function GameplaySettings({
         suffix="s"
         onCommit={(value) => onUpdateTimingField("bufferSecondsInput", value)}
       />
-      <label className="settings-toggle">
+      <label className="settings-toggle ds-field--inline">
         <span className="ds-field__text">
           <span className="ds-field__label">{t("settings.avoidRepeats")}</span>
-          <span className="ds-field__hint">{t("settings.avoidRepeatsHint")}</span>
+          <span className="ds-field__hint" id="avoid-repeats-hint">
+            {t("settings.avoidRepeatsHint")}
+          </span>
         </span>
-        <input type="checkbox" checked={avoidRepeats} onChange={onToggleAvoidRepeats} />
+        <input
+          type="checkbox"
+          checked={avoidRepeats}
+          onChange={onToggleAvoidRepeats}
+          aria-describedby="avoid-repeats-hint"
+        />
       </label>
     </div>
   );
