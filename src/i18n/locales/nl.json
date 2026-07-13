@@ -105,7 +105,7 @@
     "gameplayPoints": [
       "Er wordt willekeurig een letter getrokken. Elk antwoord moet daarmee beginnen.",
       "Schrijf een woord voor elke categorie voordat de timer afloopt (standaard 90 seconden).",
-      "Gebruik voor elke categorie een ander woord — geen herhalingen binnen je eigen lijst.",
+      "Gebruik voor elke categorie een ander woord, zonder herhalingen binnen je eigen lijst.",
       "Met anderen: antwoorden die niemand anders had leveren 1 punt op, dubbele antwoorden 0."
     ],
     "categories": "Categorieën",

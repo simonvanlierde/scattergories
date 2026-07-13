@@ -105,7 +105,7 @@
     "gameplayPoints": [
       "Uma letra é sorteada ao acaso: todas as respostas devem começar com ela.",
       "Escreva uma palavra para cada categoria antes de o tempo acabar (90 s por padrão).",
-      "Use uma palavra diferente para cada categoria — sem repetições na sua própria lista.",
+      "Use uma palavra diferente para cada categoria, sem repetições na sua própria lista.",
       "Com outros jogadores: as respostas que mais ninguém escreveu valem 1 ponto, as repetidas 0."
     ],
     "categories": "Categorias",

@@ -105,7 +105,7 @@
     "gameplayPoints": [
       "Ein zufälliger Buchstabe wird gezogen. Jede Antwort muss damit beginnen.",
       "Schreibe ein Wort für jede Kategorie, bevor der Timer abläuft (standardmäßig 90 Sek.).",
-      "Verwende für jede Kategorie ein anderes Wort – keine Wiederholungen in deiner eigenen Liste.",
+      "Verwende für jede Kategorie ein anderes Wort, ohne Wiederholungen in deiner eigenen Liste.",
       "Mit Mitspielern: Antworten, die sonst niemand hat, geben 1 Punkt, Dopplungen 0."
     ],
     "categories": "Kategorien",

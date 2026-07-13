@@ -105,7 +105,7 @@
     "gameplayPoints": [
       "Losowana jest litera. Każda odpowiedź musi się od niej zaczynać.",
       "Wpisz jedno słowo do każdej kategorii, zanim skończy się czas (domyślnie 90 s).",
-      "Użyj innego słowa dla każdej kategorii — bez powtórzeń w swojej liście.",
+      "Użyj innego słowa dla każdej kategorii, bez powtórzeń w swojej liście.",
       "Z innymi graczami: odpowiedzi, których nikt inny nie zapisał, dają 1 punkt, powtórki 0."
     ],
     "categories": "Kategorie",
