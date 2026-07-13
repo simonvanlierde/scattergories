@@ -35,6 +35,7 @@
     "lint:fix": "biome check --write .",
     "typecheck": "tsc -b --noEmit",
     "budget": "node scripts/check-bundle-budgets.mjs",
+    "icons": "node scripts/generate-icons.mjs",
     "spellcheck": "cspell lint . --config=.cspell.yml --no-config-search --cache --cache-strategy content",
     "spellcheck-changed": "cspell lint --config=.cspell.yml --no-config-search --cache --cache-strategy content --no-progress --no-must-find-files",
     "check": "pnpm typecheck && pnpm spellcheck && pnpm lint",
