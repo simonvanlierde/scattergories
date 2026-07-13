@@ -20,7 +20,7 @@ function contrastRatio(fg: number[], bg: number[]): number {
 
 test("@smoke categories heading meets AA contrast in dark mode", async ({ app, page }) => {
   await app.waitUntilReady();
-  await page.getByRole("button", { name: /Switch to dark mode/ }).click();
+  await app.switchTheme("Dark");
 
   const { fg, bg } = await page.evaluate(() => {
     const h2 = document.querySelector("#categories-panel-title") as HTMLElement;

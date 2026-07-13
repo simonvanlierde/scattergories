@@ -7,11 +7,6 @@
   "controls": {
     "roundGroup": "Controles da rodada"
   },
-  "welcome": {
-    "roll": "Sorteie uma letra",
-    "write": "Escreva uma palavra para cada categoria começando por ela",
-    "race": "Corra contra o tempo e depois comparem as respostas"
-  },
   "buttons": {
     "startRound": "Sortear letra",
     "nextRound": "Próxima rodada",
@@ -38,13 +33,16 @@
     "startIn": "Começa em {{seconds}}s"
   },
   "settings": {
+    "title": "Configurações",
     "duration": "Rodada",
     "getReady": "Preparação",
     "avoidRepeats": "Evitar letras repetidas",
     "categoryDraw": "Sorteio",
     "addCustom": "Categoria personalizada",
-    "roundTimerTitle": "Temporizador da rodada",
-    "pace": "{{seconds}}s"
+    "gameplay": "Regras do jogo",
+    "durationHint": "Quanto dura cada rodada.",
+    "getReadyHint": "Contagem regressiva antes de o temporizador começar.",
+    "avoidRepeatsHint": "Sortear cada letra uma vez antes de repetir."
   },
   "packs": {
     "classic": {
@@ -104,11 +102,9 @@
   "modal": {
     "title": "Como jogar",
     "objectiveText": "Acumule pontos escrevendo palavras que comecem com a letra sorteada e se encaixem nas categorias exibidas.",
-    "gameplay": "Regras do jogo",
     "gameplayPoints": [
       "Uma letra é sorteada ao acaso: todas as respostas devem começar com ela.",
       "Antes de o tempo acabar (90 s por padrão), escreva uma palavra para cada categoria.",
-      "Use uma palavra diferente em cada categoria, sem repetir.",
       "Joga com outros? Ganha 1 ponto por cada resposta que ninguém mais escreveu; as repetidas valem 0, então aposte em respostas originais."
     ],
     "categories": "Categorias",
@@ -117,14 +113,6 @@
       "Personalize o baralho para adicionar categorias e pacotes, ou remova as que preferir pular.",
       "Fixe uma categoria para garanti-la em todas as rodadas; as não fixadas são sorteadas ao acaso para completar o resto.",
       "Sorteie de novo para obter um novo conjunto de categorias para a letra atual, sem mudar a letra."
-    ],
-    "settings": "Configurações",
-    "settingsIntro": "Você as encontra na parte inferior da tela; tudo é salvo automaticamente.",
-    "settingsItems": [
-      "Temporizador da rodada — quanto dura cada rodada e a contagem regressiva de preparação antes de começar. Também contém Evitar letras repetidas: deixe ativado para sortear cada letra uma vez antes de qualquer repetição. O conjunto de letras é reiniciado ao recarregar a página ou quando todo o alfabeto for usado.",
-      "Idioma — altere o idioma da interface e das categorias.",
-      "Som — silencie ou ative o tique-taque do temporizador e o alarme.",
-      "Tema — alterne entre o modo claro e escuro."
     ],
     "shortcuts": "Atalhos de teclado",
     "about": "Sobre",
@@ -137,6 +125,9 @@
     "label": "Idioma"
   },
   "theme": {
+    "label": "Aparência",
+    "light": "Claro",
+    "dark": "Escuro",
     "switchToDark": "Mudar para o modo escuro",
     "switchToLight": "Mudar para o modo claro"
   },

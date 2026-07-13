@@ -1,16 +1,14 @@
 import { test as base, expect, type Locator, type Page } from "@playwright/test";
-import { ONBOARDED_KEY } from "../src/app/WelcomeOverlay";
+import { ONBOARDED_KEY } from "../src/app/useOnboarding";
 import { GO, ROUND_STATE_TIMEOUT_MS, SCATTERGORIES_HEADING } from "../src/test/constants";
 
-// spell-checker: ignore Configuración, Idioma, Fijar, Idiomas
+// spell-checker: ignore Ajustes, Fijar, Idiomas
 
 type RoundButtonLabel = RegExp | string;
 const START_OR_NEXT_ROUND_BUTTON_LABEL = /Roll a letter|Next round/;
 const MUTE_BUTTON_LABEL = /Mute|Unmute/;
-const TIMER_NAME = /Round timer/i;
-// Anchored: an unanchored /Idioma/ also matches the "Fijar Idiomas" category chip
-// whenever the Languages category happens to be drawn, which is a strict-mode violation.
-const LANGUAGE_NAME = /^(Language|Idioma)$/i;
+// The timer, language, and theme controls now live in one settings sheet.
+const SETTINGS_NAME = /^(Settings|Ajustes)$/i;
 
 interface AppFixture {
   currentLetter: Locator;
@@ -19,15 +17,14 @@ interface AppFixture {
   readyHeading: Locator;
   roundClock: Locator;
   roundStatus: Locator;
-  timerPopover: Locator;
-  languagePopover: Locator;
+  settingsSheet: Locator;
   collapseCategories: () => Promise<void>;
   openHelp: () => Promise<void>;
   expectIdle: () => Promise<void>;
   expectRunning: () => Promise<void>;
-  openTimer: () => Promise<void>;
-  openLanguage: () => Promise<void>;
-  closePopover: () => Promise<void>;
+  openSettings: () => Promise<void>;
+  closeSettings: () => Promise<void>;
+  switchTheme: (mode: "Light" | "Dark") => Promise<void>;
   setTimer: (value: string, getReadySeconds?: string) => Promise<void>;
   startRound: (label?: RoundButtonLabel) => Promise<void>;
   startRoundSafely: (label?: RoundButtonLabel) => Promise<void>;
@@ -41,21 +38,25 @@ async function fillNumericField(field: Locator, value: string) {
   await field.blur();
 }
 
-async function openPopover(page: Page, panel: Locator, triggerName: RegExp) {
+async function openSheet(page: Page, panel: Locator, triggerName: RegExp) {
   if (await panel.isVisible()) {
     return;
   }
   await page.getByRole("button", { name: triggerName }).click();
   await expect(panel).toBeVisible();
+  // The sheet fades in over --duration-slow. `toBeVisible` resolves as soon as it
+  // is painted, so anything reading pixels (axe's contrast check) would sample a
+  // half-faded blend and report phantom contrast failures. Wait it out.
+  await panel.evaluate((el) => Promise.all(el.getAnimations().map((a) => a.finished)));
 }
 
-async function closePopover(page: Page) {
+async function closeSheet(page: Page, panel: Locator) {
   await page.keyboard.press("Escape");
+  await expect(panel).toBeHidden();
 }
 
 function createAppFixture(page: Page): AppFixture {
-  const timerPopover = page.getByRole("dialog", { name: TIMER_NAME });
-  const languagePopover = page.getByRole("dialog", { name: LANGUAGE_NAME });
+  const settingsSheet = page.getByRole("dialog", { name: SETTINGS_NAME });
   const readyHeading = page.getByRole("heading", { name: SCATTERGORIES_HEADING });
   const currentLetter = page.getByTestId("current-letter");
   const promptToggle = page.locator('button[aria-controls="categories-panel-content"]');
@@ -74,10 +75,9 @@ function createAppFixture(page: Page): AppFixture {
     readyHeading,
     roundClock: page.getByTestId("round-clock"),
     roundStatus,
-    timerPopover,
-    languagePopover,
-    async closePopover() {
-      await closePopover(page);
+    settingsSheet,
+    async closeSettings() {
+      await closeSheet(page, settingsSheet);
     },
     async collapseCategories() {
       if ((await promptToggle.getAttribute("aria-expanded")) === "true") {
@@ -86,8 +86,10 @@ function createAppFixture(page: Page): AppFixture {
       await expect(promptToggle).toHaveAttribute("aria-expanded", "false");
     },
     async openHelp() {
+      const help = page.getByRole("dialog", { name: /How to play/i });
       await page.getByRole("button", { name: /How to play/i }).click();
       await expect(page.getByRole("heading", { name: /How to play/i })).toBeVisible();
+      await help.evaluate((el) => Promise.all(el.getAnimations().map((a) => a.finished)));
     },
     async expectIdle() {
       await expect(primaryRoundButton()).toBeVisible();
@@ -96,24 +98,21 @@ function createAppFixture(page: Page): AppFixture {
       await expect(roundStatus).toHaveText(GO, { timeout: ROUND_STATE_TIMEOUT_MS });
       await expect(currentLetter).toBeVisible();
     },
-    async openTimer() {
-      await openPopover(page, timerPopover, TIMER_NAME);
-    },
-    async openLanguage() {
-      await openPopover(page, languagePopover, LANGUAGE_NAME);
+    async openSettings() {
+      await openSheet(page, settingsSheet, SETTINGS_NAME);
     },
     async setTimer(value: string, getReadySeconds?: string) {
-      await openPopover(page, timerPopover, TIMER_NAME);
-      await fillNumericField(timerPopover.getByLabel("Round", { exact: true }), value);
+      await openSheet(page, settingsSheet, SETTINGS_NAME);
+      await fillNumericField(settingsSheet.getByLabel("Round", { exact: true }), value);
       if (getReadySeconds !== undefined) {
         // The get-ready countdown is real wall-clock time; "0" skips it so a test
         // waiting out a full round doesn't also sit through the buffer.
         await fillNumericField(
-          timerPopover.getByLabel("Get ready", { exact: true }),
+          settingsSheet.getByLabel("Get ready", { exact: true }),
           getReadySeconds,
         );
       }
-      await closePopover(page);
+      await closeSheet(page, settingsSheet);
     },
     async startRound(label: RoundButtonLabel = START_OR_NEXT_ROUND_BUTTON_LABEL) {
       const startButton = primaryRoundButton(label);
@@ -125,10 +124,15 @@ function createAppFixture(page: Page): AppFixture {
       await startButton.scrollIntoViewIfNeeded();
       await startButton.click();
     },
+    async switchTheme(mode: "Light" | "Dark") {
+      await openSheet(page, settingsSheet, SETTINGS_NAME);
+      await settingsSheet.getByRole("radio", { name: mode, exact: true }).click();
+      await closeSheet(page, settingsSheet);
+    },
     async switchLanguage(language: string) {
-      await openPopover(page, languagePopover, LANGUAGE_NAME);
-      // Selecting a language applies it and closes the popover.
-      await languagePopover.locator(`[data-locale="${language}"]`).click();
+      await openSheet(page, settingsSheet, SETTINGS_NAME);
+      await settingsSheet.locator("select.settings-select").selectOption(language);
+      await closeSheet(page, settingsSheet);
     },
     async toggleMute() {
       await page

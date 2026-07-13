@@ -7,11 +7,6 @@
   "controls": {
     "roundGroup": "Sterowanie rundą"
   },
-  "welcome": {
-    "roll": "Wylosuj literę",
-    "write": "Do każdej kategorii wpisz słowo zaczynające się na tę literę",
-    "race": "Ścigaj się z czasem, potem porównajcie odpowiedzi"
-  },
   "buttons": {
     "startRound": "Wylosuj literę",
     "nextRound": "Następna runda",
@@ -38,13 +33,16 @@
     "startIn": "Start za {{seconds}}s"
   },
   "settings": {
+    "title": "Ustawienia",
     "duration": "Runda",
     "getReady": "Przygotowanie",
     "avoidRepeats": "Unikaj powtórzeń liter",
     "categoryDraw": "Losowanie",
     "addCustom": "Własna kategoria",
-    "roundTimerTitle": "Czasomierz rundy",
-    "pace": "{{seconds}}s"
+    "gameplay": "Zasady",
+    "durationHint": "Jak długo trwa runda.",
+    "getReadyHint": "Odliczanie przed startem stopera.",
+    "avoidRepeatsHint": "Losuj każdą literę raz, zanim się powtórzy."
   },
   "packs": {
     "classic": {
@@ -104,11 +102,9 @@
   "modal": {
     "title": "Jak grać",
     "objectiveText": "Zdobywaj punkty, zapisując słowa, które zaczynają się na wylosowaną literę i pasują do wybranych kategorii.",
-    "gameplay": "Zasady",
     "gameplayPoints": [
       "Losowana jest litera — każda odpowiedź musi się od niej zaczynać.",
       "Zanim skończy się czas (domyślnie 90 s), wpisz jedno słowo do każdej kategorii.",
-      "W każdej kategorii użyj innego słowa, bez powtórzeń.",
       "Grasz z innymi? Zdobywasz 1 punkt za każdą odpowiedź, której nikt inny nie zapisał; powtórki dają 0, więc stawiaj na oryginalne słowa."
     ],
     "categories": "Kategorie",
@@ -117,14 +113,6 @@
       "Dostosuj talię, aby dodać kategorie i zestawy, lub usuń te, które wolisz pominąć.",
       "Przypnij kategorię, aby pojawiała się w każdej rundzie; nieprzypięte są losowane na resztę miejsc.",
       "Losuj ponownie, aby wylosować nowy zestaw kategorii dla bieżącej litery, bez zmiany litery."
-    ],
-    "settings": "Ustawienia",
-    "settingsIntro": "Znajdziesz je na dole ekranu — wszystko zapisuje się automatycznie.",
-    "settingsItems": [
-      "Czasomierz rundy — jak długo trwa każda runda oraz odliczanie przygotowania przed startem. Znajdziesz tu też Unikaj powtórzeń liter: zostaw włączone, aby każda litera wypadła raz, zanim się powtórzy. Pula liter resetuje się po odświeżeniu strony lub gdy wykorzystasz cały alfabet.",
-      "Język — zmień język interfejsu i kategorii.",
-      "Dźwięk — wycisz lub włącz tykanie zegara i alarm.",
-      "Motyw — przełączaj między trybem jasnym a ciemnym."
     ],
     "shortcuts": "Skróty klawiszowe",
     "about": "O aplikacji",
@@ -137,6 +125,9 @@
     "label": "Język"
   },
   "theme": {
+    "label": "Wygląd",
+    "light": "Jasny",
+    "dark": "Ciemny",
     "switchToDark": "Przełącz na tryb ciemny",
     "switchToLight": "Przełącz na tryb jasny"
   },

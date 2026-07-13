@@ -16,6 +16,7 @@ interface GameController {
     drawnCategories: string[];
     drawnCustomCategories: string[];
     isLanding: boolean;
+    isRerolling: boolean;
     isPromptDeckOpen: boolean;
     inputRef: RefObject<HTMLInputElement>;
   };
@@ -62,7 +63,7 @@ interface GameController {
   settings: ReturnType<typeof useSettings>["settings"] & {
     gameSeconds: number;
   };
-  howToPlayDialog: ComponentType<{ onClose: () => void }>;
+  howToPlayDialog: ComponentType<{ onClose: () => void; onStart?: () => void }>;
 }
 
 const HowToPlayDialog = lazy(async () => ({
@@ -132,6 +133,7 @@ function useGameController(): GameController {
       drawnCategories: board.drawnCategories,
       drawnCustomCategories: board.drawnCustom,
       isLanding: board.landing,
+      isRerolling: board.spinning,
       isPromptDeckOpen: promptDeck.isPromptDeckOpen,
       inputRef: controls.newCategoryInputRef as RefObject<HTMLInputElement>,
     },

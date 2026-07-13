@@ -7,11 +7,6 @@
   "controls": {
     "roundGroup": "Controles de ronda"
   },
-  "welcome": {
-    "roll": "Saca una letra",
-    "write": "Escribe una palabra que empiece por ella en cada categoría",
-    "race": "Vence al reloj y comparad las respuestas"
-  },
   "buttons": {
     "startRound": "Sortear letra",
     "nextRound": "Siguiente ronda",
@@ -38,13 +33,16 @@
     "startIn": "Empieza en {{seconds}}s"
   },
   "settings": {
+    "title": "Ajustes",
     "duration": "Ronda",
     "getReady": "Preparación",
     "avoidRepeats": "Evitar letras repetidas",
     "categoryDraw": "Sorteo",
     "addCustom": "Añadir categoría propia",
-    "roundTimerTitle": "Temporizador de ronda",
-    "pace": "{{seconds}}s"
+    "gameplay": "Reglas de juego",
+    "durationHint": "Cuánto dura cada ronda.",
+    "getReadyHint": "Cuenta atrás antes de iniciar el temporizador.",
+    "avoidRepeatsHint": "Sacar cada letra una vez antes de repetir."
   },
   "packs": {
     "classic": {
@@ -104,11 +102,9 @@
   "modal": {
     "title": "Cómo jugar",
     "objectiveText": "Gana puntos escribiendo palabras que empiecen por la letra dada y encajen en las categorías.",
-    "gameplay": "Reglas de juego",
     "gameplayPoints": [
       "Se sortea una letra al azar: todas las respuestas deben empezar por ella.",
       "Antes de que acabe el tiempo (90 s por defecto), escribe una palabra para cada categoría.",
-      "Usa una palabra distinta en cada categoría, sin repetir.",
       "¿Juegas con otros? Ganas 1 punto por cada respuesta que nadie más escribió; las repetidas valen 0, así que busca respuestas originales."
     ],
     "categories": "Categorías",
@@ -117,14 +113,6 @@
       "Personaliza la baraja para añadir categorías y paquetes, o quita las que prefieras omitir.",
       "Fija una categoría para asegurarla en cada ronda; las no fijadas se sortean al azar para completar el resto.",
       "Vuelve a sortear para obtener un conjunto nuevo de categorías para la letra actual, sin cambiar la letra."
-    ],
-    "settings": "Ajustes",
-    "settingsIntro": "Los encontrarás en la parte inferior de la pantalla; todo se guarda automáticamente.",
-    "settingsItems": [
-      "Temporizador de ronda — cuánto dura cada ronda y la cuenta atrás de preparación antes de empezar. También incluye Evitar letras repetidas: déjalo activado para sortear cada letra una vez antes de que se repita. El conjunto de letras se reinicia al recargar la página o cuando se ha usado todo el alfabeto.",
-      "Idioma — cambia el idioma de la interfaz y de las categorías.",
-      "Sonido — silencia o activa el temporizador y la alarma.",
-      "Tema — cambia entre el modo claro y oscuro."
     ],
     "shortcuts": "Atajos de teclado",
     "about": "Acerca de",
@@ -137,6 +125,9 @@
     "label": "Idioma"
   },
   "theme": {
+    "label": "Apariencia",
+    "light": "Claro",
+    "dark": "Oscuro",
     "switchToDark": "Cambiar al modo oscuro",
     "switchToLight": "Cambiar al modo claro"
   },

@@ -7,11 +7,6 @@
   "controls": {
     "roundGroup": "Round controls"
   },
-  "welcome": {
-    "roll": "Roll a letter",
-    "write": "Write a word for each category that starts with it",
-    "race": "Race the timer, then compare answers"
-  },
   "buttons": {
     "startRound": "Roll a letter",
     "nextRound": "Next round",
@@ -38,13 +33,16 @@
     "startIn": "Start in {{seconds}}s"
   },
   "settings": {
+    "title": "Settings",
     "duration": "Round",
     "getReady": "Get ready",
     "avoidRepeats": "Avoid letter repeats",
     "categoryDraw": "Draw",
     "addCustom": "Add custom category",
-    "roundTimerTitle": "Round timer",
-    "pace": "{{seconds}}s"
+    "gameplay": "Gameplay",
+    "durationHint": "How long each round lasts.",
+    "getReadyHint": "Countdown before the timer starts.",
+    "avoidRepeatsHint": "Draw every letter once before any repeats."
   },
   "packs": {
     "classic": {
@@ -104,27 +102,17 @@
   "modal": {
     "title": "How to play",
     "objectiveText": "Score points by writing words that fit each category and start with the drawn letter.",
-    "gameplay": "Gameplay",
     "gameplayPoints": [
       "A random letter is drawn — every answer must start with it.",
       "Before the timer runs out (90 seconds by default), write one word for each category.",
-      "Use a different word for each category, with no repeats across your list.",
       "Playing with others? Score 1 point for each answer nobody else wrote; matching answers score 0, so aim for creative, uncommon words."
     ],
     "categories": "Categories",
-    "categoriesText": "The game comes with a large built-in set of categories, and you can add your own custom ones — or whole themed packs — to the deck.",
+    "categoriesText": "The game comes with a large built-in set of categories, and you can add your own custom ones to the deck.",
     "categoriesItems": [
-      "Customize the deck to add categories and packs, or remove any you'd rather skip.",
+      "Customize the deck to add categories and built-in packs, or remove any you'd rather skip.",
       "Pin a category to lock it into every round; unpinned ones are drawn at random to fill the rest.",
       "Reroll to draw a fresh set of categories for the current letter, without changing the letter."
-    ],
-    "settings": "Settings",
-    "settingsIntro": "Find these at the bottom of the screen — everything saves automatically.",
-    "settingsItems": [
-      "Round timer — how long each round lasts and the get-ready countdown before it begins. It also holds Avoid letter repeats: leave it on to draw each letter once before any repeat. The letter pool resets when you refresh the page or once the whole alphabet has been used.",
-      "Language — change the interface and category language.",
-      "Sound — mute or unmute the timer ticks and alarm.",
-      "Theme — switch between light and dark mode."
     ],
     "shortcuts": "Keyboard shortcuts",
     "about": "About",
@@ -137,6 +125,9 @@
     "label": "Language"
   },
   "theme": {
+    "label": "Appearance",
+    "light": "Light",
+    "dark": "Dark",
     "switchToDark": "Switch to dark mode",
     "switchToLight": "Switch to light mode"
   },

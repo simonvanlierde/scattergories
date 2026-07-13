@@ -12,6 +12,7 @@ interface DebouncedNumberFieldProps {
   max: number;
   fallback: number;
   suffix?: ReactNode;
+  hint?: string;
   onCommit: (value: string) => void;
 }
 
@@ -27,6 +28,7 @@ export function DebouncedNumberField({
   max,
   fallback,
   suffix,
+  hint,
   onCommit,
 }: DebouncedNumberFieldProps) {
   const [draft, setDraft] = useState(value);
@@ -93,6 +95,7 @@ export function DebouncedNumberField({
       min={min}
       max={max}
       suffix={suffix}
+      hint={hint}
       onFocus={() => {
         isFocusedRef.current = true;
       }}

@@ -1,7 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { App } from "@/app/App";
-import { ONBOARDED_KEY } from "@/app/WelcomeOverlay";
+import { ONBOARDED_KEY } from "@/app/useOnboarding";
 import { resetSettingsToStorage } from "@/features/settings/SettingsProvider";
 import { HEADING_LEVEL, SCATTERGORIES_HEADING } from "./constants";
 
@@ -30,14 +30,9 @@ export async function openCustomizeDeck(user: ReturnType<typeof userEvent.setup>
   return screen.findByRole("dialog", { name: "Customize deck" });
 }
 
-export async function openTimerPopover(user: ReturnType<typeof userEvent.setup>) {
-  await user.click(screen.getByRole("button", { name: "Round timer" }));
-  return screen.findByRole("dialog", { name: "Round timer" });
-}
-
-export async function openLanguagePopover(user: ReturnType<typeof userEvent.setup>) {
-  await user.click(screen.getByRole("button", { name: "Language" }));
-  return screen.findByRole("dialog", { name: "Language" });
+export async function openSettings(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(screen.getByRole("button", { name: "Settings" }));
+  return screen.findByRole("dialog", { name: "Settings" });
 }
 
 export function selectedCategoryItems() {

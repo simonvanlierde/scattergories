@@ -11,7 +11,7 @@ import { cx } from "@/shared/ui/cx";
 import { Icon } from "@/shared/ui/Icon";
 import { IconButton } from "@/shared/ui/IconButton";
 import type { GameController } from "./useGameController";
-import { useOnboarding, WelcomeOverlay } from "./WelcomeOverlay";
+import { useOnboarding } from "./useOnboarding";
 
 interface GameShellProps {
   game: GameController;
@@ -22,8 +22,17 @@ function ControlBar({ game }: { game: GameController }) {
 
   return (
     <footer className="controlbar">
-      <div className="controlbar__brand">
-        <BrandMark />
+      {/* The die rolls while the letter spins and while the categories reroll — the
+          mark reacts to the roll, it never triggers one; a logo is not a control. */}
+      <div
+        className={cx(
+          "controlbar__brand",
+          (game.round.phase === "spinning" || game.categories.isRerolling) &&
+            "controlbar__brand--rolling",
+        )}
+      >
+        {/* Big enough to carry all three glyphs — they are what visibly roll. */}
+        <BrandMark size={32} />
         <h1>{t("title")}</h1>
       </div>
 
@@ -133,21 +142,9 @@ function GameShell({ game }: GameShellProps) {
         <ControlBar game={game} />
       </div>
 
-      {onboarding.needsOnboarding ? (
-        <WelcomeOverlay
-          onStart={() => {
-            onboarding.complete();
-            game.controls.onStartRound();
-          }}
-          onHowToPlay={() => {
-            onboarding.complete();
-            game.controls.onOpenHowToPlay();
-          }}
-          onDismiss={onboarding.complete}
-        />
-      ) : null}
-
-      {game.flags.isHowToPlayOpen ? (
+      {/* The rules are the welcome: on first run they open with a CTA that rolls
+          the opening letter, otherwise they are the ? button's dialog. */}
+      {onboarding.needsOnboarding || game.flags.isHowToPlayOpen ? (
         <Suspense
           fallback={
             <div className="modal-loading" role="status" aria-live="polite">
@@ -155,7 +152,19 @@ function GameShell({ game }: GameShellProps) {
             </div>
           }
         >
-          <game.howToPlayDialog onClose={game.controls.onCloseHowToPlay} />
+          <game.howToPlayDialog
+            onClose={
+              onboarding.needsOnboarding ? onboarding.complete : game.controls.onCloseHowToPlay
+            }
+            onStart={
+              onboarding.needsOnboarding
+                ? () => {
+                    onboarding.complete();
+                    game.controls.onStartRound();
+                  }
+                : undefined
+            }
+          />
         </Suspense>
       ) : null}
     </main>

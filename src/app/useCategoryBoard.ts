@@ -23,6 +23,8 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
   // a round's "custom" styling stays frozen even if the deck is edited mid-round.
   const [drawnCustom, setDrawnCustom] = useState<string[]>([]);
   const [landing, setLanding] = useState(false);
+  // True only while the slots are actually rolling — the footer die spins along with them.
+  const [spinning, setSpinning] = useState(false);
   const spinIdRef = useRef(0);
 
   // Pins and the current display are read through refs so that toggling a pin
@@ -55,12 +57,14 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
       const fillSlotCount = deck.reduce((n, name) => (pinnedSet.has(name) ? n : n + 1), 0);
       const canAnimate = animate && fillSlotCount > 0 && pool.length > 0 && !prefersReducedMotion();
       if (!canAnimate) {
+        setSpinning(false);
         setDisplayCategories(deck);
         setDrawnCustom(customSnapshot);
         return;
       }
 
       const spinId = spinIdRef.current;
+      setSpinning(true);
       runRoll({
         onFlip: () => {
           // Pinned slots hold still; only the unpinned slots roll in place.
@@ -70,6 +74,7 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
           setDisplayCategories(deck);
           setDrawnCustom(customSnapshot);
           setLanding(true);
+          setSpinning(false);
         },
         spinId,
         spinIdRef,
@@ -97,6 +102,7 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
     drawnCategories: displayCategories,
     drawnCustom,
     landing,
+    spinning,
     redrawCategories,
   };
 }

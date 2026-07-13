@@ -7,11 +7,6 @@
   "controls": {
     "roundGroup": "Rundensteuerung"
   },
-  "welcome": {
-    "roll": "Ziehe einen Buchstaben",
-    "write": "Schreibe zu jeder Kategorie ein Wort, das damit beginnt",
-    "race": "Schlag die Uhr und vergleicht dann eure Antworten"
-  },
   "buttons": {
     "startRound": "Buchstabe ziehen",
     "nextRound": "Nächste Runde",
@@ -38,13 +33,16 @@
     "startIn": "Start in {{seconds}}s"
   },
   "settings": {
+    "title": "Einstellungen",
     "duration": "Runde",
     "getReady": "Vorlauf",
     "avoidRepeats": "Buchstabenwiederholungen vermeiden",
     "categoryDraw": "Ziehung",
     "addCustom": "Eigene Kategorie",
-    "roundTimerTitle": "Rundentimer",
-    "pace": "{{seconds}}s"
+    "gameplay": "Ablauf",
+    "durationHint": "Wie lange eine Runde dauert.",
+    "getReadyHint": "Countdown, bevor der Timer startet.",
+    "avoidRepeatsHint": "Jeden Buchstaben einmal ziehen, bevor sich einer wiederholt."
   },
   "packs": {
     "classic": {
@@ -104,11 +102,9 @@
   "modal": {
     "title": "Spielanleitung",
     "objectiveText": "Sammle Punkte, indem du Begriffe aufschreibst, die mit dem gewählten Buchstaben beginnen und in die jeweilige Kategorie passen.",
-    "gameplay": "Ablauf",
     "gameplayPoints": [
       "Ein zufälliger Buchstabe wird gezogen – jede Antwort muss damit beginnen.",
       "Schreibe vor Ablauf des Timers (standardmäßig 90 Sek.) ein Wort für jede Kategorie.",
-      "Nutze für jede Kategorie ein anderes Wort, ohne Wiederholungen.",
       "Mit Mitspielern? Du bekommst 1 Punkt für jede Antwort, die sonst niemand hat; Dopplungen zählen 0, also wähle kreative, seltene Antworten."
     ],
     "categories": "Kategorien",
@@ -117,14 +113,6 @@
       "Passe das Deck an, um Kategorien und Sets hinzuzufügen oder solche zu entfernen, die du überspringen möchtest.",
       "Fixiere eine Kategorie, damit sie in jeder Runde vorkommt; nicht fixierte werden zufällig für den Rest gezogen.",
       "Ziehe neu, um für den aktuellen Buchstaben ein frisches Set an Kategorien zu ziehen, ohne den Buchstaben zu ändern."
-    ],
-    "settings": "Einstellungen",
-    "settingsIntro": "Du findest sie unten auf dem Bildschirm – alles wird automatisch gespeichert.",
-    "settingsItems": [
-      "Rundentimer — wie lange jede Runde dauert und der Countdown zum Bereitmachen davor. Hier steht auch Buchstabenwiederholungen vermeiden: Lass es an, um jeden Buchstaben einmal zu ziehen, bevor sich einer wiederholt. Der Buchstabenpool wird zurückgesetzt, wenn du die Seite neu lädst oder sobald das ganze Alphabet verwendet wurde.",
-      "Sprache — ändere die Sprache der Oberfläche und der Kategorien.",
-      "Ton — schalte Timer und Alarm stumm oder wieder an.",
-      "Design — wechsle zwischen hellem und dunklem Modus."
     ],
     "shortcuts": "Tastenkürzel",
     "about": "Über",
@@ -137,6 +125,9 @@
     "label": "Sprache"
   },
   "theme": {
+    "label": "Darstellung",
+    "light": "Hell",
+    "dark": "Dunkel",
     "switchToDark": "Zum dunklen Modus wechseln",
     "switchToLight": "Zum hellen Modus wechseln"
   },

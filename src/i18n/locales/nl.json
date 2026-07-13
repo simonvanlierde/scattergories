@@ -7,11 +7,6 @@
   "controls": {
     "roundGroup": "Rondebediening"
   },
-  "welcome": {
-    "roll": "Loot een letter",
-    "write": "Schrijf bij elke categorie een woord dat ermee begint",
-    "race": "Race tegen de klok en vergelijk jullie antwoorden"
-  },
   "buttons": {
     "startRound": "Loot een letter",
     "nextRound": "Volgende ronde",
@@ -38,13 +33,16 @@
     "startIn": "Start over {{seconds}}s"
   },
   "settings": {
+    "title": "Instellingen",
     "duration": "Ronde",
     "getReady": "Klaarmaken",
     "avoidRepeats": "Herhaalde letters vermijden",
     "categoryDraw": "Loting",
     "addCustom": "Eigen categorie",
-    "roundTimerTitle": "Rondetimer",
-    "pace": "{{seconds}}s"
+    "gameplay": "Spelregels",
+    "durationHint": "Hoe lang een ronde duurt.",
+    "getReadyHint": "Aftellen voordat de timer start.",
+    "avoidRepeatsHint": "Trek elke letter één keer voordat er herhaling komt."
   },
   "packs": {
     "classic": {
@@ -104,11 +102,9 @@
   "modal": {
     "title": "Hoe te spelen",
     "objectiveText": "Verdien punten door woorden op te schrijven die beginnen met de gekozen letter en passen in de categorieën.",
-    "gameplay": "Spelregels",
     "gameplayPoints": [
       "Er wordt willekeurig een letter getrokken — elk antwoord moet daarmee beginnen.",
       "Schrijf vóór het einde van de timer (standaard 90 seconden) een woord voor elke categorie.",
-      "Gebruik voor elke categorie een ander woord, zonder herhaling.",
       "Speel je met anderen? Je scoort 1 punt voor elk antwoord dat niemand anders had; dubbele antwoorden leveren 0 op, dus kies originele woorden."
     ],
     "categories": "Categorieën",
@@ -117,14 +113,6 @@
       "Pas de stapel aan om categorieën en pakketten toe te voegen, of verwijder wat je liever overslaat.",
       "Zet een categorie vast zodat die elke ronde meedoet; de rest wordt willekeurig aangevuld met niet-vastgezette categorieën.",
       "Loot opnieuw om een nieuwe set categorieën voor de huidige letter te trekken, zonder de letter te veranderen."
-    ],
-    "settings": "Instellingen",
-    "settingsIntro": "Je vindt ze onderaan het scherm — alles wordt automatisch opgeslagen.",
-    "settingsItems": [
-      "Rondetimer — hoe lang elke ronde duurt en de afteltijd voordat de ronde begint. Hier staat ook Herhaalde letters vermijden: laat dit aan om elke letter één keer te trekken voordat er een herhaald wordt. De letterpot wordt gereset wanneer je de pagina ververst of zodra het hele alfabet is gebruikt.",
-      "Taal — wijzig de taal van de interface en de categorieën.",
-      "Geluid — demp of activeer de timer en het alarm.",
-      "Thema — wissel tussen lichte en donkere modus."
     ],
     "shortcuts": "Sneltoetsen",
     "about": "Over",
@@ -137,6 +125,9 @@
     "label": "Taal"
   },
   "theme": {
+    "label": "Weergave",
+    "light": "Licht",
+    "dark": "Donker",
     "switchToDark": "Naar donkere modus",
     "switchToLight": "Naar lichte modus"
   },

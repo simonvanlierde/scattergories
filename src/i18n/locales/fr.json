@@ -7,11 +7,6 @@
   "controls": {
     "roundGroup": "Commandes de manche"
   },
-  "welcome": {
-    "roll": "Tirez une lettre",
-    "write": "Écrivez un mot par catégorie commençant par cette lettre",
-    "race": "Battez le chrono, puis comparez vos réponses"
-  },
   "buttons": {
     "startRound": "Tirer une lettre",
     "nextRound": "Manche suivante",
@@ -38,13 +33,16 @@
     "startIn": "Départ dans {{seconds}}s"
   },
   "settings": {
+    "title": "Paramètres",
     "duration": "Manche",
     "getReady": "Préparation",
     "avoidRepeats": "Éviter les lettres répétées",
     "categoryDraw": "Tirage",
     "addCustom": "Ajouter une catégorie perso",
-    "roundTimerTitle": "Minuteur de manche",
-    "pace": "{{seconds}}s"
+    "gameplay": "Déroulement",
+    "durationHint": "Durée de chaque manche.",
+    "getReadyHint": "Décompte avant le départ du chrono.",
+    "avoidRepeatsHint": "Tirer chaque lettre une fois avant toute répétition."
   },
   "packs": {
     "classic": {
@@ -104,11 +102,9 @@
   "modal": {
     "title": "Comment jouer",
     "objectiveText": "Marquez des points en écrivant des mots qui commencent par la lettre donnée et correspondent aux catégories.",
-    "gameplay": "Déroulement",
     "gameplayPoints": [
       "Une lettre est tirée au hasard : toutes les réponses doivent commencer par elle.",
       "Avant la fin du minuteur (90 s par défaut), écrivez un mot pour chaque catégorie.",
-      "Utilisez un mot différent pour chaque catégorie, sans répétition.",
       "À plusieurs ? Vous marquez 1 point par réponse que personne d'autre n'a écrite ; les doublons valent 0, alors privilégiez les réponses originales."
     ],
     "categories": "Catégories",
@@ -117,14 +113,6 @@
       "Modifiez le paquet pour ajouter des catégories et des lots, ou retirez celles que vous préférez éviter.",
       "Épinglez une catégorie pour la garantir à chaque manche ; les catégories non épinglées sont tirées au hasard pour compléter.",
       "Relancez pour tirer un nouvel ensemble de catégories pour la lettre en cours, sans changer la lettre."
-    ],
-    "settings": "Paramètres",
-    "settingsIntro": "Vous les trouverez en bas de l'écran ; tout est sauvegardé automatiquement.",
-    "settingsItems": [
-      "Minuteur de manche — la durée de chaque manche et le compte à rebours de préparation avant le départ. On y trouve aussi Éviter les lettres répétées : laissez-le activé pour tirer chaque lettre une fois avant toute répétition. La réserve de lettres se réinitialise quand vous rechargez la page ou une fois tout l'alphabet utilisé.",
-      "Langue — changez la langue de l'interface et des catégories.",
-      "Son — coupez ou activez le tic-tac du minuteur et l'alarme.",
-      "Thème — basculez entre mode clair et mode sombre."
     ],
     "shortcuts": "Raccourcis clavier",
     "about": "À propos",
@@ -137,6 +125,9 @@
     "label": "Langue"
   },
   "theme": {
+    "label": "Apparence",
+    "light": "Clair",
+    "dark": "Sombre",
     "switchToDark": "Passer au mode sombre",
     "switchToLight": "Passer au mode clair"
   },
