@@ -224,14 +224,15 @@
   }
 
   /* Multi-column flow fills each column top-to-bottom, then moves right — so
-     1–6 land in the left column and 7–12 in the right (not row-major). Narrow
-     columns (~12rem) so two fit sooner now that the card labels wrap tightly. */
+     1–6 land in the left column and 7–12 in the right (not row-major). Sized so
+     two columns still fit inside a 393px-wide viewport (2 × 11.5rem + gap),
+     which covers most phone browsers. */
   .category-checklist__list {
     list-style: none;
     padding: 0;
     margin: 0;
-    column-width: 13rem;
-    column-gap: var(--space-2);
+    column-width: 11.5rem;
+    column-gap: var(--space-1);
   }
 
   .category-checklist__item {
@@ -251,7 +252,7 @@
   .category-checklist__chip {
     width: 100%;
     display: grid;
-    grid-template-columns: 1.42rem minmax(0, 1fr) auto;
+    grid-template-columns: 1.2rem minmax(0, 1fr) auto;
     align-items: center;
     gap: var(--space-1);
     min-height: 2.5rem;
@@ -292,7 +293,6 @@
     display: grid;
     place-items: center;
     min-width: 1.25rem;
-    margin-inline-end: 0.25rem;
     color: var(--text-muted);
     font-family: var(--font-display);
     font-weight: 500;
@@ -407,10 +407,36 @@
     }
 
     /* The list now spans the full width (header sits above it), so the cards can
-       breathe: taller tap targets and a larger label. */
+       breathe: taller tap targets and a larger label.
+
+       Two columns leave each label ~11.5rem, so the chip drops its three-column
+       grid and becomes plain text flow: the number rides inline with the name
+       instead of owning a column, and a name too long for one line wraps to the
+       chip's full width instead of hanging off a fixed indent. */
     .category-checklist__chip {
+      display: block;
+      align-content: center;
       min-height: 2.5rem;
+      padding-inline: var(--space-2);
       font-size: var(--text-lg);
+    }
+
+    /* A superscript figure, set like a footnote marker: it gives up the gutter a
+       full-size numeral would need, so the name starts at the chip's edge and
+       even the longest one holds a single line. */
+    .category-checklist__mark {
+      display: inline;
+      min-width: 0;
+      font-size: 0.72em;
+      vertical-align: 0.35em;
+      margin-inline-end: 0.35em;
+    }
+
+    /* The pin icon only ever appears on :hover, which touch doesn't have — so on
+       a phone it reserved a column of every chip to render nothing. The pinned
+       state still reads from the chip's accent border and fill. */
+    .category-checklist__pin {
+      display: none;
     }
   }
 
