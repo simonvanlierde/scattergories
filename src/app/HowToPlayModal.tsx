@@ -1,21 +1,17 @@
 import {
   ChevronDown,
-  Globe,
   Info,
   Keyboard,
-  ListChecks,
   type LucideIcon,
   Pin,
   RefreshCw,
-  Settings,
   SlidersHorizontal,
-  SunMoon,
   Tags,
-  Timer,
-  Volume2,
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { BrandMark } from "@/shared/ui/BrandMark";
+import { Button } from "@/shared/ui/Button";
 import { Icon } from "@/shared/ui/Icon";
 import { Sheet } from "@/shared/ui/Sheet";
 
@@ -25,6 +21,11 @@ const LICENSE_URL = "https://github.com/simonvanlierde/scattergories/blob/main/L
 
 interface HowToPlayModalProps {
   onClose: () => void;
+  /**
+   * First run only: the rules double as the welcome, so they get a CTA that
+   * rolls the opening letter. Absent when opened from the footer's ? button.
+   */
+  onStart?: () => void;
 }
 
 interface ShortcutDefinition {
@@ -39,10 +40,6 @@ const SHORTCUTS: readonly ShortcutDefinition[] = [
   { keys: "C", labelKey: "rail.shortcuts.c" },
   { keys: "?", labelKey: "rail.shortcuts.help" },
 ];
-
-// One icon per setting, matching the order of `modal.settingsItems`
-// (round timer, language, sound, theme) and the controls in the footer.
-const SETTINGS_ICONS: readonly LucideIcon[] = [Timer, Globe, Volume2, SunMoon];
 
 // One icon per mechanic, matching the order of `modal.categoriesItems`
 // (customize deck, pin, reroll) and the controls in the categories panel.
@@ -100,11 +97,10 @@ function Section({ icon, title, defaultOpen = false, children }: SectionProps) {
   );
 }
 
-export function HowToPlayModal({ onClose }: HowToPlayModalProps) {
+export function HowToPlayModal({ onClose, onStart }: HowToPlayModalProps) {
   const { t } = useTranslation();
   const gameplayPoints = toStringArray(t("modal.gameplayPoints", { returnObjects: true }));
   const categoriesItems = toStringArray(t("modal.categoriesItems", { returnObjects: true }));
-  const settingsItems = toStringArray(t("modal.settingsItems", { returnObjects: true }));
 
   return (
     <Sheet
@@ -114,15 +110,37 @@ export function HowToPlayModal({ onClose }: HowToPlayModalProps) {
       closeLabel={t("buttons.closeTooltip")}
     >
       <div className="howto">
+        <p className="howto__masthead">
+          <BrandMark size={72} />
+          <span>{t("title")}</span>
+        </p>
+
         <p className="howto__lead">{t("modal.objectiveText")}</p>
 
-        <Section icon={ListChecks} title={t("modal.gameplay")} defaultOpen={true}>
-          <ol className="howto__steps">
-            {gameplayPoints.map((point) => (
-              <li key={point}>{point}</li>
-            ))}
-          </ol>
-        </Section>
+        {/* One numbered list, not a hero summary plus a Gameplay section saying
+            the same thing twice. These points carry the actual rules. */}
+        <ol className="howto__beats">
+          {gameplayPoints.map((point, index) => (
+            <li key={point} className="howto__beat">
+              <span className="howto__beat-num" aria-hidden="true">
+                {index + 1}
+              </span>
+              <span>{point}</span>
+            </li>
+          ))}
+        </ol>
+
+        {onStart ? (
+          <Button
+            variant="primary"
+            size="lg"
+            className="howto__start"
+            onClick={onStart}
+            data-autofocus
+          >
+            {t("buttons.startRound")}
+          </Button>
+        ) : null}
 
         <Section icon={Tags} title={t("modal.categories")}>
           <p>{t("modal.categoriesText")}</p>
@@ -131,22 +149,6 @@ export function HowToPlayModal({ onClose }: HowToPlayModalProps) {
               <li key={item}>
                 <Icon
                   icon={CATEGORY_ICONS[index] ?? Tags}
-                  size={16}
-                  className="howto__settings-icon"
-                />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </Section>
-
-        <Section icon={Settings} title={t("modal.settings")}>
-          <p>{t("modal.settingsIntro")}</p>
-          <ul className="howto__settings">
-            {settingsItems.map((item, index) => (
-              <li key={item}>
-                <Icon
-                  icon={SETTINGS_ICONS[index] ?? Settings}
                   size={16}
                   className="howto__settings-icon"
                 />

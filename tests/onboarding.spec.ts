@@ -2,14 +2,12 @@ import { expect } from "@playwright/test";
 import { test } from "./fixtures";
 
 // The rest of the suite seeds the "already onboarded" flag to land on the board; this
-// suite opts out to exercise the first-run welcome that every other test skips past.
+// suite opts out to exercise the first run that every other test skips past. On first
+// run the rules dialog doubles as the welcome, so it carries a "Roll a letter" CTA.
 test.use({ onboarded: false });
 
-test("@smoke shows the welcome overlay on first run and starts a round from it", async ({
-  app,
-  page,
-}) => {
-  const welcome = page.locator("dialog.welcome");
+test("@smoke shows the rules on first run and starts a round from them", async ({ app, page }) => {
+  const welcome = page.getByRole("dialog", { name: /How to play/i });
   await expect(welcome).toBeVisible();
 
   await welcome.getByRole("button", { name: "Roll a letter" }).click();
@@ -18,8 +16,8 @@ test("@smoke shows the welcome overlay on first run and starts a round from it",
   await app.expectRunning();
 });
 
-test("@smoke does not show the welcome overlay again once dismissed", async ({ app, page }) => {
-  const welcome = page.locator("dialog.welcome");
+test("@smoke does not show the first-run rules again once dismissed", async ({ app, page }) => {
+  const welcome = page.getByRole("dialog", { name: /How to play/i });
   await expect(welcome).toBeVisible();
 
   await page.keyboard.press("Escape");

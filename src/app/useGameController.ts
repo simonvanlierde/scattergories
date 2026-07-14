@@ -16,6 +16,7 @@ interface GameController {
     drawnCategories: string[];
     drawnCustomCategories: string[];
     isLanding: boolean;
+    isRerolling: boolean;
     isPromptDeckOpen: boolean;
     inputRef: RefObject<HTMLInputElement>;
   };
@@ -62,12 +63,16 @@ interface GameController {
   settings: ReturnType<typeof useSettings>["settings"] & {
     gameSeconds: number;
   };
-  howToPlayDialog: ComponentType<{ onClose: () => void }>;
+  howToPlayDialog: ComponentType<{ onClose: () => void; onStart?: () => void }>;
 }
 
+// NOTE: fetch starts at module load (app boot), not at first Suspense — first-run
+// visitors need this chunk immediately, so warming it early avoids a loading flash
+// while keeping it split out of the main bundle for the budget check.
+// biome-ignore lint/security/noSecrets: module export name, not a secret — high-entropy false positive.
+const howToPlayModalPromise = import("./HowToPlayModal");
 const HowToPlayDialog = lazy(async () => ({
-  // biome-ignore lint/security/noSecrets: module export name, not a secret — high-entropy false positive.
-  default: (await import("./HowToPlayModal")).HowToPlayModal,
+  default: (await howToPlayModalPromise).HowToPlayModal,
 }));
 
 // biome-ignore lint/complexity/noExcessiveLinesPerFunction: aggregator hook — the body wires together the sub-hooks and returns one flat controller object; splitting it would only scatter that shape.
@@ -132,6 +137,7 @@ function useGameController(): GameController {
       drawnCategories: board.drawnCategories,
       drawnCustomCategories: board.drawnCustom,
       isLanding: board.landing,
+      isRerolling: board.spinning,
       isPromptDeckOpen: promptDeck.isPromptDeckOpen,
       inputRef: controls.newCategoryInputRef as RefObject<HTMLInputElement>,
     },

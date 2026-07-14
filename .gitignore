@@ -44,6 +44,4 @@ coverage/
 htmlcov/
 
 # Misc
-AGENTS.md
 .cspellcache
-.claude/

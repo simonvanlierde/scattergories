@@ -22,7 +22,10 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
   // Which drawn names were custom AT DRAW TIME. Snapshotted alongside the deck so
   // a round's "custom" styling stays frozen even if the deck is edited mid-round.
   const [drawnCustom, setDrawnCustom] = useState<string[]>([]);
-  const [landing, setLanding] = useState(false);
+  // "rolling" while the slots are actually spinning (the footer die spins along
+  // with them), "landed" right after, "idle" otherwise. landing/spinning below
+  // are just this one state read two ways — they're never true at once.
+  const [phase, setPhase] = useState<"idle" | "rolling" | "landed">("idle");
   const spinIdRef = useRef(0);
 
   // Pins and the current display are read through refs so that toggling a pin
@@ -46,9 +49,9 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
         previous: displayRef.current,
       });
 
-      // Cancel any in-flight roll and clear the landing flag.
+      // Cancel any in-flight roll and clear the landed flag.
       spinIdRef.current += 1;
-      setLanding(false);
+      setPhase("idle");
 
       const customSnapshot = deck.filter((name) => customCategories.includes(name));
       const pinnedSet = new Set(currentPinned);
@@ -61,6 +64,7 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
       }
 
       const spinId = spinIdRef.current;
+      setPhase("rolling");
       runRoll({
         onFlip: () => {
           // Pinned slots hold still; only the unpinned slots roll in place.
@@ -69,7 +73,7 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
         onLanded: () => {
           setDisplayCategories(deck);
           setDrawnCustom(customSnapshot);
-          setLanding(true);
+          setPhase("landed");
         },
         spinId,
         spinIdRef,
@@ -96,7 +100,8 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
   return {
     drawnCategories: displayCategories,
     drawnCustom,
-    landing,
+    landing: phase === "landed",
+    spinning: phase === "rolling",
     redrawCategories,
   };
 }

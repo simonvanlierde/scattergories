@@ -3,7 +3,7 @@ import { userEvent } from "@testing-library/user-event";
 import { beforeEach, expect, it } from "vitest";
 import { resetSettingsToStorage } from "@/features/settings/SettingsProvider";
 import { App } from "./App";
-import { ONBOARDED_KEY } from "./WelcomeOverlay";
+import { ONBOARDED_KEY } from "./useOnboarding";
 
 beforeEach(() => {
   window.localStorage.clear();
@@ -31,4 +31,19 @@ it("does not show the welcome once onboarded", async () => {
 
   await screen.findByRole("heading", { level: 1, name: "Scattergories" });
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+});
+
+// The rules double as the welcome, so the same dialog has to drop the CTA once
+// the player is past their first run — otherwise help would restart the round.
+it("opens the same rules from the help button, without the first-run CTA", async () => {
+  window.localStorage.setItem(ONBOARDED_KEY, "1");
+  const user = userEvent.setup();
+  render(<App />);
+
+  await screen.findByRole("heading", { level: 1, name: "Scattergories" });
+  await user.click(screen.getByRole("button", { name: "How to play" }));
+
+  const rules = await screen.findByRole("dialog", { name: "How to play" });
+  expect(within(rules).getByText(/Score points/i)).toBeInTheDocument();
+  expect(within(rules).queryByRole("button", { name: "Roll a letter" })).not.toBeInTheDocument();
 });

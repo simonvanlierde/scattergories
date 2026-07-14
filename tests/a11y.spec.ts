@@ -42,11 +42,11 @@ test("@smoke has no detectable accessibility violations with the prompt deck col
   expect(accessibilityScanResults.violations).toEqual([]);
 });
 
-test("@smoke has no detectable accessibility violations with a popover open", async ({
+test("@smoke has no detectable accessibility violations with the settings sheet open", async ({
   app,
   page,
 }) => {
-  await app.openTimer();
+  await app.openSettings();
 
   const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
 

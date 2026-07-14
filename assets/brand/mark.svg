@@ -1,0 +1,62 @@
+<!--
+  Source of truth for the Scattergories brand mark.
+  `pnpm icons` regenerates everything in public/ from this file.
+
+  Colours are the tokens from src/styles/tokens.css, written as literal oklch()
+  so this file renders standalone (favicon, README, press kit) and so a drift
+  between the mark and the UI is visible as a diff here.
+
+  Geometry: a flat isometric die on a 24-unit grid. The top face carries the S,
+  the side faces the two verbs of a round: ask (?) and go (▶). Each glyph is
+  drawn upright and projected onto its face's plane by the surrounding matrix.
+
+  #glyphs is stripped for icons below 64px — the side faces turn to mud there.
+-->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  width="24"
+  height="24"
+  role="img"
+  aria-label="Scattergories"
+>
+  <!-- top face — paper cream -->
+  <path d="M12 2 21 7 12 12 3 7Z" fill="oklch(98.5% 0.008 85)" />
+  <!-- left face — one step down the paper ramp -->
+  <path d="M3 7 12 12 12 22 3 17Z" fill="oklch(88% 0.014 85)" />
+  <!-- right face — two steps down; keeps the cube readable as a solid -->
+  <path d="M21 7 12 12 12 22 21 17Z" fill="oklch(76% 0.018 85)" />
+  <!-- S drawn upright, then flattened onto the top face's plane (the matrix is
+       the isometric projection: full width, 55% height, origin at face centre) -->
+  <g transform="matrix(0.55 0 0 0.32 12 7)">
+    <path
+      d="M4.6 -5.4C2.4 -7.4 -4.8 -7.4 -4.8 -3.2C-4.8 0.6 4.8 0.4 4.8 4.2C4.8 8.4 -2.4 8.4 -4.8 6.2"
+      fill="none"
+      stroke="oklch(34% 0.11 260)"
+      stroke-width="2.7"
+      stroke-linecap="round"
+    />
+  </g>
+  <g id="glyphs" fill="oklch(34% 0.11 260)">
+    <!-- left face: the prompt -->
+    <g transform="matrix(0.36 0.2 0 0.4 7.5 14.5)">
+      <path
+        d="M-3.4 -3.6C-3.4 -7.4 3.8 -7.6 3.8 -3.4C3.8 -0.4 0 -0.2 0 2.8"
+        fill="none"
+        stroke="oklch(34% 0.11 260)"
+        stroke-width="2.2"
+        stroke-linecap="round"
+      />
+      <circle cx="0" cy="6.6" r="1.4" />
+    </g>
+    <!-- right face: the roll -->
+    <g transform="matrix(0.36 -0.2 0 0.4 16.5 14.5)">
+      <path
+        d="M-3.2 -6.2 5.6 0 -3.2 6.2Z"
+        stroke="oklch(34% 0.11 260)"
+        stroke-width="1.8"
+        stroke-linejoin="round"
+      />
+    </g>
+  </g>
+</svg>

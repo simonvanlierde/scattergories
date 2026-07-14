@@ -7,11 +7,6 @@
   "controls": {
     "roundGroup": "Rundensteuerung"
   },
-  "welcome": {
-    "roll": "Ziehe einen Buchstaben",
-    "write": "Schreibe zu jeder Kategorie ein Wort, das damit beginnt",
-    "race": "Schlag die Uhr und vergleicht dann eure Antworten"
-  },
   "buttons": {
     "startRound": "Buchstabe ziehen",
     "nextRound": "Nächste Runde",
@@ -38,13 +33,16 @@
     "startIn": "Start in {{seconds}}s"
   },
   "settings": {
-    "duration": "Runde",
+    "title": "Einstellungen",
+    "duration": "Rundendauer",
     "getReady": "Vorlauf",
     "avoidRepeats": "Buchstabenwiederholungen vermeiden",
     "categoryDraw": "Ziehung",
     "addCustom": "Eigene Kategorie",
-    "roundTimerTitle": "Rundentimer",
-    "pace": "{{seconds}}s"
+    "gameplay": "Ablauf",
+    "durationHint": "Wie lange eine Runde dauert.",
+    "getReadyHint": "Countdown, bevor der Timer startet.",
+    "avoidRepeatsHint": "Jeder Buchstabe kommt einmal vor, bevor sich einer wiederholt; der Vorrat setzt sich beim Neuladen oder nach dem ganzen Alphabet zurück."
   },
   "packs": {
     "classic": {
@@ -104,31 +102,22 @@
   "modal": {
     "title": "Spielanleitung",
     "objectiveText": "Sammle Punkte, indem du Begriffe aufschreibst, die mit dem gewählten Buchstaben beginnen und in die jeweilige Kategorie passen.",
-    "gameplay": "Ablauf",
     "gameplayPoints": [
-      "Ein zufälliger Buchstabe wird gezogen – jede Antwort muss damit beginnen.",
-      "Schreibe vor Ablauf des Timers (standardmäßig 90 Sek.) ein Wort für jede Kategorie.",
-      "Nutze für jede Kategorie ein anderes Wort, ohne Wiederholungen.",
-      "Mit Mitspielern? Du bekommst 1 Punkt für jede Antwort, die sonst niemand hat; Dopplungen zählen 0, also wähle kreative, seltene Antworten."
+      "Ein zufälliger Buchstabe wird gezogen. Jede Antwort muss damit beginnen.",
+      "Schreibe ein Wort für jede Kategorie, bevor der Timer abläuft (standardmäßig 90 Sek.).",
+      "Verwende für jede Kategorie ein anderes Wort, ohne Wiederholungen in deiner eigenen Liste.",
+      "Mit Mitspielern: Antworten, die sonst niemand hat, geben 1 Punkt, Dopplungen 0."
     ],
     "categories": "Kategorien",
-    "categoriesText": "Das Spiel bringt eine große integrierte Auswahl an Kategorien mit, und du kannst eigene Kategorien — oder ganze Themen-Sets — zum Deck hinzufügen.",
+    "categoriesText": "Das Deck enthält integrierte Kategorien, und du kannst eigene hinzufügen.",
     "categoriesItems": [
       "Passe das Deck an, um Kategorien und Sets hinzuzufügen oder solche zu entfernen, die du überspringen möchtest.",
       "Fixiere eine Kategorie, damit sie in jeder Runde vorkommt; nicht fixierte werden zufällig für den Rest gezogen.",
       "Ziehe neu, um für den aktuellen Buchstaben ein frisches Set an Kategorien zu ziehen, ohne den Buchstaben zu ändern."
     ],
-    "settings": "Einstellungen",
-    "settingsIntro": "Du findest sie unten auf dem Bildschirm – alles wird automatisch gespeichert.",
-    "settingsItems": [
-      "Rundentimer — wie lange jede Runde dauert und der Countdown zum Bereitmachen davor. Hier steht auch Buchstabenwiederholungen vermeiden: Lass es an, um jeden Buchstaben einmal zu ziehen, bevor sich einer wiederholt. Der Buchstabenpool wird zurückgesetzt, wenn du die Seite neu lädst oder sobald das ganze Alphabet verwendet wurde.",
-      "Sprache — ändere die Sprache der Oberfläche und der Kategorien.",
-      "Ton — schalte Timer und Alarm stumm oder wieder an.",
-      "Design — wechsle zwischen hellem und dunklem Modus."
-    ],
     "shortcuts": "Tastenkürzel",
     "about": "Über",
-    "attribution": "Scattergories ist das Original-Partyspiel von Hasbro. Dies ist ein kostenloser, inoffizieller Begleiter fürs Spielen am Tisch — sieh dir das <official>offizielle Spiel</official> oder den <repo>Quellcode</repo> dieser App an, veröffentlicht unter der <license>MIT-Lizenz</license>.",
+    "attribution": "Scattergories ist das Original-Partyspiel von Hasbro. Dies ist ein kostenloser, inoffizieller Begleiter fürs Spielen am Tisch. Sieh dir das <official>offizielle Spiel</official> oder den <repo>Quellcode</repo> dieser App an, veröffentlicht unter der <license>MIT-Lizenz</license>.",
     "privacy": "Diese App speichert Einstellungen und Kategorien nur lokal im Browser.",
     "version": "Version {{version}}",
     "loading": "Regeln werden geöffnet…"
@@ -137,8 +126,9 @@
     "label": "Sprache"
   },
   "theme": {
-    "switchToDark": "Zum dunklen Modus wechseln",
-    "switchToLight": "Zum hellen Modus wechseln"
+    "label": "Darstellung",
+    "light": "Hell",
+    "dark": "Dunkel"
   },
   "errors": {
     "chunkTitle": "Eine neue App-Version ist bereit.",

@@ -5,9 +5,15 @@
   "id": "/",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#fdfdfe",
-  "theme_color": "#1a1c20",
+  "background_color": "#faf7f2",
+  "theme_color": "#faf7f2",
   "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
     {
       "src": "/icons/icon-192.png",
       "sizes": "192x192",

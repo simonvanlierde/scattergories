@@ -14,10 +14,10 @@ test("@smoke loads with the correct title and primary controls", async ({ app, p
   await expect(app.readyHeading).toBeVisible();
   await expect(page.getByRole("button", { name: "Roll a letter" })).toBeVisible();
   await expect(page.getByRole("button", { name: "How to play" })).toBeVisible();
-  await app.openTimer();
-  await expect(app.timerPopover.getByLabel("Round", { exact: true })).toHaveValue("90");
-  await expect(app.timerPopover.getByLabel("Rounds", { exact: true })).toHaveCount(0);
-  await app.closePopover();
+  await app.openSettings();
+  await expect(app.settingsSheet.getByLabel("Round length", { exact: true })).toHaveValue("90");
+  await expect(app.settingsSheet.getByLabel("Rounds", { exact: true })).toHaveCount(0);
+  await app.closeSettings();
 });
 
 test("@smoke keeps prompts in the categories panel and uses the expected prompt deck default", async ({

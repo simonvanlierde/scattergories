@@ -172,6 +172,24 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /* Label + hint, stacked. The hint carries the explanation so the label can stay short. */
+  .ds-field__text {
+    display: grid;
+    gap: var(--space-0-5);
+    min-width: 0;
+  }
+
+  .ds-field__hint {
+    margin: 0;
+    font-size: var(--text-xs);
+    line-height: var(--leading-snug);
+    font-weight: 400;
+    letter-spacing: var(--tracking-normal);
+    text-transform: none;
+    color: var(--text-muted);
+    text-wrap: pretty;
+  }
+
   /* Inline one-liner variant: "Label: [input] s" on a single row. */
   /* Dissolve into the parent .timing-fields grid so labels + inputs align
      across rows and the panel hugs its content (no wasted width). */
@@ -360,20 +378,29 @@
     gap: var(--space-3);
   }
 
-  .timing-fields {
-    display: grid;
-    grid-template-columns: auto auto;
-    gap: var(--space-3) var(--space-2);
+  /* A settings row: label + hint on the left, control on the right. The inline
+     field variant dissolves into its parent, so it re-forms as the row here. */
+  .settings-rows .ds-field--inline {
+    display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  /* The hint says what the field is; the label doesn't need a trailing colon. */
+  .settings-rows .ds-field--inline .ds-field__label::after {
+    content: none;
+  }
+
+  .settings-rows .ds-field__inline {
+    grid-template-columns: auto auto;
   }
 
   .settings-toggle {
-    grid-column: 1 / -1;
     display: flex;
     align-items: center;
-    gap: var(--space-2);
-    padding-top: var(--space-2);
-    border-top: 1px solid var(--rule);
+    justify-content: space-between;
+    gap: var(--space-4);
     font-size: var(--text-sm);
     color: var(--text-secondary);
     cursor: pointer;

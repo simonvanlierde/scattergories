@@ -4,39 +4,33 @@ import { test } from "./fixtures";
 // spell-checker: ignore Configuración, Idioma, Sortear, Letra
 
 test("@smoke persists the timer setting across reload", async ({ app, page }) => {
-  await app.openTimer();
-  await expect(app.timerPopover.getByLabel("Round", { exact: true })).toHaveValue("90");
-  await app.closePopover();
+  await app.openSettings();
+  await expect(app.settingsSheet.getByLabel("Round length", { exact: true })).toHaveValue("90");
+  await app.closeSettings();
 
   await app.setTimer("130");
   await page.reload();
   await app.waitUntilReady();
 
-  await app.openTimer();
-  await expect(app.timerPopover.getByLabel("Round", { exact: true })).toHaveValue("130");
-  await app.closePopover();
+  await app.openSettings();
+  await expect(app.settingsSheet.getByLabel("Round length", { exact: true })).toHaveValue("130");
+  await app.closeSettings();
 });
 
 test("@smoke persists a non-English language selection across reload", async ({ app, page }) => {
   await app.switchLanguage("es");
   await expect(page.getByRole("button", { name: "Sortear Letra" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Cómo Jugar" })).toBeVisible();
-  await app.openLanguage();
-  await expect(app.languagePopover.locator('[data-locale="es"]')).toHaveAttribute(
-    "aria-checked",
-    "true",
-  );
-  await app.closePopover();
+  await app.openSettings();
+  await expect(app.settingsSheet.locator("select.settings-select")).toHaveValue("es");
+  await app.closeSettings();
 
   await page.reload();
   await app.waitUntilReady();
-  await app.openLanguage();
+  await app.openSettings();
 
   await expect(page.getByRole("button", { name: "Sortear Letra" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Cómo Jugar" })).toBeVisible();
-  await expect(app.languagePopover.locator('[data-locale="es"]')).toHaveAttribute(
-    "aria-checked",
-    "true",
-  );
-  await app.closePopover();
+  await expect(app.settingsSheet.locator("select.settings-select")).toHaveValue("es");
+  await app.closeSettings();
 });

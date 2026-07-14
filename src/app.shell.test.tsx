@@ -4,7 +4,7 @@ import { DEFAULT_DRAW_COUNT, DEFAULT_TIMER_SECONDS } from "./test/gameConstants"
 import {
   DRAW_SUMMARY_PATTERN,
   openCustomizeDeck,
-  openTimerPopover,
+  openSettings,
   READY_SUMMARY_PATTERN,
   renderApp,
   resetAppTestState,
@@ -60,9 +60,9 @@ it("keeps the playmat lean: mute lives in the top bar, round controls always ren
 it("shows default editable settings in their owning dialogs", async () => {
   const { user } = await renderApp();
 
-  const timerPopover = await openTimerPopover(user);
-  expect(within(timerPopover).getByLabelText("Round")).toHaveValue(DEFAULT_TIMER_SECONDS);
-  expect(within(timerPopover).queryByLabelText("Rounds")).not.toBeInTheDocument();
+  const settings = await openSettings(user);
+  expect(within(settings).getByLabelText("Round length")).toHaveValue(DEFAULT_TIMER_SECONDS);
+  expect(within(settings).queryByLabelText("Rounds")).not.toBeInTheDocument();
   await user.keyboard("{Escape}");
 
   const customizeDialog = await openCustomizeDeck(user);

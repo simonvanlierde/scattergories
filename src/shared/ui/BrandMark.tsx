@@ -1,30 +1,69 @@
-export function BrandMark() {
+/**
+ * In-app version of the brand mark in assets/brand/mark.svg — same geometry, but
+ * monochrome so it inherits currentColor and works on either theme's paper.
+ * Keep the two in sync by hand; the SVG is the source the icons are built from.
+ */
+
+/**
+ * `size` is required: the glyphs are mud below ~28px, so a caller has to choose a
+ * size that can carry them rather than inherit one that can't.
+ */
+export function BrandMark({ size }: { size: number }) {
   return (
     <svg
       className="brand-mark"
-      width={24}
-      height={24}
+      width={size}
+      height={size}
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden={true}
       focusable="false"
     >
-      {/* Isometric die — three faces rendered via opacity stepping so the mark
-          inherits currentColor and reads in both light and dark themes */}
-      <polygon points="12,3 21,8 12,13 3,8" fill="currentColor" />
-      <polygon points="3,8 12,13 12,22 3,17" fill="currentColor" fillOpacity="0.72" />
-      <polygon points="21,8 12,13 12,22 21,17" fill="currentColor" fillOpacity="0.5" />
-      {/* Simplified 'S' inscribed on the top face — kept as a compact glyph
-          so it remains legible at 24px and recognizable at 96px watermarks */}
-      <path
-        d="M13.4 6.35c-0.9-0.45-1.95-0.45-2.6-0.1c-0.55 0.3-0.75 0.85-0.25 1.2c0.45 0.3 1.45 0.4 2.3 0.75c0.95 0.4 1.25 1.05 0.55 1.55c-0.75 0.55-2.3 0.5-3.3-0.05"
-        stroke="var(--paper-0, #fff)"
-        strokeWidth="0.9"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-      />
+      {/* The faces hold still and keep their shading — light comes from above, so
+          the lit face stays lit. It's the glyphs that travel from face to face
+          while the die rolls (see .brand-mark--rolling), which is what a turning
+          cube actually looks like. */}
+      <path d="M12 2 21 7 12 12 3 7Z" fill="currentColor" />
+      <path d="M3 7 12 12 12 22 3 17Z" fill="currentColor" fillOpacity="0.72" />
+      <path d="M21 7 12 12 12 22 21 17Z" fill="currentColor" fillOpacity="0.5" />
+
+      <g fill="var(--paper-0)" stroke="var(--paper-0)">
+        {/* S — starts on the top face, drawn upright and flattened onto its plane */}
+        <g
+          className="brand-mark__glyph brand-mark__glyph--mark"
+          transform="matrix(0.55 0 0 0.32 12 7)"
+        >
+          <path
+            d="M4.6 -5.4C2.4 -7.4 -4.8 -7.4 -4.8 -3.2C-4.8 0.6 4.8 0.4 4.8 4.2C4.8 8.4 -2.4 8.4 -4.8 6.2"
+            fill="none"
+            strokeWidth="2.7"
+            strokeLinecap="round"
+          />
+        </g>
+
+        {/* the prompt — starts on the left face */}
+        <g
+          className="brand-mark__glyph brand-mark__glyph--ask"
+          transform="matrix(0.36 0.2 0 0.4 7.5 14.5)"
+        >
+          <path
+            d="M-3.4 -3.6C-3.4 -7.4 3.8 -7.6 3.8 -3.4C3.8 -0.4 0 -0.2 0 2.8"
+            fill="none"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+          />
+          <circle cx="0" cy="6.6" r="1.4" stroke="none" />
+        </g>
+
+        {/* the roll — starts on the right face */}
+        <g
+          className="brand-mark__glyph brand-mark__glyph--go"
+          transform="matrix(0.36 -0.2 0 0.4 16.5 14.5)"
+        >
+          <path d="M-3.2 -6.2 5.6 0 -3.2 6.2Z" strokeWidth="1.8" strokeLinejoin="round" />
+        </g>
+      </g>
     </svg>
   );
 }

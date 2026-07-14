@@ -27,6 +27,9 @@ export function Sheet({ open, onClose, title, closeLabel = "Close", children }: 
 
     if (open && !dialog.open) {
       dialog.showModal();
+      // React's autoFocus fires at mount, while the dialog is still hidden (a
+      // no-op); focus the intended target for real now that it's visible.
+      dialog.querySelector<HTMLElement>("[data-autofocus]")?.focus();
     } else if (!open && dialog.open) {
       dialog.close();
     }
@@ -38,11 +41,9 @@ export function Sheet({ open, onClose, title, closeLabel = "Close", children }: 
       return;
     }
 
-    function handleCancel(event: Event) {
-      event.preventDefault();
-      onClose();
-    }
-
+    // Escape's default action already closes the dialog (which fires "close"
+    // below) — no separate "cancel" handler needed, so onClose is only ever
+    // called from one place regardless of how the sheet was dismissed.
     function handleClose() {
       onClose();
     }
@@ -57,18 +58,16 @@ export function Sheet({ open, onClose, title, closeLabel = "Close", children }: 
 
     function handleBackdropClick(event: MouseEvent) {
       if (event.target === dialog && pressedBackdrop) {
-        onClose();
+        dialog?.close();
       }
       pressedBackdrop = false;
     }
 
-    dialog.addEventListener("cancel", handleCancel);
     dialog.addEventListener("close", handleClose);
     dialog.addEventListener("pointerdown", handlePointerDown);
     dialog.addEventListener("click", handleBackdropClick);
 
     return () => {
-      dialog.removeEventListener("cancel", handleCancel);
       dialog.removeEventListener("close", handleClose);
       dialog.removeEventListener("pointerdown", handlePointerDown);
       dialog.removeEventListener("click", handleBackdropClick);

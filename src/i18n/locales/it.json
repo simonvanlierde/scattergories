@@ -7,11 +7,6 @@
   "controls": {
     "roundGroup": "Comandi del round"
   },
-  "welcome": {
-    "roll": "Estrai una lettera",
-    "write": "Scrivi una parola per ogni categoria che inizia con quella lettera",
-    "race": "Batti il tempo, poi confrontate le risposte"
-  },
   "buttons": {
     "startRound": "Estrai lettera",
     "nextRound": "Prossimo round",
@@ -38,13 +33,16 @@
     "startIn": "Inizia tra {{seconds}}s"
   },
   "settings": {
-    "duration": "Round",
+    "title": "Impostazioni",
+    "duration": "Durata del round",
     "getReady": "Preparazione",
     "avoidRepeats": "Evita lettere ripetute",
     "categoryDraw": "Sorteggio",
     "addCustom": "Aggiungi categoria",
-    "roundTimerTitle": "Timer del round",
-    "pace": "{{seconds}}s"
+    "gameplay": "Svolgimento",
+    "durationHint": "Quanto dura ogni round.",
+    "getReadyHint": "Conto alla rovescia prima dell'avvio del timer.",
+    "avoidRepeatsHint": "Ogni lettera esce una volta prima di ripetersi; il mazzo si azzera ricaricando la pagina o dopo aver usato tutto l'alfabeto."
   },
   "packs": {
     "classic": {
@@ -104,31 +102,22 @@
   "modal": {
     "title": "Come giocare",
     "objectiveText": "Guadagna punti scrivendo parole che iniziano con la lettera data e rientrano nelle categorie selezionate.",
-    "gameplay": "Svolgimento",
     "gameplayPoints": [
       "Viene estratta una lettera a caso: tutte le risposte devono iniziare con essa.",
-      "Prima che scada il timer (90 s di default), scrivi una parola per ogni categoria.",
-      "Usa una parola diversa per ogni categoria, senza ripetizioni.",
-      "Giochi con altri? Guadagni 1 punto per ogni risposta che nessun altro ha scritto; i doppioni valgono 0, quindi punta su risposte originali."
+      "Scrivi una parola per ogni categoria prima che scada il timer (90 s di default).",
+      "Usa una parola diversa per ogni categoria: nessuna ripetizione nella tua lista.",
+      "Con altri giocatori: le risposte che nessun altro ha scritto valgono 1 punto, i doppioni 0."
     ],
     "categories": "Categorie",
-    "categoriesText": "Il gioco include un ampio set di categorie integrato, e puoi aggiungere le tue categorie — o interi pacchetti a tema — al mazzo.",
+    "categoriesText": "Il mazzo include categorie integrate, e puoi aggiungere le tue.",
     "categoriesItems": [
       "Personalizza il mazzo per aggiungere categorie e pacchetti, o rimuovi quelle che preferisci saltare.",
       "Fissa una categoria per garantirla a ogni round; quelle non fissate vengono estratte a caso per completare.",
       "Rilancia per estrarre un nuovo set di categorie per la lettera attuale, senza cambiare la lettera."
     ],
-    "settings": "Impostazioni",
-    "settingsIntro": "Le trovi in fondo allo schermo; tutto si salva automaticamente.",
-    "settingsItems": [
-      "Timer del round — quanto dura ogni round e il conto alla rovescia di preparazione prima dell'inizio. Contiene anche Evita lettere ripetute: lascialo attivo per estrarre ogni lettera una volta prima di qualsiasi ripetizione. La riserva di lettere si azzera quando ricarichi la pagina o dopo che è stato usato tutto l'alfabeto.",
-      "Lingua — cambia la lingua dell'interfaccia e delle categorie.",
-      "Audio — silenzia o riattiva i tic del timer e l'allarme.",
-      "Tema — alterna tra modalità chiara e scura."
-    ],
     "shortcuts": "Scorciatoie da tastiera",
     "about": "Informazioni",
-    "attribution": "Scattergories è il gioco di società originale di Hasbro. Questo è un supporto gratuito e non ufficiale per giocarci al tavolo — sfoglia il <official>gioco ufficiale</official> o il <repo>codice sorgente</repo> di questa app, rilasciata sotto la <license>licenza MIT</license>.",
+    "attribution": "Scattergories è il gioco di società originale di Hasbro. Questo è un supporto gratuito e non ufficiale per giocarci al tavolo. Sfoglia il <official>gioco ufficiale</official> o il <repo>codice sorgente</repo> di questa app, rilasciata sotto la <license>licenza MIT</license>.",
     "privacy": "Questa app salva impostazioni e categorie solo nel tuo browser.",
     "version": "Versione {{version}}",
     "loading": "Apertura delle regole…"
@@ -137,8 +126,9 @@
     "label": "Lingua"
   },
   "theme": {
-    "switchToDark": "Passa alla modalità scura",
-    "switchToLight": "Passa alla modalità chiara"
+    "label": "Aspetto",
+    "light": "Chiaro",
+    "dark": "Scuro"
   },
   "errors": {
     "chunkTitle": "È pronta una nuova versione dell'app.",

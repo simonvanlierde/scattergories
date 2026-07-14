@@ -7,11 +7,6 @@
   "controls": {
     "roundGroup": "Sterowanie rundą"
   },
-  "welcome": {
-    "roll": "Wylosuj literę",
-    "write": "Do każdej kategorii wpisz słowo zaczynające się na tę literę",
-    "race": "Ścigaj się z czasem, potem porównajcie odpowiedzi"
-  },
   "buttons": {
     "startRound": "Wylosuj literę",
     "nextRound": "Następna runda",
@@ -38,13 +33,16 @@
     "startIn": "Start za {{seconds}}s"
   },
   "settings": {
-    "duration": "Runda",
+    "title": "Ustawienia",
+    "duration": "Długość rundy",
     "getReady": "Przygotowanie",
     "avoidRepeats": "Unikaj powtórzeń liter",
     "categoryDraw": "Losowanie",
     "addCustom": "Własna kategoria",
-    "roundTimerTitle": "Czasomierz rundy",
-    "pace": "{{seconds}}s"
+    "gameplay": "Zasady",
+    "durationHint": "Jak długo trwa runda.",
+    "getReadyHint": "Odliczanie przed startem stopera.",
+    "avoidRepeatsHint": "Każda litera pojawia się raz, zanim się powtórzy; pula resetuje się po odświeżeniu strony lub po wykorzystaniu całego alfabetu."
   },
   "packs": {
     "classic": {
@@ -104,31 +102,22 @@
   "modal": {
     "title": "Jak grać",
     "objectiveText": "Zdobywaj punkty, zapisując słowa, które zaczynają się na wylosowaną literę i pasują do wybranych kategorii.",
-    "gameplay": "Zasady",
     "gameplayPoints": [
-      "Losowana jest litera — każda odpowiedź musi się od niej zaczynać.",
-      "Zanim skończy się czas (domyślnie 90 s), wpisz jedno słowo do każdej kategorii.",
-      "W każdej kategorii użyj innego słowa, bez powtórzeń.",
-      "Grasz z innymi? Zdobywasz 1 punkt za każdą odpowiedź, której nikt inny nie zapisał; powtórki dają 0, więc stawiaj na oryginalne słowa."
+      "Losowana jest litera. Każda odpowiedź musi się od niej zaczynać.",
+      "Wpisz jedno słowo do każdej kategorii, zanim skończy się czas (domyślnie 90 s).",
+      "Użyj innego słowa dla każdej kategorii, bez powtórzeń w swojej liście.",
+      "Z innymi graczami: odpowiedzi, których nikt inny nie zapisał, dają 1 punkt, powtórki 0."
     ],
     "categories": "Kategorie",
-    "categoriesText": "Gra zawiera duży wbudowany zestaw kategorii, a do talii możesz dodać własne kategorie — lub całe zestawy tematyczne.",
+    "categoriesText": "Talia zawiera wbudowane kategorie, a Ty możesz dodać własne.",
     "categoriesItems": [
       "Dostosuj talię, aby dodać kategorie i zestawy, lub usuń te, które wolisz pominąć.",
       "Przypnij kategorię, aby pojawiała się w każdej rundzie; nieprzypięte są losowane na resztę miejsc.",
       "Losuj ponownie, aby wylosować nowy zestaw kategorii dla bieżącej litery, bez zmiany litery."
     ],
-    "settings": "Ustawienia",
-    "settingsIntro": "Znajdziesz je na dole ekranu — wszystko zapisuje się automatycznie.",
-    "settingsItems": [
-      "Czasomierz rundy — jak długo trwa każda runda oraz odliczanie przygotowania przed startem. Znajdziesz tu też Unikaj powtórzeń liter: zostaw włączone, aby każda litera wypadła raz, zanim się powtórzy. Pula liter resetuje się po odświeżeniu strony lub gdy wykorzystasz cały alfabet.",
-      "Język — zmień język interfejsu i kategorii.",
-      "Dźwięk — wycisz lub włącz tykanie zegara i alarm.",
-      "Motyw — przełączaj między trybem jasnym a ciemnym."
-    ],
     "shortcuts": "Skróty klawiszowe",
     "about": "O aplikacji",
-    "attribution": "Scattergories to oryginalna gra imprezowa firmy Hasbro. To bezpłatny, nieoficjalny dodatek do gry przy stole — przejrzyj <official>oficjalną grę</official> lub <repo>kod źródłowy</repo> tej aplikacji, wydany na <license>licencji MIT</license>.",
+    "attribution": "Scattergories to oryginalna gra imprezowa firmy Hasbro. To bezpłatny, nieoficjalny dodatek do gry przy stole. Przejrzyj <official>oficjalną grę</official> lub <repo>kod źródłowy</repo> tej aplikacji, wydany na <license>licencji MIT</license>.",
     "privacy": "Ta aplikacja zapisuje ustawienia i kategorie wyłącznie w Twojej przeglądarce.",
     "version": "Wersja {{version}}",
     "loading": "Otwieranie zasad…"
@@ -137,8 +126,9 @@
     "label": "Język"
   },
   "theme": {
-    "switchToDark": "Przełącz na tryb ciemny",
-    "switchToLight": "Przełącz na tryb jasny"
+    "label": "Wygląd",
+    "light": "Jasny",
+    "dark": "Ciemny"
   },
   "errors": {
     "chunkTitle": "Nowa wersja aplikacji jest gotowa.",

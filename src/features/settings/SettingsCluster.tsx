@@ -1,4 +1,6 @@
-import { Check, Globe, Moon, Sun, Timer, Volume2, VolumeX } from "lucide-react";
+import { Moon, Settings, Sun, Volume2, VolumeX } from "lucide-react";
+import type { ReactNode } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   bufferSecondsDefault,
@@ -12,7 +14,7 @@ import { getNativeName, SUPPORTED_LOCALES } from "@/i18n/localeRegistry";
 import { DebouncedNumberField } from "@/shared/ui/DebouncedNumberField";
 import { Icon } from "@/shared/ui/Icon";
 import { IconButton } from "@/shared/ui/IconButton";
-import { Popover } from "@/shared/ui/Popover";
+import { Sheet } from "@/shared/ui/Sheet";
 
 type TimingField = "durationInput" | "bufferSecondsInput";
 
@@ -31,7 +33,28 @@ interface SettingsClusterProps {
   onUpdateTimingField: (field: TimingField, value: string) => void;
 }
 
-function LanguageMenu({
+/** A titled group. One-control groups put the control on the title row instead of below it. */
+function SettingsSection({
+  title,
+  action,
+  children,
+}: {
+  title: string;
+  action?: ReactNode;
+  children?: ReactNode;
+}) {
+  return (
+    <section className="settings-section">
+      <div className="settings-section__head">
+        <h3 className="settings-section__title">{title}</h3>
+        {action}
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function LanguageSelect({
   language,
   isLanguagePending,
   onSelect,
@@ -41,50 +64,71 @@ function LanguageMenu({
   const { t } = useTranslation();
 
   return (
-    <div className="lang-menu" role="menu" aria-label={t("language.label")}>
-      {SUPPORTED_LOCALES.map((code) => {
-        const selected = code === language;
-        return (
-          <button
-            key={code}
-            type="button"
-            role="menuitemradio"
-            aria-checked={selected}
-            data-locale={code}
-            className="lang-menu__item"
-            disabled={isLanguagePending}
-            onClick={() => onSelect(code)}
-          >
-            <span>{getNativeName(code)}</span>
-            {selected ? <Icon icon={Check} size={16} /> : null}
-          </button>
-        );
-      })}
-    </div>
+    <select
+      className="settings-select"
+      aria-label={t("language.label")}
+      value={language}
+      disabled={isLanguagePending}
+      onChange={(event) => onSelect(event.target.value)}
+    >
+      {SUPPORTED_LOCALES.map((code) => (
+        <option key={code} value={code}>
+          {getNativeName(code)}
+        </option>
+      ))}
+    </select>
   );
 }
 
-function TimingFields({
+/** Light/dark as a segmented choice — a settings panel should show the state, not just flip it. */
+function ThemeChoice({
+  theme,
+  onToggleTheme,
+}: Pick<SettingsClusterProps, "theme" | "onToggleTheme">) {
+  const { t } = useTranslation();
+  const isDark = theme === "dark";
+
+  return (
+    <fieldset className="theme-choice">
+      <legend className="sr-only">{t("theme.label")}</legend>
+      {/* Selecting the already-checked radio fires no change event, so a plain
+          toggle is enough — no need to guard either handler. */}
+      <label className="theme-choice__item">
+        <input type="radio" name="theme" checked={!isDark} onChange={onToggleTheme} />
+        <Icon icon={Sun} size={16} />
+        <span>{t("theme.light")}</span>
+      </label>
+      <label className="theme-choice__item">
+        <input type="radio" name="theme" checked={isDark} onChange={onToggleTheme} />
+        <Icon icon={Moon} size={16} />
+        <span>{t("theme.dark")}</span>
+      </label>
+    </fieldset>
+  );
+}
+
+function GameplaySettings({
+  avoidRepeats,
   durationInput,
   bufferSecondsInput,
-  avoidRepeats,
-  onUpdateTimingField,
   onToggleAvoidRepeats,
+  onUpdateTimingField,
 }: Pick<
   SettingsClusterProps,
+  | "avoidRepeats"
   | "durationInput"
   | "bufferSecondsInput"
-  | "avoidRepeats"
-  | "onUpdateTimingField"
   | "onToggleAvoidRepeats"
+  | "onUpdateTimingField"
 >) {
   const { t } = useTranslation();
 
   return (
-    <div className="timing-fields">
+    <div className="settings-rows">
       <DebouncedNumberField
         id="duration"
         label={t("settings.duration")}
+        hint={t("settings.durationHint")}
         value={durationInput}
         min={durationMin}
         max={durationMax}
@@ -95,6 +139,7 @@ function TimingFields({
       <DebouncedNumberField
         id="getReady"
         label={t("settings.getReady")}
+        hint={t("settings.getReadyHint")}
         value={bufferSecondsInput}
         min={bufferSecondsMin}
         max={bufferSecondsMax}
@@ -102,9 +147,19 @@ function TimingFields({
         suffix="s"
         onCommit={(value) => onUpdateTimingField("bufferSecondsInput", value)}
       />
-      <label className="settings-toggle">
-        <input type="checkbox" checked={avoidRepeats} onChange={onToggleAvoidRepeats} />
-        <span>{t("settings.avoidRepeats")}</span>
+      <label className="settings-toggle ds-field--inline">
+        <span className="ds-field__text">
+          <span className="ds-field__label">{t("settings.avoidRepeats")}</span>
+          <span className="ds-field__hint" id="avoid-repeats-hint">
+            {t("settings.avoidRepeatsHint")}
+          </span>
+        </span>
+        <input
+          type="checkbox"
+          checked={avoidRepeats}
+          onChange={onToggleAvoidRepeats}
+          aria-describedby="avoid-repeats-hint"
+        />
       </label>
     </div>
   );
@@ -125,37 +180,12 @@ export function SettingsCluster({
   onUpdateTimingField,
 }: SettingsClusterProps) {
   const { t } = useTranslation();
-  const isDark = theme === "dark";
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="settings-cluster">
-      <Popover
-        icon={Timer}
-        label={t("settings.roundTimerTitle")}
-        title={t("settings.pace", { seconds: durationInput })}
-      >
-        <TimingFields
-          durationInput={durationInput}
-          bufferSecondsInput={bufferSecondsInput}
-          avoidRepeats={avoidRepeats}
-          onUpdateTimingField={onUpdateTimingField}
-          onToggleAvoidRepeats={onToggleAvoidRepeats}
-        />
-      </Popover>
-
-      <Popover icon={Globe} label={t("language.label")} title={getNativeName(language)}>
-        {(close) => (
-          <LanguageMenu
-            language={language}
-            isLanguagePending={isLanguagePending}
-            onSelect={(code) => {
-              onLanguageChange(code);
-              close();
-            }}
-          />
-        )}
-      </Popover>
-
+      {/* Sound stays in the footer: it is the one setting that gets flipped
+          mid-round. Everything else lives a click deeper. */}
       <IconButton
         label={isMuted ? t("buttons.unmute") : t("buttons.mute")}
         icon={<Icon icon={isMuted ? VolumeX : Volume2} size={20} />}
@@ -164,10 +194,46 @@ export function SettingsCluster({
       />
 
       <IconButton
-        label={isDark ? t("theme.switchToLight") : t("theme.switchToDark")}
-        icon={<Icon icon={isDark ? Sun : Moon} size={20} />}
-        onClick={onToggleTheme}
+        label={t("settings.title")}
+        icon={<Icon icon={Settings} size={20} />}
+        aria-haspopup="dialog"
+        onClick={() => setIsOpen(true)}
       />
+
+      <Sheet
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        title={t("settings.title")}
+        closeLabel={t("buttons.closeTooltip")}
+      >
+        <div className="settings-panel">
+          <SettingsSection title={t("settings.gameplay")}>
+            <GameplaySettings
+              avoidRepeats={avoidRepeats}
+              durationInput={durationInput}
+              bufferSecondsInput={bufferSecondsInput}
+              onToggleAvoidRepeats={onToggleAvoidRepeats}
+              onUpdateTimingField={onUpdateTimingField}
+            />
+          </SettingsSection>
+
+          <SettingsSection
+            title={t("language.label")}
+            action={
+              <LanguageSelect
+                language={language}
+                isLanguagePending={isLanguagePending}
+                onSelect={onLanguageChange}
+              />
+            }
+          />
+
+          <SettingsSection
+            title={t("theme.label")}
+            action={<ThemeChoice theme={theme} onToggleTheme={onToggleTheme} />}
+          />
+        </div>
+      </Sheet>
     </div>
   );
 }
