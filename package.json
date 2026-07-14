@@ -1,7 +1,7 @@
 {
   "name": "scattergories",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A browser-based, local-first companion for playing Scattergories at the table — locale-aware letter rolling, timer, and category packs.",
   "license": "MIT",
   "author": "Simon van Lierde <simonvanlierde@gmail.com>",
