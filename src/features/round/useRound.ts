@@ -47,8 +47,9 @@ function drawNextLetterFromBag(
     drawn = [];
   }
 
-  let chosen = remaining.pop() ?? pickRandom(getLocaleLetters(locale));
-  const swapIndex = remaining.length - 1;
+  // weightedLetterBag orders the bag most-likely-first, so draw from the front.
+  let chosen = remaining.shift() ?? pickRandom(getLocaleLetters(locale));
+  const swapIndex = 0;
   const swap = remaining[swapIndex];
   if (chosen === previousLetter && swap !== undefined) {
     remaining[swapIndex] = chosen;

@@ -1,5 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 import { beforeEach, expect, it, vi } from "vitest";
+import { getLocaleLetterWeights } from "@/domain/game/localeWeights";
 import { getLocaleLetters } from "@/i18n/localeRegistry";
 import { ONE_SECOND_MS, TWO_SECONDS_MS } from "@/test/constants";
 import { BUFFER_SECONDS } from "@/test/gameConstants";
@@ -188,6 +189,28 @@ it("draws letters from a non-repeating bag and tracks used letters", () => {
 
   expect(second).not.toBe(first);
   expect(driver.current.usedLetters).toEqual([first, second]);
+});
+
+it("draws common letters far more often than rare ones", () => {
+  const trials = 60;
+  const rareShareLimit = 0.3;
+  const weights = getLocaleLetterWeights("en");
+  const rare = new Set(
+    [...getLocaleLetters("en")].sort((a, b) => (weights[a] ?? 0) - (weights[b] ?? 0)).slice(0, 5),
+  );
+
+  let rareFirst = 0;
+  for (let i = 0; i < trials; i += 1) {
+    vi.clearAllMocks();
+    createRoundDriver().start();
+    if (rare.has(mockSpinTo.mock.calls[0]?.[0])) {
+      rareFirst += 1;
+    }
+  }
+
+  // True share for the five rarest English letters is ~2%; drawing from the
+  // wrong end of the weighted bag would push this near 100%.
+  expect(rareFirst / trials).toBeLessThan(rareShareLimit);
 });
 
 it("leaves the bag untouched and skips immediate repeats when avoidRepeats is off", () => {
