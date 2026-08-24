@@ -260,14 +260,19 @@
   }
 
   /* Multi-column flow fills each column top-to-bottom, then moves right — so
-     1–6 land in the left column and 7–12 in the right (not row-major). Sized so
-     two columns still fit inside a 393px-wide viewport (2 × 11.5rem + gap),
-     which covers most phone browsers. */
+     1–6 land in the left column and 7–12 in the right (not row-major).
+
+     The column width is set by the content, not by how many columns look tidy:
+     every built-in name is authored to at most 20 characters, which measures
+     ~13rem at the chip's size, and the chip spends ~4rem more on the numeral,
+     the pin and its padding. At 18rem a drawn name always holds one line — and
+     a wide screen forms two roomy columns instead of three cramped ones.
+     `column-width` is a minimum, so columns only ever stretch past it. */
   .category-checklist__list {
     list-style: none;
     padding: 0;
     margin: 0;
-    column-width: 11.5rem;
+    column-width: 18rem;
     column-gap: var(--space-1);
   }
 
@@ -354,8 +359,10 @@
     font-weight: 600;
   }
 
+  /* A no-break space, so a custom name that has to wrap never leaves the star
+     stranded on a line of its own. */
   .category-checklist__item--custom .category-checklist__label::after {
-    content: " ★";
+    content: "\00a0★";
     color: var(--accent-primary);
   }
 
@@ -445,19 +452,29 @@
       font-size: var(--text-lg);
     }
 
-    /* The list now spans the full width (header sits above it), so the cards can
-       breathe: taller tap targets and a larger label.
+    /* A phone has no room for two content-sized columns, so it keeps the compact
+       pair (2 × 11.5rem fits a 393px viewport) and buys the width back inside
+       the chip instead: the numeral goes inline and the pin goes away. */
+    .category-checklist__list {
+      column-width: 11.5rem;
+    }
 
-       Two columns leave each label ~11.5rem, so the chip drops its three-column
+    /* Two columns leave each label ~10rem, so the chip drops its three-column
        grid and becomes plain text flow: the number rides inline with the name
        instead of owning a column, and a name too long for one line wraps to the
-       chip's full width instead of hanging off a fixed indent. */
+       chip's full width instead of hanging off a fixed indent.
+
+       The name is set one step down from the wider layouts and the side padding
+       is trimmed, which is what keeps it on one line: a size up, a sixth of the
+       built-in names spilled onto a second line and grew the card. One line at
+       this size reads better than two at the next size up. The 44px tap target
+       comes from min-height, so nothing shrinks under the thumb. */
     .category-checklist__chip {
       display: block;
       align-content: center;
       min-height: 2.75rem;
-      padding-inline: var(--space-2);
-      font-size: var(--text-lg);
+      padding-inline: var(--space-1-5);
+      font-size: var(--text-md);
     }
 
     /* A superscript figure, set like a footnote marker: it gives up the gutter a
