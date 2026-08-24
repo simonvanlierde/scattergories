@@ -1,5 +1,5 @@
 import type { RefObject } from "react";
-import { type ComponentType, lazy, useRef } from "react";
+import { type ComponentType, lazy, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import type { Phase, StatusKey } from "@/domain/game/roundReducer";
 import { useRound } from "@/features/round/useRound";
@@ -110,7 +110,11 @@ function useGameController(): GameController {
     avoidRepeats: settings.avoidRepeats,
     onLetterPicked: () => board.redrawCategories(true),
   });
-  roundInProgressRef.current = round.phase === "buffer" || round.phase === "running";
+
+  useEffect(() => {
+    roundInProgressRef.current = round.phase === "buffer" || round.phase === "running";
+  }, [round.phase]);
+
   const controls = useAppControls({ i18n });
 
   // Same gate as ActionBar's New-letter button so the 'R' shortcut can't wipe a

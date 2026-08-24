@@ -96,7 +96,19 @@ function PlayGrid({ game }: PlayGridProps) {
     <section
       className={cx("play-grid", !game.flags.isPromptDeckOpen && "play-grid--deck-collapsed")}
     >
-      <Playmat game={game} />
+      <Playmat
+        phase={game.round.phase}
+        isPaused={game.round.isPaused}
+        secondsLeft={game.round.secondsLeft}
+        gameSeconds={game.settings.gameSeconds}
+        letter={game.round.letter}
+        letterVisible={game.round.letterVisible}
+        letterLanding={game.round.letterLanding}
+        statusKey={game.round.statusKey}
+        onPrimary={game.controls.onStartRound}
+        onNewLetter={game.controls.onNewLetter}
+        onNextRound={game.controls.onNextRound}
+      />
 
       <CategoriesPanel
         categories={{

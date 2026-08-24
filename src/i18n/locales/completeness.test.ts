@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { CATEGORY_KEYS } from "@/domain/game/categoryKeys";
 import { LETTER_WEIGHTS_BY_LOCALE } from "@/i18n/__generated__/letterWeights";
 import {
   FALLBACK_LOCALE,
@@ -30,6 +31,13 @@ describe("locale asset completeness", () => {
     const { translation, categories } = await loadLocaleNamespaces(locale);
     expect(Object.keys(translation).length).toBeGreaterThan(0);
     expect(Object.keys(categories).length).toBeGreaterThan(0);
+  });
+
+  // The domain list is the source of truth for which categories exist; the
+  // English file is just its first translation and must not drift from it.
+  it("the English category file matches the domain key list", async () => {
+    const { categories } = await loadLocaleNamespaces(FALLBACK_LOCALE);
+    expect(Object.keys(categories)).toEqual([...CATEGORY_KEYS]);
   });
 
   // Guards against key drift: every locale must ship exactly the keys en does —
