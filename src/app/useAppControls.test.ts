@@ -30,6 +30,15 @@ describe("useAppControls", () => {
     expect(result.current.hasChunkError).toBe(true);
   });
 
+  it("shows the reload banner when a new service worker is installed", () => {
+    const { result } = renderHook(() => useAppControls({ i18n: makeI18n() }));
+
+    act(() => {
+      window.dispatchEvent(new Event("app:updateavailable"));
+    });
+    expect(result.current.hasChunkError).toBe(true);
+  });
+
   it("resolves and persists the language on a successful switch", async () => {
     vi.mocked(ensureLanguageLoaded).mockResolvedValue("fr");
     const i18n = makeI18n();
@@ -42,7 +51,7 @@ describe("useAppControls", () => {
 
     await waitFor(() => expect(result.current.isLanguagePending).toBe(false));
     expect(i18n.changeLanguage).toHaveBeenCalledWith("fr");
-    expect(persistLanguage).toHaveBeenCalledWith("fr");
+    expect(persistLanguage).toHaveBeenCalledExactlyOnceWith("fr");
     expect(result.current.hasChunkError).toBe(false);
   });
 
@@ -56,5 +65,7 @@ describe("useAppControls", () => {
 
     await waitFor(() => expect(result.current.hasChunkError).toBe(true));
     expect(result.current.isLanguagePending).toBe(false);
+    // Nothing is stored for a language that could not be loaded.
+    expect(persistLanguage).not.toHaveBeenCalled();
   });
 });

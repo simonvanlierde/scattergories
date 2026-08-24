@@ -21,6 +21,16 @@ const MIN_VISIBLE_BOARD_ITEMS = 1;
 
 beforeEach(resetAppTestState);
 
+// Bulk removal is a two-tap action: the first tap arms, the second confirms.
+async function removeAllBuiltins(
+  user: Awaited<ReturnType<typeof renderApp>>["user"],
+  dialog: HTMLElement,
+) {
+  const button = within(dialog).getByRole("button", { name: "Remove all built-in" });
+  await user.click(button);
+  await user.click(button);
+}
+
 function deckRow(dialog: HTMLElement, name: string): HTMLElement {
   const deck = within(dialog).getByRole("list", { name: DECK_LABEL });
   const row = within(deck).getByText(name).closest("li");
@@ -54,7 +64,7 @@ it("shows guidance when the deck is emptied and accepts a custom entry", async (
   const dialog = await openCustomizeDeck(user);
 
   // Clearing built-ins (with no customs) empties the deck.
-  await user.click(within(dialog).getByRole("button", { name: "Remove all built-in" }));
+  await removeAllBuiltins(user, dialog);
   expect(within(dialog).getByText(EMPTY_DECK)).toBeInTheDocument();
 
   const input = within(dialog).getByRole("textbox", { name: "Add custom category" });
@@ -83,7 +93,7 @@ it("always shows custom categories and lets built-ins be cleared and re-added", 
   );
 
   // Clearing built-ins leaves only the custom one.
-  await user.click(within(dialog).getByRole("button", { name: "Remove all built-in" }));
+  await removeAllBuiltins(user, dialog);
   expect(within(drawnList).getAllByRole("listitem")).toHaveLength(MIN_VISIBLE_BOARD_ITEMS);
   expect(drawnList).toHaveTextContent(ONLY_CUSTOM_CATEGORY);
 

@@ -94,6 +94,23 @@ describe("useSettings", () => {
       expect(result.current.settings.pinned).toEqual(["Foo"]);
     });
 
+    it("caps an oversized stored string to 50 characters", () => {
+      const oversized = "x".repeat(80);
+      window.localStorage.setItem(
+        SETTINGS_STORAGE_KEY,
+        JSON.stringify({ customCategories: [oversized], pinned: [oversized] }),
+      );
+      const { result } = renderHook(() => useSettings(), { wrapper });
+      expect(result.current.settings.customCategories).toEqual([oversized.slice(0, 50)]);
+    });
+
+    it("caps an oversized stored array to 200 entries", () => {
+      const many = Array.from({ length: 250 }, (_, index) => `Category ${index}`);
+      window.localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify({ customCategories: many }));
+      const { result } = renderHook(() => useSettings(), { wrapper });
+      expect(result.current.settings.customCategories).toHaveLength(200);
+    });
+
     it("falls back to defaults on malformed JSON and rewrites storage", () => {
       window.localStorage.setItem(SETTINGS_STORAGE_KEY, "{not valid json}");
       const { result } = renderHook(() => useSettings(), { wrapper });
@@ -205,6 +222,14 @@ describe("useSettings", () => {
         result.current.addCustom("science");
       });
       expect(result.current.settings.customCategories).toEqual(["Science"]);
+    });
+
+    it("rejects a name that matches a built-in category key", () => {
+      const { result } = renderHook(() => useSettings(), { wrapper });
+      act(() => {
+        result.current.addCustom("Animals");
+      });
+      expect(result.current.settings.customCategories).toEqual([]);
     });
   });
 

@@ -21,7 +21,9 @@
     "remove": "Remover",
     "addTooltip": "Adicionar esta categoria à sua coleção personalizada",
     "closeTooltip": "Fechar esta janela",
-    "howToPlay": "Como jogar"
+    "howToPlay": "Como jogar",
+    "skipConfirm": "Toque novamente para saltar esta ronda",
+    "removeAllConfirm": "Toque novamente para remover"
   },
   "timer": {
     "ready": "Pronto",
@@ -30,7 +32,8 @@
     "getReady": "Prepare-se…",
     "go": "Valendo!",
     "roundOver": "Rodada encerrada!",
-    "startIn": "Começa em {{seconds}}s"
+    "startIn": "Começa em {{seconds}}s",
+    "secondsLeft": "{{seconds}}s"
   },
   "settings": {
     "title": "Configurações",

@@ -80,7 +80,8 @@ function getLabel(
     });
   }
   if (o.phase === "running") {
-    return formatSeconds(Math.max(0, o.secondsLeft));
+    const seconds = Math.max(0, o.secondsLeft);
+    return seconds >= 60 ? formatSeconds(seconds) : t("timer.secondsLeft", { seconds });
   }
   if (o.phase === "spinning") {
     return t("timer.getReady");

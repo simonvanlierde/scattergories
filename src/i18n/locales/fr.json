@@ -21,7 +21,9 @@
     "remove": "Supprimer",
     "addTooltip": "Ajouter cette catégorie à votre collection personnalisée",
     "closeTooltip": "Fermer cette fenêtre",
-    "howToPlay": "Comment jouer"
+    "howToPlay": "Comment jouer",
+    "skipConfirm": "Appuyez à nouveau pour passer cette manche",
+    "removeAllConfirm": "Appuyez à nouveau pour supprimer"
   },
   "timer": {
     "ready": "Prêt",
@@ -30,7 +32,8 @@
     "getReady": "Préparez-vous…",
     "go": "C'est parti !",
     "roundOver": "Manche terminée !",
-    "startIn": "Départ dans {{seconds}}s"
+    "startIn": "Départ dans {{seconds}}s",
+    "secondsLeft": "{{seconds}}s"
   },
   "settings": {
     "title": "Paramètres",

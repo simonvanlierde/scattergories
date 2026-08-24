@@ -69,14 +69,20 @@ function getDefaultSettings(): Settings {
   };
 }
 
+/** Caps guard against a corrupted/hostile localStorage payload bloating the deck. */
+const MAX_STRING_LENGTH = 50;
+const MAX_STRING_COUNT = 200;
+
 function sanitizeStrings(value: unknown): string[] {
   if (!Array.isArray(value)) {
     return [];
   }
 
-  const sanitized = value.map((entry) => String(entry).trim()).filter((entry) => entry.length > 0);
+  const sanitized = value
+    .map((entry) => String(entry).trim().slice(0, MAX_STRING_LENGTH))
+    .filter((entry) => entry.length > 0);
 
-  return Array.from(new Set(sanitized));
+  return Array.from(new Set(sanitized)).slice(0, MAX_STRING_COUNT);
 }
 
 /** Back-compat alias used by SettingsProvider. */

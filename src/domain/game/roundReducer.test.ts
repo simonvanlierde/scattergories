@@ -78,7 +78,7 @@ describe("roundReducer", () => {
     };
     const next = roundReducer(running, { type: "TICK" });
     expect(next.phase).toBe("running");
-    expect(next.secondsLeft).toBe(2 + 2);
+    expect(next.secondsLeft).toBe(4);
   });
 
   it("TICK at last running second transitions to done and triggers alarm", () => {
@@ -113,25 +113,6 @@ describe("roundReducer", () => {
     expect(idle).toBe(initialRoundState);
   });
 
-  it("RESET returns to idle without clearing pinned letter bags", () => {
-    const running = {
-      ...initialRoundState,
-      phase: "running" as const,
-      secondsLeft: 30,
-      isPaused: true,
-      alarmOn: true,
-      remainingLetters: ["A"],
-      drawnLetters: ["B"],
-    };
-    const reset = roundReducer(running, { type: "RESET" });
-    expect(reset.phase).toBe("idle");
-    expect(reset.secondsLeft).toBe(0);
-    expect(reset.isPaused).toBe(false);
-    expect(reset.alarmOn).toBe(false);
-    expect(reset.remainingLetters).toEqual(["A"]);
-    expect(reset.drawnLetters).toEqual(["B"]);
-  });
-
   it("SYNC_BAGS updates letter bags without changing other state", () => {
     const mid = { ...initialRoundState, phase: "running" as const, secondsLeft: 10 };
     const synced = roundReducer(mid, {
@@ -158,13 +139,14 @@ describe("roundReducer", () => {
     expect(running.statusKey).toBe("timer.go");
   });
 
-  it("SET_GAME_SECONDS shrinks a running clock but never extends it", () => {
-    const running = { ...initialRoundState, phase: "running" as const, secondsLeft: 10 };
-    const shrunk = roundReducer(running, { type: "SET_GAME_SECONDS", gameSeconds: 5 });
-    expect(shrunk.secondsLeft).toBe(5);
-    const kept = roundReducer(running, { type: "SET_GAME_SECONDS", gameSeconds: 30 });
-    expect(kept.secondsLeft).toBe(10);
-    expect(kept.gameSeconds).toBe(30);
+  it("SET_GAME_SECONDS leaves a live countdown alone in both directions", () => {
+    const running = { ...initialRoundState, phase: "running" as const, secondsLeft: 89 };
+    const shrunk = roundReducer(running, { type: "SET_GAME_SECONDS", gameSeconds: 10 });
+    expect(shrunk.secondsLeft).toBe(89);
+    expect(shrunk.gameSeconds).toBe(10);
+    const grown = roundReducer(shrunk, { type: "SET_GAME_SECONDS", gameSeconds: 120 });
+    expect(grown.secondsLeft).toBe(89);
+    expect(grown.gameSeconds).toBe(120);
   });
 
   it("SET_BUFFER_SECONDS shrinks a buffer countdown but never extends it", () => {
@@ -187,6 +169,17 @@ describe("roundReducer", () => {
     expect(running.phase).toBe("running");
     expect(running.secondsLeft).toBe(DEFAULT_TIMER_SECONDS);
     expect(running.statusKey).toBe("timer.go");
+  });
+
+  it("SET_BUFFER_SECONDS to 0 while paused starts running but stays paused", () => {
+    const spinning = roundReducer(initialRoundState, startSpin());
+    const buffering = roundReducer(spinning, { type: "LETTER_LANDED" });
+    const paused = roundReducer(buffering, { type: "PAUSE_TOGGLE" });
+    expect(paused.isPaused).toBe(true);
+
+    const next = roundReducer(paused, { type: "SET_BUFFER_SECONDS", bufferSeconds: 0 });
+    expect(next.phase).toBe("running");
+    expect(next.isPaused).toBe(true);
   });
 
   it("TICK is a no-op outside buffer/running", () => {

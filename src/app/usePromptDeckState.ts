@@ -29,12 +29,10 @@ function useIsCompactLayout() {
   return useSyncExternalStore(subscribeCompactLayout, getCompactLayoutSnapshot, () => false);
 }
 
-function getPromptDeckOpenState(preference: PromptDeckPreference, isCompactLayout: boolean) {
-  if (preference === "auto") {
-    return !isCompactLayout;
-  }
-
-  return preference === "open";
+// The drawn categories are what every player reads, so they show by default on
+// every layout; the compact flag only shapes the layout, never the default.
+function getPromptDeckOpenState(preference: PromptDeckPreference) {
+  return preference !== "collapsed";
 }
 
 function usePromptDeckState(
@@ -42,7 +40,7 @@ function usePromptDeckState(
   update: ReturnType<typeof useSettings>["update"],
 ) {
   const isCompactLayout = useIsCompactLayout();
-  const isPromptDeckOpen = getPromptDeckOpenState(preference, isCompactLayout);
+  const isPromptDeckOpen = getPromptDeckOpenState(preference);
   const setPromptDeckPreference = (nextOpen: boolean) => {
     update("promptDeckPreference", nextOpen ? "open" : "collapsed");
   };

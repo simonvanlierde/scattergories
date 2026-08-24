@@ -21,7 +21,9 @@
     "remove": "Remove",
     "addTooltip": "Add this category to your custom collection",
     "closeTooltip": "Close this window",
-    "howToPlay": "How to play"
+    "howToPlay": "How to play",
+    "skipConfirm": "Tap again to skip this round",
+    "removeAllConfirm": "Tap again to remove"
   },
   "timer": {
     "ready": "Ready",
@@ -30,7 +32,8 @@
     "getReady": "Get ready…",
     "go": "Go!",
     "roundOver": "Round over!",
-    "startIn": "Start in {{seconds}}s"
+    "startIn": "Start in {{seconds}}s",
+    "secondsLeft": "{{seconds}}s"
   },
   "settings": {
     "title": "Settings",

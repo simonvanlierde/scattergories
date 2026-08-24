@@ -9,8 +9,16 @@ function useChunkErrorListener(setHasChunkError: (value: boolean) => void): void
       setHasChunkError(true);
     }
 
+    function onUpdateAvailable() {
+      setHasChunkError(true);
+    }
+
     window.addEventListener("vite:preloadError", onPreloadError);
-    return () => window.removeEventListener("vite:preloadError", onPreloadError);
+    window.addEventListener("app:updateavailable", onUpdateAvailable);
+    return () => {
+      window.removeEventListener("vite:preloadError", onPreloadError);
+      window.removeEventListener("app:updateavailable", onUpdateAvailable);
+    };
   }, [setHasChunkError]);
 }
 
@@ -24,7 +32,8 @@ function useLanguageSwitcher(
 
     async function switchLanguage() {
       try {
-        persistLanguage(language);
+        // Persist only once the switch actually succeeded — a failed load must not
+        // leave a language stored that the next launch can't render.
         const resolved = await ensureLanguageLoaded(language);
         await i18n.changeLanguage(resolved);
         persistLanguage(resolved);

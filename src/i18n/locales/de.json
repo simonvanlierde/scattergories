@@ -21,7 +21,9 @@
     "remove": "Entfernen",
     "addTooltip": "Diese Kategorie zu deiner Sammlung hinzufügen",
     "closeTooltip": "Dieses Fenster schließen",
-    "howToPlay": "Spielanleitung"
+    "howToPlay": "Spielanleitung",
+    "skipConfirm": "Erneut tippen, um diese Runde zu überspringen",
+    "removeAllConfirm": "Erneut tippen zum Entfernen"
   },
   "timer": {
     "ready": "Bereit",
@@ -30,7 +32,8 @@
     "getReady": "Bereit machen…",
     "go": "Los!",
     "roundOver": "Runde vorbei!",
-    "startIn": "Start in {{seconds}}s"
+    "startIn": "Start in {{seconds}}s",
+    "secondsLeft": "{{seconds}}s"
   },
   "settings": {
     "title": "Einstellungen",

@@ -1,4 +1,5 @@
-import { Pin, PinOff } from "lucide-react";
+import { Pin } from "lucide-react";
+import type { CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 import { cx } from "@/shared/ui/cx";
 import { Icon } from "@/shared/ui/Icon";
@@ -69,12 +70,10 @@ export function CategoryChecklist({
                 <span className="category-checklist__mark" aria-hidden="true">
                   {index + 1}
                 </span>
-                <span className={labelClass}>{label}</span>
-                <Icon
-                  icon={isPinned ? Pin : PinOff}
-                  size={16}
-                  className="category-checklist__pin"
-                />
+                <span className={labelClass} style={{ "--i": index } as CSSProperties}>
+                  {label}
+                </span>
+                <Icon icon={Pin} size={16} className="category-checklist__pin" />
               </button>
             </li>
           );

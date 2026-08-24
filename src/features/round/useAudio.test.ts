@@ -136,6 +136,39 @@ describe("useAudio", () => {
     });
   });
 
+  describe("when the Web Audio API throws", () => {
+    it("playTick does not propagate a throwing oscillator", () => {
+      const { contextMock, audioContextCtor } = makeAudioContextMock();
+      contextMock.createOscillator.mockImplementation(() => {
+        throw new Error("no oscillator");
+      });
+      vi.stubGlobal("AudioContext", audioContextCtor);
+
+      const { result } = renderHook(() => useAudio(false));
+      expect(() => {
+        act(() => {
+          result.current.playTick();
+        });
+      }).not.toThrow();
+    });
+
+    it("playTick does not propagate a throwing AudioContext constructor", () => {
+      vi.stubGlobal(
+        "AudioContext",
+        vi.fn(function throwingCtx() {
+          throw new Error("blocked");
+        }),
+      );
+
+      const { result } = renderHook(() => useAudio(false));
+      expect(() => {
+        act(() => {
+          result.current.playTick();
+        });
+      }).not.toThrow();
+    });
+  });
+
   describe("when AudioContext is unavailable", () => {
     it("playTick does not throw", () => {
       vi.stubGlobal("AudioContext", undefined);

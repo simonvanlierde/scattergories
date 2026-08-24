@@ -1,11 +1,11 @@
 import { getLocaleLetters } from "@/i18n/localeRegistry";
-import categoriesResourceEn from "@/i18n/locales/categories.en.json";
+import { CATEGORY_KEYS } from "./categoryKeys";
 import gameConstants from "./constants.json";
 
 // The default letter set used for English and as a baseline for tests.
 export const englishLetters = getLocaleLetters("en");
 
-export const categories = Object.freeze(Object.keys(categoriesResourceEn));
+export const categories = CATEGORY_KEYS;
 
 export const bufferSecondsMin = gameConstants.bufferSecondsMin;
 export const bufferSecondsMax = gameConstants.bufferSecondsMax;

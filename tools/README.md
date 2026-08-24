@@ -96,24 +96,16 @@ uv run --group translation sg-tools translate locales --target-locales es fr --w
 
 ## Task runner
 
-From the repo root:
+There is no root-level `justfile`; run recipes from `tools/`:
 
 ```bash
-just tools-install
-just tools-check
-just tools-doctor
-just tools-weights-locales
-just tools-translate-categories es fr
+cd tools && just doctor
+cd tools && just audit
+cd tools && just weights-locales
+cd tools && just translate-categories es fr
 ```
 
-From `tools/`:
-
-```bash
-just check
-just doctor
-just weights-locales
-just translate-categories es fr
-```
+See [`tools/justfile`](justfile) for the full recipe list.
 
 ## Artifacts
 

@@ -112,7 +112,11 @@ function useSoundPlayer(
     if (!context) {
       return;
     }
-    playFn(context);
+    try {
+      playFn(context);
+    } catch {
+      // Audio is decoration: a browser refusing to build nodes must not break the round.
+    }
   }, [getContext, mutedRef, playFn]);
 }
 
@@ -124,10 +128,15 @@ function useAudioContext() {
     if (!Ctor) {
       return null;
     }
-    if (!contextRef.current) {
-      contextRef.current = new Ctor();
+    try {
+      if (!contextRef.current) {
+        contextRef.current = new Ctor();
+      }
+      contextRef.current.resume().catch(() => undefined);
+    } catch {
+      // Construction can throw (blocked autoplay policies, exhausted contexts).
+      return null;
     }
-    contextRef.current.resume().catch(() => undefined);
     return contextRef.current;
   }, []);
 

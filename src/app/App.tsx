@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { I18nextProvider, useTranslation } from "react-i18next";
 import { SettingsProvider } from "@/features/settings/SettingsProvider";
+import { getPreferredTheme } from "@/features/settings/schema";
 import { i18n, initI18n } from "@/i18n/config";
 import { AppLoading } from "./AppLoading";
 import { ErrorBoundary } from "./ErrorBoundary";
@@ -16,7 +17,7 @@ interface ErrorViewProps {
 
 function ErrorView({ eyebrow, title, message, actionLabel }: ErrorViewProps) {
   return (
-    <main className="app-shell" data-theme="dark">
+    <main className="app-shell" data-theme={getPreferredTheme()}>
       <section className="app-error" role="alert">
         <p className="eyebrow">{eyebrow}</p>
         <h1>{title}</h1>

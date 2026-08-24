@@ -4,8 +4,8 @@ import { useCategoryBoard } from "./useCategoryBoard";
 
 // Keep prefersReducedMotion (false by default via setupTests matchMedia), but
 // make runRoll synchronous so the animated path runs to its landing frame.
-vi.mock("@/features/round/rollAnimation", async (importActual) => {
-  const actual = await importActual<typeof import("@/features/round/rollAnimation")>();
+vi.mock("@/shared/lib/rollAnimation", async (importActual) => {
+  const actual = await importActual<typeof import("@/shared/lib/rollAnimation")>();
   return {
     ...actual,
     runRoll: vi.fn((p: { onFlip: () => void; onLanded: () => void }) => {

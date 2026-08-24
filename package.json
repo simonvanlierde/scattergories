@@ -39,12 +39,15 @@
     "spellcheck": "cspell lint . --config=.cspell.yml --no-config-search --cache --cache-strategy content",
     "spellcheck-changed": "cspell lint --config=.cspell.yml --no-config-search --cache --cache-strategy content --no-progress --no-must-find-files",
     "check": "pnpm typecheck && pnpm spellcheck && pnpm lint",
-    "verify": "pnpm check && pnpm test && pnpm build && pnpm budget",
+    "verify": "pnpm check && pnpm test:coverage && pnpm build && pnpm budget",
     "ci": "pnpm verify && cd tools && uv sync --locked && uv run ruff check && uv run ty check && uv run pytest",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
+    "pretest:e2e": "pnpm build",
     "test:e2e": "playwright test",
+    "pretest:e2e:chromium": "pnpm build",
     "test:e2e:chromium": "playwright test --project=chromium",
+    "pretest:e2e:smoke": "pnpm build",
     "test:e2e:smoke": "playwright test --project=chromium --grep @smoke"
   },
   "dependencies": {

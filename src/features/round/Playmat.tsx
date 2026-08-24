@@ -1,46 +1,24 @@
 import { useTranslation } from "react-i18next";
-import type { GameController } from "@/app/useGameController";
+import type { Phase, StatusKey } from "@/domain/game/roundReducer";
 import { ActionBar } from "./ActionBar";
 import { LetterHero } from "./LetterHero";
 import { TimerRing } from "./TimerRing";
 
 interface PlaymatProps {
-  game: GameController;
-}
-
-type RoundPhase = PlaymatProps["game"]["round"]["phase"];
-
-function PlaymatHero({
-  phase,
-  isPaused,
-  secondsLeft,
-  gameSeconds,
-  letter,
-  letterVisible,
-  letterLanding,
-}: {
-  phase: RoundPhase;
+  phase: Phase;
   isPaused: boolean;
   secondsLeft: number;
   gameSeconds: number;
   letter: string;
   letterVisible: boolean;
   letterLanding: boolean;
-}) {
-  return (
-    <div className="playmat__hero">
-      <TimerRing
-        phase={phase}
-        isPaused={isPaused}
-        secondsLeft={secondsLeft}
-        gameSeconds={gameSeconds}
-      />
-      <LetterHero letter={letter} visible={letterVisible} landing={letterLanding} />
-    </div>
-  );
+  statusKey: StatusKey;
+  onPrimary: () => void;
+  onNewLetter: () => void;
+  onNextRound: () => void;
 }
 
-function PlaymatStatus({ statusKey }: { statusKey: string | null }) {
+function PlaymatStatus({ statusKey }: { statusKey: StatusKey }) {
   const { t } = useTranslation();
 
   return (
@@ -50,47 +28,42 @@ function PlaymatStatus({ statusKey }: { statusKey: string | null }) {
   );
 }
 
-function PlaymatRoundContent({
-  round,
-  settings,
-  controls,
-}: {
-  round: PlaymatProps["game"]["round"];
-  settings: PlaymatProps["game"]["settings"];
-  controls: PlaymatProps["game"]["controls"];
-}) {
-  return (
-    <>
-      <PlaymatHero
-        phase={round.phase}
-        isPaused={round.isPaused}
-        secondsLeft={round.secondsLeft}
-        gameSeconds={settings.gameSeconds}
-        letter={round.letter}
-        letterVisible={round.letterVisible}
-        letterLanding={round.letterLanding}
-      />
+export function Playmat({
+  phase,
+  isPaused,
+  secondsLeft,
+  gameSeconds,
+  letter,
+  letterVisible,
+  letterLanding,
+  statusKey,
+  onPrimary,
+  onNewLetter,
+  onNextRound,
+}: PlaymatProps) {
+  const { t } = useTranslation();
 
-      <PlaymatStatus statusKey={round.statusKey} />
+  return (
+    <section className="playmat" aria-label={t("playmat.label")} data-phase={phase}>
+      <div className="playmat__hero">
+        <TimerRing
+          phase={phase}
+          isPaused={isPaused}
+          secondsLeft={secondsLeft}
+          gameSeconds={gameSeconds}
+        />
+        <LetterHero letter={letter} visible={letterVisible} landing={letterLanding} />
+      </div>
+
+      <PlaymatStatus statusKey={statusKey} />
 
       <ActionBar
-        phase={round.phase}
-        isPaused={round.isPaused}
-        onPrimary={controls.onStartRound}
-        onNewLetter={controls.onNewLetter}
-        onNextRound={controls.onNextRound}
+        phase={phase}
+        isPaused={isPaused}
+        onPrimary={onPrimary}
+        onNewLetter={onNewLetter}
+        onNextRound={onNextRound}
       />
-    </>
-  );
-}
-
-export function Playmat({ game }: PlaymatProps) {
-  const { t } = useTranslation();
-  const { round, settings, controls } = game;
-
-  return (
-    <section className="playmat" aria-label={t("playmat.label")} data-phase={round.phase}>
-      <PlaymatRoundContent round={round} settings={settings} controls={controls} />
     </section>
   );
 }

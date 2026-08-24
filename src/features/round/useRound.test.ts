@@ -1,6 +1,8 @@
 import { act, renderHook } from "@testing-library/react";
 import { beforeEach, expect, it, vi } from "vitest";
 import { getLocaleLetterWeights } from "@/domain/game/localeWeights";
+import { roundReducer } from "@/domain/game/roundReducer";
+import { weightedLetterBag } from "@/domain/game/utils";
 import { getLocaleLetters } from "@/i18n/localeRegistry";
 import { ONE_SECOND_MS, TWO_SECONDS_MS } from "@/test/constants";
 import { BUFFER_SECONDS } from "@/test/gameConstants";
@@ -13,9 +15,16 @@ const LONG_ROUND_SECONDS = 20;
 const PARTIAL_SECOND_MS = 400;
 const REMAINDER_MS = ONE_SECOND_MS - PARTIAL_SECOND_MS;
 const PAUSED_WAIT_MS = 5000;
+const SUSPENDED_HOURS_MS = 3 * 60 * 60 * 1000;
+const FIXED_RANDOM = 0.5;
 
 vi.mock("./useAudio");
 vi.mock("./useLetterRoller");
+// Real reducer, wrapped so a test can count the actions the hook dispatches.
+vi.mock("@/domain/game/roundReducer", async (importActual) => {
+  const actual = await importActual<typeof import("@/domain/game/roundReducer")>();
+  return { ...actual, roundReducer: vi.fn(actual.roundReducer) };
+});
 
 const mockPlayTick = vi.fn();
 const mockPlayAlarm = vi.fn();
@@ -211,6 +220,83 @@ it("draws common letters far more often than rare ones", () => {
   // True share for the five rarest English letters is ~2%; drawing from the
   // wrong end of the weighted bag would push this near 100%.
   expect(rareFirst / trials).toBeLessThan(rareShareLimit);
+});
+
+it("draws from the weighted order when avoidRepeats is off", () => {
+  vi.spyOn(Math, "random").mockReturnValue(FIXED_RANDOM);
+  const driver = createRoundDriver({ avoidRepeats: false });
+
+  driver.start();
+
+  // Same RNG, same weighted order — a uniform pick would land elsewhere.
+  expect(mockSpinTo.mock.calls[0]?.[0]).toBe(weightedLetterBag("en", () => FIXED_RANDOM)[0]);
+});
+
+it("keeps the letter and roller when the locale changes mid-round", () => {
+  const { result, rerender } = renderHook(
+    (props: Parameters<typeof useRound>[0]) => useRound(props),
+    {
+      initialProps: {
+        gameSeconds: SHORT_ROUND_SECONDS,
+        bufferSeconds: BUFFER_SECONDS,
+        isMuted: false,
+        locale: "en",
+      },
+    },
+  );
+
+  let landCallback: (() => void) | undefined;
+  mockSpinTo.mockImplementation((_letter: string, callback: () => void) => {
+    landCallback = callback;
+  });
+  act(() => result.current.nextRound());
+  act(() => landCallback?.());
+  expect(result.current.phase).toBe("buffer");
+
+  const resetsBefore = mockResetRoller.mock.calls.length;
+  rerender({
+    gameSeconds: SHORT_ROUND_SECONDS,
+    bufferSeconds: BUFFER_SECONDS,
+    isMuted: false,
+    locale: "el",
+  });
+
+  // The bag is rebuilt for the new alphabet, but the round in progress keeps its letter.
+  expect(mockResetRoller.mock.calls.length).toBe(resetsBefore);
+  expect(result.current.phase).toBe("buffer");
+});
+
+it("does nothing when the wake lock API is unavailable", () => {
+  expect(navigator.wakeLock).toBeUndefined();
+  const driver = createRoundDriver();
+
+  expect(() => {
+    driver.start();
+    driver.landLetter();
+    driver.advanceBuffer();
+  }).not.toThrow();
+  expect(driver.current.phase).toBe("running");
+});
+
+it("caps the catch-up burst after a long tab suspension", () => {
+  const driver = createRoundDriver();
+
+  driver.start();
+  driver.landLetter();
+  driver.advanceBuffer();
+  expect(driver.current.secondsLeft).toBe(SHORT_ROUND_SECONDS);
+
+  vi.mocked(roundReducer).mockClear();
+  act(() => {
+    vi.setSystemTime(Date.now() + SUSPENDED_HOURS_MS);
+    vi.advanceTimersByTime(ONE_SECOND_MS);
+  });
+
+  const tickCount = vi
+    .mocked(roundReducer)
+    .mock.calls.filter(([, action]) => action.type === "TICK").length;
+  expect(driver.current.phase).toBe("done");
+  expect(tickCount).toBeLessThanOrEqual(SHORT_ROUND_SECONDS + 1);
 });
 
 it("leaves the bag untouched and skips immediate repeats when avoidRepeats is off", () => {

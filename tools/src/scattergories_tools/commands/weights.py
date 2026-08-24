@@ -35,7 +35,13 @@ def print_rows_summary(rows: list[LetterRow], *, label: str) -> None:
 @app.command("sample")
 def sample(
     dataset: Annotated[str, typer.Option(help="Sample dataset key.")] = "wikitext-2",
-    hf_token: Annotated[str | None, typer.Option(help="Optional Hugging Face token.")] = None,
+    hf_token: Annotated[
+        str | None,
+        typer.Option(
+            envvar="HF_TOKEN",
+            help="Hugging Face token. Prefer setting the HF_TOKEN env var over this flag.",
+        ),
+    ] = None,
     out_dir: Annotated[
         Path | None, typer.Option(help="Ephemeral output directory under tools/out/.")
     ] = None,
@@ -69,7 +75,13 @@ def locales(
         str | None, typer.Option("--locales", help="Comma-separated locale codes.")
     ] = None,
     max_bytes: Annotated[int, typer.Option(help="Byte cap per locale.")] = DEFAULT_MAX_BYTES,
-    hf_token: Annotated[str | None, typer.Option(help="Optional Hugging Face token.")] = None,
+    hf_token: Annotated[
+        str | None,
+        typer.Option(
+            envvar="HF_TOKEN",
+            help="Hugging Face token. Prefer setting the HF_TOKEN env var over this flag.",
+        ),
+    ] = None,
     *,
     write_app_file: Annotated[
         bool, typer.Option(help="Write src/i18n/__generated__/letterWeights.ts.")
@@ -98,10 +110,7 @@ def locales(
     if write_app_file:
         missing = sorted(set(context.registry.locales) - analyses.keys())
         if missing:
-            msg = (
-                "--write-app-file requires every registry locale; "
-                f"missing: {', '.join(missing)}"
-            )
+            msg = f"--write-app-file requires every registry locale; missing: {', '.join(missing)}"
             raise typer.BadParameter(msg)
         output_path = write_locale_app_file(context.paths.generated_weights_path, analyses)
         typer.echo(f"Wrote {output_path}")

@@ -79,6 +79,10 @@ function settingsReducer(state: Settings, action: SettingsAction): Settings {
       if (state.customCategories.some((entry) => entry.toLowerCase() === trimmed.toLowerCase())) {
         return state;
       }
+      // A custom name can't shadow a built-in category key.
+      if (categories.includes(trimmed)) {
+        return state;
+      }
       return {
         ...state,
         customCategories: sanitizeCustomCategories([...state.customCategories, trimmed]),
