@@ -30,7 +30,8 @@
     "getReady": "Przygotuj się...",
     "go": "Start!",
     "roundOver": "Runda zakończona!",
-    "startIn": "Start za {{seconds}}s"
+    "startIn": "Start za {{seconds}}s",
+    "secondsLeft": "{{seconds}}s"
   },
   "settings": {
     "title": "Ustawienia",

@@ -30,7 +30,8 @@
     "getReady": "Ετοιμαστείτε…",
     "go": "Πάμε!",
     "roundOver": "Ο γύρος τελείωσε!",
-    "startIn": "Έναρξη σε {{seconds}}δ"
+    "startIn": "Έναρξη σε {{seconds}}δ",
+    "secondsLeft": "{{seconds}}δ"
   },
   "settings": {
     "title": "Ρυθμίσεις",

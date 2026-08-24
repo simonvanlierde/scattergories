@@ -7,7 +7,12 @@ import { loadLocaleNamespaces } from "./locales/resources";
 const LANGUAGE_STORAGE_KEY = "scattergories.language";
 
 function getSavedLanguage(): string {
-  return safeStorage.getItem(LANGUAGE_STORAGE_KEY) || FALLBACK_LOCALE;
+  const stored = safeStorage.getItem(LANGUAGE_STORAGE_KEY);
+  if (stored) {
+    return stored;
+  }
+  // Nothing chosen yet: start from the browser's language when it is one we ship.
+  return typeof navigator === "undefined" ? FALLBACK_LOCALE : resolveLocale(navigator.language);
 }
 
 const savedLanguage = getSavedLanguage();
@@ -37,10 +42,18 @@ function initI18n(): Promise<typeof i18n> {
         });
       }
 
-      await ensureLanguageLoaded(resolvedLanguage);
+      let activeLanguage = resolvedLanguage;
+      try {
+        await ensureLanguageLoaded(resolvedLanguage);
+      } catch {
+        // A missing locale chunk must not boot into a blank UI: fall back to
+        // English and overwrite the stored choice so the next launch is clean.
+        activeLanguage = FALLBACK_LOCALE;
+        await i18n.changeLanguage(FALLBACK_LOCALE);
+      }
 
-      if (resolvedLanguage !== savedLanguage) {
-        safeStorage.setItem(LANGUAGE_STORAGE_KEY, resolvedLanguage);
+      if (activeLanguage !== savedLanguage) {
+        safeStorage.setItem(LANGUAGE_STORAGE_KEY, activeLanguage);
       }
 
       return i18n;

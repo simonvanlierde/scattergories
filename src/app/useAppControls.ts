@@ -24,7 +24,8 @@ function useLanguageSwitcher(
 
     async function switchLanguage() {
       try {
-        persistLanguage(language);
+        // Persist only once the switch actually succeeded — a failed load must not
+        // leave a language stored that the next launch can't render.
         const resolved = await ensureLanguageLoaded(language);
         await i18n.changeLanguage(resolved);
         persistLanguage(resolved);

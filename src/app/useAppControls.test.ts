@@ -42,7 +42,7 @@ describe("useAppControls", () => {
 
     await waitFor(() => expect(result.current.isLanguagePending).toBe(false));
     expect(i18n.changeLanguage).toHaveBeenCalledWith("fr");
-    expect(persistLanguage).toHaveBeenCalledWith("fr");
+    expect(persistLanguage).toHaveBeenCalledExactlyOnceWith("fr");
     expect(result.current.hasChunkError).toBe(false);
   });
 
@@ -56,5 +56,7 @@ describe("useAppControls", () => {
 
     await waitFor(() => expect(result.current.hasChunkError).toBe(true));
     expect(result.current.isLanguagePending).toBe(false);
+    // Nothing is stored for a language that could not be loaded.
+    expect(persistLanguage).not.toHaveBeenCalled();
   });
 });

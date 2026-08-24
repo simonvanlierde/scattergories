@@ -30,7 +30,8 @@
     "getReady": "Préparez-vous…",
     "go": "C'est parti !",
     "roundOver": "Manche terminée !",
-    "startIn": "Départ dans {{seconds}}s"
+    "startIn": "Départ dans {{seconds}}s",
+    "secondsLeft": "{{seconds}}s"
   },
   "settings": {
     "title": "Paramètres",

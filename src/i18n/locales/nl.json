@@ -30,7 +30,8 @@
     "getReady": "Maak je klaar…",
     "go": "Start!",
     "roundOver": "Ronde voorbij!",
-    "startIn": "Start over {{seconds}}s"
+    "startIn": "Start over {{seconds}}s",
+    "secondsLeft": "{{seconds}}s"
   },
   "settings": {
     "title": "Instellingen",
