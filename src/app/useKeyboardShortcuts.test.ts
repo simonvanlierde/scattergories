@@ -120,6 +120,23 @@ describe("useKeyboardShortcuts", () => {
     document.body.removeChild(dialog);
   });
 
+  it('ignores shortcuts while a [role="dialog"] popover panel is open', () => {
+    const onC = vi.fn();
+    const onR = vi.fn();
+    renderHook(() => useKeyboardShortcuts({ onC, onR }));
+
+    const panel = document.createElement("div");
+    panel.setAttribute("role", "dialog");
+    document.body.appendChild(panel);
+
+    fireKey("c");
+    fireKey("r");
+
+    expect(onC).not.toHaveBeenCalled();
+    expect(onR).not.toHaveBeenCalled();
+    document.body.removeChild(panel);
+  });
+
   it("removes the listener on unmount", () => {
     const onC = vi.fn();
     const { unmount } = renderHook(() => useKeyboardShortcuts({ onC }));
