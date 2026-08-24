@@ -21,7 +21,9 @@
     "remove": "Verwijderen",
     "addTooltip": "Voeg deze categorie toe aan je eigen verzameling",
     "closeTooltip": "Sluit dit venster",
-    "howToPlay": "Hoe te spelen"
+    "howToPlay": "Hoe te spelen",
+    "skipConfirm": "Tik nogmaals om deze ronde over te slaan",
+    "removeAllConfirm": "Tik nogmaals om te verwijderen"
   },
   "timer": {
     "ready": "Klaar",

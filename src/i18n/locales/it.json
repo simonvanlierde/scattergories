@@ -21,7 +21,9 @@
     "remove": "Rimuovi",
     "addTooltip": "Aggiungi questa categoria alla tua collezione personalizzata",
     "closeTooltip": "Chiudi questa finestra",
-    "howToPlay": "Come giocare"
+    "howToPlay": "Come giocare",
+    "skipConfirm": "Tocca di nuovo per saltare questo turno",
+    "removeAllConfirm": "Tocca di nuovo per rimuovere"
   },
   "timer": {
     "ready": "Pronto",

@@ -81,7 +81,7 @@
 
   .timer-ring--critical .timer-ring__progress {
     stroke: var(--danger);
-    stroke-width: 5;
+    stroke-width: 6;
   }
 
   .timer-ring--done .timer-ring__progress {
@@ -120,14 +120,35 @@
     color: var(--warning);
   }
 
+  /* The last five seconds beat once per second — a shape cue, not only a hue
+     change, so it still reads for colour-blind players and from across a table. */
   .timer-ring--critical .timer-ring__readout {
     color: var(--danger);
     font-weight: 700;
+    animation: readout-beat 1s var(--ease-out) infinite;
   }
 
+  @keyframes readout-beat {
+    0% {
+      transform: scale(1.08);
+    }
+    40%,
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* The round ends in the display voice it started in: "Time's up" is set in
+     the serif italic, not the clock's mono, so the end of a round is a moment
+     rather than a readout. */
   .timer-ring--done .timer-ring__readout {
     color: var(--accent-primary);
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-normal);
+    font-variation-settings: "opsz" 72;
   }
 
   /* "Start in Xs" reads as a calm accent prompt, but stays the same size as the
@@ -136,17 +157,19 @@
     color: var(--accent-primary);
   }
 
-  /* ─── Paused state — dim the ring, surface a "Paused" readout ── */
-  .timer-ring--paused {
-    opacity: 0.6;
+  /* ─── Paused — a held clock: dashed track, muted arc, secondary readout.
+     A shape change, not only a dim. ─── */
+  .timer-ring--paused .timer-ring__progress {
+    stroke: var(--text-muted);
   }
 
-  .timer-ring--paused .timer-ring__progress {
-    filter: grayscale(0.7);
+  .timer-ring--paused .timer-ring__track {
+    stroke-dasharray: 3 5;
   }
 
   .timer-ring--paused .timer-ring__readout {
     color: var(--text-secondary);
+    animation: none;
   }
 
   /* ─── Letter Hero — serif drop-cap ───────────────────────────── */
@@ -155,10 +178,6 @@
     display: grid;
     place-items: center;
     isolation: isolate;
-  }
-
-  .letter-hero::before {
-    content: none;
   }
 
   .letter-hero__glyph {
@@ -182,6 +201,23 @@
 
   .letter-hero__glyph--landing {
     animation: letter-land var(--duration-hero) var(--ease-spring) both;
+  }
+
+  /* The buzzer lands on the letter itself: one settle, then still. */
+  .playmat[data-phase="done"] .letter-hero__glyph {
+    animation: letter-settle var(--duration-hero) var(--ease-spring) both;
+  }
+
+  @keyframes letter-settle {
+    0% {
+      transform: scale(1);
+    }
+    35% {
+      transform: scale(1.06);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
 
   @keyframes letter-land {
@@ -255,8 +291,8 @@
     grid-template-columns: 1.2rem minmax(0, 1fr) auto;
     align-items: center;
     gap: var(--space-1);
-    min-height: 2.5rem;
-    padding: var(--space-1) var(--space-1);
+    min-height: 2.75rem;
+    padding: var(--space-1) var(--space-2) var(--space-1) var(--space-1-5);
     border: 1px solid var(--rule);
     border-radius: var(--radius-sm);
     background: transparent;
@@ -345,8 +381,11 @@
     color: var(--accent-primary);
   }
 
+  /* Cards are dealt, not dropped: each lands 35ms after the one before it
+     (--i is the slot index), so twelve arrivals read as a deal, not a flicker. */
   .category-checklist__label--landing {
     animation: category-land var(--duration-hero) var(--ease-spring) both;
+    animation-delay: calc(var(--i, 0) * 35ms);
   }
 
   @keyframes category-land {
@@ -416,7 +455,7 @@
     .category-checklist__chip {
       display: block;
       align-content: center;
-      min-height: 2.5rem;
+      min-height: 2.75rem;
       padding-inline: var(--space-2);
       font-size: var(--text-lg);
     }
@@ -490,13 +529,24 @@
     }
   }
 
+  /* Desktop: the hero earns the column. The playmat column is ~30rem wide at
+     64rem+, so a 26rem ring fills it instead of floating small inside it. */
+  @media (min-width: 64rem) {
+    .playmat__hero {
+      width: min(100%, 26rem);
+    }
+
+    .category-checklist__chip {
+      min-height: 3rem;
+      padding-inline: var(--space-2);
+      font-size: var(--text-lg);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .timer-ring--urgent .timer-ring__progress {
-      animation: none;
-    }
-    .letter-hero__glyph--landing {
-      animation: none;
-    }
+    .timer-ring--critical .timer-ring__readout,
+    .playmat[data-phase="done"] .letter-hero__glyph,
+    .letter-hero__glyph--landing,
     .category-checklist__label--landing {
       animation: none;
     }

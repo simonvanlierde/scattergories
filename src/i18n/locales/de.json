@@ -21,7 +21,9 @@
     "remove": "Entfernen",
     "addTooltip": "Diese Kategorie zu deiner Sammlung hinzufügen",
     "closeTooltip": "Dieses Fenster schließen",
-    "howToPlay": "Spielanleitung"
+    "howToPlay": "Spielanleitung",
+    "skipConfirm": "Erneut tippen, um diese Runde zu überspringen",
+    "removeAllConfirm": "Erneut tippen zum Entfernen"
   },
   "timer": {
     "ready": "Bereit",

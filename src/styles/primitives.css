@@ -41,7 +41,7 @@
 
   /* Sizes */
   .ds-button--sm {
-    min-height: 2.25rem;
+    min-height: 2.5rem;
     padding-inline: var(--space-3);
     font-size: var(--text-sm);
   }
@@ -115,6 +115,13 @@
   .ds-icon-button:disabled {
     cursor: not-allowed;
     opacity: 0.5;
+  }
+
+  /* Armed for a second confirming tap: the button itself says "are you sure". */
+  .ds-icon-button--armed {
+    color: var(--danger);
+    border-color: var(--danger);
+    background: var(--danger-soft);
   }
 
   /* ─────────────────────────────────────────────────────────────
@@ -236,19 +243,46 @@
     border-radius: var(--radius-md);
     box-shadow: var(--elevation-4);
     overflow: hidden;
+    /* Enter with the spring, leave fast. Transitions (not keyframes) so the
+       close also animates: `allow-discrete` keeps the dialog and its backdrop
+       rendered until the exit finishes, instead of vanishing on close(). */
+    opacity: 0;
+    transform: scale(0.96);
+    transition:
+      opacity var(--duration-exit-fast) var(--ease-in),
+      transform var(--duration-exit-fast) var(--ease-in),
+      overlay var(--duration-exit-fast) allow-discrete,
+      display var(--duration-exit-fast) allow-discrete;
   }
 
   .ds-sheet::backdrop {
     background: var(--scrim-default);
+    opacity: 0;
+    transition:
+      opacity var(--duration-exit-fast) var(--ease-in),
+      overlay var(--duration-exit-fast) allow-discrete,
+      display var(--duration-exit-fast) allow-discrete;
   }
 
   .ds-sheet[open] {
-    animation: ds-sheet-in-center var(--duration-slow) var(--ease-spring) both;
+    opacity: 1;
+    transform: scale(1);
+    transition-duration: var(--duration-slow);
+    transition-timing-function: var(--ease-spring);
+  }
+
+  .ds-sheet[open]::backdrop {
+    opacity: 1;
+    transition-duration: var(--duration-normal);
   }
 
   @starting-style {
     .ds-sheet[open] {
       transform: scale(0.96);
+      opacity: 0;
+    }
+
+    .ds-sheet[open]::backdrop {
       opacity: 0;
     }
   }
@@ -279,8 +313,6 @@
 
   .ds-sheet__header .ds-icon-button {
     flex: none;
-    min-width: 2.5rem;
-    min-height: 2.5rem;
   }
 
   .ds-sheet__body {
@@ -289,17 +321,6 @@
     max-height: calc(90dvh - 4.5rem);
     display: grid;
     gap: var(--space-5);
-  }
-
-  @keyframes ds-sheet-in-center {
-    from {
-      transform: scale(0.96);
-      opacity: 0;
-    }
-    to {
-      transform: scale(1);
-      opacity: 1;
-    }
   }
 
   /* Language menu — direct one-tap list inside the popover. */
@@ -415,7 +436,8 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ds-sheet[open],
+    .ds-sheet,
+    .ds-sheet::backdrop,
     .ds-button,
     .ds-icon-button {
       animation: none;

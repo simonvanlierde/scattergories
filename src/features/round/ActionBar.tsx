@@ -1,10 +1,11 @@
-import { Pause, Play, RefreshCw, SkipForward } from "lucide-react";
+import { Dices, Pause, Play, SkipForward } from "lucide-react";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import type { Phase } from "@/domain/game/roundReducer";
 import { Button } from "@/shared/ui/Button";
 import { Icon } from "@/shared/ui/Icon";
 import { IconButton } from "@/shared/ui/IconButton";
+import { useConfirmTap } from "@/shared/ui/useConfirmTap";
 
 interface ActionBarProps {
   phase: Phase;
@@ -58,6 +59,10 @@ export function ActionBar({
   const showNextRound = phase === "running" || isPausedRound;
 
   const { label: primaryLabel, icon: primaryIcon } = resolvePrimary(phase, isPaused, t);
+  // Skipping mid-play wipes the table's letter, so the live clock asks for a
+  // second tap. A paused round skips in one.
+  const mustConfirmSkip = phase === "running" && !isPaused;
+  const skip = useConfirmTap(onNextRound);
 
   return (
     <div className="action-bar">
@@ -77,15 +82,16 @@ export function ActionBar({
       <ControlGroup label={roundControlsLabel}>
         <IconButton
           label={t("buttons.newLetter")}
-          icon={<Icon icon={RefreshCw} size={20} />}
+          icon={<Icon icon={Dices} size={20} />}
           disabled={!showNewLetter}
           onClick={onNewLetter}
         />
         <IconButton
-          label={t("buttons.nextRound")}
+          label={skip.armed ? t("buttons.skipConfirm") : t("buttons.nextRound")}
           icon={<Icon icon={SkipForward} size={20} />}
+          className={skip.armed ? "ds-icon-button--armed" : undefined}
           disabled={!showNextRound}
-          onClick={onNextRound}
+          onClick={mustConfirmSkip ? skip.onClick : onNextRound}
         />
       </ControlGroup>
     </div>

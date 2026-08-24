@@ -1,13 +1,4 @@
-import {
-  ChevronDown,
-  Pin,
-  PinOff,
-  Plus,
-  RefreshCw,
-  SlidersHorizontal,
-  Tags,
-  Trash2,
-} from "lucide-react";
+import { ChevronDown, Pin, Plus, RefreshCw, SlidersHorizontal, Tags, Trash2 } from "lucide-react";
 import type { RefObject } from "react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -19,6 +10,7 @@ import { DebouncedNumberField } from "@/shared/ui/DebouncedNumberField";
 import { Icon } from "@/shared/ui/Icon";
 import { IconButton } from "@/shared/ui/IconButton";
 import { Sheet } from "@/shared/ui/Sheet";
+import { useConfirmTap } from "@/shared/ui/useConfirmTap";
 import { CategoryChecklist } from "./CategoryChecklist";
 
 interface CategoriesState {
@@ -200,7 +192,7 @@ function DeckListItem({
               ? t("categories.unpinOne", { name: row.label })
               : t("categories.pinOne", { name: row.label })
           }
-          icon={<Icon icon={isPinned ? Pin : PinOff} size={16} />}
+          icon={<Icon icon={Pin} size={16} />}
           aria-pressed={isPinned}
           onClick={() => actions.onTogglePin(row.name)}
         />
@@ -232,26 +224,35 @@ function DeckBulkActions({
   return (
     <div className="deck-list__bulk">
       {hasCustom ? (
-        <Button
-          variant="ghost"
-          size="sm"
-          className="deck-bulk-action"
-          onClick={actions.onRemoveAllCustom}
-        >
-          {t("categories.removeAllCustom")}
-        </Button>
+        <BulkRemoveButton
+          label={t("categories.removeAllCustom")}
+          onRemove={actions.onRemoveAllCustom}
+        />
       ) : null}
       {hasBuiltins ? (
-        <Button
-          variant="ghost"
-          size="sm"
-          className="deck-bulk-action"
-          onClick={actions.onRemoveAllBuiltins}
-        >
-          {t("categories.removeAllBuiltins")}
-        </Button>
+        <BulkRemoveButton
+          label={t("categories.removeAllBuiltins")}
+          onRemove={actions.onRemoveAllBuiltins}
+        />
       ) : null}
     </div>
+  );
+}
+
+/** Bulk removal is two taps: the first arms the button, the second (within 3s) fires. */
+function BulkRemoveButton({ label, onRemove }: { label: string; onRemove: () => void }) {
+  const { t } = useTranslation();
+  const confirm = useConfirmTap(onRemove);
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      className={cx("deck-bulk-action", confirm.armed && "deck-bulk-action--armed")}
+      aria-live="polite"
+      onClick={confirm.onClick}
+    >
+      {confirm.armed ? t("buttons.removeAllConfirm") : label}
+    </Button>
   );
 }
 
@@ -404,7 +405,7 @@ function CategoriesCardHeader({
           />
           <IconButton
             label={allPinned ? t("categories.unpinAll") : t("categories.pinAll")}
-            icon={<Icon icon={allPinned ? Pin : PinOff} size={18} />}
+            icon={<Icon icon={Pin} size={18} />}
             aria-pressed={allPinned}
             onClick={() => actions.onTogglePinAll(drawnCategories)}
           />
