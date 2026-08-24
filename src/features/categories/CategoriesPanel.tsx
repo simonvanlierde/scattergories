@@ -190,7 +190,9 @@ function DeckListItem({
   const { t } = useTranslation();
   return (
     <li className={cx("deck-list__item", row.isCustom && "deck-list__item--custom")}>
-      <span className="deck-list__label">{row.label}</span>
+      <span className="deck-list__label" title={row.label}>
+        {row.label}
+      </span>
       <span className="deck-list__actions">
         <IconButton
           label={

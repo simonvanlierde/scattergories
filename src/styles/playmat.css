@@ -325,14 +325,14 @@
 
   .category-checklist__pin {
     color: var(--text-muted);
-    opacity: 0;
+    opacity: 0.35;
     transition:
       opacity var(--duration-fast) var(--ease-out),
       color var(--duration-fast) var(--ease-out);
   }
 
   .category-checklist__chip:where(:not(:disabled)):hover .category-checklist__pin {
-    opacity: 0.55;
+    opacity: 0.7;
   }
 
   .category-checklist__item--pinned .category-checklist__chip {
