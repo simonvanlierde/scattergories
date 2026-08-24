@@ -9,6 +9,10 @@ const ALARM_DURATION_MS = 3500;
 const ONE_SECOND_MS = 1000;
 const LAST_TICK_THRESHOLD = 10;
 
+function releaseWakeLock(lock: WakeLockSentinel): void {
+  lock.release().catch(() => undefined);
+}
+
 interface UseRoundOptions {
   gameSeconds: number;
   bufferSeconds: number;
@@ -30,12 +34,15 @@ function drawNextLetterFromBag(
 ) {
   const { remaining: currentRemaining, drawn: currentDrawn } = bag;
   if (!avoidRepeats) {
-    const letters = getLocaleLetters(locale);
-    let chosen = pickRandom(letters);
-    // Still skip an immediate back-to-back repeat — it reads as "the spin did nothing".
-    while (letters.length > 1 && chosen === previousLetter) {
-      chosen = pickRandom(letters);
-    }
+    // A fresh weighted shuffle per draw: repeats are allowed, but the locale's
+    // letter frequencies still apply, exactly as in bag mode. Taking the first
+    // entry that isn't the previous letter also skips a back-to-back repeat —
+    // it reads as "the spin did nothing".
+    const order = weightedLetterBag(locale);
+    const chosen =
+      order.find((letter) => letter !== previousLetter) ??
+      order[0] ??
+      pickRandom(getLocaleLetters(locale));
     return { chosen, remaining: currentRemaining, drawn: currentDrawn };
   }
 
@@ -84,6 +91,11 @@ export function useRound({
   // The last letter that actually landed — used for repeat-avoidance, unlike the
   // roller's live letter which cycles through random flip letters mid-spin.
   const lastLandedLetterRef = useRef<string | null>(null);
+  // Latest phase / remaining seconds, read inside effects that must not re-run on them.
+  const phaseRef = useRef(state.phase);
+  phaseRef.current = state.phase;
+  const secondsLeftRef = useRef(state.secondsLeft);
+  secondsLeftRef.current = state.secondsLeft;
   // Kept memoized: it's read in useEffect dependency arrays below, where a
   // render-body function would trip biome's useExhaustiveDependencies lint.
   const clearAlarmTimeout = useCallback(() => {
@@ -96,8 +108,12 @@ export function useRound({
   // Rebuild the letter bag for the current alphabet whenever the locale changes
   // (and on mount), so a switch doesn't keep drawing the old locale's letters.
   useEffect(() => {
-    resetRoller();
-    lastLandedLetterRef.current = null;
+    // Mid-round the drawn letter is the round — only the bag is refreshed, so a
+    // language switch during play doesn't blank the letter everyone is playing on.
+    if (phaseRef.current !== "buffer" && phaseRef.current !== "running") {
+      resetRoller();
+      lastLandedLetterRef.current = null;
+    }
     dispatch({
       type: "SYNC_BAGS",
       remainingLetters: weightedLetterBag(locale),
@@ -120,8 +136,11 @@ export function useRound({
     const runTick = () => {
       const now = Date.now();
       // Fire one TICK per whole second elapsed, catching up after any throttle.
-      const ticks = Math.max(1, Math.floor((now - targetAt) / ONE_SECOND_MS) + 1);
-      targetAt += ticks * ONE_SECOND_MS;
+      const elapsedTicks = Math.max(1, Math.floor((now - targetAt) / ONE_SECOND_MS) + 1);
+      targetAt += elapsedTicks * ONE_SECOND_MS;
+      // Cap the catch-up burst: draining the clock needs at most secondsLeft + 1
+      // ticks, however many hours a suspended tab actually slept.
+      const ticks = Math.min(elapsedTicks, secondsLeftRef.current + 1);
       for (let i = 0; i < ticks; i += 1) {
         dispatch({ type: "TICK" });
       }
@@ -180,6 +199,38 @@ export function useRound({
 
   useEffect(() => () => clearAlarmTimeout(), [clearAlarmTimeout]);
 
+  // Hold a screen wake lock while the clock runs. Best-effort: unsupported
+  // browsers, denied requests, and releases on a gone document all stay silent.
+  useEffect(() => {
+    const isCountingDown = state.phase === "buffer" || state.phase === "running";
+    if (!isCountingDown || state.isPaused || typeof navigator?.wakeLock?.request !== "function") {
+      return;
+    }
+
+    let sentinel: WakeLockSentinel | null = null;
+    let isReleased = false;
+
+    async function acquireWakeLock() {
+      try {
+        const lock = await navigator.wakeLock.request("screen");
+        sentinel = lock;
+        if (isReleased) {
+          releaseWakeLock(lock);
+        }
+      } catch {
+        // Denied, unsupported, or the tab lost focus mid-request — nothing to do.
+      }
+    }
+    acquireWakeLock();
+
+    return () => {
+      isReleased = true;
+      if (sentinel) {
+        releaseWakeLock(sentinel);
+      }
+    };
+  }, [state.isPaused, state.phase]);
+
   // Apply live duration / get-ready changes to an in-flight round.
   useEffect(() => {
     dispatch({ type: "SET_GAME_SECONDS", gameSeconds });
@@ -214,9 +265,10 @@ export function useRound({
     });
 
     roller.spinTo(chosen, () => {
+      // State first: a thrown or slow sound must never cost the round its start.
       lastLandedLetterRef.current = chosen;
-      playLetterLand();
       dispatch({ type: "LETTER_LANDED" });
+      playLetterLand();
     });
   };
 

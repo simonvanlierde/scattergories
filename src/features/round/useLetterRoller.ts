@@ -1,7 +1,8 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { pickRandom } from "@/domain/game/utils";
 import { getLocaleLetters } from "@/i18n/localeRegistry";
-import { prefersReducedMotion, runRoll } from "./rollAnimation";
+import { prefersReducedMotion } from "@/shared/lib/prefersReducedMotion";
+import { runRoll } from "@/shared/lib/rollAnimation";
 
 const INITIAL_LETTER = "?";
 
@@ -50,6 +51,15 @@ export function useLetterRoller(locale: string) {
     setVisible(false);
     setLanding(false);
   }, []);
+
+  // Bumping the spin id on unmount makes any in-flight roll frame bail out, so
+  // onLanded never fires against a gone component.
+  useEffect(
+    () => () => {
+      spinIdRef.current += 1;
+    },
+    [],
+  );
 
   return { letter, visible, landing, spinTo, reset };
 }

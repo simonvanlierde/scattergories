@@ -27,7 +27,6 @@ type RoundAction =
   | { type: "SET_BUFFER_SECONDS"; bufferSeconds: number }
   | { type: "TICK" }
   | { type: "PAUSE_TOGGLE" }
-  | { type: "RESET" }
   | { type: "ALARM_OFF" }
   | { type: "SYNC_BAGS"; remainingLetters: string[]; drawnLetters: string[] };
 
@@ -127,22 +126,19 @@ function roundReducer(state: RoundState, action: RoundAction): RoundState {
       };
     case "LETTER_LANDED":
       return state.phase === "spinning" ? enterCountdown(state) : state;
-    case "SET_GAME_SECONDS": {
-      const next = { ...state, gameSeconds: action.gameSeconds };
-      if (state.phase === "running") {
-        // Shrink an in-flight clock; never extend.
-        next.secondsLeft = Math.min(state.secondsLeft, action.gameSeconds);
-      }
-      return next;
-    }
+    case "SET_GAME_SECONDS":
+      // A live countdown keeps its own clock — a settings edit only takes effect
+      // from the next round, so the running/buffer clock is never rewritten.
+      return { ...state, gameSeconds: action.gameSeconds };
     case "SET_BUFFER_SECONDS": {
       const next = { ...state, bufferSeconds: action.bufferSeconds };
       if (state.phase === "buffer") {
         // Shrink an in-flight get-ready countdown; never extend.
         next.secondsLeft = Math.min(state.secondsLeft, action.bufferSeconds);
-        // A buffer clamped to nothing skips straight to running, like enterCountdown.
+        // A buffer clamped to nothing skips straight to running, like enterCountdown,
+        // but a paused round stays paused — the edit is not a resume.
         if (next.secondsLeft <= 0) {
-          return enterCountdown(next);
+          return { ...enterCountdown(next), isPaused: state.isPaused };
         }
       }
       return next;
@@ -151,15 +147,6 @@ function roundReducer(state: RoundState, action: RoundAction): RoundState {
       return handleTick(state);
     case "PAUSE_TOGGLE":
       return handlePauseToggle(state);
-    case "RESET":
-      return {
-        ...state,
-        phase: "idle",
-        secondsLeft: 0,
-        isPaused: false,
-        alarmOn: false,
-        statusKey: null,
-      };
     case "ALARM_OFF":
       return { ...state, alarmOn: false };
     case "SYNC_BAGS":
