@@ -45,3 +45,6 @@ htmlcov/
 
 # Misc
 .cspellcache
+
+# pnpm
+.pnpm-store
