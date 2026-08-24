@@ -30,6 +30,15 @@ describe("useAppControls", () => {
     expect(result.current.hasChunkError).toBe(true);
   });
 
+  it("shows the reload banner when a new service worker is installed", () => {
+    const { result } = renderHook(() => useAppControls({ i18n: makeI18n() }));
+
+    act(() => {
+      window.dispatchEvent(new Event("app:updateavailable"));
+    });
+    expect(result.current.hasChunkError).toBe(true);
+  });
+
   it("resolves and persists the language on a successful switch", async () => {
     vi.mocked(ensureLanguageLoaded).mockResolvedValue("fr");
     const i18n = makeI18n();

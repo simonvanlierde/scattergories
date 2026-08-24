@@ -9,8 +9,16 @@ function useChunkErrorListener(setHasChunkError: (value: boolean) => void): void
       setHasChunkError(true);
     }
 
+    function onUpdateAvailable() {
+      setHasChunkError(true);
+    }
+
     window.addEventListener("vite:preloadError", onPreloadError);
-    return () => window.removeEventListener("vite:preloadError", onPreloadError);
+    window.addEventListener("app:updateavailable", onUpdateAvailable);
+    return () => {
+      window.removeEventListener("vite:preloadError", onPreloadError);
+      window.removeEventListener("app:updateavailable", onUpdateAvailable);
+    };
   }, [setHasChunkError]);
 }
 

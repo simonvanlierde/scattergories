@@ -2,6 +2,8 @@
 // vite-plugin-pwa if precise precaching/versioned offline manifests are needed.
 const CACHE = "scattergories-v1";
 
+self.addEventListener("install", () => self.skipWaiting());
+
 self.addEventListener("activate", (event) => {
   event.waitUntil(dropOldCaches());
   self.clients.claim();
@@ -13,8 +15,10 @@ async function dropOldCaches() {
 }
 
 async function store(request, response) {
-  const cache = await caches.open(CACHE);
-  await cache.put(request, response.clone());
+  if (response.ok) {
+    const cache = await caches.open(CACHE);
+    await cache.put(request, response.clone());
+  }
   return response;
 }
 
