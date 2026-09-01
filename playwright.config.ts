@@ -1,3 +1,4 @@
+// biome-ignore lint/correctness/noNodejsModules: Playwright config runs in Node, not the browser
 import process from "node:process";
 import { defineConfig, devices } from "@playwright/test";
 

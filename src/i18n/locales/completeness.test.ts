@@ -42,13 +42,14 @@ describe("locale asset completeness", () => {
 
   // Guards against key drift: every locale must ship exactly the keys en does —
   // missing keys fall back to English (untranslated UI), stale keys are dead weight.
-  it.each(
-    SUPPORTED_LOCALES.filter((locale) => locale !== FALLBACK_LOCALE),
-  )("%s translation keys match the %s template", async (locale) => {
-    const en = await loadLocaleNamespaces(FALLBACK_LOCALE);
-    const { translation } = await loadLocaleNamespaces(locale);
-    const expected = flattenKeys(en.translation).sort();
-    const actual = flattenKeys(translation).sort();
-    expect(actual).toEqual(expected);
-  });
+  it.each(SUPPORTED_LOCALES.filter((locale) => locale !== FALLBACK_LOCALE))(
+    "%s translation keys match the %s template",
+    async (locale) => {
+      const en = await loadLocaleNamespaces(FALLBACK_LOCALE);
+      const { translation } = await loadLocaleNamespaces(locale);
+      const expected = flattenKeys(en.translation).sort();
+      const actual = flattenKeys(translation).sort();
+      expect(actual).toEqual(expected);
+    },
+  );
 });

@@ -1,5 +1,5 @@
 // spell-checker: ignore Sortear, letra, unmutes
-import { screen, within } from "@testing-library/react";
+import { cleanup, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it } from "vitest";
 import { i18n } from "@/i18n/config";
 import { BUFFER_SECONDS, DEFAULT_TIMER_SECONDS } from "./test/gameConstants";
@@ -8,8 +8,11 @@ import { openSettings, renderApp, resetAppTestState } from "./test/renderApp";
 beforeEach(resetAppTestState);
 
 // i18next is module-global, so a language switch here would otherwise leak into
-// every test that runs after it.
+// every test that runs after it. Unmount first: this hook runs before Testing
+// Library's auto-cleanup, and resetting the language with the tree still mounted
+// re-renders every useTranslation consumer outside act().
 afterEach(async () => {
+  cleanup();
   if (i18n.resolvedLanguage !== "en") {
     await i18n.changeLanguage("en");
   }
