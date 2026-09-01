@@ -2,7 +2,6 @@ import { expect } from "@playwright/test";
 import { TITLE } from "../src/test/constants";
 import { test } from "./fixtures";
 
-const MOBILE_VIEWPORT_MAX_WIDTH = 832;
 const ROUND_CLOCK_PATTERN = /\d+:\d{2}/;
 const SELECTED_CATEGORIES_PATTERN = /Selected categories/i;
 const SOURCE_SUMMARY_PATTERN = /Source:/i;
@@ -24,34 +23,27 @@ test("@smoke keeps prompts in the categories panel and uses the expected prompt 
   app,
   page,
 }) => {
-  const viewportWidth = await page.evaluate(() => window.innerWidth);
   const playmat = page.getByRole("region", { name: "Game board" });
   const categoriesPanel = page.getByRole("region", { name: "Categories" });
+  const selectedCategories = categoriesPanel.getByRole("list", {
+    name: SELECTED_CATEGORIES_PATTERN,
+  });
 
   await expect(playmat.getByRole("list", { name: SELECTED_CATEGORIES_PATTERN })).toHaveCount(0);
 
-  if (viewportWidth <= MOBILE_VIEWPORT_MAX_WIDTH) {
-    await expect(app.promptToggle).toHaveAttribute("aria-expanded", "false");
-    await expect(
-      categoriesPanel.getByRole("list", { name: SELECTED_CATEGORIES_PATTERN }),
-    ).toHaveCount(0);
-    await app.promptToggle.click();
-    await expect(app.promptToggle).toHaveAttribute("aria-expanded", "true");
-    await expect(
-      categoriesPanel.getByRole("list", { name: SELECTED_CATEGORIES_PATTERN }),
-    ).toBeVisible();
-  } else {
-    await expect(app.promptToggle).toHaveAttribute("aria-expanded", "true");
-    await expect(
-      categoriesPanel.getByRole("list", { name: SELECTED_CATEGORIES_PATTERN }),
-    ).toBeVisible();
-  }
+  // The deck is open by default on every layout; only the layout itself is compact.
+  await expect(app.promptToggle).toHaveAttribute("aria-expanded", "true");
+  await expect(selectedCategories).toBeVisible();
 
   await expect(categoriesPanel.getByRole("button", { name: "Redraw" })).toBeVisible();
   await expect(categoriesPanel.getByRole("button", { name: "Customize deck" })).toBeVisible();
   await expect(categoriesPanel.getByText(SOURCE_SUMMARY_PATTERN)).toHaveCount(0);
   await expect(categoriesPanel.getByText(DRAW_SUMMARY_PATTERN)).toHaveCount(0);
   await expect(categoriesPanel.getByText(READY_SUMMARY_PATTERN)).toHaveCount(0);
+
+  await app.promptToggle.click();
+  await expect(app.promptToggle).toHaveAttribute("aria-expanded", "false");
+  await expect(selectedCategories).toHaveCount(0);
 });
 
 test("@smoke starts a round and reaches a stable running state", async ({ app }) => {
