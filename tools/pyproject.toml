@@ -47,6 +47,7 @@
       "ANN204", # missing-return-type-special-method
       "D105",   # undocumented-magic-method
       "D107",   # undocumented-public-init
+      "CPY001", # We don't use file-level copyright notices
     ]
     select = ['ALL']
 
