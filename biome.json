@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.5.3/schema.json",
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
     "includes": ["**"]
   },
@@ -23,28 +23,21 @@
     "rules": {
       "preset": "recommended",
       "a11y": "on",
-      "complexity": "on",
+      "complexity": {
+        "preset": "all",
+        "noExcessiveLinesPerFunction": {
+          "level": "on",
+          "options": {
+            "maxLines": 60
+          }
+        }
+      },
       "correctness": "on",
       "security": "on",
       "suspicious": "on"
     }
   },
   "overrides": [
-    {
-      "includes": ["**"],
-      "linter": {
-        "rules": {
-          "complexity": {
-            "noExcessiveLinesPerFunction": {
-              "level": "on",
-              "options": {
-                "maxLines": 60
-              }
-            }
-          }
-        }
-      }
-    },
     {
       "includes": ["src/domain/**"],
       "linter": {
@@ -101,22 +94,6 @@
                 ]
               }
             }
-          }
-        }
-      }
-    },
-    {
-      "includes": ["public/sw.js"],
-      "javascript": {
-        "globals": ["self", "caches", "clients"]
-      }
-    },
-    {
-      "includes": ["**/*.config.ts"],
-      "linter": {
-        "rules": {
-          "correctness": {
-            "noNodejsModules": "off"
           }
         }
       }
