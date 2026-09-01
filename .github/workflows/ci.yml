@@ -21,9 +21,17 @@ jobs:
     name: App
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    outputs:
+      playwright-version: ${{ steps.playwright-version.outputs.version }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-app
+
+      # The E2E container tag must match the installed Playwright exactly, so read
+      # it from the lockfile-resolved package instead of hand-syncing the two.
+      - id: playwright-version
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+
       - run: pnpm audit --audit-level=high --prod
       - run: pnpm run typecheck
       - run: pnpm run spellcheck
@@ -44,9 +52,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     needs: app
-    # Browsers + system deps are baked into the image; keep the tag in sync with @playwright/test.
+    # Browsers + system deps are baked into the image; the tag follows the version
+    # the app job resolved, so a Playwright bump needs no workflow edit.
     container:
-      image: mcr.microsoft.com/playwright:v1.62.1-noble
+      image: mcr.microsoft.com/playwright:v${{ needs.app.outputs.playwright-version }}-noble
     # Every Chromium test on each push/PR; the full browser matrix monthly or on manual dispatch.
     env:
       FULL: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' }}
