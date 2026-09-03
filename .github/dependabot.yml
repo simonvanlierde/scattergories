@@ -13,6 +13,12 @@ updates:
         dependency-type: production
       dev-dependencies:
         dependency-type: development
+      # Advisories arrive outside the weekly window and ignore the groups above,
+      # so without this each one opens its own pull request and its own CI run.
+      npm-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
     cooldown:
       default-days: 3
 
@@ -43,6 +49,12 @@ updates:
       - python
     groups:
       python-dependencies:
+        patterns:
+          - "*"
+      # Advisories arrive outside the weekly window and ignore the groups above,
+      # so without this each one opens its own pull request and its own CI run.
+      uv-security:
+        applies-to: security-updates
         patterns:
           - "*"
     cooldown:
