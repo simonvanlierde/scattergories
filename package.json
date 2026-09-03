@@ -83,7 +83,7 @@
     "@vitejs/plugin-react": "^6.1.1",
     "@vitest/coverage-v8": "^4.1.11",
     "babel-plugin-react-compiler": "^1.0.0",
-    "cspell": "^10.1.1",
+    "cspell": "^10.2.0",
     "jsdom": "^30.0.1",
     "lefthook": "^2.1.12",
     "typescript": "~7.0.2",
