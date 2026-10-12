@@ -16,6 +16,12 @@ from scattergories_tools.weights.analyze import (
     analyze_locale,
     analyze_sample_dataset,
 )
+from scattergories_tools.weights.provenance import (
+    check_metadata,
+    metadata_path_for,
+    stamp_checksum,
+    write_metadata,
+)
 from scattergories_tools.weights.render import (
     render_frequencies_tsv,
     write_locale_app_file,
@@ -114,5 +120,29 @@ def locales(
             raise typer.BadParameter(msg)
         output_path = write_locale_app_file(context.paths.generated_weights_path, analyses)
         typer.echo(f"Wrote {output_path}")
+        typer.echo(f"Wrote {write_metadata(output_path, analyses)}")
     else:
         typer.echo("Preview only. Re-run with --write-app-file to update the app artifact.")
+
+
+@app.command("verify")
+def verify() -> None:
+    """Check the shipped table against its metadata and checksum. Needs no corpus access."""
+    table_path = create_context().paths.generated_weights_path
+    problems = check_metadata(table_path)
+    for problem in problems:
+        typer.echo(problem, err=True)
+    if problems:
+        typer.echo(
+            "Regenerate the table, or run `sg-tools weights stamp` after a deliberate edit.",
+            err=True,
+        )
+        raise typer.Exit(1)
+    typer.echo(f"OK: {table_path.name} matches {metadata_path_for(table_path).name}")
+
+
+@app.command("stamp")
+def stamp() -> None:
+    """Refresh the metadata checksum after formatting or a deliberate edit of the table."""
+    table_path = create_context().paths.generated_weights_path
+    typer.echo(f"sha256 {stamp_checksum(table_path)}")
