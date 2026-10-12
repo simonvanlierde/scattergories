@@ -29,7 +29,9 @@ async function networkFirst(request) {
   try {
     return await store(request, await fetch(request));
   } catch {
-    return (await caches.match(request)) ?? (await caches.match("/index.html"));
+    // Any URL of this single-page app renders the same shell. It is cached under
+    // "/" (the start URL): the host redirects /index.html there, so that key never fills.
+    return (await caches.match(request, { ignoreSearch: true })) ?? (await caches.match("/"));
   }
 }
 
