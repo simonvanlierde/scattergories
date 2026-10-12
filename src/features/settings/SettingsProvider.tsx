@@ -7,7 +7,7 @@ import {
   readStoredSettings,
   SETTINGS_STORAGE_KEY,
   type Settings,
-  sanitizeCustomCategories,
+  sanitizeStrings,
   type Theme,
 } from "./schema";
 
@@ -85,7 +85,7 @@ function settingsReducer(state: Settings, action: SettingsAction): Settings {
       }
       return {
         ...state,
-        customCategories: sanitizeCustomCategories([...state.customCategories, trimmed]),
+        customCategories: sanitizeStrings([...state.customCategories, trimmed]),
         // Custom categories are pinned by default.
         pinned: state.pinned.includes(trimmed) ? state.pinned : [...state.pinned, trimmed],
       };
@@ -211,8 +211,4 @@ function useSettings() {
   return value;
 }
 
-function resetSettingsToStorage(): Settings {
-  return readStoredSettings();
-}
-
-export { resetSettingsToStorage, SettingsProvider, useSettings };
+export { SettingsProvider, useSettings };
