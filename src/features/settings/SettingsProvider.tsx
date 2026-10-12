@@ -7,7 +7,7 @@ import {
   readStoredSettings,
   SETTINGS_STORAGE_KEY,
   type Settings,
-  sanitizeCustomCategories,
+  sanitizeStrings,
   type Theme,
 } from "./schema";
 
@@ -76,16 +76,16 @@ function settingsReducer(state: Settings, action: SettingsAction): Settings {
       if (!trimmed) {
         return state;
       }
-      if (state.customCategories.some((entry) => entry.toLowerCase() === trimmed.toLowerCase())) {
-        return state;
-      }
-      // A custom name can't shadow a built-in category key.
-      if (categories.includes(trimmed)) {
+      // A custom name can't repeat another custom or shadow a built-in key, in any case.
+      const lower = trimmed.toLowerCase();
+      if (
+        [...state.customCategories, ...categories].some((entry) => entry.toLowerCase() === lower)
+      ) {
         return state;
       }
       return {
         ...state,
-        customCategories: sanitizeCustomCategories([...state.customCategories, trimmed]),
+        customCategories: sanitizeStrings([...state.customCategories, trimmed]),
         // Custom categories are pinned by default.
         pinned: state.pinned.includes(trimmed) ? state.pinned : [...state.pinned, trimmed],
       };
@@ -211,8 +211,4 @@ function useSettings() {
   return value;
 }
 
-function resetSettingsToStorage(): Settings {
-  return readStoredSettings();
-}
-
-export { resetSettingsToStorage, SettingsProvider, useSettings };
+export { SettingsProvider, useSettings };

@@ -28,11 +28,9 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
       return;
     }
 
-    // An open <dialog> (How to play, Customize deck) traps focus but not keydown
-    // bubbling, and a Popover panel (role="dialog") traps neither — don't let
-    // round shortcuts act on the game underneath either one.
-    // biome-ignore lint/security/noSecrets: CSS selector, not a secret — high-entropy false positive.
-    if (document.querySelector('dialog[open], [role="dialog"]')) {
+    // An open <dialog> (How to play, Customize deck, settings) traps focus but not
+    // keydown bubbling, so don't let round shortcuts act on the game underneath.
+    if (document.querySelector("dialog[open]")) {
       return;
     }
 

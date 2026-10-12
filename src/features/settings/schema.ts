@@ -85,9 +85,6 @@ function sanitizeStrings(value: unknown): string[] {
   return Array.from(new Set(sanitized)).slice(0, MAX_STRING_COUNT);
 }
 
-/** Back-compat alias used by SettingsProvider. */
-const sanitizeCustomCategories = sanitizeStrings;
-
 /** Keep only built-in keys that actually exist in the current category set. */
 function sanitizeBuiltins(value: unknown): string[] {
   const known = new Set(categories);
@@ -190,6 +187,6 @@ export {
   parseStoredSettings,
   readStoredSettings,
   SETTINGS_STORAGE_KEY,
-  sanitizeCustomCategories,
   sanitizeSettings,
+  sanitizeStrings,
 };

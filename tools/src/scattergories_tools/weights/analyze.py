@@ -84,9 +84,7 @@ def _fold_initial(letter: str) -> tuple[str, ...]:
     """Return uppercase candidate symbols for one initial character."""
     base = _STROKE_FOLD.get(letter, letter)
     normalized = unicodedata.normalize("NFKD", base)
-    return tuple(
-        char.upper() for char in normalized if unicodedata.category(char) != "Mn"
-    )
+    return tuple(char.upper() for char in normalized if unicodedata.category(char) != "Mn")
 
 
 def normalize_initial(letter: str, alphabet_set: set[str]) -> str | None:

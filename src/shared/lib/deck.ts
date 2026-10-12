@@ -29,10 +29,11 @@ function fillEmptySlots(slots: (string | null)[], pool: string[]): void {
 }
 
 /**
- * Builds a round's drawn deck. All pinned categories are always included, and
- * each one keeps the slot it currently occupies in `previous` so a redraw never
- * makes a pinned category hop to a new position. The remaining slots up to
- * `count` are filled randomly from the unpinned pool.
+ * Builds a round's drawn deck. Pinned categories are seated first, and each one
+ * keeps the slot it currently occupies in `previous` so a redraw never makes a
+ * pinned category hop to a new position. With more pins than `count`, only
+ * `count` of them are drawn. The remaining slots are filled randomly from the
+ * unpinned pool.
  */
 function composeDeck({
   customCategories,

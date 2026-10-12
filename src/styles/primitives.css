@@ -369,34 +369,12 @@
   }
 
   /* ─────────────────────────────────────────────────────────────
-     Settings cluster — top-bar icon controls + popovers
+     Settings cluster — top-bar icon controls
      ───────────────────────────────────────────────────────────── */
   .settings-cluster {
     display: inline-flex;
     align-items: center;
     gap: var(--space-1);
-  }
-
-  .ds-popover {
-    position: relative;
-  }
-
-  .ds-popover__panel {
-    position: absolute;
-    bottom: calc(100% + var(--space-2));
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: var(--z-modal);
-    width: max-content;
-    max-width: min(90vw, 18rem);
-    padding: var(--space-4);
-    background: var(--surface-2);
-    color: var(--text-primary);
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-md);
-    box-shadow: var(--elevation-4);
-    display: grid;
-    gap: var(--space-3);
   }
 
   /* A settings row: label + hint on the left, control on the right. The inline

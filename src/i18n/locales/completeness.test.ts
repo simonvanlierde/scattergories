@@ -24,7 +24,11 @@ describe("locale asset completeness", () => {
   it.each(SUPPORTED_LOCALES)("%s has letters, a native name, and letter weights", (locale) => {
     expect(getLocaleLetters(locale).length).toBeGreaterThan(0);
     expect(getNativeName(locale)).not.toBe(locale);
-    expect(Object.keys(LETTER_WEIGHTS_BY_LOCALE[locale] ?? {}).length).toBeGreaterThan(0);
+    // A letter missing from the table gets weight 1, far above the real frequencies
+    // (under 0.2), so it would lead almost every bag. Weights must cover the alphabet exactly.
+    expect(Object.keys(LETTER_WEIGHTS_BY_LOCALE[locale] ?? {}).sort()).toEqual(
+      getLocaleLetters(locale).sort(),
+    );
   });
 
   it.each(SUPPORTED_LOCALES)("%s has translation and category resources", async (locale) => {

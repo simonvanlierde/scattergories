@@ -29,6 +29,8 @@ Supported commands:
 - `sg-tools doctor`
 - `sg-tools weights sample`
 - `sg-tools weights locales`
+- `sg-tools weights verify`
+- `sg-tools weights stamp`
 - `sg-tools translate categories`
 - `sg-tools translate locales`
 
@@ -112,6 +114,8 @@ See [`tools/justfile`](justfile) for the full recipe list.
 - Ephemeral outputs live in `tools/out/`
 - Runtime caches live in `tools/.cache/`
 - App-consumed generated files live in `src/i18n/__generated__/` and `src/i18n/locales/`
+- The letter-weight table's provenance, checks and licence are described in
+  [`src/i18n/__generated__/README.md`](../src/i18n/__generated__/README.md)
 
 Coverage output is reported in the terminal/CI and is not written into tracked workspace files.
 

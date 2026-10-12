@@ -196,15 +196,11 @@ const PACKS: readonly CategoryPack[] = Object.freeze([
   },
 ]);
 
-function getPackById(id: string): CategoryPack | undefined {
-  return PACKS.find((pack) => pack.id === id);
-}
-
 /* Returns the categories in the pack, filtered to keys present in `allKeys`
  * (the full set of keys resolved from the active locale's categories JSON).
  * For the Classic pack or an unknown pack, returns all keys. */
 function getPackCategories(packId: string, allKeys: readonly string[]): string[] {
-  const pack = getPackById(packId);
+  const pack = PACKS.find((entry) => entry.id === packId);
   if (!pack || pack.keys.length === 0) {
     return [...allKeys];
   }
@@ -213,4 +209,4 @@ function getPackCategories(packId: string, allKeys: readonly string[]): string[]
 }
 
 export type { CategoryPack };
-export { CLASSIC_PACK_ID, getPackById, getPackCategories, PACKS };
+export { CLASSIC_PACK_ID, getPackCategories, PACKS };

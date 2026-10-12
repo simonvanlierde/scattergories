@@ -17,9 +17,7 @@ app.add_typer(translate.app, name="translate")
 def main_callback(
     *,
     verbose: Annotated[bool, typer.Option("--verbose", help="Enable verbose logs.")] = False,
-    debug_hf: Annotated[
-        bool, typer.Option("--debug-hf", help="Show Hugging Face logs.")
-    ] = False,
+    debug_hf: Annotated[bool, typer.Option("--debug-hf", help="Show Hugging Face logs.")] = False,
 ) -> None:
     """Configure logging before subcommands run."""
     configure_logging(verbose=verbose, debug_hf=debug_hf)

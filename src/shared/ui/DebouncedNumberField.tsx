@@ -18,7 +18,7 @@ interface DebouncedNumberFieldProps {
 
 // A numeric field that types freely (local draft), debounces the clamped commit
 // while typing, and flushes a clamped commit immediately on blur or unmount —
-// e.g. the popover closing via an outside click while the field still has focus.
+// e.g. the settings sheet closing while the field still has focus.
 // biome-ignore lint/complexity/noExcessiveLinesPerFunction: self-contained draft/commit/flush-on-unmount logic is one cohesive unit.
 export function DebouncedNumberField({
   id,

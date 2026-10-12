@@ -154,5 +154,3 @@ def test_translate_locale_payload_preserves_lists_scalars_and_placeholders(
         "items": ["Listo", {"nested": "Ir {{value}}"}],
     }
     cache.close()
-
-

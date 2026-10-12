@@ -33,8 +33,10 @@ pnpm verify       # typecheck + spellcheck + lint + test + build + bundle budget
 If you touched the Python tooling in [`tools/`](tools/README.md), run the full gate instead:
 
 ```bash
-pnpm ci           # verify, then the tools' ruff + ty + pytest
+pnpm run ci       # verify, then the tools' ruff, format check, ty, table check and pytest
 ```
+
+Keep the `run`: a bare `pnpm ci` is pnpm's own clean-install command and skips every check.
 
 A [Lefthook](lefthook.yml) pre-commit hook auto-formats staged files and spell-checks them; the
 pre-push hook runs `pnpm verify`. New project-specific words go in [`.cspell.yml`](.cspell.yml).

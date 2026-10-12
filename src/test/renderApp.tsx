@@ -2,7 +2,6 @@ import { render, screen, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { App } from "@/app/App";
 import { ONBOARDED_KEY } from "@/app/useOnboarding";
-import { resetSettingsToStorage } from "@/features/settings/SettingsProvider";
 import { HEADING_LEVEL, SCATTERGORIES_HEADING } from "./constants";
 
 export const SELECTED_CATEGORIES = "Selected categories";
@@ -15,7 +14,6 @@ export function resetAppTestState() {
   // Default to a returning player: most app tests exercise the board directly,
   // not the first-run welcome. Suites that test onboarding clear this themselves.
   window.localStorage.setItem(ONBOARDED_KEY, "1");
-  resetSettingsToStorage();
 }
 
 export async function renderApp() {

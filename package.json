@@ -41,7 +41,7 @@
     "spellcheck-changed": "cspell lint --config=.cspell.yml --no-config-search --cache --cache-strategy content --no-progress --no-must-find-files",
     "check": "pnpm typecheck && pnpm spellcheck && pnpm lint",
     "verify": "pnpm check && pnpm test:coverage && pnpm build && pnpm budget",
-    "ci": "pnpm verify && cd tools && uv sync --locked && uv run ruff check && uv run ty check && uv run pytest",
+    "ci": "pnpm verify && cd tools && uv sync --locked && uv run ruff check && uv run ruff format --check && uv run ty check && uv run sg-tools weights verify && uv run pytest",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "pretest:e2e": "pnpm build",

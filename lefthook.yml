@@ -15,7 +15,8 @@ pre-commit:
     python-lint:
       root: "tools"
       glob: "tools/**/*.py"
-      run: uv run --quiet ruff check {staged_files}
+      run: uv run --quiet ruff format {staged_files} && uv run --quiet ruff check {staged_files}
+      stage_fixed: true
 
 pre-push:
   commands:

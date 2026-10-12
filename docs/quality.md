@@ -9,7 +9,7 @@ pnpm check        # typecheck (tsc) + spellcheck (cspell) + lint (biome)
 pnpm test         # unit / component tests (vitest)
 pnpm test:e2e     # end-to-end tests (playwright)
 pnpm verify       # check + test + build + bundle-size budget
-pnpm ci           # verify, then the Python tools' ruff + ty + pytest
+pnpm run ci       # verify, then the Python tools' ruff, format check, ty, table check and pytest
 ```
 
 ## Enforced gates
