@@ -55,11 +55,7 @@ class ArgosProvider:
                 return
 
         available_targets = sorted(
-            {
-                package.to_code
-                for package in available_packages
-                if package.from_code == from_locale
-            }
+            {package.to_code for package in available_packages if package.from_code == from_locale}
         )
         hint = f"Available targets from {from_locale!r}: {', '.join(available_targets) or 'none'}"
         msg = f"No Argos package available for {from_locale} -> {to_locale}. {hint}"
