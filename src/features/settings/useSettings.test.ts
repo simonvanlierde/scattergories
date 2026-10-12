@@ -228,6 +228,7 @@ describe("useSettings", () => {
       const { result } = renderHook(() => useSettings(), { wrapper });
       act(() => {
         result.current.addCustom("Animals");
+        result.current.addCustom("animals");
       });
       expect(result.current.settings.customCategories).toEqual([]);
     });

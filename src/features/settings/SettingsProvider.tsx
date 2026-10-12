@@ -76,11 +76,11 @@ function settingsReducer(state: Settings, action: SettingsAction): Settings {
       if (!trimmed) {
         return state;
       }
-      if (state.customCategories.some((entry) => entry.toLowerCase() === trimmed.toLowerCase())) {
-        return state;
-      }
-      // A custom name can't shadow a built-in category key.
-      if (categories.includes(trimmed)) {
+      // A custom name can't repeat another custom or shadow a built-in key, in any case.
+      const lower = trimmed.toLowerCase();
+      if (
+        [...state.customCategories, ...categories].some((entry) => entry.toLowerCase() === lower)
+      ) {
         return state;
       }
       return {
