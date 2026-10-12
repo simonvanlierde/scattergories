@@ -93,6 +93,7 @@ jobs:
 
       - run: uv sync --locked # Python version is read from tools/.python-version.
       - run: uv run ruff check
+      - run: uv run ruff format --check
       - run: uv run ty check
       # Offline: compares the committed letter-weight table with its metadata and checksum.
       - run: uv run sg-tools weights verify
