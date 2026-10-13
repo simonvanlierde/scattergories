@@ -5,8 +5,8 @@ import { formatSeconds } from "@/domain/game/utils";
 import { vibrate } from "@/shared/lib/haptics";
 import { cx } from "@/shared/ui/cx";
 
-const URGENT_THRESHOLD_SECONDS = 15;
-const CRITICAL_THRESHOLD_SECONDS = 5;
+export const URGENT_THRESHOLD_SECONDS = 15;
+export const CRITICAL_THRESHOLD_SECONDS = 5;
 const RING_RADIUS = 86;
 const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
 

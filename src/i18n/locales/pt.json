@@ -33,7 +33,8 @@
     "go": "Valendo!",
     "roundOver": "Rodada encerrada!",
     "startIn": "Começa em {{seconds}}s",
-    "secondsLeft": "{{seconds}}s"
+    "secondsLeft": "{{seconds}}s",
+    "secondsWarning": "Faltam {{seconds}} segundos"
   },
   "settings": {
     "title": "Configurações",

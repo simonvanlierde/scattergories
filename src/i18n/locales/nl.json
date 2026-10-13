@@ -33,7 +33,8 @@
     "go": "Start!",
     "roundOver": "Ronde voorbij!",
     "startIn": "Start over {{seconds}}s",
-    "secondsLeft": "{{seconds}}s"
+    "secondsLeft": "{{seconds}}s",
+    "secondsWarning": "Nog {{seconds}} seconden"
   },
   "settings": {
     "title": "Instellingen",

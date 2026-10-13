@@ -33,7 +33,8 @@
     "go": "¡Ya!",
     "roundOver": "¡Ronda terminada!",
     "startIn": "Empieza en {{seconds}}s",
-    "secondsLeft": "{{seconds}}s"
+    "secondsLeft": "{{seconds}}s",
+    "secondsWarning": "Quedan {{seconds}} segundos"
   },
   "settings": {
     "title": "Ajustes",

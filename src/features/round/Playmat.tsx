@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import type { Phase, StatusKey } from "@/domain/game/roundReducer";
 import { ActionBar } from "./ActionBar";
 import { LetterHero } from "./LetterHero";
-import { TimerRing } from "./TimerRing";
+import { CRITICAL_THRESHOLD_SECONDS, TimerRing, URGENT_THRESHOLD_SECONDS } from "./TimerRing";
 
 interface PlaymatProps {
   phase: Phase;
@@ -18,12 +18,38 @@ interface PlaymatProps {
   onNextRound: () => void;
 }
 
-function PlaymatStatus({ statusKey }: { statusKey: StatusKey }) {
+interface PlaymatStatusProps {
+  statusKey: StatusKey;
+  phase: Phase;
+  secondsLeft: number;
+  gameSeconds: number;
+}
+
+/** The urgency threshold the clock has passed, if the round started above it. */
+function passedThreshold(phase: Phase, secondsLeft: number, gameSeconds: number) {
+  if (phase !== "running") {
+    return null;
+  }
+  return (
+    [CRITICAL_THRESHOLD_SECONDS, URGENT_THRESHOLD_SECONDS].find(
+      (threshold) => secondsLeft <= threshold && threshold < gameSeconds,
+    ) ?? null
+  );
+}
+
+// The readout ticks silently (aria-live off); this region speaks only when its
+// text changes, so a threshold is announced once, as the ring changes colour.
+function PlaymatStatus({ statusKey, phase, secondsLeft, gameSeconds }: PlaymatStatusProps) {
   const { t } = useTranslation();
+  const threshold = passedThreshold(phase, secondsLeft, gameSeconds);
+  let text = statusKey ? t(statusKey) : "";
+  if (threshold !== null) {
+    text = t("timer.secondsWarning", { seconds: threshold });
+  }
 
   return (
     <p data-testid="round-status" className="sr-only" aria-live="polite" aria-atomic="true">
-      {statusKey ? t(statusKey) : ""}
+      {text}
     </p>
   );
 }
@@ -55,7 +81,12 @@ export function Playmat({
         <LetterHero letter={letter} visible={letterVisible} landing={letterLanding} />
       </div>
 
-      <PlaymatStatus statusKey={statusKey} />
+      <PlaymatStatus
+        statusKey={statusKey}
+        phase={phase}
+        secondsLeft={secondsLeft}
+        gameSeconds={gameSeconds}
+      />
 
       <ActionBar
         phase={phase}
