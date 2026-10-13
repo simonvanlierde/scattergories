@@ -499,10 +499,31 @@
   /* ─── Action Bar ─────────────────────────────────────────────── */
   /* Primary action on top, the New letter / Next round controls stacked below. */
   .action-bar {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: var(--space-2);
+  }
+
+  /* Floats under the controls for the 3 s the skip stays armed, so the layout
+     never shifts. */
+  .action-bar__confirm {
+    position: absolute;
+    top: calc(100% + var(--space-1));
+    left: 50%;
+    z-index: 1;
+    width: max-content;
+    max-width: 100%;
+    margin: 0;
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--danger);
+    border-radius: var(--radius-sm);
+    background: var(--surface-1);
+    color: var(--danger);
+    font-size: var(--text-sm);
+    text-align: center;
+    translate: -50% 0;
   }
 
   /* biome-ignore lint/style/noDescendingSpecificity: the compact-mobile override

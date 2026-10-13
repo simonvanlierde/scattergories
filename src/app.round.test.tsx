@@ -80,3 +80,20 @@ it("locks the category pins while the clock runs and unlocks them on pause", asy
     expect(chip).toBeEnabled();
   }
 });
+
+it("shows the skip confirmation as visible text while armed", async () => {
+  // No get-ready countdown, so the letter lands straight into the live clock.
+  window.localStorage.setItem(
+    "scattergories.settings.v1",
+    JSON.stringify({ bufferSecondsInput: "0" }),
+  );
+  const { user } = await renderApp();
+
+  await user.click(screen.getByRole("button", { name: "Roll a letter" }));
+  await screen.findByRole("button", { name: "Pause" });
+  expect(screen.queryByText("Tap again to skip this round")).not.toBeInTheDocument();
+
+  await user.click(screen.getByRole("button", { name: "Next round" }));
+
+  expect(screen.getByText("Tap again to skip this round")).toBeVisible();
+});

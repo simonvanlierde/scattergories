@@ -94,6 +94,13 @@ export function ActionBar({
           onClick={mustConfirmSkip ? skip.onClick : onNextRound}
         />
       </ControlGroup>
+      {/* Touch has no hover title, so the armed state says it in plain text too.
+          Hidden from screen readers: the button's own label already changed. */}
+      {skip.armed ? (
+        <p className="action-bar__confirm" aria-hidden="true">
+          {t("buttons.skipConfirm")}
+        </p>
+      ) : null}
     </div>
   );
 }
