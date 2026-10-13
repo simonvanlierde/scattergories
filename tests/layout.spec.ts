@@ -1,4 +1,4 @@
-import { expect, type Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
 import { test } from "./fixtures";
 
 interface Layout {
@@ -62,3 +62,36 @@ for (const { width, height, minGlyphPx } of viewports) {
     });
   });
 }
+
+// Controls shorter than the 44px touch-target floor, by name and height.
+function shortControls(dialog: Locator) {
+  return dialog.evaluate((root) =>
+    [...root.querySelectorAll("button, select, input:not([type=checkbox]):not([type=radio])")]
+      .filter((el) => el.getClientRects().length > 0)
+      .map((el) => ({
+        name: el.getAttribute("aria-label") || el.textContent?.trim() || el.id,
+        height: Math.round(el.getBoundingClientRect().height),
+      }))
+      .filter(({ height }) => height < 44),
+  );
+}
+
+test.describe("touch targets", () => {
+  test.use({ viewport: { width: 360, height: 740 } });
+
+  test("keeps every control in the settings and deck sheets at least 44px tall", async ({
+    app,
+    page,
+  }) => {
+    await app.openSettings();
+    expect(await shortControls(app.settingsSheet)).toEqual([]);
+    await app.closeSettings();
+
+    const deck = page.getByRole("dialog", { name: "Customize deck" });
+    await page.getByRole("button", { name: "Customize deck" }).click();
+    await expect(deck.locator(".deck-bulk-action").first()).toBeVisible();
+    // The sheet scales in from 0.96, so measure after it settles.
+    await deck.evaluate((el) => Promise.all(el.getAnimations().map((a) => a.finished)));
+    expect(await shortControls(deck)).toEqual([]);
+  });
+});
