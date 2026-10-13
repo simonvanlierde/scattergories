@@ -8,7 +8,9 @@
       "Times New Roman", serif;
     --font-ui: "Geist Variable", "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
     --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Geist Mono", monospace;
-    --font-numeric: ui-monospace, "SF Mono", "Cascadia Code", "Geist Mono", monospace;
+    /* The loaded UI face, not a mono stack (Geist Mono is not bundled): set
+       font-variant-numeric: tabular-nums where digits must hold their width. */
+    --font-numeric: var(--font-ui);
 
     /* Fluid type scale (minor third, mobile → desktop) */
     --text-xs: clamp(0.75rem, 0.72rem + 0.12vw, 0.8125rem);
