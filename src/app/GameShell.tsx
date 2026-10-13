@@ -23,7 +23,7 @@ interface GameShellProps {
 // The manifest's static theme_color can't be made conditional at all (no media
 // support in that spec), so this is the only place installed/standalone chrome
 // color can track the real theme.
-const THEME_COLORS = { light: "#faf7f2", dark: "#1f1a14" } as const;
+const THEME_COLORS = { light: "#fdfaf4", dark: "#0d0804" } as const;
 
 function ControlBar({ game }: { game: GameController }) {
   const { t, i18n } = useTranslation();

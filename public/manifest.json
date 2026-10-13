@@ -1,12 +1,12 @@
 {
-  "name": "Scattergories Timer Helper",
+  "name": "Scattergories",
   "short_name": "Scattergories",
   "description": "An unofficial Scattergories companion for letters, rounds, prompts, and timing.",
   "id": "/",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#faf7f2",
-  "theme_color": "#faf7f2",
+  "background_color": "#fdfaf4",
+  "theme_color": "#fdfaf4",
   "icons": [
     {
       "src": "/favicon.svg",
