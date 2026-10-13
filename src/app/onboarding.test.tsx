@@ -1,6 +1,6 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
-import { beforeEach, expect, it } from "vitest";
+import { beforeEach, expect, it, vi } from "vitest";
 import { App } from "./App";
 import { ONBOARDED_KEY } from "./useOnboarding";
 
@@ -21,6 +21,23 @@ it("shows the first-run welcome and starts play when dismissed", async () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
   expect(window.localStorage.getItem(ONBOARDED_KEY)).toBe("1");
+});
+
+it("focuses the first-run CTA without scrolling the rules past their intro", async () => {
+  const focus = vi.spyOn(HTMLElement.prototype, "focus");
+  render(<App />);
+
+  const welcome = await screen.findByRole("dialog");
+  const cta = within(welcome).getByRole("button", { name: "Roll a letter" });
+
+  expect(cta).toHaveFocus();
+  expect(focus.mock.contexts).toContain(cta);
+  for (const [index, context] of focus.mock.contexts.entries()) {
+    if (context === cta) {
+      expect(focus.mock.calls[index]).toEqual([{ preventScroll: true }]);
+    }
+  }
+  focus.mockRestore();
 });
 
 it("does not show the welcome once onboarded", async () => {
