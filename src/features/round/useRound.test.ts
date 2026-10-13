@@ -2,7 +2,7 @@ import { act, renderHook } from "@testing-library/react";
 import { beforeEach, expect, it, vi } from "vitest";
 import { getLocaleLetterWeights } from "@/domain/game/localeWeights";
 import { roundReducer } from "@/domain/game/roundReducer";
-import { weightedLetterBag } from "@/domain/game/utils";
+import { drawLetter, RECENT_LETTER_WINDOW } from "@/domain/game/utils";
 import { getLocaleLetters } from "@/i18n/localeRegistry";
 import { ONE_SECOND_MS, TWO_SECONDS_MS } from "@/test/constants";
 import { BUFFER_SECONDS } from "@/test/gameConstants";
@@ -187,7 +187,7 @@ it("uses the plain round-over status when time runs out", () => {
   expect(driver.current.statusKey).toBe("timer.roundOver");
 });
 
-it("draws letters from a non-repeating bag and tracks used letters", () => {
+it("records each drawn letter and skips recent ones", () => {
   const driver = createRoundDriver();
 
   driver.start();
@@ -197,7 +197,20 @@ it("draws letters from a non-repeating bag and tracks used letters", () => {
   const second = mockSpinTo.mock.calls[1]?.[0];
 
   expect(second).not.toBe(first);
-  expect(driver.current.usedLetters).toEqual([first, second]);
+  expect(driver.current.recentLetters).toEqual([first, second]);
+});
+
+it("keeps only the latest window of letters", () => {
+  const driver = createRoundDriver();
+
+  for (let i = 0; i <= RECENT_LETTER_WINDOW; i += 1) {
+    act(() => driver.current.nextRound());
+    driver.landLetter();
+  }
+
+  const drawn = mockSpinTo.mock.calls.map(([letter]) => letter);
+  expect(driver.current.recentLetters).toEqual(drawn.slice(-RECENT_LETTER_WINDOW));
+  expect(new Set(drawn).size).toBe(drawn.length);
 });
 
 it("draws common letters far more often than rare ones", () => {
@@ -218,7 +231,7 @@ it("draws common letters far more often than rare ones", () => {
   }
 
   // True share for the five rarest English letters is ~2%; drawing from the
-  // wrong end of the weighted bag would push this near 100%.
+  // rare end of the weights would push this near 100%.
   expect(rareFirst / trials).toBeLessThan(rareShareLimit);
 });
 
@@ -228,8 +241,10 @@ it("draws from the weighted order when avoidRepeats is off", () => {
 
   driver.start();
 
-  // Same RNG, same weighted order — a uniform pick would land elsewhere.
-  expect(mockSpinTo.mock.calls[0]?.[0]).toBe(weightedLetterBag("en", () => FIXED_RANDOM)[0]);
+  // Same RNG, same weighted draw: a uniform pick would land elsewhere.
+  expect(mockSpinTo.mock.calls[0]?.[0]).toBe(
+    drawLetter(getLocaleLetters("en"), getLocaleLetterWeights("en"), [], () => FIXED_RANDOM),
+  );
 });
 
 it("keeps the letter and roller when the locale changes mid-round", () => {
@@ -261,7 +276,7 @@ it("keeps the letter and roller when the locale changes mid-round", () => {
     locale: "el",
   });
 
-  // The bag is rebuilt for the new alphabet, but the round in progress keeps its letter.
+  // The round in progress keeps its letter across the switch.
   expect(mockResetRoller.mock.calls.length).toBe(resetsBefore);
   expect(result.current.phase).toBe("buffer");
 });
@@ -299,7 +314,7 @@ it("caps the catch-up burst after a long tab suspension", () => {
   expect(tickCount).toBeLessThanOrEqual(SHORT_ROUND_SECONDS + 1);
 });
 
-it("leaves the bag untouched and skips immediate repeats when avoidRepeats is off", () => {
+it("skips only immediate repeats when avoidRepeats is off", () => {
   const driver = createRoundDriver({ avoidRepeats: false });
 
   driver.start();
@@ -308,9 +323,7 @@ it("leaves the bag untouched and skips immediate repeats when avoidRepeats is of
   act(() => driver.current.nextRound());
   const second = mockSpinTo.mock.calls[1]?.[0];
 
-  // Independent random draws: no bag is consumed, so nothing accrues to usedLetters.
-  expect(driver.current.usedLetters).toEqual([]);
-  // But two consecutive draws never land on the same letter back-to-back.
+  // Two consecutive draws never land on the same letter back-to-back.
   expect(second).not.toBe(first);
   expect(getLocaleLetters("en")).toContain(second);
 });
@@ -350,7 +363,7 @@ it("keeps sub-second progress across a pause/resume", () => {
   expect(driver.current.secondsLeft).toBe(SHORT_ROUND_SECONDS - 1);
 });
 
-it("rebuilds the letter bag for the new alphabet when the locale changes", () => {
+it("draws from the new alphabet when the locale changes", () => {
   let landCallback: (() => void) | undefined;
   mockSpinTo.mockImplementation((_letter: string, callback: () => void) => {
     landCallback = callback;
@@ -371,7 +384,6 @@ it("rebuilds the letter bag for the new alphabet when the locale changes", () =>
   const enLetter = mockSpinTo.mock.calls[0]?.[0];
   expect(getLocaleLetters("en")).toContain(enLetter);
   act(() => landCallback?.());
-  expect(result.current.usedLetters).toEqual([enLetter]);
 
   rerender({
     gameSeconds: SHORT_ROUND_SECONDS,
@@ -379,8 +391,6 @@ it("rebuilds the letter bag for the new alphabet when the locale changes", () =>
     isMuted: false,
     locale: "el",
   });
-  // The switch clears the old-alphabet draw history and rebuilds the bag.
-  expect(result.current.usedLetters).toEqual([]);
 
   act(() => result.current.nextRound());
   const elLetter = mockSpinTo.mock.calls[1]?.[0];

@@ -1,9 +1,5 @@
-import { getLocaleLetters } from "@/i18n/localeRegistry";
 import { CATEGORY_KEYS } from "./categoryKeys";
 import gameConstants from "./constants.json";
-
-// The default letter set used for English and as a baseline for tests.
-export const englishLetters = getLocaleLetters("en");
 
 export const categories = CATEGORY_KEYS;
 

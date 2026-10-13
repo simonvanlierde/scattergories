@@ -1,7 +1,7 @@
 {
-  "tableVersion": "1.0.0",
+  "tableVersion": "2.0.0",
   "file": "letterWeights.ts",
-  "sha256": "1663f412ead25b87b613e564e2c52be1851d5359c17fed20e1e7d999a5b438a5",
+  "sha256": "d827b89da3336eb18a276e1d61e289622e6a9d7e750c8bb74478820d6a129bc3",
   "corpus": {
     "id": "wikimedia/wikipedia",
     "snapshot": "20231101",
@@ -12,9 +12,8 @@
   "maxBytesPerLocale": 150000000,
   "generator": {
     "tool": "scattergories-tools",
-    "version": "0.1.0",
-    "commit": "747508c83fe2ed8d5cba2952402ded078dff24e5"
+    "version": "0.2.0",
+    "commit": "8db61c2fbf3f1d0e9a9af7fb3fe53e853f13d422"
   },
-  "generatedOn": "2026-06-24",
-  "notes": "Recorded after the fact: generator and generatedOn are the commit that added the table. The values have not changed since; c995ef1 only reformatted the file."
+  "generatedOn": "2026-10-13"
 }

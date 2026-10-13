@@ -4,6 +4,7 @@ import { SettingsProvider } from "@/features/settings/SettingsProvider";
 import { getPreferredTheme } from "@/features/settings/schema";
 import { i18n, initI18n } from "@/i18n/config";
 import { AppLoading } from "./AppLoading";
+import { bootMessages } from "./bootMessages";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { GameShell } from "./GameShell";
 import { useGameController } from "./useGameController";
@@ -30,13 +31,13 @@ function ErrorView({ eyebrow, title, message, actionLabel }: ErrorViewProps) {
   );
 }
 
-function BootstrapErrorFallback({ error }: { error: Error }) {
+function BootstrapErrorFallback() {
   return (
     <ErrorView
-      eyebrow="Recovery mode"
-      title="We couldn't start the app."
-      message={error.message}
-      actionLabel="Reload app"
+      eyebrow={bootMessages.errorEyebrow}
+      title={bootMessages.errorTitle}
+      message={bootMessages.errorBody}
+      actionLabel={bootMessages.reload}
     />
   );
 }
@@ -76,7 +77,7 @@ function AppProviders() {
 
 function App() {
   const [isReady, setIsReady] = useState(false);
-  const [bootstrapError, setBootstrapError] = useState<Error | null>(null);
+  const [bootFailed, setBootFailed] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -88,10 +89,11 @@ function App() {
         }
       },
       (error: unknown) => {
+        // The player sees a plain-language screen; the detail stays in the console.
+        // biome-ignore lint/suspicious/noConsole: the only record of why boot failed.
+        console.error("App failed to start:", error);
         if (isMounted) {
-          setBootstrapError(
-            error instanceof Error ? error : new Error("Unable to initialize i18n"),
-          );
+          setBootFailed(true);
         }
       },
     );
@@ -101,8 +103,8 @@ function App() {
     };
   }, []);
 
-  if (bootstrapError) {
-    return <BootstrapErrorFallback error={bootstrapError} />;
+  if (bootFailed) {
+    return <BootstrapErrorFallback />;
   }
 
   if (!isReady) {

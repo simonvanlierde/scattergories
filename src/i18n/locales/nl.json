@@ -33,7 +33,8 @@
     "go": "Start!",
     "roundOver": "Ronde voorbij!",
     "startIn": "Start over {{seconds}}s",
-    "secondsLeft": "{{seconds}}s"
+    "secondsLeft": "{{seconds}}s",
+    "secondsWarning": "Nog {{seconds}} seconden"
   },
   "settings": {
     "title": "Instellingen",
@@ -45,7 +46,7 @@
     "gameplay": "Spelregels",
     "durationHint": "Hoe lang een ronde duurt.",
     "getReadyHint": "Aftellen voordat de timer start.",
-    "avoidRepeatsHint": "Elke letter komt één keer voordat er een herhaling volgt; de voorraad wordt gereset bij een pagina-vernieuwing of zodra het hele alfabet is gebruikt."
+    "avoidRepeatsHint": "Slaat de laatste 12 getrokken letters over; veelvoorkomende letters komen nog steeds vaker."
   },
   "packs": {
     "classic": {

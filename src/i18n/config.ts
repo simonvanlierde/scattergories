@@ -42,18 +42,17 @@ function initI18n(): Promise<typeof i18n> {
         });
       }
 
-      let activeLanguage = resolvedLanguage;
       try {
         await ensureLanguageLoaded(resolvedLanguage);
+        if (resolvedLanguage !== savedLanguage) {
+          safeStorage.setItem(LANGUAGE_STORAGE_KEY, resolvedLanguage);
+        }
       } catch {
-        // A missing locale chunk must not boot into a blank UI: fall back to
-        // English and overwrite the stored choice so the next launch is clean.
-        activeLanguage = FALLBACK_LOCALE;
+        // A locale chunk that fails to load (offline, a deploy mid-session) must
+        // not boot into a blank UI. English is bundled, so use it for this session
+        // and keep the stored choice for the next launch.
+        await ensureLanguageLoaded(FALLBACK_LOCALE);
         await i18n.changeLanguage(FALLBACK_LOCALE);
-      }
-
-      if (activeLanguage !== savedLanguage) {
-        safeStorage.setItem(LANGUAGE_STORAGE_KEY, activeLanguage);
       }
 
       return i18n;
@@ -84,4 +83,4 @@ function persistLanguage(language: string): void {
   safeStorage.setItem(LANGUAGE_STORAGE_KEY, language);
 }
 
-export { ensureLanguageLoaded, i18n, initI18n, persistLanguage };
+export { ensureLanguageLoaded, i18n, initI18n, persistLanguage, resolvedLanguage as bootLanguage };

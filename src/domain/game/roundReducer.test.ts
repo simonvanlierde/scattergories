@@ -7,16 +7,14 @@ const startSpin = (overrides: { bufferSeconds?: number } = {}) => ({
   type: "START_SPIN" as const,
   gameSeconds: DEFAULT_TIMER_SECONDS,
   bufferSeconds: overrides.bufferSeconds ?? BUFFER_SECONDS,
-  remainingLetters: ["A", "B"],
-  drawnLetters: ["C"],
+  recentLetters: ["A", "B"],
 });
 
 describe("roundReducer", () => {
   it("starts in idle", () => {
     expect(initialRoundState.phase).toBe("idle");
     expect(initialRoundState.secondsLeft).toBe(0);
-    expect(initialRoundState.remainingLetters).toEqual([]);
-    expect(initialRoundState.drawnLetters).toEqual([]);
+    expect(initialRoundState.recentLetters).toEqual([]);
   });
 
   it("START_SPIN moves to spinning without multi-round progress", () => {
@@ -25,8 +23,7 @@ describe("roundReducer", () => {
     expect(next.gameSeconds).toBe(DEFAULT_TIMER_SECONDS);
     expect(next.alarmOn).toBe(false);
     expect(next.statusKey).toBeNull();
-    expect(next.remainingLetters).toEqual(["A", "B"]);
-    expect(next.drawnLetters).toEqual(["C"]);
+    expect(next.recentLetters).toEqual(["A", "B"]);
   });
 
   it("LETTER_LANDED transitions spinning → buffer with bufferSeconds", () => {
@@ -111,19 +108,6 @@ describe("roundReducer", () => {
 
     const idle = roundReducer(initialRoundState, { type: "PAUSE_TOGGLE" });
     expect(idle).toBe(initialRoundState);
-  });
-
-  it("SYNC_BAGS updates letter bags without changing other state", () => {
-    const mid = { ...initialRoundState, phase: "running" as const, secondsLeft: 10 };
-    const synced = roundReducer(mid, {
-      type: "SYNC_BAGS",
-      remainingLetters: ["X"],
-      drawnLetters: ["Y"],
-    });
-    expect(synced.phase).toBe("running");
-    expect(synced.secondsLeft).toBe(10);
-    expect(synced.remainingLetters).toEqual(["X"]);
-    expect(synced.drawnLetters).toEqual(["Y"]);
   });
 
   it("ALARM_OFF clears the alarm flag", () => {

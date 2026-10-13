@@ -63,37 +63,37 @@ uv run sg-tools weights sample --dataset wikitext-103 --write
 Preview locale weights:
 
 ```bash
-uv run sg-tools weights locales --locales en fr de
+uv run sg-tools weights locales --locales en,fr,de
 ```
 
 Write locale weights into the app:
 
 ```bash
-uv run sg-tools weights locales --locales en es fr de it nl pl pt el --write-app-file
+uv run sg-tools weights locales --locales en,es,fr,de,it,nl,pl,pt,el --write-app-file
 ```
 
 Preview category translation:
 
 ```bash
-uv run --group translation sg-tools translate categories --target-locales es fr
+uv run --group translation sg-tools translate categories --target-locales es,fr
 ```
 
 Write translated category files into `src/i18n/locales/`:
 
 ```bash
-uv run --group translation sg-tools translate categories --target-locales es fr --write-app-files
+uv run --group translation sg-tools translate categories --target-locales es,fr --write-app-files
 ```
 
 Preview locale payload translation:
 
 ```bash
-uv run --group translation sg-tools translate locales --target-locales es fr
+uv run --group translation sg-tools translate locales --target-locales es,fr
 ```
 
 Write translated locale payloads into `src/i18n/locales/`:
 
 ```bash
-uv run --group translation sg-tools translate locales --target-locales es fr --write-app-files
+uv run --group translation sg-tools translate locales --target-locales es,fr --write-app-files
 ```
 
 ## Task runner
@@ -104,7 +104,7 @@ There is no root-level `justfile`; run recipes from `tools/`:
 cd tools && just doctor
 cd tools && just audit
 cd tools && just weights-locales
-cd tools && just translate-categories es fr
+cd tools && just translate-categories es,fr
 ```
 
 See [`tools/justfile`](justfile) for the full recipe list.

@@ -6,8 +6,11 @@
 [![PWA](https://img.shields.io/badge/PWA-installable-5A0FC8?)](https://scattergories.duinlab.nl)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fscattergories.duinlab.nl)](https://scattergories.duinlab.nl)
 
-A browser-based companion for playing Scattergories at the table: no physical timer, die, or
-category cards needed. Single-page React app, no backend.
+An unofficial, browser-based companion for playing Scattergories at the table: no physical timer,
+die, or category cards needed. Single-page React app, no backend.
+
+Scattergories is a party game by Hasbro. This project is not affiliated with or endorsed by
+Hasbro.
 
 **Live demo:** [scattergories.duinlab.nl](https://scattergories.duinlab.nl)
 
@@ -54,8 +57,8 @@ pnpm dev          # http://localhost:5173
 pnpm build        # static build to dist/
 ```
 
-Node is pinned in [`.node-version`](.node-version) and pnpm in the `packageManager` field of
-[`package.json`](package.json); Corepack applies both automatically.
+The pinned Node and pnpm versions are listed under
+[Prerequisites](CONTRIBUTING.md#prerequisites) in the contributing guide.
 
 Deploy `dist/` to any static host with an SPA fallback to `index.html`.
 

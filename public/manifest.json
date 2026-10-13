@@ -1,7 +1,7 @@
 {
   "name": "Scattergories Timer Helper",
   "short_name": "Scattergories",
-  "description": "A compact Scattergories companion for letters, rounds, prompts, and timing.",
+  "description": "An unofficial Scattergories companion for letters, rounds, prompts, and timing.",
   "id": "/",
   "start_url": "/",
   "display": "standalone",

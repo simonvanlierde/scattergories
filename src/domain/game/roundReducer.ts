@@ -10,8 +10,8 @@ interface RoundState {
   bufferSeconds: number;
   alarmOn: boolean;
   statusKey: StatusKey;
-  remainingLetters: string[];
-  drawnLetters: string[];
+  /** The latest letters drawn, oldest first; the draw skips the most recent ones. */
+  recentLetters: string[];
 }
 
 type RoundAction =
@@ -19,16 +19,14 @@ type RoundAction =
       type: "START_SPIN";
       gameSeconds: number;
       bufferSeconds: number;
-      remainingLetters: string[];
-      drawnLetters: string[];
+      recentLetters: string[];
     }
   | { type: "LETTER_LANDED" }
   | { type: "SET_GAME_SECONDS"; gameSeconds: number }
   | { type: "SET_BUFFER_SECONDS"; bufferSeconds: number }
   | { type: "TICK" }
   | { type: "PAUSE_TOGGLE" }
-  | { type: "ALARM_OFF" }
-  | { type: "SYNC_BAGS"; remainingLetters: string[]; drawnLetters: string[] };
+  | { type: "ALARM_OFF" };
 
 const initialRoundState: RoundState = {
   phase: "idle",
@@ -38,8 +36,7 @@ const initialRoundState: RoundState = {
   bufferSeconds: 3,
   alarmOn: false,
   statusKey: null,
-  remainingLetters: [],
-  drawnLetters: [],
+  recentLetters: [],
 };
 
 /** Deck edits / redraws allowed: idle, done, or any paused state — i.e. not actively counting down. */
@@ -121,8 +118,7 @@ function roundReducer(state: RoundState, action: RoundAction): RoundState {
         statusKey: null,
         gameSeconds: action.gameSeconds,
         bufferSeconds: action.bufferSeconds,
-        remainingLetters: action.remainingLetters,
-        drawnLetters: action.drawnLetters,
+        recentLetters: action.recentLetters,
       };
     case "LETTER_LANDED":
       return state.phase === "spinning" ? enterCountdown(state) : state;
@@ -149,13 +145,6 @@ function roundReducer(state: RoundState, action: RoundAction): RoundState {
       return handlePauseToggle(state);
     case "ALARM_OFF":
       return { ...state, alarmOn: false };
-    case "SYNC_BAGS":
-      return {
-        ...state,
-        remainingLetters: action.remainingLetters,
-        drawnLetters: action.drawnLetters,
-      };
-
     default:
       return state;
   }

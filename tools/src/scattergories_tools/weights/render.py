@@ -41,7 +41,7 @@ def _render_locale_manifest_entries(analyses: dict[str, LocaleAnalysis]) -> str:
                 f"    locale: {json.dumps(locale)} as LocaleCode,",
                 f"    sourceCount: {analysis.source_count},",
                 f"    total: {analysis.total},",
-                f"    hasWeights: {analysis.total > 0},",
+                f"    hasWeights: {str(analysis.total > 0).lower()},",
                 "    hasLocalePayload: true,",
                 "    hasCategoryPayload: true,",
                 f"    processedBytes: {analysis.processed_bytes},",

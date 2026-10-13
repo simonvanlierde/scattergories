@@ -33,7 +33,8 @@
     "go": "C'est parti !",
     "roundOver": "Manche terminée !",
     "startIn": "Départ dans {{seconds}}s",
-    "secondsLeft": "{{seconds}}s"
+    "secondsLeft": "{{seconds}}s",
+    "secondsWarning": "Plus que {{seconds}} secondes"
   },
   "settings": {
     "title": "Paramètres",
@@ -45,7 +46,7 @@
     "gameplay": "Déroulement",
     "durationHint": "Durée de chaque manche.",
     "getReadyHint": "Décompte avant le départ du chrono.",
-    "avoidRepeatsHint": "Chaque lettre sort une fois avant toute répétition ; la réserve se réinitialise en rechargeant la page ou une fois tout l'alphabet utilisé."
+    "avoidRepeatsHint": "Écarte les 12 dernières lettres tirées ; les lettres courantes sortent toujours plus souvent."
   },
   "packs": {
     "classic": {

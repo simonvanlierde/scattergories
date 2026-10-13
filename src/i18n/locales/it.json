@@ -33,7 +33,8 @@
     "go": "Via!",
     "roundOver": "Round terminato!",
     "startIn": "Inizia tra {{seconds}}s",
-    "secondsLeft": "{{seconds}}s"
+    "secondsLeft": "{{seconds}}s",
+    "secondsWarning": "Mancano {{seconds}} secondi"
   },
   "settings": {
     "title": "Impostazioni",
@@ -45,7 +46,7 @@
     "gameplay": "Svolgimento",
     "durationHint": "Quanto dura ogni round.",
     "getReadyHint": "Conto alla rovescia prima dell'avvio del timer.",
-    "avoidRepeatsHint": "Ogni lettera esce una volta prima di ripetersi; il mazzo si azzera ricaricando la pagina o dopo aver usato tutto l'alfabeto."
+    "avoidRepeatsHint": "Salta le ultime 12 lettere estratte; le lettere comuni escono comunque più spesso."
   },
   "packs": {
     "classic": {

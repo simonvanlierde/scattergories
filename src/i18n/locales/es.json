@@ -33,7 +33,8 @@
     "go": "¡Ya!",
     "roundOver": "¡Ronda terminada!",
     "startIn": "Empieza en {{seconds}}s",
-    "secondsLeft": "{{seconds}}s"
+    "secondsLeft": "{{seconds}}s",
+    "secondsWarning": "Quedan {{seconds}} segundos"
   },
   "settings": {
     "title": "Ajustes",
@@ -45,7 +46,7 @@
     "gameplay": "Reglas de juego",
     "durationHint": "Cuánto dura cada ronda.",
     "getReadyHint": "Cuenta atrás antes de iniciar el temporizador.",
-    "avoidRepeatsHint": "Cada letra sale una vez antes de repetirse; el conjunto se reinicia al recargar la página o al agotar todo el alfabeto."
+    "avoidRepeatsHint": "Omite las últimas 12 letras sacadas; las letras comunes siguen saliendo más a menudo."
   },
   "packs": {
     "classic": {

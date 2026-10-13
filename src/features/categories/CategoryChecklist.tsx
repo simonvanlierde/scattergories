@@ -10,6 +10,7 @@ interface CategoryChecklistProps {
   landing: boolean;
   pinnedSet: Set<string>;
   customSet: Set<string>;
+  disabled: boolean;
   onTogglePin: (name: string) => void;
 }
 
@@ -19,6 +20,7 @@ export function CategoryChecklist({
   landing,
   pinnedSet,
   customSet,
+  disabled,
   onTogglePin,
 }: CategoryChecklistProps) {
   const { t } = useTranslation();
@@ -60,6 +62,7 @@ export function CategoryChecklist({
                 type="button"
                 className="category-checklist__chip"
                 aria-pressed={isPinned}
+                disabled={disabled}
                 aria-label={
                   isPinned
                     ? t("categories.unpinOne", { name: label })

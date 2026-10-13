@@ -28,8 +28,9 @@ export function Sheet({ open, onClose, title, closeLabel = "Close", children }: 
     if (open && !dialog.open) {
       dialog.showModal();
       // React's autoFocus fires at mount, while the dialog is still hidden (a
-      // no-op); focus the intended target for real now that it's visible.
-      dialog.querySelector<HTMLElement>("[data-autofocus]")?.focus();
+      // no-op); focus the intended target for real now that it's visible, without
+      // scrolling the sheet past its intro to reach it.
+      dialog.querySelector<HTMLElement>("[data-autofocus]")?.focus({ preventScroll: true });
     } else if (!open && dialog.open) {
       dialog.close();
     }
