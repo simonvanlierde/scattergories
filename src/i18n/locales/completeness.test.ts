@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { BOOT_MESSAGES } from "@/app/bootMessages";
 import { CATEGORY_KEYS } from "@/domain/game/categoryKeys";
 import { LETTER_WEIGHTS_BY_LOCALE } from "@/i18n/__generated__/letterWeights";
 import {
@@ -46,6 +47,11 @@ describe("locale asset completeness", () => {
     expect(Object.keys(LETTER_WEIGHTS_BY_LOCALE[locale] ?? {}).sort()).toEqual(
       getLocaleLetters(locale).sort(),
     );
+  });
+
+  it.each(SUPPORTED_LOCALES)("%s has boot screen messages", (locale) => {
+    const messages: Record<string, object> = BOOT_MESSAGES;
+    expect(Object.keys(messages[locale] ?? {})).toEqual(Object.keys(BOOT_MESSAGES.en));
   });
 
   it.each(SUPPORTED_LOCALES)("%s has translation and category resources", async (locale) => {

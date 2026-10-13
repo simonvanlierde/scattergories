@@ -83,4 +83,4 @@ function persistLanguage(language: string): void {
   safeStorage.setItem(LANGUAGE_STORAGE_KEY, language);
 }
 
-export { ensureLanguageLoaded, i18n, initI18n, persistLanguage };
+export { ensureLanguageLoaded, i18n, initI18n, persistLanguage, resolvedLanguage as bootLanguage };
