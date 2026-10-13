@@ -2,7 +2,7 @@
 
 ## Reproducible builds
 
-Every dependency is locked (`../pnpm-lock.yaml`, [`tools/uv.lock`](../tools/uv.lock)) and every tool version is pinned ([`.node-version`](../.node-version), the `packageManager` field in [`package.json`](../package.json), and [`tools/.python-version`](../tools/.python-version)), so a clean checkout builds the same way every time. The same checks run locally, in the pre-push hook ([`lefthook.yml`](../lefthook.yml)), and in [CI](../.github/workflows/ci.yml):
+Every dependency is locked (`../pnpm-lock.yaml`, [`tools/uv.lock`](../tools/uv.lock)) and every tool version is pinned ([`.node-version`](../.node-version), the `packageManager` field in [`package.json`](../package.json), and [`tools/.python-version`](../tools/.python-version)), so a clean checkout builds the same way every time. The same checks run locally and in [CI](../.github/workflows/ci.yml). CI runs each one as its own step and also runs `pnpm audit`. The pre-push hook ([`lefthook.yml`](../lefthook.yml)) runs `pnpm verify`. The commands:
 
 ```bash
 pnpm check        # typecheck (tsc) + spellcheck (cspell) + lint (biome)

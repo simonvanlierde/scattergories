@@ -72,8 +72,8 @@ To deploy from a local checkout, run `pnpm build && pnpm dlx wrangler pages depl
 
 ### Quality
 
-One command, `pnpm verify`, runs the typecheck, lint, tests, build and bundle budget. The same
-checks run locally, in the pre-push hook and in CI, so a clean checkout builds the same everywhere.
+One command, `pnpm verify`, runs the typecheck, lint, tests, build and bundle budget. The pre-push
+hook runs it too. CI runs the same checks as separate steps and adds `pnpm audit`.
 See [`docs/quality.md`](docs/quality.md) for the coverage thresholds, the bundle budget and the
 accessibility checks.
 
