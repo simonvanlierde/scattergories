@@ -50,7 +50,7 @@
   },
   "packs": {
     "classic": {
-      "label": "All"
+      "label": "Classic"
     },
     "foodie": {
       "label": "Foodie"

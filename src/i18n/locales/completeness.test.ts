@@ -8,6 +8,7 @@ import {
   getNativeName,
   SUPPORTED_LOCALES,
 } from "@/i18n/localeRegistry";
+import { PACKS } from "@/shared/lib/categoryPacks";
 import { loadLocaleNamespaces } from "./resources";
 
 function flattenEntries(value: unknown, prefix = ""): [string, unknown][] {
@@ -65,6 +66,14 @@ describe("locale asset completeness", () => {
   it("the English category file matches the domain key list", async () => {
     const { categories } = await loadLocaleNamespaces(FALLBACK_LOCALE);
     expect(Object.keys(categories)).toEqual([...CATEGORY_KEYS]);
+  });
+
+  it("every pack label key resolves in the English translations", async () => {
+    const { translation } = await loadLocaleNamespaces(FALLBACK_LOCALE);
+    const keys = new Set(flattenKeys(translation));
+    expect(PACKS.filter((pack) => !keys.has(pack.labelKey)).map((pack) => pack.labelKey)).toEqual(
+      [],
+    );
   });
 
   // Guards against key drift: every locale must ship exactly the keys en does —

@@ -115,6 +115,19 @@ describe("useSettings", () => {
       expect(result.current.settings.pinned).toEqual(["Foo"]);
     });
 
+    it("migrates legacy includePackCategories:true to the Classic deck without adult keys", () => {
+      window.localStorage.setItem(
+        SETTINGS_STORAGE_KEY,
+        JSON.stringify({ includePackCategories: true, activePack: "classic" }),
+      );
+      const { result } = renderHook(() => useSettings(), { wrapper });
+      const { deckBuiltins } = result.current.settings;
+      expect(deckBuiltins.length).toBeGreaterThan(0);
+      for (const key of ADULT_KEYS) {
+        expect(deckBuiltins).not.toContain(key);
+      }
+    });
+
     it("caps an oversized stored string to 50 characters", () => {
       const oversized = "x".repeat(80);
       window.localStorage.setItem(
