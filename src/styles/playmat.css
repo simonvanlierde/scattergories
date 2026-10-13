@@ -489,15 +489,6 @@
       margin: 0 0 0 var(--space-2);
     }
 
-    /* The primary button shares the row with the ring — shrink it (not the ring)
-       to fit: trim the lg padding/size and let the label wrap rather than overflow. */
-    .playmat .action-bar__primary {
-      min-height: 2.75rem;
-      padding-inline: var(--space-2);
-      font-size: var(--text-md);
-      white-space: normal;
-    }
-
     .playmat .letter-hero__glyph {
       font-size: calc(var(--hero) * 0.4);
     }
@@ -512,7 +503,7 @@
 
   /* Tall row: once a stacked ring beats a side-by-side one, the ring goes on
      top with the controls below it, as in the full layout, and grows up to its
-     full 20rem. 7.25rem is the controls (3rem + 2.75rem rows) and the gaps. The
+     full 20rem. 7.5rem is the controls (3.25rem + 2.75rem rows) and the gaps. The
      letter follows the full layout's size until the ring gets too small for it. */
   @container (min-height: 19rem) {
     .playmat__hero,
@@ -521,7 +512,7 @@
     }
 
     .playmat__hero {
-      --hero: min(20rem, 100cqi, 100cqb - 7.25rem);
+      --hero: min(20rem, 100cqi, 100cqb - 7.5rem);
       width: var(--hero);
     }
 
@@ -633,6 +624,22 @@
     .letter-hero__glyph--landing,
     .category-checklist__label--landing {
       animation: none;
+    }
+  }
+}
+
+/* The primary button shares the short row with the ring, so shrink it (not the
+   ring) to fit: trim the lg padding and size and let the label wrap rather than
+   clip (the Greek "Roll a letter" is ~17 characters). The button's size rules
+   live in the primitives layer, which comes after components, so this override
+   has to sit in that layer too. */
+@layer primitives {
+  @container (max-height: 18.99rem) {
+    .playmat .action-bar__primary {
+      min-height: 2.75rem;
+      padding-inline: var(--space-2);
+      font-size: var(--text-md);
+      white-space: normal;
     }
   }
 }
