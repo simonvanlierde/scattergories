@@ -57,8 +57,10 @@ pnpm dev          # http://localhost:5173
 pnpm build        # static build to dist/
 ```
 
-Node is pinned in [`.node-version`](.node-version) and pnpm in the `packageManager` field of
-[`package.json`](package.json); Corepack applies both automatically.
+Node is pinned in [`.node-version`](.node-version), which version managers such as fnm, mise and
+nvm read, and pnpm in the `packageManager` field of [`package.json`](package.json). Node 25 and
+later no longer bundle Corepack, so install pnpm yourself; pnpm then switches to the pinned version
+on its own.
 
 Deploy `dist/` to any static host with an SPA fallback to `index.html`.
 
