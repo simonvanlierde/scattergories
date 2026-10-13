@@ -187,7 +187,8 @@ geometric sans for controls and lists.
 ### Hierarchy
 
 - **Display** (500, `clamp(6rem, 32cqi, 11rem)`, 0.85): the drawn letter only. Optical size pinned
-  to 144 so it keeps its letterpress character at every size.
+  to 144 so it keeps its letterpress character at every size. On a phone with the categories open,
+  the letter and the clock scale with the ring instead.
 - **Headline** (500, `--text-2xl`): sheet titles; also the italic "Time's up!" readout.
 - **Title** (500, `--text-lg`): the Categories heading.
 - **Clock** (600, `--text-3xl`, tabular figures): the round readout.
@@ -208,8 +209,10 @@ list, is Geist.
 - One viewport, no page scroll: the app is a `100dvh` column of play grid and footer control bar.
   Long lists scroll inside their panel.
 - Below 52rem: the playmat (ring, letter, controls) above the categories. With the categories open,
-  the ring shrinks to a strip beside the controls (at most 9rem); collapsed, it is full size (20rem)
-  with the controls below. Categories flow in columns of at least 11.5rem.
+  they take the height their list needs and the ring gets the rest. While that row is under 19rem
+  tall, the ring sits beside the controls and never drops below `min(36vw, 9rem)`. From 19rem up
+  it stacks above them and grows to 20rem. Collapsed, the ring is full size (20rem) with the
+  controls below. Categories flow in columns of at least 11.5rem.
 - From 52rem: two columns, playmat left and categories right, split by a hairline. Collapsing the
   categories centres the playmat. From 64rem the ring grows to 26rem.
 - Spacing is a 4px scale (`--space-1` = 0.25rem). The playmat and grid gaps use 1rem, except
@@ -237,8 +240,8 @@ where the readout sits. Panels and the playmat have no corners at all; they are 
 - **Primary:** navy fill, paper text, 0.25rem corners, 3.25rem tall. It holds the round's next
   step: Roll a letter, Pause or Resume, Next round.
 - **Ghost and icon buttons:** transparent, ink or secondary ink; a 6% ink wash on hover. Icon
-  buttons are at least 44px square; ghost buttons are 44px tall, or 40px at the small size (the
-  deck sheet's bulk remove). Pressing scales to 0.97 (0.92 for icons).
+  buttons are at least 44px square; ghost buttons are 44px tall at both sizes. Pressing scales to
+  0.97 (0.92 for icons).
 - **Armed confirm:** a destructive icon button turns brick with a brick wash and needs a second tap.
 - **Focus:** a 2px navy outline, offset 2–3px.
 

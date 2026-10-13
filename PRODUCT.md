@@ -77,7 +77,7 @@ follow from their seat.
 - Biome's a11y lint and axe-core scans run in CI (idle, running round, collapsed deck, open sheets).
 - Timer urgency changes shape as well as colour (a beat in the last 5 s), for colour-blind players
   and for reading at a distance; `prefers-reduced-motion` turns animation off.
-- Touch targets aim for 44 px; the small bulk-remove button (40 px) and the inline timing fields
-  (36 px) are below it. axe-core checks text contrast in the light theme, and
+- Touch targets are at least 44 px; `tests/layout.spec.ts` fails on any shorter control in the
+  settings and deck sheets. axe-core checks text contrast in the light theme, and
   `tests/contrast.spec.ts` checks the dark-theme categories heading and the pin icon's 3:1
   non-text contrast in both themes.
