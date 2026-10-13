@@ -1,8 +1,8 @@
 # Letter-weight table
 
 [`letterWeights.ts`](letterWeights.ts) holds how often each letter starts a distinct word in
-each language. The game uses it to roll common, playable letters more often. The table is generated
-by the Python tools in [`tools/`](../../../tools/README.md); do not edit it by hand.
+each language. The game uses it to roll common, playable letters more often. The Python tools in
+[`tools/`](../../../tools/README.md) generate the table. Don't edit it by hand.
 
 [`letterWeights.meta.json`](letterWeights.meta.json) records where the numbers came from and the
 SHA-256 of `letterWeights.ts`. CI runs `sg-tools weights verify` and fails when the two files
