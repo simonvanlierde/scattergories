@@ -268,10 +268,13 @@
       border: 0;
     }
 
-    /* Open deck: the categories list fills the remaining height down to the
-       footer (no dead gap) and scrolls internally for overflow. */
+    /* Open deck: the categories card takes the height its list needs, and
+       scrolls internally when that is more than there is; the playmat takes
+       the rest, so free space goes to the letter instead of sitting empty below
+       the list. The playmat's minimum is the compact ring plus its padding
+       (playmat.css), the most it shrank to before. */
     .play-grid {
-      grid-template-rows: auto minmax(0, 1fr);
+      grid-template-rows: minmax(calc(min(36vw, 9rem) + 2 * var(--space-1)), 1fr) minmax(0, auto);
       padding-right: 0.1rem;
       gap: var(--space-3);
     }
@@ -282,9 +285,6 @@
       align-content: start;
     }
 
-    /* biome-ignore lint/style/noDescendingSpecificity: the higher-specificity
-       .play-grid--deck-collapsed rules live in the mutually-exclusive min-width
-       breakpoint, so they never compete with these. */
     .playmat,
     .categories-card {
       position: relative;
