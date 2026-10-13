@@ -50,7 +50,7 @@
   },
   "packs": {
     "classic": {
-      "label": "Alle"
+      "label": "Klassisch"
     },
     "foodie": {
       "label": "Essen"
@@ -66,6 +66,9 @@
     },
     "household": {
       "label": "Rund ums Haus"
+    },
+    "grownUps": {
+      "label": "Für Erwachsene"
     }
   },
   "playmat": {

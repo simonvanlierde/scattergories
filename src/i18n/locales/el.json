@@ -50,7 +50,7 @@
   },
   "packs": {
     "classic": {
-      "label": "Όλα"
+      "label": "Κλασικό"
     },
     "foodie": {
       "label": "Φαγητό"
@@ -66,6 +66,9 @@
     },
     "household": {
       "label": "Στο σπίτι"
+    },
+    "grownUps": {
+      "label": "Για ενήλικες"
     }
   },
   "playmat": {

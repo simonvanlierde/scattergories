@@ -134,13 +134,13 @@ function AddCategories({
 }
 
 function AddPackField({ actions }: { actions: CategoriesActions }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const packs = [...PACKS]
     .map((pack) => ({
       id: pack.id,
       label: t(pack.labelKey),
     }))
-    .sort((a, b) => a.label.localeCompare(b.label));
+    .sort((a, b) => a.label.localeCompare(b.label, i18n.language));
   return (
     <label className="settings-select deck-list__pack" htmlFor="addPack">
       <span className="sr-only">{t("categories.addPack")}</span>
