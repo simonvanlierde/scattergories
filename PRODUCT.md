@@ -34,8 +34,9 @@ follow from their seat.
   (3 s by default), the round clock (90 s by default), then "Time's up".
 - Players write answers on paper. Scoring happens at the table, by the house rules in the How to
   play sheet, not in the app.
-- Sound (tick in the last 10 s, an alarm at the end), vibration at 15 s and 5 s left and at the end, and keyboard
-  shortcuts (Space, R, P, C, ?) support play without looking at the screen.
+- Players can follow and run a round without looking at the screen: a tick sounds in the last
+  10 s and an alarm at the end, the phone vibrates at 15 s and 5 s left and at the end, and
+  keyboard shortcuts (Space, R, P, C, ?) cover the controls.
 - Installed as a PWA or opened in a browser tab; light and dark themes follow the system unless set.
 
 ## Capabilities and Constraints

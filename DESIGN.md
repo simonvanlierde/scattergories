@@ -164,8 +164,8 @@ Warm cream paper with cool blue-grey ink: the warm/cool contrast does the work, 
 - **Brick** (`danger`, `danger-wash`): the ring and readout from 5 s left, destructive confirms and
   error banners.
 
-**The One Accent Rule.** Navy is the only hue in the interface. Amber and brick appear only as
-round urgency or danger, never as decoration.
+**The One Accent Rule.** Navy is the only accent hue. Amber and brick appear only for round
+urgency or danger, never as decoration.
 
 **The Two Themes Rule.** Every colour role has a light and a dark value, defined on `.app-shell` and
 `.app-shell[data-theme="dark"]`. Components use the semantic names (`--text-primary`,
