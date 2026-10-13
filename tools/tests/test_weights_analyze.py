@@ -180,6 +180,8 @@ def test_render_locale_weight_source_is_deterministic() -> None:
     # `satisfies` lets TS flag an incomplete record instead of an unsafe `as` cast.
     assert "satisfies Record<LocaleCode, Record<string, number>>" in source
     assert " as Record<LocaleCode" not in source
+    # A Python bool would render as `True`, which is not valid TypeScript.
+    assert source.count("hasWeights: true,") == 2  # noqa: PLR2004
 
 
 def test_write_sample_output_writes_ephemeral_files(tmp_path: Path) -> None:
