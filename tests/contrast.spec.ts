@@ -44,3 +44,40 @@ test("@smoke categories heading meets AA contrast in dark mode", async ({ app, p
 
   expect(contrastRatio(fg, bg)).toBeGreaterThanOrEqual(4.5);
 });
+
+for (const theme of ["Light", "Dark"] as const) {
+  test(`unpinned pin icon meets 3:1 non-text contrast in ${theme.toLowerCase()} mode`, async ({
+    app,
+    page,
+  }) => {
+    await app.waitUntilReady();
+    await app.switchTheme(theme);
+
+    const { fg, bg } = await page.evaluate(() => {
+      const icon = document.querySelector(
+        ".category-checklist__item:not(.category-checklist__item--pinned) .category-checklist__pin",
+      ) as Element;
+      const toRgb = (color: string): number[] => {
+        const canvas = document.createElement("canvas");
+        canvas.width = 1;
+        canvas.height = 1;
+        const ctx = canvas.getContext("2d")!;
+        ctx.fillStyle = color;
+        ctx.fillRect(0, 0, 1, 1);
+        const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+        return [r, g, b];
+      };
+      // The chip is transparent: the colour behind the icon is the nearest painted ancestor.
+      let backdrop: Element | null = icon;
+      while (backdrop && getComputedStyle(backdrop).backgroundColor === "rgba(0, 0, 0, 0)") {
+        backdrop = backdrop.parentElement;
+      }
+      return {
+        fg: toRgb(getComputedStyle(icon).color),
+        bg: toRgb(getComputedStyle(backdrop ?? document.body).backgroundColor),
+      };
+    });
+
+    expect(contrastRatio(fg, bg)).toBeGreaterThanOrEqual(3);
+  });
+}

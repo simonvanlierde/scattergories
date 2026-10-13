@@ -366,16 +366,15 @@
     color: var(--accent-primary);
   }
 
+  /* Quiet but legible: --surface-6 keeps the unpinned icon at 3:1 or more
+     against the page in both themes, as non-text UI needs. */
   .category-checklist__pin {
-    color: var(--text-muted);
-    opacity: 0.35;
-    transition:
-      opacity var(--duration-fast) var(--ease-out),
-      color var(--duration-fast) var(--ease-out);
+    color: var(--surface-6);
+    transition: color var(--duration-fast) var(--ease-out);
   }
 
   .category-checklist__chip:where(:not(:disabled)):hover .category-checklist__pin {
-    opacity: 0.7;
+    color: var(--text-secondary);
   }
 
   .category-checklist__item--pinned .category-checklist__chip {
@@ -384,7 +383,6 @@
   }
 
   .category-checklist__item--pinned .category-checklist__pin {
-    opacity: 1;
     color: var(--accent-primary);
   }
 
