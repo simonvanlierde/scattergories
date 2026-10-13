@@ -6,8 +6,11 @@
 [![PWA](https://img.shields.io/badge/PWA-installable-5A0FC8?)](https://scattergories.duinlab.nl)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fscattergories.duinlab.nl)](https://scattergories.duinlab.nl)
 
-A browser-based companion for playing Scattergories at the table: no physical timer, die, or
-category cards needed. Single-page React app, no backend.
+An unofficial, browser-based companion for playing Scattergories at the table: no physical timer,
+die, or category cards needed. Single-page React app, no backend.
+
+Scattergories is a party game by Hasbro. This project is not affiliated with or endorsed by
+Hasbro.
 
 **Live demo:** [scattergories.duinlab.nl](https://scattergories.duinlab.nl)
 
