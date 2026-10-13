@@ -478,12 +478,13 @@
      these height queries never match the full-size layouts.
 
      Short row: ring left, controls beside it. The ring takes the row's height
-     but always leaves the controls 12rem. It never drops below min(36vw, 9rem),
-     the row's minimum in layout.css, which is the size it gets on a phone whose
-     categories fill the screen. The letter is 0.4 of the ring. */
+     but always leaves 12rem beside it for its margin, the gap and the controls.
+     It never drops below --ring-min, the row's minimum (layout.css), which
+     is the size it gets on a phone whose categories fill the screen. The
+     letter is 0.4 of the ring. */
   @container (max-height: 18.99rem) {
     .playmat__hero {
-      --hero: max(min(36vw, 9rem), min(100cqb, 100cqi - 12rem));
+      --hero: max(var(--ring-min), min(100cqb, 100cqi - 12rem));
       width: var(--hero);
       margin: 0 0 0 var(--space-2);
     }

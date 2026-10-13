@@ -274,7 +274,8 @@
        playmat's minimum is the smallest compact ring plus its padding
        (playmat.css). */
     .play-grid {
-      grid-template-rows: minmax(calc(min(36vw, 9rem) + 2 * var(--space-1)), 1fr) minmax(0, auto);
+      --ring-min: min(36vw, 9rem);
+      grid-template-rows: minmax(calc(var(--ring-min) + 2 * var(--space-1)), 1fr) minmax(0, auto);
       padding-right: 0.1rem;
       gap: var(--space-3);
     }
