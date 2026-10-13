@@ -45,7 +45,7 @@
     "gameplay": "Zasady",
     "durationHint": "Jak długo trwa runda.",
     "getReadyHint": "Odliczanie przed startem stopera.",
-    "avoidRepeatsHint": "Każda litera pojawia się raz, zanim się powtórzy; pula resetuje się po odświeżeniu strony lub po wykorzystaniu całego alfabetu."
+    "avoidRepeatsHint": "Pomija ostatnie 12 wylosowanych liter; częste litery nadal wypadają częściej."
   },
   "packs": {
     "classic": {

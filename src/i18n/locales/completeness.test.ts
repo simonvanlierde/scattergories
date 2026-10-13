@@ -25,7 +25,7 @@ describe("locale asset completeness", () => {
     expect(getLocaleLetters(locale).length).toBeGreaterThan(0);
     expect(getNativeName(locale)).not.toBe(locale);
     // A letter missing from the table gets weight 1, far above the real frequencies
-    // (under 0.2), so it would lead almost every bag. Weights must cover the alphabet exactly.
+    // (under 0.2), so it would come up far more often than any real letter. Weights must cover the alphabet exactly.
     expect(Object.keys(LETTER_WEIGHTS_BY_LOCALE[locale] ?? {}).sort()).toEqual(
       getLocaleLetters(locale).sort(),
     );

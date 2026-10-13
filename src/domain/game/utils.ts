@@ -1,25 +1,32 @@
-import { FALLBACK_LOCALE, getLocaleLetters, normalizeLocale } from "@/i18n/localeRegistry";
-import { getLocaleLetterWeights } from "./localeWeights";
-
 type RandomSource = () => number;
 
-export function weightedLetterBag(
-  locale: string = FALLBACK_LOCALE,
+/** How many of the latest letters an "avoid repeats" draw skips. */
+export const RECENT_LETTER_WINDOW = 12;
+
+/**
+ * Draws one letter with probability proportional to its weight, skipping the
+ * letters in `recent` (oldest first). At most the latest `letters.length - 1`
+ * are skipped, so a short alphabet always leaves a letter to draw.
+ */
+export function drawLetter(
+  letters: readonly string[],
+  weights: Readonly<Record<string, number>>,
+  recent: readonly string[],
   random: RandomSource = Math.random,
-): string[] {
-  const normalizedLocale = normalizeLocale(locale);
-  const letterWeights = getLocaleLetterWeights(normalizedLocale);
-  const letters = getLocaleLetters(normalizedLocale);
-  // Weight-proportional random order via reservoir-sampling keys: with
-  // key = random() ** (1 / weight), sorting by descending key gives each pair
-  // P(i before j) = wi / (wi + wj).
-  return [...letters]
-    .map((letter) => ({
-      letter,
-      score: random() ** (1 / (letterWeights[letter] ?? 1)),
-    }))
-    .sort((a, b) => b.score - a.score)
-    .map((entry) => entry.letter);
+): string {
+  const size = Math.max(0, Math.min(recent.length, letters.length - 1));
+  const skipped = new Set(recent.slice(recent.length - size));
+  const candidates = letters.filter((letter) => !skipped.has(letter));
+  const total = candidates.reduce((sum, letter) => sum + (weights[letter] ?? 1), 0);
+  let target = random() * total;
+  for (const letter of candidates) {
+    target -= weights[letter] ?? 1;
+    if (target < 0) {
+      return letter;
+    }
+  }
+  // Only reached on float rounding at the top of the range, or all-zero weights.
+  return pickRandom(candidates, random);
 }
 
 export function clampInt(

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useReducer, useRef } from "react";
+import { getLocaleLetterWeights } from "@/domain/game/localeWeights";
 import { initialRoundState, roundReducer } from "@/domain/game/roundReducer";
-import { pickRandom, weightedLetterBag } from "@/domain/game/utils";
+import { drawLetter, RECENT_LETTER_WINDOW } from "@/domain/game/utils";
 import { getLocaleLetters } from "@/i18n/localeRegistry";
 import { useAudio } from "./useAudio";
 import { useLetterRoller } from "./useLetterRoller";
@@ -20,51 +21,6 @@ interface UseRoundOptions {
   locale: string;
   avoidRepeats?: boolean;
   onLetterPicked?: () => void;
-}
-
-// Draws the next letter from a non-repeating weighted bag, refilling when empty
-// and avoiding an immediate repeat of the previous letter at the refill boundary.
-// When avoidRepeats is off, each draw is an independent random letter (repeats
-// allowed) and the bag is left untouched so it resumes if the setting flips back.
-function drawNextLetterFromBag(
-  locale: string,
-  bag: { remaining: string[]; drawn: string[] },
-  previousLetter: string | null,
-  avoidRepeats: boolean,
-) {
-  const { remaining: currentRemaining, drawn: currentDrawn } = bag;
-  if (!avoidRepeats) {
-    // A fresh weighted shuffle per draw: repeats are allowed, but the locale's
-    // letter frequencies still apply, exactly as in bag mode. Taking the first
-    // entry that isn't the previous letter also skips a back-to-back repeat —
-    // it reads as "the spin did nothing".
-    const order = weightedLetterBag(locale);
-    const chosen =
-      order.find((letter) => letter !== previousLetter) ??
-      order[0] ??
-      pickRandom(getLocaleLetters(locale));
-    return { chosen, remaining: currentRemaining, drawn: currentDrawn };
-  }
-
-  let remaining = [...currentRemaining];
-  let drawn = [...currentDrawn];
-
-  if (remaining.length === 0) {
-    remaining = weightedLetterBag(locale);
-    drawn = [];
-  }
-
-  // weightedLetterBag orders the bag most-likely-first, so draw from the front.
-  let chosen = remaining.shift() ?? pickRandom(getLocaleLetters(locale));
-  const swapIndex = 0;
-  const swap = remaining[swapIndex];
-  if (chosen === previousLetter && swap !== undefined) {
-    remaining[swapIndex] = chosen;
-    chosen = swap;
-  }
-  drawn.push(chosen);
-
-  return { chosen, remaining, drawn };
 }
 
 // biome-ignore lint/complexity/noExcessiveLinesPerFunction: composition hook — the body wires the reducer, audio, roller, and round effects together.
@@ -88,9 +44,6 @@ export function useRound({
   // Latest pause flag, read in the countdown cleanup to tell pause from a phase change.
   const isPausedRef = useRef(state.isPaused);
   isPausedRef.current = state.isPaused;
-  // The last letter that actually landed — used for repeat-avoidance, unlike the
-  // roller's live letter which cycles through random flip letters mid-spin.
-  const lastLandedLetterRef = useRef<string | null>(null);
   // Latest phase / remaining seconds, read inside effects that must not re-run on them.
   const phaseRef = useRef(state.phase);
   phaseRef.current = state.phase;
@@ -105,20 +58,15 @@ export function useRound({
     }
   }, []);
 
-  // Rebuild the letter bag for the current alphabet whenever the locale changes
-  // (and on mount), so a switch doesn't keep drawing the old locale's letters.
+  // Recent letters survive a locale switch: ones missing from the new alphabet
+  // just never match.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: locale is the trigger; a switch must clear the old alphabet's letter from the roller.
   useEffect(() => {
-    // Mid-round the drawn letter is the round — only the bag is refreshed, so a
-    // language switch during play doesn't blank the letter everyone is playing on.
+    // Mid-round the drawn letter is the round, so a language switch during play
+    // doesn't blank the letter everyone is playing on.
     if (phaseRef.current !== "buffer" && phaseRef.current !== "running") {
       resetRoller();
-      lastLandedLetterRef.current = null;
     }
-    dispatch({
-      type: "SYNC_BAGS",
-      remainingLetters: weightedLetterBag(locale),
-      drawnLetters: [],
-    });
   }, [locale, resetRoller]);
 
   // Self-correcting countdown clock: aligns each tick to a wall-clock deadline
@@ -246,11 +194,12 @@ export function useRound({
     clearAlarmTimeout();
     // A fresh spin restarts the countdown from a full second.
     tickRemainderRef.current = null;
-    const { chosen, remaining, drawn } = drawNextLetterFromBag(
-      locale,
-      { remaining: state.remainingLetters, drawn: state.drawnLetters },
-      lastLandedLetterRef.current,
-      avoidRepeats,
+    // With avoidRepeats off, skipping just the previous letter stops a spin
+    // that lands where it started and reads as "the spin did nothing".
+    const chosen = drawLetter(
+      getLocaleLetters(locale),
+      getLocaleLetterWeights(locale),
+      state.recentLetters.slice(avoidRepeats ? -RECENT_LETTER_WINDOW : -1),
     );
     if (opts.redrawCategories) {
       onLetterPicked();
@@ -260,13 +209,11 @@ export function useRound({
       type: "START_SPIN",
       gameSeconds,
       bufferSeconds,
-      remainingLetters: remaining,
-      drawnLetters: drawn,
+      recentLetters: [...state.recentLetters, chosen].slice(-RECENT_LETTER_WINDOW),
     });
 
     roller.spinTo(chosen, () => {
       // State first: a thrown or slow sound must never cost the round its start.
-      lastLandedLetterRef.current = chosen;
       dispatch({ type: "LETTER_LANDED" });
       playLetterLand();
     });
@@ -300,7 +247,7 @@ export function useRound({
     letter: roller.letter,
     letterVisible: roller.visible,
     letterLanding: roller.landing,
-    usedLetters: state.drawnLetters,
+    recentLetters: state.recentLetters,
     primaryAction,
     newLetter,
     nextRound,

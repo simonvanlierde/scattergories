@@ -21,8 +21,9 @@ and never downloads the corpus.
 
 A word-initial letter is a letter not preceded by another letter. Accents are stripped and
 stroked letters folded (`Á` counts as `A`, `Ł` as `L`), and initials that fold to no letter of the
-alphabet are skipped. The game sorts letters by `random() ** (1 / weight)`, so a letter with twice
-the weight comes up first twice as often.
+alphabet are skipped. The game draws each letter with a chance proportional to its weight, so a
+letter with twice the weight comes up about twice as often; with "avoid repeats" on, it skips the
+last 12 letters drawn.
 
 `LOCALE_WEIGHT_MANIFEST` describes each locale's sample:
 
