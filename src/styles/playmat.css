@@ -293,7 +293,9 @@
   .category-checklist__chip {
     width: 100%;
     display: grid;
-    grid-template-columns: 1.2rem minmax(0, 1fr) auto;
+    /* Wide enough for "12" in every chip, so the names line up; a wider numeral
+       grows its own column instead of running into the name. */
+    grid-template-columns: minmax(2.5ch, max-content) minmax(0, 1fr) auto;
     align-items: center;
     gap: var(--space-1);
     min-height: 2.75rem;
