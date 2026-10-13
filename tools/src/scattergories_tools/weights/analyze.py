@@ -69,13 +69,13 @@ class DatasetStreamOptions:
 # NFKD leaves stroked Latin letters undecomposed, so fold them explicitly.
 _STROKE_FOLD = {"Ł": "L", "ł": "l", "Ø": "O", "ø": "o", "Đ": "D", "đ": "d"}
 
-# A word-initial letter: a letter not preceded by another letter.
-_WORD_INITIAL_RE = re.compile(r"(?<![^\W\d_])[^\W\d_]")
+# A word: a maximal run of letters, so its first character is a word-initial letter.
+_WORD_RE = re.compile(r"[^\W\d_]+")
 
 
-def iter_word_initials(text: str) -> Iterator[str]:
-    """Yield the first letter of each word using Unicode-aware scanning."""
-    for match in _WORD_INITIAL_RE.finditer(text):
+def iter_words(text: str) -> Iterator[str]:
+    """Yield each word in the text using Unicode-aware scanning."""
+    for match in _WORD_RE.finditer(text):
         yield match.group(0)
 
 
@@ -96,15 +96,24 @@ def normalize_initial(letter: str, alphabet_set: set[str]) -> str | None:
 
 
 def analyze_texts(texts: Iterable[str], alphabet: Iterable[str]) -> tuple[list[LetterRow], int]:
-    """Analyze texts and return rows sorted by descending frequency."""
+    """Count the initial of each distinct word and return rows sorted by descending frequency.
+
+    Each word counts once, ignoring case, so running-text words like "the" and "of" do
+    not inflate their letters: the weights reflect the vocabulary, as a player draws on it.
+    """
     alphabet_list = list(alphabet)
     alphabet_set = set(alphabet_list)
     counts: Counter[str] = Counter()
+    seen: set[str] = set()
     total = 0
 
     for text in texts:
-        for initial in iter_word_initials(text):
-            normalized = normalize_initial(initial, alphabet_set)
+        for word in iter_words(text):
+            key = word.casefold()
+            if key in seen:
+                continue
+            seen.add(key)
+            normalized = normalize_initial(word[0], alphabet_set)
             if normalized is None:
                 continue
             counts[normalized] += 1

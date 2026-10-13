@@ -1,5 +1,5 @@
 """Tests for weight analysis and rendering helpers."""
-# spell-checker: ignore Árbol, Über, Łatwy
+# spell-checker: ignore Árbol, Über, Łatwy, ACDET
 
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -24,10 +24,17 @@ FIXTURES = Path(__file__).parent / "fixtures"
 
 def test_analyze_texts_handles_basic_counts() -> None:
     """Counts are stable for simple ASCII input."""
-    rows, total = analyze_texts(["Apple banana apple"], "ABC")
+    rows, total = analyze_texts(["Apple banana avocado"], "ABC")
     assert total == 3  # noqa: PLR2004
     assert rows[0].letter == "A"
     assert rows[0].count == 2  # noqa: PLR2004
+
+
+def test_analyze_texts_counts_each_distinct_word_once() -> None:
+    """Repeated words, in any case and across texts, count once."""
+    rows, total = analyze_texts(["The cat and the dog", "THE end, the end"], "ACDET")
+    assert total == 5  # noqa: PLR2004
+    assert {row.letter: row.count for row in rows} == dict.fromkeys("ACDET", 1)
 
 
 def test_analyze_texts_normalizes_accented_initials() -> None:
