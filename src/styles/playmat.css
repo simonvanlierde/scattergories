@@ -410,46 +410,24 @@
     }
   }
 
-  /* On mobile, keep the drawn categories in a single full-width column so every
-     name reads on one line, and collapse the hero into a horizontal strip (timer
-     circle on the left, round controls beside it) so all 12 fit without scrolling. */
+  /* On mobile, the hero takes only the height the categories leave over, so the
+     list gets all the room it needs before the letter grows. */
   @media (max-width: 51.99rem) {
-    /* Compact horizontal hero (circle left, controls right) ONLY while the deck
-       is open and competing for vertical space. When the deck is collapsed there
-       is room, so the playmat keeps its full-size ring (controls below). */
+    /* Compact hero ONLY while the deck is open and competing for vertical
+       space. When the deck is collapsed there is room, so the playmat keeps its
+       full-size ring (controls below).
+
+       The play grid gives this row whatever height the categories leave over
+       (layout.css), so the playmat measures that height and the ring sizes
+       itself from it in the @container rules below. The categories don't
+       change size between phases, so neither does the ring. */
     .play-grid:not(.play-grid--deck-collapsed) .playmat {
+      container-type: size;
       grid-template-columns: auto minmax(0, 1fr);
       align-items: center;
+      align-content: center;
       gap: var(--space-4);
       padding-block: var(--space-1);
-    }
-
-    /* Nudge the ring off the screen edge, keeping it full size. */
-    .play-grid:not(.play-grid--deck-collapsed) .playmat__hero {
-      width: min(36vw, 9rem);
-      margin: 0 0 0 var(--space-2);
-    }
-
-    /* The primary button shares the row with the ring — shrink it (not the ring)
-       to fit: trim the lg padding/size and let the label wrap rather than overflow. */
-    .play-grid:not(.play-grid--deck-collapsed) .action-bar__primary {
-      min-height: 2.75rem;
-      padding-inline: var(--space-2);
-      font-size: var(--text-md);
-      white-space: normal;
-    }
-
-    /* The letter glyph + readout are sized for the full circle — scale them to
-       the compact one. */
-    .play-grid:not(.play-grid--deck-collapsed) .letter-hero__glyph {
-      font-size: clamp(3rem, 14vw, 4rem);
-    }
-
-    .play-grid:not(.play-grid--deck-collapsed) .timer-ring__readout {
-      bottom: -0.35rem;
-      min-width: 3rem;
-      padding: var(--space-0-5) var(--space-2);
-      font-size: var(--text-lg);
     }
 
     /* A phone has no room for two content-sized columns, so it keeps the compact
@@ -496,6 +474,67 @@
     }
   }
 
+  /* Only the compact playmat (open deck, phone width) is a size container, so
+     these height queries never match the full-size layouts.
+
+     Short row: ring left, controls beside it. The ring takes the row's height
+     but always leaves 12rem beside it for its margin, the gap and the controls.
+     It never drops below --ring-min, the row's minimum (layout.css), which
+     is the size it gets on a phone whose categories fill the screen. The
+     letter is 0.4 of the ring. */
+  @container (max-height: 18.99rem) {
+    .playmat__hero {
+      --hero: max(var(--ring-min), min(100cqb, 100cqi - 12rem));
+      width: var(--hero);
+      margin: 0 0 0 var(--space-2);
+    }
+
+    .playmat .letter-hero__glyph {
+      font-size: calc(var(--hero) * 0.4);
+    }
+
+    .playmat .timer-ring__readout {
+      bottom: -0.35rem;
+      min-width: 3rem;
+      padding: var(--space-0-5) var(--space-2);
+      font-size: var(--text-lg);
+    }
+  }
+
+  /* Tall row: once a stacked ring beats a side-by-side one, the ring goes on
+     top with the controls below it, as in the full layout, and grows up to its
+     full 20rem. 7.5rem is the controls (3.25rem + 2.75rem rows) and the gaps. The
+     letter follows the full layout's size until the ring gets too small for it. */
+  @container (min-height: 19rem) {
+    .playmat__hero,
+    .playmat .action-bar {
+      grid-column: 1 / -1;
+    }
+
+    .playmat__hero {
+      --hero: min(20rem, 100cqi, 100cqb - 7.5rem);
+      width: var(--hero);
+    }
+
+    .playmat .action-bar {
+      width: min(100%, 20rem);
+      justify-self: center;
+    }
+
+    .playmat .letter-hero__glyph {
+      font-size: min(clamp(6rem, 32cqi, 11rem), var(--hero) * 0.55);
+    }
+
+    /* The readout shrinks with the ring, so it never crowds a small one. */
+    .playmat .timer-ring__readout {
+      font-size: min(var(--text-3xl), var(--hero) * 0.12);
+    }
+
+    .playmat .timer-ring--done .timer-ring__readout {
+      font-size: min(var(--text-2xl), var(--hero) * 0.1);
+    }
+  }
+
   /* ─── Action Bar ─────────────────────────────────────────────── */
   /* Primary action on top, the New letter / Next round controls stacked below. */
   .action-bar {
@@ -524,17 +563,6 @@
     font-size: var(--text-sm);
     text-align: center;
     translate: -50% 0;
-  }
-
-  /* biome-ignore lint/style/noDescendingSpecificity: the compact-mobile override
-     for this button lives in the earlier max-width block; it intentionally wins. */
-  .action-bar__primary {
-    min-height: 3rem;
-    box-shadow: none;
-  }
-
-  .action-bar__primary:where(:not(:disabled)):hover {
-    box-shadow: none;
   }
 
   .action-bar__group {
@@ -587,6 +615,22 @@
     .letter-hero__glyph--landing,
     .category-checklist__label--landing {
       animation: none;
+    }
+  }
+}
+
+/* The primary button shares the short row with the ring, so shrink it (not the
+   ring) to fit: trim the lg padding and size and let the label wrap rather than
+   clip (the Greek "Roll a letter" is ~17 characters). The button's size rules
+   live in the primitives layer, which comes after components, so this override
+   has to sit in that layer too. */
+@layer primitives {
+  @container (max-height: 18.99rem) {
+    .playmat .action-bar__primary {
+      min-height: 2.75rem;
+      padding-inline: var(--space-2);
+      font-size: var(--text-md);
+      white-space: normal;
     }
   }
 }
