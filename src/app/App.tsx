@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { I18nextProvider, useTranslation } from "react-i18next";
 import { SettingsProvider } from "@/features/settings/SettingsProvider";
 import { getPreferredTheme } from "@/features/settings/schema";
-import { bootLanguage, i18n, initI18n } from "@/i18n/config";
+import { i18n, initI18n } from "@/i18n/config";
 import { AppLoading } from "./AppLoading";
-import { getBootMessages } from "./bootMessages";
+import { bootMessages } from "./bootMessages";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { GameShell } from "./GameShell";
 import { useGameController } from "./useGameController";
@@ -32,13 +32,12 @@ function ErrorView({ eyebrow, title, message, actionLabel }: ErrorViewProps) {
 }
 
 function BootstrapErrorFallback() {
-  const messages = getBootMessages(bootLanguage);
   return (
     <ErrorView
-      eyebrow={messages.errorEyebrow}
-      title={messages.errorTitle}
-      message={messages.errorBody}
-      actionLabel={messages.reload}
+      eyebrow={bootMessages.errorEyebrow}
+      title={bootMessages.errorTitle}
+      message={bootMessages.errorBody}
+      actionLabel={bootMessages.reload}
     />
   );
 }

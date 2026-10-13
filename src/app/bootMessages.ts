@@ -1,3 +1,4 @@
+import { bootLanguage } from "@/i18n/config";
 import type { LocaleCode } from "@/i18n/locales/resources";
 
 interface BootMessages {
@@ -86,8 +87,7 @@ const BOOT_MESSAGES = {
   },
 } satisfies Record<LocaleCode, BootMessages>;
 
-function getBootMessages(locale: string): BootMessages {
-  return BOOT_MESSAGES[locale as keyof typeof BOOT_MESSAGES] ?? BOOT_MESSAGES.en;
-}
+const bootMessages: BootMessages =
+  BOOT_MESSAGES[bootLanguage as keyof typeof BOOT_MESSAGES] ?? BOOT_MESSAGES.en;
 
-export { BOOT_MESSAGES, getBootMessages };
+export { BOOT_MESSAGES, bootMessages };
