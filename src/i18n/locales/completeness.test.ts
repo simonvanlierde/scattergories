@@ -9,12 +9,28 @@ import {
 } from "@/i18n/localeRegistry";
 import { loadLocaleNamespaces } from "./resources";
 
-function flattenKeys(value: unknown, prefix = ""): string[] {
+function flattenEntries(value: unknown, prefix = ""): [string, unknown][] {
   if (value === null || typeof value !== "object" || Array.isArray(value)) {
-    return [prefix];
+    return [[prefix, value]];
   }
   return Object.entries(value).flatMap(([key, child]) =>
-    flattenKeys(child, prefix ? `${prefix}.${key}` : key),
+    flattenEntries(child, prefix ? `${prefix}.${key}` : key),
+  );
+}
+
+function flattenKeys(value: unknown): string[] {
+  return flattenEntries(value).map(([key]) => key);
+}
+
+const PLACEHOLDER_OR_TAG = /\{\{[^}]+\}\}|<\/?[\w-]+>/g;
+
+/** Each string's `{{var}}` placeholders and `<tag>`s, sorted so word order may differ. */
+function markupByKey(value: unknown): Record<string, string[]> {
+  return Object.fromEntries(
+    flattenEntries(value).map(([key, text]) => [
+      key,
+      String(text).match(PLACEHOLDER_OR_TAG)?.sort() ?? [],
+    ]),
   );
 }
 
@@ -25,7 +41,8 @@ describe("locale asset completeness", () => {
     expect(getLocaleLetters(locale).length).toBeGreaterThan(0);
     expect(getNativeName(locale)).not.toBe(locale);
     // A letter missing from the table gets weight 1, far above the real frequencies
-    // (under 0.2), so it would come up far more often than any real letter. Weights must cover the alphabet exactly.
+    // (under 0.2), so it would come up far more often than any real letter. Weights
+    // must cover the alphabet exactly.
     expect(Object.keys(LETTER_WEIGHTS_BY_LOCALE[locale] ?? {}).sort()).toEqual(
       getLocaleLetters(locale).sort(),
     );
@@ -54,6 +71,17 @@ describe("locale asset completeness", () => {
       const expected = flattenKeys(en.translation).sort();
       const actual = flattenKeys(translation).sort();
       expect(actual).toEqual(expected);
+    },
+  );
+
+  // A translated placeholder renders as literal "{{name}}", and a renamed tag
+  // drops its link, so each string must keep English's markup exactly.
+  it.each(SUPPORTED_LOCALES.filter((locale) => locale !== FALLBACK_LOCALE))(
+    "%s keeps every placeholder and tag of the English strings",
+    async (locale) => {
+      const en = await loadLocaleNamespaces(FALLBACK_LOCALE);
+      const { translation } = await loadLocaleNamespaces(locale);
+      expect(markupByKey(translation)).toEqual(markupByKey(en.translation));
     },
   );
 });
