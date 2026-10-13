@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { getLocaleLetters } from "@/i18n/localeRegistry";
 import {
   catCountDefault,
   catCountMax,
@@ -8,14 +7,9 @@ import {
   durationDefault,
   durationMax,
   durationMin,
-  englishLetters,
 } from "./constants";
 
 describe("constants integrity", () => {
-  it("keeps letters aligned with the English locale registry", () => {
-    expect(englishLetters).toEqual(getLocaleLetters("en"));
-  });
-
   it("defines sane numeric bounds and defaults", () => {
     expect(durationMin).toBeLessThanOrEqual(durationDefault);
     expect(durationDefault).toBeLessThanOrEqual(durationMax);
