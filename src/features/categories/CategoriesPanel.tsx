@@ -407,6 +407,7 @@ function CategoriesCardHeader({
             label={allPinned ? t("categories.unpinAll") : t("categories.pinAll")}
             icon={<Icon icon={Pin} size={18} />}
             aria-pressed={allPinned}
+            disabled={!canEdit}
             onClick={() => actions.onTogglePinAll(drawnCategories)}
           />
           <CustomizeSheetBlock categories={categories} actions={actions} inputRef={inputRef} />
@@ -451,6 +452,7 @@ function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps
               landing={categories.isLanding}
               pinnedSet={pinnedSet}
               customSet={customSet}
+              disabled={!categories.canEdit}
               onTogglePin={actions.onTogglePin}
             />
           </div>

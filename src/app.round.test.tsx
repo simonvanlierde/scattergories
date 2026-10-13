@@ -61,3 +61,22 @@ it("redraws categories on a fresh round but keeps them when rerolling the letter
     expect(items()).toEqual(afterStart);
   });
 });
+
+it("locks the category pins while the clock runs and unlocks them on pause", async () => {
+  const { user } = await renderApp();
+  const pinButtons = () =>
+    within(screen.getByRole("list", { name: SELECTED_CATEGORIES })).getAllByRole("button");
+
+  await user.click(screen.getByRole("button", { name: "Roll a letter" }));
+  const pause = await screen.findByRole("button", { name: "Pause" });
+
+  for (const chip of pinButtons()) {
+    expect(chip).toBeDisabled();
+  }
+  expect(screen.getByRole("button", { name: "Pin all" })).toBeDisabled();
+
+  await user.click(pause);
+  for (const chip of pinButtons()) {
+    expect(chip).toBeEnabled();
+  }
+});
