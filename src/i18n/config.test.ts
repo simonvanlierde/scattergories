@@ -40,7 +40,12 @@ async function bootI18n(loadFails = false) {
   stub.language = "";
   const { loadLocaleNamespaces } = await import("./locales/resources");
   if (loadFails) {
-    vi.mocked(loadLocaleNamespaces).mockRejectedValue(new Error("chunk 404"));
+    // English is bundled in the real loader, so only the other locales can fail.
+    vi.mocked(loadLocaleNamespaces).mockImplementation((locale) =>
+      locale === "en"
+        ? Promise.resolve({ translation: {}, categories: {} })
+        : Promise.reject(new Error("chunk 404")),
+    );
   } else {
     vi.mocked(loadLocaleNamespaces).mockResolvedValue({ translation: {}, categories: {} });
   }
@@ -64,13 +69,32 @@ afterEach(() => {
 });
 
 describe("initI18n", () => {
-  it("falls back to English and rewrites storage when a locale chunk fails", async () => {
+  it("falls back to English for the session but keeps the stored choice when a chunk fails", async () => {
     window.localStorage.setItem(STORAGE_KEY, "fr");
 
     const i18n = await bootI18n(true);
 
     expect(i18n.language).toBe("en");
-    expect(window.localStorage.getItem(STORAGE_KEY)).toBe("en");
+    expect(i18n.addResourceBundle).toHaveBeenCalledWith("en", "translation", {}, true, true);
+    expect(window.localStorage.getItem(STORAGE_KEY)).toBe("fr");
+  });
+
+  it("does not store English when the browser language's chunk fails", async () => {
+    stubBrowserLanguage("de-DE");
+
+    const i18n = await bootI18n(true);
+
+    expect(i18n.language).toBe("en");
+    expect(window.localStorage.getItem(STORAGE_KEY)).toBeNull();
+  });
+
+  it("stores the normalized language once its chunk loads", async () => {
+    window.localStorage.setItem(STORAGE_KEY, "fr-FR");
+
+    const i18n = await bootI18n();
+
+    expect(i18n.language).toBe("fr");
+    expect(window.localStorage.getItem(STORAGE_KEY)).toBe("fr");
   });
 
   it("seeds from the browser language when nothing is stored", async () => {
