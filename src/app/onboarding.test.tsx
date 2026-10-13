@@ -31,12 +31,8 @@ it("focuses the first-run CTA without scrolling the rules past their intro", asy
   const cta = within(welcome).getByRole("button", { name: "Roll a letter" });
 
   expect(cta).toHaveFocus();
-  expect(focus.mock.contexts).toContain(cta);
-  for (const [index, context] of focus.mock.contexts.entries()) {
-    if (context === cta) {
-      expect(focus.mock.calls[index]).toEqual([{ preventScroll: true }]);
-    }
-  }
+  const ctaCalls = focus.mock.calls.filter((_, index) => focus.mock.contexts[index] === cta);
+  expect(ctaCalls).toEqual([[{ preventScroll: true }]]);
   focus.mockRestore();
 });
 
