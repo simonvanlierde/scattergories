@@ -564,15 +564,6 @@
     translate: -50% 0;
   }
 
-  .action-bar__primary {
-    min-height: 3rem;
-    box-shadow: none;
-  }
-
-  .action-bar__primary:where(:not(:disabled)):hover {
-    box-shadow: none;
-  }
-
   .action-bar__group {
     display: inline-flex;
     align-items: center;
