@@ -66,6 +66,9 @@
     },
     "household": {
       "label": "In huis"
+    },
+    "grownUps": {
+      "label": "Voor volwassenen"
     }
   },
   "playmat": {

@@ -2,6 +2,7 @@ import { act, renderHook, waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { ADULT_KEYS } from "@/shared/lib/categoryPacks";
 import { SettingsProvider, useSettings } from "./SettingsProvider";
 import { SETTINGS_STORAGE_KEY } from "./schema";
 
@@ -29,6 +30,17 @@ describe("useSettings", () => {
       expect(settings.pinned).toEqual([]);
       expect(settings.customCategories).toEqual([]);
       expect(settings.isMuted).toBe(false);
+    });
+
+    it("keeps adult categories out of the default deck until grown-ups is added", () => {
+      const { result } = renderHook(() => useSettings(), { wrapper });
+      expect(
+        result.current.settings.deckBuiltins.filter((key) => ADULT_KEYS.includes(key)),
+      ).toEqual([]);
+      act(() => {
+        result.current.addPack("grown-ups");
+      });
+      expect(result.current.settings.deckBuiltins).toEqual(expect.arrayContaining([...ADULT_KEYS]));
     });
 
     // The test matchMedia stub (setupTests.ts) returns matches:false for all
@@ -80,6 +92,15 @@ describe("useSettings", () => {
       expect(result.current.settings.isMuted).toBe(true);
       expect(result.current.settings.customCategories).toEqual(["Foo"]);
       expect(result.current.settings.pinned).toEqual(["Foo"]);
+    });
+
+    it("keeps an adult category already in a stored deck", () => {
+      window.localStorage.setItem(
+        SETTINGS_STORAGE_KEY,
+        JSON.stringify({ deckBuiltins: ["Animals", "Offensive Words"] }),
+      );
+      const { result } = renderHook(() => useSettings(), { wrapper });
+      expect(result.current.settings.deckBuiltins).toEqual(["Animals", "Offensive Words"]);
     });
 
     it("migrates the legacy pack settings into a deck", () => {

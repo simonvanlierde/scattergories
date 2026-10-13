@@ -58,7 +58,7 @@ function getDefaultSettings(): Settings {
     durationInput: String(durationDefault),
     catCountInput: String(catCountDefault),
     bufferSecondsInput: String(bufferSecondsDefault),
-    deckBuiltins: [...categories],
+    deckBuiltins: getPackCategories(CLASSIC_PACK_ID, categories),
     customCategories: [],
     pinned: [],
     isMuted: false,
@@ -108,7 +108,7 @@ function migrateDeckBuiltins(parsed: Partial<Settings> & LegacySettings): string
     const packId = typeof parsed.activePack === "string" ? parsed.activePack : CLASSIC_PACK_ID;
     return sanitizeBuiltins(getPackCategories(packId, categories));
   }
-  return [...categories];
+  return getPackCategories(CLASSIC_PACK_ID, categories);
 }
 
 function sanitizeSettings(raw: unknown): Settings {

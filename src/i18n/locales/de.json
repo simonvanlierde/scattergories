@@ -66,6 +66,9 @@
     },
     "household": {
       "label": "Rund ums Haus"
+    },
+    "grownUps": {
+      "label": "Für Erwachsene"
     }
   },
   "playmat": {

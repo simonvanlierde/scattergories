@@ -12,7 +12,7 @@ angle, mid-game. Landscape and laptops work, but the layout is designed for a ph
 deck between rounds. Everyone else only reads the letter, the clock and the categories.
 
 The default deck should suit a family table. Categories meant for adults, such as "Offensive
-Words", belong in a pack players opt into. "Offensive Words" is still in the default deck.
+Words", live in the Grown-ups pack, which players add to the deck themselves.
 
 ## Product Purpose
 

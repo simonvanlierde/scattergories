@@ -66,6 +66,9 @@
     },
     "household": {
       "label": "Em casa"
+    },
+    "grownUps": {
+      "label": "Para adultos"
     }
   },
   "playmat": {

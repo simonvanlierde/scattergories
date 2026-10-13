@@ -7,9 +7,21 @@ const CLASSIC_PACK_ID = "classic";
 interface CategoryPack {
   id: string;
   labelKey: string;
-  /* Empty list means "every category" (Classic). */
+  /* Empty list means "every category except the adult ones" (Classic). */
   keys: readonly string[];
 }
+
+/* Kept out of Classic and the default deck; players opt in through Grown-ups. */
+const ADULT_KEYS: readonly string[] = [
+  "Offensive Words",
+  "4-Letter Words",
+  "Bar Things",
+  "Beers",
+  "Crimes",
+  "Weapons",
+  "Deadly Things",
+  "Medicine/Drugs",
+];
 
 const FOODIE_KEYS = [
   "Foods",
@@ -194,19 +206,24 @@ const PACKS: readonly CategoryPack[] = Object.freeze([
     labelKey: "packs.household.label",
     keys: HOUSEHOLD_KEYS,
   },
+  {
+    id: "grown-ups",
+    labelKey: "packs.grownUps.label",
+    keys: ADULT_KEYS,
+  },
 ]);
 
 /* Returns the categories in the pack, filtered to keys present in `allKeys`
  * (the full set of keys resolved from the active locale's categories JSON).
- * For the Classic pack or an unknown pack, returns all keys. */
+ * For the Classic pack or an unknown pack, returns all keys except ADULT_KEYS. */
 function getPackCategories(packId: string, allKeys: readonly string[]): string[] {
   const pack = PACKS.find((entry) => entry.id === packId);
   if (!pack || pack.keys.length === 0) {
-    return [...allKeys];
+    return allKeys.filter((key) => !ADULT_KEYS.includes(key));
   }
   const available = new Set(allKeys);
   return pack.keys.filter((key) => available.has(key));
 }
 
 export type { CategoryPack };
-export { CLASSIC_PACK_ID, getPackCategories, PACKS };
+export { ADULT_KEYS, CLASSIC_PACK_ID, getPackCategories, PACKS };

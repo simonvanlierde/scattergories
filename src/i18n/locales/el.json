@@ -66,6 +66,9 @@
     },
     "household": {
       "label": "Στο σπίτι"
+    },
+    "grownUps": {
+      "label": "Για ενήλικες"
     }
   },
   "playmat": {
