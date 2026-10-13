@@ -18,96 +18,30 @@ uv sync --group translation --locked
 
 ## CLI
 
-Everything goes through one command:
-
-```bash
-uv run sg-tools --help
-```
-
-The commands are:
-
-- `sg-tools doctor`
-- `sg-tools weights sample`
-- `sg-tools weights locales`
-- `sg-tools weights verify`
-- `sg-tools weights stamp`
-- `sg-tools translate categories`
-- `sg-tools translate locales`
-
-By default, commands only preview. To write back to the app, pass one of these flags:
+Everything goes through `uv run sg-tools --help`. By default, commands only preview. To write back,
+pass one of these flags:
 
 - `--write` for temporary output under `tools/out/`
 - `--write-app-file` for locale weight generation
 - `--write-app-files` for translated app JSON files
 
-## Common workflows
-
-Check the environment and dependencies:
-
 ```bash
-uv run sg-tools doctor
-```
-
-Preview sample corpus weights:
-
-```bash
-uv run sg-tools weights sample --dataset wikitext-2
-```
-
-Write sample corpus output to `tools/out/weights/`:
-
-```bash
-uv run sg-tools weights sample --dataset wikitext-103 --write
-```
-
-Preview locale weights:
-
-```bash
-uv run sg-tools weights locales --locales en,fr,de
-```
-
-Write locale weights into the app:
-
-```bash
-uv run sg-tools weights locales --locales en,es,fr,de,it,nl,pl,pt,el --write-app-file
-```
-
-Preview category translation:
-
-```bash
-uv run --group translation sg-tools translate categories --target-locales es,fr
-```
-
-Write translated category files into `src/i18n/locales/`:
-
-```bash
+uv run sg-tools doctor                                     # check the environment and dependencies
+uv run sg-tools weights sample --dataset wikitext-2        # preview sample corpus weights
+uv run sg-tools weights sample --dataset wikitext-103 --write   # write them to tools/out/weights/
+uv run sg-tools weights locales --locales en,fr,de         # preview locale weights
+uv run sg-tools weights locales --locales en,es,fr,de,it,nl,pl,pt,el --write-app-file  # write them into the app
+uv run sg-tools weights verify                             # check the table against its metadata and checksum
+uv run sg-tools weights stamp                              # refresh the checksum after a deliberate edit of the table
 uv run --group translation sg-tools translate categories --target-locales es,fr --write-app-files
-```
-
-Preview locale payload translation:
-
-```bash
-uv run --group translation sg-tools translate locales --target-locales es,fr
-```
-
-Write translated locale payloads into `src/i18n/locales/`:
-
-```bash
 uv run --group translation sg-tools translate locales --target-locales es,fr --write-app-files
 ```
 
-## Task runner
+Drop `--write-app-files` from the translate commands to preview. Both write into `src/i18n/locales/`.
 
-There is no `justfile` at the repo root. Run the recipes from `tools/`:
-
-```bash
-cd tools && just doctor
-cd tools && just audit
-cd tools && just weights-locales
-cd tools && just translate-categories es,fr
-```
-
-See [`tools/justfile`](justfile) for the full recipe list.
+There is no `justfile` at the repo root. [`tools/justfile`](justfile) has recipes such as
+`just doctor`, `just audit`, `just weights-locales` and `just translate-categories es,fr`; run them
+from `tools/`.
 
 ## Artifacts
 
@@ -117,13 +51,8 @@ See [`tools/justfile`](justfile) for the full recipe list.
 - The letter-weight table's provenance, checks and licence are described in
   [`src/i18n/__generated__/README.md`](../src/i18n/__generated__/README.md)
 
-Coverage is reported in the terminal and in CI. It is not written to any tracked file.
+## Tests
 
-## Test suite notes
-
-- Prefer fast unit tests with small fakes at module boundaries over larger integration setups.
-- Put branch coverage first in modules that mostly coordinate other code, like the CLI and the
-  provider adapters.
-- When behavior matters, prefer reusable fakes over one-off mocks and inline stubs.
-- For one code path, prefer one behavior test with many assertions over several shallow smoke
-  tests.
+Prefer fast unit tests with small fakes at module boundaries, reusable fakes over one-off mocks,
+and one behavior test with many assertions over several shallow smoke tests. Put branch coverage
+first in modules that mostly coordinate other code, like the CLI and the provider adapters.

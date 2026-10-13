@@ -7,9 +7,8 @@ web
 ## Users
 
 Families and friends playing Scattergories in person, around one table. One player's phone or
-tablet runs the app and lies flat in the middle. Landscape and laptops work, but the layout is
-designed for a phone or tablet. Everyone reads it from across the table, at an
-angle, mid-game. The person holding it rolls the letter, starts and pauses the round, and edits the
+tablet runs the app and lies flat in the middle, and everyone reads it from across the table, at an
+angle, mid-game. Landscape and laptops work, but the layout is designed for a phone or tablet. The person holding it rolls the letter, starts and pauses the round, and edits the
 deck between rounds. Everyone else only reads the letter, the clock and the categories.
 
 The default deck should suit a family table. Categories meant for adults, such as "Offensive
@@ -17,8 +16,7 @@ Words", belong in a pack players opt into. "Offensive Words" is still in the def
 
 ## Product Purpose
 
-The app replaces the die, the timer and the category cards. It's an unofficial companion that runs
-in the browser. It rolls a letter, draws a board of categories and runs the round clock, so a group
+An unofficial browser companion that replaces the die, the timer and the category cards, so a group
 needs only pen and paper. It works when a round starts in one tap and every player can follow it
 from their seat.
 
@@ -33,8 +31,8 @@ from their seat.
 
 ## Operating Context
 
-- A round runs `idle → spinning → buffer → running → done`: roll a letter, count down to get ready
-  (3 s by default), run the round clock (90 s by default), then "Time's up".
+- A round: roll a letter, count down to get ready (3 s by default), run the round clock (90 s by
+  default), then "Time's up".
 - Players write their answers on paper. They score at the table, by the house rules in the How to
   play sheet. The app doesn't score.
 - Players can follow and run a round without looking at the screen. A tick sounds in the last 10 s
@@ -48,8 +46,8 @@ from their seat.
 - Round length 10–600 s, get-ready 0–10 s, 1–25 categories per board (12 by default).
 - You can pin categories to keep them across rounds and redraw the rest. You can add your own
   categories and built-in packs. Settings and custom categories are saved in `localStorage` only.
-- Categories are read-only during a round. The app doesn't keep score: no answer entry, no
-  strike-through, no per-round scoring, no completion counting (see `CONTRIBUTING.md`).
+- Categories are read-only during a round, and there is no answer entry or scoring (see the
+  product contract in `CONTRIBUTING.md`).
 - We decided on no backend ([ADR 0001](docs/adr/0001-local-first-no-backend.md)), so there's no
   sync between devices and no online multiplayer.
 - Every string a user sees ships in all 9 locales in the same change.
@@ -80,7 +78,7 @@ from their seat.
 
 ## Accessibility & Inclusion
 
-- CI runs Biome's a11y lint and axe-core scans (idle, running round, collapsed deck, open sheets).
+- CI runs Biome's a11y lint and axe-core scans (see `docs/quality.md`).
 - Timer urgency changes shape as well as color (a beat in the last 5 s). That helps color-blind
   players and anyone reading from a distance. `prefers-reduced-motion` turns animation off.
 - Touch targets are at least 44 px. `tests/layout.spec.ts` fails on any shorter control in the
