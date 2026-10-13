@@ -118,21 +118,19 @@ components:
 
 # Design System: Scattergories
 
-The CSS is the source of truth: `src/styles/tokens.css` for tokens and `src/styles/` for
-components. This file describes them. When the two disagree, the CSS wins and this file needs an
-update.
+The CSS in `src/styles/` (tokens in `tokens.css`) is the source of truth. When this file disagrees,
+the CSS wins and this file needs an update.
 
 ## Overview
 
 **Creative North Star: "The Printed Game Card"**
 
 The app should read like a printed page on the table: warm cream paper, deep ink, hairline rules,
-and one large serif letter as a drop cap. Everything is flat and quiet except the letter. The letter
-is the app's identity and the one thing every player looks for. We designed the dark theme rather
-than inverting the light one: warm dark paper, off-white ink and a lighter periwinkle accent.
+and one large serif letter as a drop cap. Everything is flat and quiet except the letter. The dark
+theme is designed, not inverted: warm dark paper, off-white ink and a lighter periwinkle accent.
 
-Players read the screen from across a table, so there's little on it and the order is clear: the
-letter first, then the clock, then the categories, and the controls last.
+Players read the screen from across a table, so the order is: the letter, the clock, the
+categories, and the controls last.
 
 **Key Characteristics:**
 
@@ -181,24 +179,17 @@ danger, never decoration.
 
 ## Typography
 
-**Display Font:** Fraunces Variable (with Iowan Old Style, Georgia)
-**Body Font:** Geist Variable (with system-ui)
-
-**Character:** a high-contrast letterpress serif for the moments that matter, and a calm geometric
-sans for controls and lists.
-
 ### Hierarchy
 
-- **Display** (500, `clamp(6rem, 32cqi, 11rem)`, 0.85): only the drawn letter. Its optical size is
-  pinned to 144, so it looks like letterpress at every size. On a phone with the categories open,
-  the letter and the clock scale with the ring instead.
-- **Headline** (500, `--text-2xl`): sheet titles, and the italic "Time's up!" readout.
-- **Title** (500, `--text-lg`): the Categories heading.
-- **Clock** (600, `--text-3xl`, tabular figures): the round readout.
-- **Body** (400, `--text-md`, 1.3): category names and settings.
-- **Button** (500, 0.02em): `--text-lg` on the primary button, `--text-md` on the others.
-- **Label** (600, `--text-xs`, 0.14em, uppercase): field labels. The footer wordmark uses Fraunces
-  uppercase with the same letter spacing.
+- **Display**: only the drawn letter. On a phone with the categories open, the letter and the clock
+  scale with the ring instead.
+- **Headline**: sheet titles, and the italic "Time's up!" readout.
+- **Title**: the Categories heading.
+- **Clock**: the round readout.
+- **Body**: category names and settings.
+- **Button**: `--text-lg` on the primary button, `--text-md` on the others.
+- **Label** (uppercase): field labels. The footer wordmark uses Fraunces uppercase with the same
+  letter spacing.
 
 The type scale is fluid (minor third, `--text-xs` to `--text-hero`). Category numerals are
 Fraunces italic.
@@ -240,8 +231,7 @@ the readout. Panels and the playmat have no corners at all. Rules separate them.
 
 ### Buttons
 
-- **Primary:** navy fill, paper text, 0.25rem corners, 3.25rem tall. It holds the round's next
-  step: Roll a letter, Pause or Resume, Next round.
+- **Primary:** holds the round's next step: Roll a letter, Pause or Resume, Next round.
 - **Ghost and icon buttons:** transparent, in ink or secondary ink, with a 6% ink wash on hover.
   Icon buttons are at least 44px square. Ghost buttons are 44px tall at both sizes. Pressing scales
   them to 0.97 (0.92 for icons).

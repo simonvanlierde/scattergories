@@ -26,7 +26,7 @@ flowchart TD
 
 ## Round state machine
 
-A round runs on a `useReducer` in [`roundReducer.ts`](../src/domain/game/roundReducer.ts). The reducer is pure and framework-free, so its transitions are unit-tested directly, without rendering anything:
+A round runs on a `useReducer` in [`roundReducer.ts`](../src/domain/game/roundReducer.ts). The reducer is pure, so its transitions are unit-tested without rendering anything:
 
 ```mermaid
 stateDiagram-v2
@@ -41,9 +41,14 @@ stateDiagram-v2
 
 ## Data flow
 
-`useGameController` combines the feature hooks and gives the shell a single typed interface. Round progress lives in the `roundReducer` state machine. Letters are rolled with locale-aware weights from `i18n/__generated__/letterWeights`, which `tools/` produces offline. Settings and custom category packs are the only saved state. They are written to `localStorage` from `features/settings/`, through the `safeStorage` wrapper in `shared/lib`. There is no network call at runtime: closing the tab loses nothing that mattered, and nothing leaves the device.
+`useGameController` combines the feature hooks and gives the shell a single typed interface. Letters are rolled with locale-aware weights from `i18n/__generated__/letterWeights`, which `tools/` produces offline. Settings and custom category packs are the only saved state. They are written to `localStorage` from `features/settings/`, through the `safeStorage` wrapper in `shared/lib`. There is no network call at runtime, and nothing leaves the device.
 
-## Design decisions
+The reasons for the key choices live in [`adr/`](adr/).
 
-The reasons for the key choices live in [`adr/`](adr/), starting with
-[why there is no backend](adr/0001-local-first-no-backend.md).
+## Deployment
+
+Cloudflare Pages builds and publishes the site on every push to `main`. The build and preview
+settings live in the Cloudflare dashboard. The repo only pins the output directory, in
+[`wrangler.jsonc`](../wrangler.jsonc).
+
+To deploy from a local checkout, run `pnpm build && pnpm dlx wrangler pages deploy dist`.

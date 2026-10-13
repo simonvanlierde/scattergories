@@ -6,8 +6,8 @@
 [![PWA](https://img.shields.io/badge/PWA-installable-5A0FC8?)](https://scattergories.duinlab.nl)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fscattergories.duinlab.nl)](https://scattergories.duinlab.nl)
 
-An unofficial companion for playing Scattergories at the table, in your browser. You don't need
-the physical timer, die or category cards. It's a single-page React app with no backend.
+An unofficial companion for playing Scattergories at the table, in your browser. It rolls the
+letter, draws the categories and runs the timer. It's a single-page React app with no backend.
 
 Scattergories is a party game by Hasbro. This project is not affiliated with or endorsed by
 Hasbro.
@@ -16,40 +16,14 @@ Hasbro.
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/desktop-dark.png"><img alt="The game screen" src="docs/screenshots/desktop-light.png" width="300"></picture>
 
-## Features
+Letters come from each language's own alphabet, weighted by that language's letter frequencies, in
+9 fully translated languages. No account, no server: settings and custom category packs stay in
+your browser.
 
-Roll a letter, draw a board of categories, and race the timer to name one thing per category. The
-app handles the die, the cards and the clock.
+## Quick start
 
-- Rolls a letter from each language's own alphabet, weighted by that language's letter frequencies,
-  so common, playable letters come up more often
-- Fully translated into 9 languages: English, Spanish, French, German, Italian, Dutch, Polish,
-  Portuguese, Greek
-- Draws a round of categories, with a built-in timer, a pause button and an end-of-round screen
-- Redraw categories on each new letter, or pin a fixed board
-- Built-in and custom category packs, saved locally in your browser
-- Installs as a PWA (a web app you can add to your home screen), with no account or server
-
-## Architecture
-
-**Stack**: React 19 · TypeScript · Vite · i18next · Vitest · Playwright · Biome. A separate Python
-(`uv` + Typer) package regenerates the locale assets.
-
-### Project structure
-
-For the layer diagram, the round state machine and the data flow, see
-[`docs/architecture.md`](docs/architecture.md). The top-level folders:
-
-- [`src/`](src/): the React app: `domain/game/` (pure game logic), `features/` (round, categories,
-  settings), `app/` (shell and controller hooks), `i18n/` (locales and registry)
-- [`tools/`](tools/README.md): Python CLI (`sg-tools`) that regenerates the locale assets:
-  per-language alphabets, letter-frequency weights, and translations
-- [`tests/`](tests/): Playwright end-to-end specs
-- [`docs/`](docs/): [architecture](docs/architecture.md) and [decision records](docs/adr/)
-
-## Self hosting
-
-To run your own copy, install [Node and pnpm](https://nodejs.org/en/download), then:
+Install [Node and pnpm](https://nodejs.org/en/download) (pinned versions:
+[Prerequisites](CONTRIBUTING.md#prerequisites)), then:
 
 ```bash
 pnpm install
@@ -57,29 +31,14 @@ pnpm dev          # http://localhost:5173
 pnpm build        # static build to dist/
 ```
 
-The pinned Node and pnpm versions are listed under
-[Prerequisites](CONTRIBUTING.md#prerequisites) in the contributing guide.
-
 Deploy `dist/` to any static host with an SPA fallback to `index.html`.
 
-### Deployment
+## Links
 
-Cloudflare Pages builds and publishes the site on every push to `main`. The build and preview
-settings live in the Cloudflare dashboard. The repo only pins the output directory, in
-[`wrangler.jsonc`](wrangler.jsonc).
-
-To deploy from a local checkout, run `pnpm build && pnpm dlx wrangler pages deploy dist`.
-
-### Quality
-
-One command, `pnpm verify`, runs the typecheck, lint, tests, build and bundle budget. The pre-push
-hook runs it too. CI runs the same checks as separate steps and adds `pnpm audit`.
-See [`docs/quality.md`](docs/quality.md) for the coverage thresholds, the bundle budget and the
-accessibility checks.
-
-## Contributing
-
-See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the dev loop, the conventions and the product scope.
+- [Architecture and deployment](docs/architecture.md), [decision records](docs/adr/)
+- [Quality checks](docs/quality.md)
+- [Contributing](CONTRIBUTING.md)
+- [Locale tools](tools/README.md)
 
 ## License
 
