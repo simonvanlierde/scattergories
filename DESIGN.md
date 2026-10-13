@@ -1,6 +1,6 @@
 ---
 name: Scattergories
-description: A table-side companion set like a printed page, with one serif letter at its centre.
+description: A table-side companion set like a printed page, with one serif letter at its center.
 colors:
   paper: "oklch(98.5% 0.008 85)"
   paper-card: "oklch(96.5% 0.01 85)"
@@ -140,11 +140,11 @@ letter first, then the clock, then the categories, and the controls last.
   One geometric sans (Geist) for everything you operate.
 - Paper and rules instead of cards and shadows.
 - One accent, ink navy (periwinkle at night), for the primary action, the pinned state and focus.
-- Urgency changes shape as well as colour.
+- Urgency changes shape as well as color.
 
 ## Colors
 
-Warm cream paper with cool blue-grey ink. The warm/cool contrast does the work, so colours stay
+Warm cream paper with cool blue-gray ink. The warm/cool contrast does the work, so colors stay
 muted (low chroma).
 
 ### Primary
@@ -172,10 +172,10 @@ muted (low chroma).
 - **Brick** (`danger`, `danger-wash`): the ring and readout from 5 s left, destructive confirms and
   error banners.
 
-**The One Accent Rule.** Navy is the only accent colour. Amber and brick only show round urgency or
+**The One Accent Rule.** Navy is the only accent color. Amber and brick only show round urgency or
 danger, never decoration.
 
-**The Two Themes Rule.** Every colour role has a light and a dark value, set on `.app-shell` and
+**The Two Themes Rule.** Every color role has a light and a dark value, set on `.app-shell` and
 `.app-shell[data-theme="dark"]`. Components use the semantic names (`--text-primary`,
 `--accent-primary`, `--rule`), never a raw value.
 
@@ -217,7 +217,7 @@ list, is Geist.
   From 19rem up, it sits above them and grows to 20rem. With the categories collapsed, the ring is
   full size (20rem) with the controls below. Categories flow in columns at least 11.5rem wide.
 - From 52rem, there are two columns: playmat on the left, categories on the right, with a hairline
-  between them. Collapsing the categories centres the playmat. From 64rem the ring grows to 26rem.
+  between them. Collapsing the categories centers the playmat. From 64rem the ring grows to 26rem.
 - Spacing uses a 4px scale (`--space-1` = 0.25rem). The playmat and grid gaps are 1rem, except
   0.75rem between the playmat and the categories below 52rem.
 - Safe-area insets pad the column for installed PWAs.
@@ -279,15 +279,15 @@ the readout. Panels and the playmat have no corners at all. Rules separate them.
 
 ### Do:
 
-- **Do** use the semantic tokens in `tokens.css`. Add a token before you add a raw colour.
+- **Do** use the semantic tokens in `tokens.css`. Add a token before you add a raw color.
 - **Do** keep the letter the largest thing on screen in every layout.
-- **Do** give every state change a shape cue as well as a colour (dash, stroke width, beat, border).
+- **Do** give every state change a shape cue as well as a color (dash, stroke width, beat, border).
 - **Do** keep touch targets at 44px (`2.75rem`) or more.
 - **Do** respect `prefers-reduced-motion`: animations shrink to nothing.
 
 ### Don't:
 
 - **Don't** add shadows or cards to set content apart on the page. Use a rule.
-- **Don't** add a second accent colour, gradients or decorative colour.
+- **Don't** add a second accent color, gradients or decorative color.
 - **Don't** set controls or lists in Fraunces, or the letter in Geist.
 - **Don't** dim the categories during a round. They must stay fully readable.

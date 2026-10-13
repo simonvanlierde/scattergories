@@ -6,10 +6,14 @@ web
 
 ## Users
 
-Friends or family playing Scattergories in person, around one table. One player's phone, tablet or
-laptop runs the app and lies flat in the middle. Everyone reads it from across the table, at an
+Families and friends playing Scattergories in person, around one table. One player's phone or
+tablet runs the app and lies flat in the middle. Landscape and laptops work, but the layout is
+designed for a phone or tablet. Everyone reads it from across the table, at an
 angle, mid-game. The person holding it rolls the letter, starts and pauses the round, and edits the
 deck between rounds. Everyone else only reads the letter, the clock and the categories.
+
+The default deck should suit a family table. Categories meant for adults, such as "Offensive
+Words", belong in a pack players opt into. "Offensive Words" is still in the default deck.
 
 ## Product Purpose
 
@@ -57,7 +61,8 @@ from their seat.
   official game, the source code and the MIT license.
 - The brand mark is an isometric die with three glyphs (`assets/brand/mark.svg`). It's also the
   favicon and the app icons.
-- Voice: short, plain and friendly. English copy is direct ("Roll a letter", "Time's up!").
+- Voice: short, plain and friendly. English copy is direct ("Roll a letter", "Time's up!") and uses
+  American spelling.
 
 ## Evidence on Hand
 
@@ -76,7 +81,7 @@ from their seat.
 ## Accessibility & Inclusion
 
 - CI runs Biome's a11y lint and axe-core scans (idle, running round, collapsed deck, open sheets).
-- Timer urgency changes shape as well as colour (a beat in the last 5 s). That helps colour-blind
+- Timer urgency changes shape as well as color (a beat in the last 5 s). That helps color-blind
   players and anyone reading from a distance. `prefers-reduced-motion` turns animation off.
 - Touch targets are at least 44 px. `tests/layout.spec.ts` fails on any shorter control in the
   settings and deck sheets. axe-core checks text contrast in the light theme.
