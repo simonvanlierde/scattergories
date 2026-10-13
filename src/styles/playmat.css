@@ -410,9 +410,8 @@
     }
   }
 
-  /* On mobile, keep the drawn categories in a single full-width column so every
-     name reads on one line, and let the hero take only the height the categories
-     leave over, so all 12 fit without scrolling. */
+  /* On mobile, the hero takes only the height the categories leave over, so the
+     list gets all the room it needs before the letter grows. */
   @media (max-width: 51.99rem) {
     /* Compact hero ONLY while the deck is open and competing for vertical
        space. When the deck is collapsed there is room, so the playmat keeps its
@@ -478,10 +477,10 @@
   /* Only the compact playmat (open deck, phone width) is a size container, so
      these height queries never match the full-size layouts.
 
-     Short row: ring left, controls beside it. The ring takes the row's height,
-     but always leaves the controls 12rem and never drops below the old fixed
-     size (which is also the row's minimum, so nothing changes on a phone whose
-     categories already fill the screen). The letter keeps the old 0.4 ratio. */
+     Short row: ring left, controls beside it. The ring takes the row's height
+     but always leaves the controls 12rem. It never drops below min(36vw, 9rem),
+     the row's minimum in layout.css, which is the size it gets on a phone whose
+     categories fill the screen. The letter is 0.4 of the ring. */
   @container (max-height: 18.99rem) {
     .playmat__hero {
       --hero: max(min(36vw, 9rem), min(100cqb, 100cqi - 12rem));
