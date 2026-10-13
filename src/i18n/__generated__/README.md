@@ -1,7 +1,7 @@
 # Letter-weight table
 
-[`letterWeights.ts`](letterWeights.ts) holds how often each letter starts a word in each
-language. The game uses it to roll common, playable letters more often. The table is generated
+[`letterWeights.ts`](letterWeights.ts) holds how often each letter starts a distinct word in
+each language. The game uses it to roll common, playable letters more often. The table is generated
 by the Python tools in [`tools/`](../../../tools/README.md); do not edit it by hand.
 
 [`letterWeights.meta.json`](letterWeights.meta.json) records where the numbers came from and the
@@ -17,9 +17,10 @@ and never downloads the corpus.
 |---|---|---|
 | locale key | Language code from [`registry.json`](../locales/registry.json) | `en`, `el`, ... |
 | letter key | One letter of that language's game alphabet | uppercase letter |
-| weight | Share of counted word-initial letters that folded to this letter | fraction from 0 to 1, 8 decimals; a locale's weights sum to about 1 |
+| weight | Share of counted distinct words whose initial folded to this letter | fraction from 0 to 1, 8 decimals; a locale's weights sum to about 1 |
 
-A word-initial letter is a letter not preceded by another letter. Accents are stripped and
+A word is a run of letters, and each distinct word counts once, ignoring case, so frequent words
+such as "the" and "of" do not inflate their letters. Accents are stripped and
 stroked letters folded (`Á` counts as `A`, `Ł` as `L`), and initials that fold to no letter of the
 alphabet are skipped. The game draws each letter with a chance proportional to its weight, so a
 letter with twice the weight comes up about twice as often; with "avoid repeats" on, it skips the
@@ -30,7 +31,7 @@ last 12 letters drawn.
 | Field | Meaning | Unit |
 |---|---|---|
 | `sourceCount` | Articles read | articles |
-| `total` | Word-initial letters counted | letters |
+| `total` | Distinct words counted | words |
 | `processedBytes` | Article text read | UTF-8 bytes |
 | `maxBytes` | Cap on article text read per locale | UTF-8 bytes |
 | `hasWeights`, `hasLocalePayload`, `hasCategoryPayload` | Whether the locale has weights, UI strings and categories | boolean |
