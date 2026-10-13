@@ -2,7 +2,7 @@
 
 ## Reproducible builds
 
-Every dependency is locked (`../pnpm-lock.yaml`, [`tools/uv.lock`](../tools/uv.lock)) and every tool version is pinned ([`.node-version`](../.node-version), the `packageManager` field in [`package.json`](../package.json), and [`tools/.python-version`](../tools/.python-version)), so a clean checkout builds identically. The same gates run locally, in pre-push hooks ([`lefthook.yml`](../lefthook.yml)), and in [CI](../.github/workflows/ci.yml):
+Every dependency is locked (`../pnpm-lock.yaml`, [`tools/uv.lock`](../tools/uv.lock)) and every tool version is pinned ([`.node-version`](../.node-version), the `packageManager` field in [`package.json`](../package.json), and [`tools/.python-version`](../tools/.python-version)), so a clean checkout builds the same way every time. The same checks run locally and in [CI](../.github/workflows/ci.yml). CI runs each one as its own step and also runs `pnpm audit`. The pre-push hook ([`lefthook.yml`](../lefthook.yml)) runs `pnpm verify`. The commands:
 
 ```bash
 pnpm check        # typecheck (tsc) + spellcheck (cspell) + lint (biome)
@@ -14,13 +14,13 @@ pnpm run ci       # verify, then the Python tools' ruff, format check, ty, table
 
 ## Enforced gates
 
-Quality is enforced, not just encouraged: the core game logic in `src/domain/game/` is held to 95%+ line and 100% function coverage (see [`vite.config.ts`](../vite.config.ts)), and each chunk loaded at startup has its own gzip budget: 80 KiB for the main entry, 64 KiB for the React vendor chunk and 24 KiB for the i18n vendor chunk, with no image asset over 80 KiB ([`scripts/check-bundle-budgets.mjs`](../scripts/check-bundle-budgets.mjs)).
+These limits are enforced, not just encouraged. The core game logic in `src/domain/game/` must keep 95%+ line coverage and 100% function coverage (see [`vite.config.ts`](../vite.config.ts)). Each chunk loaded at startup has its own gzip budget: 80 KiB for the main entry, 64 KiB for the React vendor chunk and 24 KiB for the i18n vendor chunk. No image asset may be over 80 KiB ([`scripts/check-bundle-budgets.mjs`](../scripts/check-bundle-budgets.mjs)).
 
 ## Accessibility
 
-Two automated checks run, both wired into CI:
+Two automated checks run, and CI runs both:
 
 - **Static lint**: Biome's `a11y` rule group is enabled ([`biome.json`](../biome.json)), so accessibility lint rules run as part of `pnpm lint`.
-- **Runtime scan**: [`tests/a11y.spec.ts`](../tests/a11y.spec.ts) runs [axe-core](https://github.com/dequelabs/axe-core) against the live app via `@axe-core/playwright`, asserting no violations on the idle screen, during an active round, with the prompt deck collapsed, and with the settings sheet or the how-to-play modal open. Run it with `pnpm test:e2e:smoke` (Chromium) or the full `pnpm test:e2e` matrix.
+- **Runtime scan**: [`tests/a11y.spec.ts`](../tests/a11y.spec.ts) runs [axe-core](https://github.com/dequelabs/axe-core) against the live app through `@axe-core/playwright`. It fails on any violation on the idle screen, during an active round, with the prompt deck collapsed, and with the settings sheet or the how-to-play modal open. Run it with `pnpm test:e2e:smoke` (Chromium) or the full `pnpm test:e2e` matrix.
 
-In CI, the axe checks run in Chromium on every pull request to `main`; the full browser matrix runs on the monthly schedule or a manual dispatch. These catch a subset of issues automatically, they are not a claim of WCAG conformance.
+In CI, the axe checks run in Chromium on every pull request to `main`. The full browser matrix runs on the monthly schedule or on a manual run. These checks catch only some issues automatically. They are not a claim of WCAG conformance.

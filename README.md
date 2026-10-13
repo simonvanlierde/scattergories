@@ -6,8 +6,8 @@
 [![PWA](https://img.shields.io/badge/PWA-installable-5A0FC8?)](https://scattergories.duinlab.nl)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fscattergories.duinlab.nl)](https://scattergories.duinlab.nl)
 
-An unofficial, browser-based companion for playing Scattergories at the table: no physical timer,
-die, or category cards needed. Single-page React app, no backend.
+An unofficial companion for playing Scattergories at the table, in your browser. You don't need
+the physical timer, die or category cards. It's a single-page React app with no backend.
 
 Scattergories is a party game by Hasbro. This project is not affiliated with or endorsed by
 Hasbro.
@@ -18,17 +18,17 @@ Hasbro.
 
 ## Features
 
-Roll a letter, draw a board of categories, and race the timer to name one thing per category; the
-app handles the die, the cards, and the clock.
+Roll a letter, draw a board of categories, and race the timer to name one thing per category. The
+app handles the die, the cards and the clock.
 
 - Rolls a letter from each language's own alphabet, weighted by that language's letter frequencies,
   so common, playable letters come up more often
-- 9 fully-translated languages: English, Spanish, French, German, Italian, Dutch, Polish,
+- Fully translated into 9 languages: English, Spanish, French, German, Italian, Dutch, Polish,
   Portuguese, Greek
-- Draws a round of categories, with a built-in timer, pause, and end-of-round screen
+- Draws a round of categories, with a built-in timer, a pause button and an end-of-round screen
 - Redraw categories on each new letter, or pin a fixed board
-- Built-in and custom category packs, persisted locally in the browser
-- Installable as a PWA, with no account or server required
+- Built-in and custom category packs, saved locally in your browser
+- Installs as a PWA (a web app you can add to your home screen), with no account or server
 
 ## Architecture
 
@@ -37,8 +37,8 @@ app handles the die, the cards, and the clock.
 
 ### Project structure
 
-For the layer diagram, round state machine, and data flow, see
-[`docs/architecture.md`](docs/architecture.md). The top-level map:
+For the layer diagram, the round state machine and the data flow, see
+[`docs/architecture.md`](docs/architecture.md). The top-level folders:
 
 - [`src/`](src/): the React app: `domain/game/` (pure game logic), `features/` (round, categories,
   settings), `app/` (shell and controller hooks), `i18n/` (locales and registry)
@@ -49,7 +49,7 @@ For the layer diagram, round state machine, and data flow, see
 
 ## Self hosting
 
-Want your own instance? Install [Node and pnpm](https://nodejs.org/en/download), then:
+To run your own copy, install [Node and pnpm](https://nodejs.org/en/download), then:
 
 ```bash
 pnpm install
@@ -64,22 +64,22 @@ Deploy `dist/` to any static host with an SPA fallback to `index.html`.
 
 ### Deployment
 
-Cloudflare Pages builds and publishes on every push to `main`. Build and preview settings live in
-the Cloudflare dashboard; the repo only pins the output directory in
+Cloudflare Pages builds and publishes the site on every push to `main`. The build and preview
+settings live in the Cloudflare dashboard. The repo only pins the output directory, in
 [`wrangler.jsonc`](wrangler.jsonc).
 
-To deploy from a local checkout: `pnpm build && pnpm dlx wrangler pages deploy dist`.
+To deploy from a local checkout, run `pnpm build && pnpm dlx wrangler pages deploy dist`.
 
 ### Quality
 
-A single `pnpm verify` gate (typecheck, lint, tests, build, bundle budget) runs identically locally,
-in pre-push hooks, and in CI, so a clean checkout builds the same everywhere. See
-[`docs/quality.md`](docs/quality.md) for coverage thresholds, the bundle budget, and the
+One command, `pnpm verify`, runs the typecheck, lint, tests, build and bundle budget. The pre-push
+hook runs it too. CI runs the same checks as separate steps and adds `pnpm audit`.
+See [`docs/quality.md`](docs/quality.md) for the coverage thresholds, the bundle budget and the
 accessibility checks.
 
 ## Contributing
 
-See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the dev loop, conventions, and product scope.
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the dev loop, the conventions and the product scope.
 
 ## License
 

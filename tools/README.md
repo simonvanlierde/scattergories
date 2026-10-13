@@ -1,6 +1,6 @@
 # Scattergories Tools
 
-The `tools/` workspace contains the Python CLI used to inspect, preview, and regenerate
+The `tools/` workspace holds the Python CLI that inspects, previews and regenerates the
 Scattergories locale assets.
 
 ## Install
@@ -10,7 +10,7 @@ cd tools
 uv sync --locked
 ```
 
-Optional offline translation support:
+For offline translation, also install the optional group:
 
 ```bash
 uv sync --group translation --locked
@@ -18,13 +18,13 @@ uv sync --group translation --locked
 
 ## CLI
 
-All workflows go through one command:
+Everything goes through one command:
 
 ```bash
 uv run sg-tools --help
 ```
 
-Supported commands:
+The commands are:
 
 - `sg-tools doctor`
 - `sg-tools weights sample`
@@ -34,15 +34,15 @@ Supported commands:
 - `sg-tools translate categories`
 - `sg-tools translate locales`
 
-By default commands are preview-safe. Writing back to the app requires explicit flags:
+By default, commands only preview. To write back to the app, pass one of these flags:
 
-- `--write` for ephemeral output under `tools/out/`
+- `--write` for temporary output under `tools/out/`
 - `--write-app-file` for locale weight generation
 - `--write-app-files` for translated app JSON files
 
 ## Common workflows
 
-Preview environment and dependency health:
+Check the environment and dependencies:
 
 ```bash
 uv run sg-tools doctor
@@ -98,7 +98,7 @@ uv run --group translation sg-tools translate locales --target-locales es,fr --w
 
 ## Task runner
 
-There is no root-level `justfile`; run recipes from `tools/`:
+There is no `justfile` at the repo root. Run the recipes from `tools/`:
 
 ```bash
 cd tools && just doctor
@@ -111,17 +111,19 @@ See [`tools/justfile`](justfile) for the full recipe list.
 
 ## Artifacts
 
-- Ephemeral outputs live in `tools/out/`
+- Temporary outputs live in `tools/out/`
 - Runtime caches live in `tools/.cache/`
-- App-consumed generated files live in `src/i18n/__generated__/` and `src/i18n/locales/`
+- Generated files that the app reads live in `src/i18n/__generated__/` and `src/i18n/locales/`
 - The letter-weight table's provenance, checks and licence are described in
   [`src/i18n/__generated__/README.md`](../src/i18n/__generated__/README.md)
 
-Coverage output is reported in the terminal/CI and is not written into tracked workspace files.
+Coverage is reported in the terminal and in CI. It is not written to any tracked file.
 
 ## Test suite notes
 
-- Prefer fast unit tests and narrow seam-based fakes over broader integration setups.
-- Prioritize branch coverage on orchestration-heavy modules like the CLI and provider adapters.
-- When behavior matters, prefer reusable fakes over ad hoc mocks and inline anonymous stubs.
-- Favor one assertion-rich behavior test over several shallow smoke tests for the same path.
+- Prefer fast unit tests with small fakes at module boundaries over larger integration setups.
+- Put branch coverage first in modules that mostly coordinate other code, like the CLI and the
+  provider adapters.
+- When behavior matters, prefer reusable fakes over one-off mocks and inline stubs.
+- For one code path, prefer one behavior test with many assertions over several shallow smoke
+  tests.

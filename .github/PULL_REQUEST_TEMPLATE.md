@@ -1,4 +1,4 @@
-<!-- Thanks for the PR! Keep it small and focused; see CONTRIBUTING.md. -->
+<!-- Thanks for the PR! Keep it small and focused, and see CONTRIBUTING.md. -->
 
 ## What & why
 
@@ -7,6 +7,6 @@
 ## Checklist
 
 - [ ] `pnpm verify` is green (typecheck + spellcheck + lint + test + build + bundle budget)
-- [ ] Touched the Python `tools/`? Ran `pnpm ci` instead
-- [ ] User-visible wording changed? Updated every locale + tests (`completeness.test.ts` enforces parity)
+- [ ] Touched the Python `tools/`? Ran `pnpm run ci` instead
+- [ ] User-visible wording changed? Updated every locale and the tests (`completeness.test.ts` checks the locales stay in step)
 - [ ] Stayed within the [product contract](../CONTRIBUTING.md#product-contract): a round companion, not a scorekeeper
