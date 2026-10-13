@@ -58,6 +58,11 @@ typography:
     fontSize: "clamp(0.75rem, 0.72rem + 0.12vw, 0.8125rem)"
     fontWeight: 600
     letterSpacing: "0.14em"
+  button:
+    fontFamily: "Geist Variable, Geist, system-ui, sans-serif"
+    fontSize: "clamp(1.125rem, 1.08rem + 0.22vw, 1.1875rem)"
+    fontWeight: 500
+    letterSpacing: "0.02em"
 rounded:
   xs: "0.125rem"
   sm: "0.25rem"
@@ -73,7 +78,7 @@ components:
   button-primary:
     backgroundColor: "{colors.ink-navy}"
     textColor: "{colors.paper}"
-    typography: "{typography.body}"
+    typography: "{typography.button}"
     rounded: "{rounded.sm}"
     padding: "0 1.25rem"
     height: "3.25rem"
@@ -186,15 +191,17 @@ geometric sans for controls and lists.
 - **Headline** (500, `--text-2xl`): sheet titles; also the italic "Time's up!" readout.
 - **Title** (500, `--text-lg`): the Categories heading.
 - **Clock** (600, `--text-3xl`, tabular figures): the round readout.
-- **Body** (400, `--text-md`, 1.3): category names, buttons, settings.
+- **Body** (400, `--text-md`, 1.3): category names and settings.
+- **Button** (500, 0.02em): `--text-lg` on the primary button, `--text-md` on the others.
 - **Label** (600, `--text-xs`, 0.14em, uppercase): field labels. The footer wordmark uses Fraunces
   uppercase at the same tracking.
 
 The type scale is fluid (minor third, `--text-xs` to `--text-hero`); category numerals are Fraunces
 italic.
 
-**The Serif Is a Moment Rule.** Fraunces marks something that happened (the letter, the end of a
-round, a title). Anything you tap or read in a list is Geist.
+**The Serif Is a Moment Rule.** Fraunces marks a moment or a heading: the letter, the end of a
+round, titles, the How to play lead and the italic numerals. Anything you tap, and every name in a
+list, is Geist.
 
 ## Layout
 
@@ -205,14 +212,15 @@ round, a title). Anything you tap or read in a list is Geist.
   with the controls below. Categories flow in columns of at least 11.5rem.
 - From 52rem: two columns, playmat left and categories right, split by a hairline. Collapsing the
   categories centres the playmat. From 64rem the ring grows to 26rem.
-- Spacing is a 4px scale (`--space-1` = 0.25rem); the playmat and grid gaps use 1rem.
+- Spacing is a 4px scale (`--space-1` = 0.25rem). The playmat and grid gaps use 1rem, except
+  0.75rem between the playmat and the categories below 52rem.
 - Safe-area insets pad the column for installed PWAs.
 
 ## Elevation & Depth
 
 Flat by default. Depth comes from hairline rules (`--elevation-1` is a 1px rule) and from tonal
-paper steps, not shadows. The only real shadow is `--elevation-4` under modal sheets, over a warm
-scrim.
+paper steps, not shadows. The only real shadow is `--elevation-4` under modal sheets, over a scrim
+(warm in the light theme, black in the dark one).
 
 **The Paper Rule.** If it sits on the page, it gets a hairline, not a shadow.
 
@@ -226,10 +234,11 @@ where the readout sits. Panels and the playmat have no corners at all; they are 
 
 ### Buttons
 
-- **Primary:** navy fill, paper text, 0.25rem corners, 3.25rem tall. One per screen: Roll a
-  letter, Pause, Next round.
-- **Ghost and icon buttons:** transparent, ink or secondary ink; a 6% ink wash on hover; 44px square
-  minimum. Pressing scales to 0.97 (0.92 for icons).
+- **Primary:** navy fill, paper text, 0.25rem corners, 3.25rem tall. It holds the round's next
+  step: Roll a letter, Pause or Resume, Next round.
+- **Ghost and icon buttons:** transparent, ink or secondary ink; a 6% ink wash on hover. Icon
+  buttons are at least 44px square; ghost buttons are 44px tall, or 40px at the small size (the
+  deck sheet's bulk remove). Pressing scales to 0.97 (0.92 for icons).
 - **Armed confirm:** a destructive icon button turns brick with a brick wash and needs a second tap.
 - **Focus:** a 2px navy outline, offset 2–3px.
 
@@ -245,8 +254,9 @@ where the readout sits. Panels and the playmat have no corners at all; they are 
 
 - The letter sits inside the ring as a drop cap; a "?" at 12% opacity stands in before the first
   roll.
-- The ring drains while the round runs: secondary ink, then amber at 15 s, then brick and a thicker
-  stroke at 5 s, when the readout also beats once a second. Paused shows a dashed track.
+- The ring drains while the round runs: secondary ink, then amber at 15 s, then brick at 5 s. The
+  stroke thickens at each step (3, 4, 6), and from 5 s the readout also beats once a second.
+  Paused shows a dashed track.
 - The letter lands with a spring (640ms) and settles once when time is up.
 
 ### Sheets
