@@ -5,7 +5,7 @@ from contextlib import contextmanager
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+    from collections.abc import Generator
     from pathlib import Path
 
 
@@ -53,7 +53,7 @@ class TranslationCache:
 
 
 @contextmanager
-def open_translation_cache(cache_path: Path) -> Iterator[TranslationCache]:
+def open_translation_cache(cache_path: Path) -> Generator[TranslationCache]:
     """Context manager for the translation cache."""
     cache = TranslationCache(cache_path)
     try:
