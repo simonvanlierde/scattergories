@@ -58,6 +58,8 @@ words:
   - scattergories
   - duinlab
   - Wikitext
+  # Codecov setting
+  - carryforward
   # Fonts
   - Avenir
   - Fraunces
