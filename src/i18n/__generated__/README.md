@@ -6,9 +6,9 @@ each language. The game uses it to roll common, playable letters more often. The
 it by hand.
 
 [`letterWeights.meta.json`](letterWeights.meta.json) records where the numbers came from, how much
-text each locale's numbers rest on, and the SHA-256 of `letterWeights.json`. CI runs `sg-tools weights verify` and fails when the two files
-disagree, so the table cannot change without its metadata. The check reads only these two files
-and never downloads the corpus.
+text each locale's numbers rest on, and the SHA-256 of `letterWeights.json`. CI runs
+`sg-tools weights verify` and fails when the two files disagree, so the table cannot change
+without its metadata. The check reads only these two files and never downloads the corpus.
 
 ## What is in the table
 
