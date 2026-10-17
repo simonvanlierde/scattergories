@@ -19,7 +19,6 @@ from scattergories_tools.weights.analyze import (
 from scattergories_tools.weights.provenance import (
     check_metadata,
     metadata_path_for,
-    stamp_checksum,
     write_metadata,
 )
 from scattergories_tools.weights.render import (
@@ -90,7 +89,7 @@ def locales(
     ] = None,
     *,
     write_app_file: Annotated[
-        bool, typer.Option(help="Write src/i18n/__generated__/letterWeights.ts.")
+        bool, typer.Option(help="Write src/i18n/__generated__/letterWeights.json.")
     ] = False,
 ) -> None:
     """Analyze locale corpora and optionally update the app weight file."""
@@ -134,15 +133,7 @@ def verify() -> None:
         typer.echo(problem, err=True)
     if problems:
         typer.echo(
-            "Regenerate the table, or run `sg-tools weights stamp` after a deliberate edit.",
-            err=True,
+            "Regenerate the table with `sg-tools weights locales --write-app-file`.", err=True
         )
         raise typer.Exit(1)
     typer.echo(f"OK: {table_path.name} matches {metadata_path_for(table_path).name}")
-
-
-@app.command("stamp")
-def stamp() -> None:
-    """Refresh the metadata checksum after formatting or a deliberate edit of the table."""
-    table_path = create_context().paths.generated_weights_path
-    typer.echo(f"sha256 {stamp_checksum(table_path)}")

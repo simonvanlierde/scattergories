@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { BOOT_MESSAGES } from "@/app/bootMessages";
+import { PACKS } from "@/domain/deck";
 import { CATEGORY_KEYS } from "@/domain/game/categoryKeys";
-import { LETTER_WEIGHTS_BY_LOCALE } from "@/i18n/__generated__/letterWeights";
+import { LETTER_WEIGHTS_BY_LOCALE } from "@/domain/game/localeWeights";
 import {
   FALLBACK_LOCALE,
   getLocaleLetters,
   getNativeName,
   SUPPORTED_LOCALES,
 } from "@/i18n/localeRegistry";
-import { PACKS } from "@/shared/lib/categoryPacks";
 import { loadLocaleNamespaces } from "./resources";
 
 function flattenEntries(value: unknown, prefix = ""): [string, unknown][] {

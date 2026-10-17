@@ -110,7 +110,7 @@ def repo_context(
         cache_dir=cache_dir,
         out_dir=out_dir,
         registry_path=registry_path,
-        generated_weights_path=generated_dir / "letterWeights.ts",
+        generated_weights_path=generated_dir / "letterWeights.json",
         locale_dir=locale_dir,
         categories_source_path=locale_dir / "categories.en.json",
         locale_payload_source_path=locale_dir / "en.json",

@@ -1,5 +1,9 @@
 import registry from "./locales/registry.json";
 
+/** A supported locale code. JSON imports type array items as plain strings, so the union
+ * comes from the keys of the registry's per-locale alphabet map. */
+type LocaleCode = keyof typeof registry.lettersByLocale;
+
 const FALLBACK_LOCALE_VALUE = registry.fallbackLocale;
 const SUPPORTED_LOCALES_VALUE = registry.locales as readonly string[];
 const LETTERS_BY_LOCALE_VALUE = registry.lettersByLocale as Record<string, string>;
@@ -34,4 +38,5 @@ function getNativeName(locale: string | null | undefined): string {
 export const SUPPORTED_LOCALES = SUPPORTED_LOCALES_VALUE;
 export const FALLBACK_LOCALE = FALLBACK_LOCALE_VALUE;
 
+export type { LocaleCode };
 export { getLocaleLetters, getNativeName, normalizeLocale, resolveLocale };

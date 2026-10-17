@@ -1,5 +1,6 @@
 """Behavior tests for weight-generation CLI commands."""
 
+import json
 from typing import TYPE_CHECKING
 
 from scattergories_tools import cli
@@ -174,9 +175,7 @@ def test_weights_locales_write_updates_generated_app_file(
     rendered = paths.generated_weights_path.read_text(encoding="utf-8")
     assert result.exit_code == 0
     assert paths.generated_weights_path.exists()
-    assert '"en"' in rendered
-    assert '"es"' in rendered
-    assert "satisfies Record<LocaleCode, Record<string, number>>" in rendered
+    assert json.loads(rendered) == {locale: {"A": 1.0, "B": 0.0} for locale in ("el", "en", "es")}
 
 
 def test_weights_locales_write_rejects_partial_locale_set(

@@ -1,8 +1,8 @@
 import { act, renderHook } from "@testing-library/react";
 import { beforeEach, expect, it, vi } from "vitest";
+import { drawLetter, RECENT_LETTER_WINDOW } from "@/domain/deck";
 import { getLocaleLetterWeights } from "@/domain/game/localeWeights";
 import { roundReducer } from "@/domain/game/roundReducer";
-import { drawLetter, RECENT_LETTER_WINDOW } from "@/domain/game/utils";
 import { getLocaleLetters } from "@/i18n/localeRegistry";
 import { ONE_SECOND_MS, TWO_SECONDS_MS } from "@/test/constants";
 import { BUFFER_SECONDS } from "@/test/gameConstants";
