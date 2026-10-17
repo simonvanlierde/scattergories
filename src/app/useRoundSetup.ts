@@ -1,3 +1,4 @@
+import { getDeckSize, getDrawCount } from "@/domain/deck";
 import {
   bufferSecondsDefault,
   bufferSecondsMax,
@@ -10,10 +11,6 @@ import {
   durationMin,
 } from "@/domain/game/constants";
 import { clampInt } from "@/domain/game/utils";
-
-function getNormalizedCategoryCount(categoryCount: number, availableCount: number): number {
-  return Math.min(categoryCount, Math.max(catCountMin, availableCount));
-}
 
 function useRoundSetup(settings: {
   catCountInput: string;
@@ -32,8 +29,8 @@ function useRoundSetup(settings: {
   );
   const categoryCount = clampInt(settings.catCountInput, catCountMin, catCountMax, catCountDefault);
 
-  const availableCount = new Set([...settings.customCategories, ...settings.deckBuiltins]).size;
-  const normalizedCategoryCount = getNormalizedCategoryCount(categoryCount, availableCount);
+  const availableCount = getDeckSize(settings.customCategories, settings.deckBuiltins);
+  const normalizedCategoryCount = getDrawCount(categoryCount, availableCount);
 
   return {
     deckBuiltins: settings.deckBuiltins,

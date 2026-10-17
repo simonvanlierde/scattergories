@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useReducer, useRef } from "react";
-import { getLocaleLetterWeights } from "@/domain/game/localeWeights";
+import { drawRoundLetter } from "@/domain/deck";
 import { initialRoundState, roundReducer } from "@/domain/game/roundReducer";
-import { drawLetter, RECENT_LETTER_WINDOW } from "@/domain/game/utils";
-import { getLocaleLetters } from "@/i18n/localeRegistry";
 import { useAudio } from "./useAudio";
 import { useLetterRoller } from "./useLetterRoller";
 
@@ -194,12 +192,10 @@ export function useRound({
     clearAlarmTimeout();
     // A fresh spin restarts the countdown from a full second.
     tickRemainderRef.current = null;
-    // With avoidRepeats off, skipping just the previous letter stops a spin
-    // that lands where it started and reads as "the spin did nothing".
-    const chosen = drawLetter(
-      getLocaleLetters(locale),
-      getLocaleLetterWeights(locale),
-      state.recentLetters.slice(avoidRepeats ? -RECENT_LETTER_WINDOW : -1),
+    const { letter: chosen, recentLetters } = drawRoundLetter(
+      locale,
+      state.recentLetters,
+      avoidRepeats,
     );
     if (opts.redrawCategories) {
       onLetterPicked();
@@ -209,7 +205,7 @@ export function useRound({
       type: "START_SPIN",
       gameSeconds,
       bufferSeconds,
-      recentLetters: [...state.recentLetters, chosen].slice(-RECENT_LETTER_WINDOW),
+      recentLetters,
     });
 
     roller.spinTo(chosen, () => {

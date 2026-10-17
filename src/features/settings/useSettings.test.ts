@@ -2,7 +2,7 @@ import { act, renderHook, waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { ADULT_KEYS } from "@/shared/lib/categoryPacks";
+import { ADULT_KEYS } from "@/domain/deck";
 import { SettingsProvider, useSettings } from "./SettingsProvider";
 import { SETTINGS_STORAGE_KEY } from "./schema";
 

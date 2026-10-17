@@ -1,6 +1,6 @@
 import { createContext, type PropsWithChildren, useContext, useEffect, useReducer } from "react";
+import { addPackToDeck } from "@/domain/deck";
 import { categories } from "@/domain/game/constants";
-import { getPackCategories } from "@/shared/lib/categoryPacks";
 import { safeStorage } from "@/shared/lib/safeStorage";
 import {
   DARK_SCHEME_QUERY,
@@ -115,11 +115,8 @@ function settingsReducer(state: Settings, action: SettingsAction): Settings {
     case "togglePinAll":
       return applyTogglePinAll(state, action.names);
 
-    case "addPack": {
-      const packKeys = getPackCategories(action.packId, categories);
-      const merged = Array.from(new Set([...state.deckBuiltins, ...packKeys]));
-      return { ...state, deckBuiltins: merged };
-    }
+    case "addPack":
+      return { ...state, deckBuiltins: addPackToDeck(state.deckBuiltins, action.packId) };
 
     case "removeBuiltin":
       return {

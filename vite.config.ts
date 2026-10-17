@@ -50,7 +50,7 @@ export default defineConfig({
       include: ["src/**/*.ts", "src/**/*.tsx"],
       exclude: ["src/main.tsx", "src/vite-env.d.ts", "src/setupTests.ts"],
       thresholds: {
-        "src/domain/game/**/*.ts": {
+        "src/domain/**/*.ts": {
           lines: 95,
           functions: 100,
           branches: 90,

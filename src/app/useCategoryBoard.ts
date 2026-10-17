@@ -1,6 +1,6 @@
 import { type RefObject, useCallback, useEffect, useRef, useState } from "react";
+import { composeDeck } from "@/domain/deck";
 import { pickRandom } from "@/domain/game/utils";
-import { composeDeck } from "@/shared/lib/deck";
 import { prefersReducedMotion } from "@/shared/lib/prefersReducedMotion";
 import { runRoll } from "@/shared/lib/rollAnimation";
 

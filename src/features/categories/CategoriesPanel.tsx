@@ -2,8 +2,8 @@ import { ChevronDown, Pin, Plus, RefreshCw, SlidersHorizontal, Tags, Trash2 } fr
 import type { RefObject } from "react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { PACKS } from "@/domain/deck";
 import { catCountDefault, catCountMax, catCountMin } from "@/domain/game/constants";
-import { PACKS } from "@/shared/lib/categoryPacks";
 import { Button } from "@/shared/ui/Button";
 import { cx } from "@/shared/ui/cx";
 import { DebouncedNumberField } from "@/shared/ui/DebouncedNumberField";

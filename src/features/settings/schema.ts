@@ -1,3 +1,4 @@
+import { CLASSIC_PACK_ID, getDefaultDeckBuiltins, getPackCategories } from "@/domain/deck";
 import {
   bufferSecondsDefault,
   bufferSecondsMax,
@@ -11,7 +12,6 @@ import {
   durationMin,
 } from "@/domain/game/constants";
 import { clampInt } from "@/domain/game/utils";
-import { CLASSIC_PACK_ID, getPackCategories } from "@/shared/lib/categoryPacks";
 import { safeStorage } from "@/shared/lib/safeStorage";
 
 type PromptDeckPreference = "auto" | "open" | "collapsed";
@@ -30,7 +30,7 @@ interface Settings {
   /** Pinned category names (custom or built-in) — always drawn each round. */
   pinned: string[];
   isMuted: boolean;
-  /** When true, letters are drawn without repeats until the alphabet is exhausted. */
+  /** When true, a letter draw skips the last RECENT_LETTER_WINDOW letters (see domain/deck). */
   avoidRepeats: boolean;
   theme: Theme;
   themeSource: ThemeSource;
@@ -58,7 +58,7 @@ function getDefaultSettings(): Settings {
     durationInput: String(durationDefault),
     catCountInput: String(catCountDefault),
     bufferSecondsInput: String(bufferSecondsDefault),
-    deckBuiltins: getPackCategories(CLASSIC_PACK_ID, categories),
+    deckBuiltins: getDefaultDeckBuiltins(),
     customCategories: [],
     pinned: [],
     isMuted: false,
@@ -106,9 +106,9 @@ function migrateDeckBuiltins(parsed: Partial<Settings> & LegacySettings): string
       return [];
     }
     const packId = typeof parsed.activePack === "string" ? parsed.activePack : CLASSIC_PACK_ID;
-    return sanitizeBuiltins(getPackCategories(packId, categories));
+    return sanitizeBuiltins(getPackCategories(packId));
   }
-  return getPackCategories(CLASSIC_PACK_ID, categories);
+  return getDefaultDeckBuiltins();
 }
 
 function sanitizeSettings(raw: unknown): Settings {

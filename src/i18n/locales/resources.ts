@@ -1,4 +1,4 @@
-import { FALLBACK_LOCALE, resolveLocale, type SUPPORTED_LOCALES } from "../localeRegistry";
+import { FALLBACK_LOCALE, type LocaleCode, resolveLocale } from "../localeRegistry";
 import categoriesResourceEn from "./categories.en.json";
 import enTranslation from "./en.json";
 
@@ -9,7 +9,6 @@ interface LocaleNamespaces {
 
 type TranslationResource = Record<string, unknown>;
 type CategoriesResource = Record<string, string>;
-type LocaleCode = (typeof SUPPORTED_LOCALES)[number];
 
 const translationResourceEn: TranslationResource = enTranslation;
 const categoriesResourceEnValue: CategoriesResource = categoriesResourceEn;

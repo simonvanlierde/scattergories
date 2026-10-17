@@ -10,7 +10,7 @@ The source is layered so the game rules never depend on React, and the UI never 
 flowchart TD
     App["src/app/: shell + useGameController (the boundary)"]
     Features["src/features/: round · categories · settings"]
-    Domain["src/domain/game/: pure rules + roundReducer"]
+    Domain["src/domain/: deck rules + game/ (roundReducer)"]
     Shared["src/shared/: ui + lib"]
     I18n["src/i18n/: locales + generated weights"]
     Storage[("localStorage")]
@@ -41,7 +41,7 @@ stateDiagram-v2
 
 ## Data flow
 
-`useGameController` combines the feature hooks and gives the shell a single typed interface. Letters are rolled with locale-aware weights from `i18n/__generated__/letterWeights.json`, which `tools/` produces offline. Settings and custom category packs are the only saved state. They are written to `localStorage` from `features/settings/`, through the `safeStorage` wrapper in `shared/lib`. There is no network call at runtime, and nothing leaves the device.
+`useGameController` combines the feature hooks and gives the shell a single typed interface. The deck rules live in one pure module, [`domain/deck.ts`](../src/domain/deck.ts): the category packs, the default deck, how a round's categories are drawn, and how its letter is drawn. Letters are rolled with locale-aware weights from `i18n/__generated__/letterWeights.json`, which `tools/` produces offline. Settings and custom category packs are the only saved state. They are written to `localStorage` from `features/settings/`, through the `safeStorage` wrapper in `shared/lib`. There is no network call at runtime, and nothing leaves the device.
 
 The reasons for the key choices live in [`adr/`](adr/).
 

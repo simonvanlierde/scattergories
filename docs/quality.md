@@ -6,7 +6,7 @@ Every dependency is locked (`../pnpm-lock.yaml`, [`tools/uv.lock`](../tools/uv.l
 
 ## Enforced gates
 
-The core game logic in `src/domain/game/` must keep 95%+ line coverage and 100% function coverage, and the rest of `src/` 60% line coverage (see [`vite.config.ts`](../vite.config.ts)). Each chunk loaded at startup has its own gzip budget: 80 KiB for the main entry, 64 KiB for the React vendor chunk and 24 KiB for the i18n vendor chunk. No image asset may be over 80 KiB ([`scripts/check-bundle-budgets.mjs`](../scripts/check-bundle-budgets.mjs)).
+The core game logic in `src/domain/` must keep 95%+ line coverage and 100% function coverage, and the rest of `src/` 60% line coverage (see [`vite.config.ts`](../vite.config.ts)). Each chunk loaded at startup has its own gzip budget: 80 KiB for the main entry, 64 KiB for the React vendor chunk and 24 KiB for the i18n vendor chunk. No image asset may be over 80 KiB ([`scripts/check-bundle-budgets.mjs`](../scripts/check-bundle-budgets.mjs)).
 
 ## Accessibility
 
