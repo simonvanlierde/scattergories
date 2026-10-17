@@ -26,68 +26,23 @@ def render_letter_weights_module(rows: list[LetterRow]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def _render_letter_weight_entries(rows: list[LetterRow]) -> str:
-    return "\n".join(
-        f"      [{json.dumps(row.letter)}, {row.frequency:.8f}],"
-        for row in sorted(rows, key=lambda row: row.letter)
-    )
+def _format_weight(value: float) -> str:
+    # Eight decimals without trailing zeros, the way Biome prints JSON numbers, so the
+    # formatter never rewrites the generated file.
+    text = f"{value:.8f}".rstrip("0")
+    return f"{text}0" if text.endswith(".") else text
 
 
-def _render_locale_manifest_entries(analyses: dict[str, LocaleAnalysis]) -> str:
-    return "\n".join(
-        "\n".join(
-            [
-                f"  [{json.dumps(locale)}, {{",
-                f"    locale: {json.dumps(locale)} as LocaleCode,",
-                f"    sourceCount: {analysis.source_count},",
-                f"    total: {analysis.total},",
-                f"    hasWeights: {str(analysis.total > 0).lower()},",
-                "    hasLocalePayload: true,",
-                "    hasCategoryPayload: true,",
-                f"    processedBytes: {analysis.processed_bytes},",
-                f"    maxBytes: {analysis.max_bytes},",
-                "  }],",
-            ]
+def render_letter_weights_json(analyses: dict[str, LocaleAnalysis]) -> str:
+    """Render the app's letter-weight table as JSON: locale to letter to weight, keys sorted."""
+    locales = []
+    for locale, analysis in sorted(analyses.items()):
+        letters = ",\n".join(
+            f"    {json.dumps(row.letter)}: {_format_weight(row.frequency)}"
+            for row in sorted(analysis.rows, key=lambda row: row.letter)
         )
-        for locale, analysis in sorted(analyses.items())
-    )
-
-
-def render_locale_weight_source(analyses: dict[str, LocaleAnalysis]) -> str:
-    """Render the committed locale weight module used by the app."""
-    letter_weights_lines = "\n".join(
-        "\n".join(
-            [
-                f"  [{json.dumps(locale)}, Object.fromEntries([",
-                _render_letter_weight_entries(analysis.rows),
-                "    ])],",
-            ]
-        )
-        for locale, analysis in sorted(analyses.items())
-    )
-    manifest_entries = _render_locale_manifest_entries(analyses)
-
-    return (
-        "import type { LocaleCode } from '../locales/resources';\n\n"
-        "export interface LocaleWeightManifest {\n"
-        "  locale: LocaleCode;\n"
-        "  sourceCount: number;\n"
-        "  total: number;\n"
-        "  hasWeights: boolean;\n"
-        "  hasLocalePayload: boolean;\n"
-        "  hasCategoryPayload: boolean;\n"
-        "  processedBytes: number;\n"
-        "  maxBytes: number;\n"
-        "}\n\n"
-        "export const LETTER_WEIGHTS_BY_LOCALE =\n"
-        "  Object.fromEntries([\n"
-        f"{letter_weights_lines}\n"
-        "  ]) satisfies Record<LocaleCode, Record<string, number>>;\n\n"
-        "export const LOCALE_WEIGHT_MANIFEST =\n"
-        "  Object.fromEntries([\n"
-        f"{manifest_entries}\n"
-        "  ]) satisfies Record<LocaleCode, LocaleWeightManifest>;\n"
-    )
+        locales.append(f"  {json.dumps(locale)}: {{\n{letters}\n  }}")
+    return "{\n" + ",\n".join(locales) + "\n}\n"
 
 
 def write_sample_output(base_dir: Path, analysis: SampleAnalysis) -> tuple[Path, Path]:
@@ -104,5 +59,5 @@ def write_sample_output(base_dir: Path, analysis: SampleAnalysis) -> tuple[Path,
 def write_locale_app_file(output_path: Path, analyses: dict[str, LocaleAnalysis]) -> Path:
     """Write the app-consumed locale weights file."""
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(render_locale_weight_source(analyses), encoding="utf-8")
+    output_path.write_text(render_letter_weights_json(analyses), encoding="utf-8")
     return output_path

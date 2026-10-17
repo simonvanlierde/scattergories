@@ -1,7 +1,8 @@
 """Provenance metadata for the shipped letter-weight table.
 
-The metadata file sits next to the table and records where the numbers came from and the
-SHA-256 of the table, so CI can catch a table that changed without its metadata.
+The metadata file sits next to the JSON table and records where the numbers came from, each
+locale's sample size and the SHA-256 of the table, so CI can catch a table that changed without
+its metadata.
 """
 
 import hashlib
@@ -21,10 +22,6 @@ if TYPE_CHECKING:
 
 INITIAL_TABLE_VERSION = "1.0.0"
 _SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+$")
-# Match both the generator's `locale: "en" as ...` and plain formatted output.
-_LOCALE_RE = re.compile(r'\blocale:\s*"([^"]+)"')
-# Biome may rewrite `maxBytes: 150000000` as `maxBytes: Number("150000000")`.
-_MAX_BYTES_RE = re.compile(r'\bmaxBytes:\s*(?:Number\(")?(\d+)')
 
 
 def metadata_path_for(table_path: Path) -> Path:
@@ -75,8 +72,15 @@ def write_metadata(table_path: Path, analyses: dict[str, LocaleAnalysis]) -> Pat
             "split": "train",
             "url": f"https://huggingface.co/datasets/{WIKIPEDIA_DATASET}",
         },
-        "locales": sorted(analyses),
         "maxBytesPerLocale": max_bytes,
+        "samples": {
+            locale: {
+                "sourceCount": analysis.source_count,
+                "total": analysis.total,
+                "processedBytes": analysis.processed_bytes,
+            }
+            for locale, analysis in sorted(analyses.items())
+        },
         "generator": {
             "tool": "scattergories-tools",
             "version": version("scattergories-tools"),
@@ -88,15 +92,6 @@ def write_metadata(table_path: Path, analyses: dict[str, LocaleAnalysis]) -> Pat
     return meta_path
 
 
-def stamp_checksum(table_path: Path) -> str:
-    """Refresh only the checksum, for a table reformatted after generation."""
-    meta_path = metadata_path_for(table_path)
-    payload = json.loads(meta_path.read_text(encoding="utf-8"))
-    payload["sha256"] = sha256_file(table_path)
-    _write_json(meta_path, payload)
-    return payload["sha256"]
-
-
 def check_metadata(table_path: Path) -> list[str]:
     """Return every way the table and its metadata disagree; empty means consistent."""
     meta_path = metadata_path_for(table_path)
@@ -106,7 +101,6 @@ def check_metadata(table_path: Path) -> list[str]:
         return [f"missing metadata: {meta_path}"]
 
     meta = json.loads(meta_path.read_text(encoding="utf-8"))
-    table = table_path.read_text(encoding="utf-8")
     problems: list[str] = []
 
     actual = sha256_file(table_path)
@@ -119,13 +113,12 @@ def check_metadata(table_path: Path) -> list[str]:
     if not _SEMVER_RE.match(str(meta.get("tableVersion", ""))):
         problems.append(f"tableVersion is not x.y.z: {meta.get('tableVersion')}")
 
-    table_locales = sorted(_LOCALE_RE.findall(table))
-    if sorted(meta.get("locales", [])) != table_locales:
-        problems.append(f"locales mismatch: metadata {meta.get('locales')}, table {table_locales}")
-
-    cap = meta.get("maxBytesPerLocale")
-    table_caps = {int(value) for value in _MAX_BYTES_RE.findall(table)}
-    if table_caps != {cap}:
-        problems.append(f"byte cap mismatch: metadata {cap}, table {sorted(table_caps)}")
+    try:
+        table_locales = sorted(json.loads(table_path.read_text(encoding="utf-8")))
+    except json.JSONDecodeError as error:
+        return [*problems, f"table is not valid JSON: {error}"]
+    meta_locales = sorted(meta.get("samples", {}))
+    if meta_locales != table_locales:
+        problems.append(f"locales mismatch: metadata {meta_locales}, table {table_locales}")
 
     return problems

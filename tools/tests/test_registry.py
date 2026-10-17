@@ -23,7 +23,7 @@ def test_default_repo_paths_resolve_repo_layout() -> None:
     """Default paths point at the repo's real layout."""
     paths = default_repo_paths()
     assert paths.registry_path.name == "registry.json"
-    assert paths.generated_weights_path.name == "letterWeights.ts"
+    assert paths.generated_weights_path.name == "letterWeights.json"
     assert paths.translation_cache_path.name == "translation.sqlite3"
 
 

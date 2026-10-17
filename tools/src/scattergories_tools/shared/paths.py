@@ -33,7 +33,7 @@ def default_repo_paths() -> RepoPaths:
         cache_dir=cache_dir,
         out_dir=out_dir,
         registry_path=locale_dir / "registry.json",
-        generated_weights_path=repo_root / "src" / "i18n" / "__generated__" / "letterWeights.ts",
+        generated_weights_path=repo_root / "src" / "i18n" / "__generated__" / "letterWeights.json",
         locale_dir=locale_dir,
         categories_source_path=locale_dir / "categories.en.json",
         locale_payload_source_path=locale_dir / "en.json",

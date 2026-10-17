@@ -41,7 +41,7 @@ stateDiagram-v2
 
 ## Data flow
 
-`useGameController` combines the feature hooks and gives the shell a single typed interface. Letters are rolled with locale-aware weights from `i18n/__generated__/letterWeights`, which `tools/` produces offline. Settings and custom category packs are the only saved state. They are written to `localStorage` from `features/settings/`, through the `safeStorage` wrapper in `shared/lib`. There is no network call at runtime, and nothing leaves the device.
+`useGameController` combines the feature hooks and gives the shell a single typed interface. Letters are rolled with locale-aware weights from `i18n/__generated__/letterWeights.json`, which `tools/` produces offline. Settings and custom category packs are the only saved state. They are written to `localStorage` from `features/settings/`, through the `safeStorage` wrapper in `shared/lib`. There is no network call at runtime, and nothing leaves the device.
 
 The reasons for the key choices live in [`adr/`](adr/).
 

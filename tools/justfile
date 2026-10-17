@@ -17,11 +17,9 @@ weights-sample-write dataset='wikitext-2':
 weights-locales locales='en,es,fr,de,it,nl,pl,pt,el' max_bytes='150000000':
     @uv run sg-tools weights locales --locales {{ locales }} --max-bytes {{ max_bytes }}
 
-# Regenerate the shipped table and its metadata; the checksum is taken after Biome formats it.
+# Regenerate the shipped table and its metadata.
 weights-locales-write locales='en,es,fr,de,it,nl,pl,pt,el' max_bytes='150000000':
     @uv run sg-tools weights locales --locales {{ locales }} --max-bytes {{ max_bytes }} --write-app-file
-    @pnpm exec biome format --write ../src/i18n/__generated__/letterWeights.ts ../src/i18n/__generated__/letterWeights.meta.json
-    @uv run sg-tools weights stamp
 
 # Check the shipped table against its metadata (offline, as in CI).
 weights-verify:

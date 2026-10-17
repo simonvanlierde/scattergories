@@ -1,6 +1,8 @@
 """Tests for weight analysis and rendering helpers."""
-# spell-checker: ignore Árbol, Über, Łatwy, ACDET
 
+import json
+
+# spell-checker: ignore Árbol, Über, Łatwy, ACDET
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -14,7 +16,7 @@ from scattergories_tools.weights.analyze import (
     analyze_texts,
     iter_dataset_texts,
 )
-from scattergories_tools.weights.render import render_locale_weight_source, write_sample_output
+from scattergories_tools.weights.render import render_letter_weights_json, write_sample_output
 
 if TYPE_CHECKING:
     import pytest
@@ -153,35 +155,39 @@ def test_analyze_locale_uses_registry_letters(monkeypatch: pytest.MonkeyPatch) -
     assert alpha_row.count == 1
 
 
-def test_render_locale_weight_source_is_deterministic() -> None:
-    """Rendered locale output sorts locales and letters deterministically."""
-    source = render_locale_weight_source(
-        {
-            "es": LocaleAnalysis(
-                "es",
-                [LetterRow("B", 0.1, 1), LetterRow("A", 0.9, 9)],
-                10,
-                1,
-                10,
-                20,
-            ),
-            "en": LocaleAnalysis(
-                "en",
-                [LetterRow("B", 0.4, 4), LetterRow("A", 0.6, 6)],
-                10,
-                2,
-                12,
-                20,
-            ),
-        }
+def test_render_letter_weights_json_is_sorted_and_byte_stable() -> None:
+    """The JSON table sorts locales and letters and prints weights the way Biome does."""
+    analyses = {
+        "es": LocaleAnalysis("es", [LetterRow("B", 0.1, 1), LetterRow("A", 0.9, 9)], 10, 1, 10, 20),
+        "en": LocaleAnalysis(
+            "en",
+            [LetterRow("\u0391", 1 / 3, 1), LetterRow("B", 0.0, 0), LetterRow("A", 1.0, 2)],
+            3,
+            2,
+            12,
+            20,
+        ),
+    }
+    source = render_letter_weights_json(analyses)
+
+    assert source == (
+        "{\n"
+        '  "en": {\n'
+        '    "A": 1.0,\n'
+        '    "B": 0.0,\n'
+        '    "\\u0391": 0.33333333\n'
+        "  },\n"
+        '  "es": {\n'
+        '    "A": 0.9,\n'
+        '    "B": 0.1\n'
+        "  }\n"
+        "}\n"
     )
-    assert source.index('"en"') < source.index('"es"')
-    assert source.index('["A", 0.60000000]') < source.index('["B", 0.40000000]')
-    # `satisfies` lets TS flag an incomplete record instead of an unsafe `as` cast.
-    assert "satisfies Record<LocaleCode, Record<string, number>>" in source
-    assert " as Record<LocaleCode" not in source
-    # A Python bool would render as `True`, which is not valid TypeScript.
-    assert source.count("hasWeights: true,") == 2  # noqa: PLR2004
+    assert json.loads(source) == {
+        "en": {"A": 1.0, "B": 0.0, "\u0391": 0.33333333},
+        "es": {"A": 0.9, "B": 0.1},
+    }
+    assert render_letter_weights_json(dict(reversed(analyses.items()))) == source
 
 
 def test_write_sample_output_writes_ephemeral_files(tmp_path: Path) -> None:

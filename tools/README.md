@@ -32,7 +32,6 @@ uv run sg-tools weights sample --dataset wikitext-103 --write   # write them to 
 uv run sg-tools weights locales --locales en,fr,de         # preview locale weights
 uv run sg-tools weights locales --locales en,es,fr,de,it,nl,pl,pt,el --write-app-file  # write them into the app
 uv run sg-tools weights verify                             # check the table against its metadata and checksum
-uv run sg-tools weights stamp                              # refresh the checksum after a deliberate edit of the table
 uv run --group translation sg-tools translate categories --target-locales es,fr --write-app-files
 uv run --group translation sg-tools translate locales --target-locales es,fr --write-app-files
 ```

@@ -1,15 +1,61 @@
 {
   "tableVersion": "2.0.0",
-  "file": "letterWeights.ts",
-  "sha256": "d827b89da3336eb18a276e1d61e289622e6a9d7e750c8bb74478820d6a129bc3",
+  "file": "letterWeights.json",
+  "sha256": "8af97788ba6e475d8e96ea796dcf78ee18c08566ec2de925f1bd8fd6b77717f6",
   "corpus": {
     "id": "wikimedia/wikipedia",
     "snapshot": "20231101",
     "split": "train",
     "url": "https://huggingface.co/datasets/wikimedia/wikipedia"
   },
-  "locales": ["de", "el", "en", "es", "fr", "it", "nl", "pl", "pt"],
   "maxBytesPerLocale": 150000000,
+  "samples": {
+    "de": {
+      "sourceCount": 6681,
+      "total": 742614,
+      "processedBytes": 149904965
+    },
+    "el": {
+      "sourceCount": 14459,
+      "total": 329233,
+      "processedBytes": 149999782
+    },
+    "en": {
+      "sourceCount": 23677,
+      "total": 397968,
+      "processedBytes": 149994551
+    },
+    "es": {
+      "sourceCount": 10141,
+      "total": 406679,
+      "processedBytes": 149993469
+    },
+    "fr": {
+      "sourceCount": 8759,
+      "total": 382801,
+      "processedBytes": 149978033
+    },
+    "it": {
+      "sourceCount": 15915,
+      "total": 408408,
+      "processedBytes": 149997888
+    },
+    "nl": {
+      "sourceCount": 21286,
+      "total": 591214,
+      "processedBytes": 149988545
+    },
+    "pl": {
+      "sourceCount": 20524,
+      "total": 688988,
+      "processedBytes": 149996301
+    },
+    "pt": {
+      "sourceCount": 19651,
+      "total": 360074,
+      "processedBytes": 149997555
+    }
+  },
   "generator": {
     "tool": "scattergories-tools",
     "version": "0.2.0",
