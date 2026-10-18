@@ -2,7 +2,7 @@
 
 import json
 
-# spell-checker: ignore Árbol, Über, Łatwy, ACDET
+# spell-checker: ignore Árbol, Über, Łatwy, ACDET, łódź, śnieg, ALSŁŚ
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -53,6 +53,13 @@ def test_analyze_texts_folds_stroked_latin_initials() -> None:
     letter_row = next(row for row in rows if row.letter == "L")
     assert total == 1
     assert letter_row.count == 1
+
+
+def test_analyze_texts_keeps_initials_the_alphabet_lists() -> None:
+    """A diacritic letter in the alphabet counts as itself; one outside it still folds."""
+    rows, total = analyze_texts(["Łatwy łódź śnieg Ąb sad"], "ALSŁŚ")
+    assert total == 5  # noqa: PLR2004
+    assert {row.letter: row.count for row in rows} == {"A": 1, "L": 0, "S": 1, "Ł": 2, "Ś": 1}
 
 
 def test_analyze_texts_returns_zero_frequency_rows_when_no_letters_match() -> None:
