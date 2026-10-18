@@ -14,7 +14,8 @@ Hasbro.
 
 **Live demo:** [scattergories.duinlab.nl](https://scattergories.duinlab.nl)
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/desktop-dark.png"><img alt="The game screen" src="docs/screenshots/desktop-light.png" width="300"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/phone-dark.png"><img alt="A round on a phone: the letter, the clock and twelve categories" src="docs/screenshots/phone-light.png" width="200"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/desktop-dark.png"><img alt="A round on a laptop, with the categories beside the letter" src="docs/screenshots/desktop-light.png" width="540"></picture>
 
 Letters come from each language's own alphabet, weighted by that language's letter frequencies, in
 9 fully translated languages. No account, no server: settings and custom category packs stay in
