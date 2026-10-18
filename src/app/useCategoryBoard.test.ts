@@ -18,6 +18,7 @@ vi.mock("@/shared/lib/rollAnimation", async (importActual) => {
 // Stable references: redrawCategories memoizes on these, and its mount effect
 // depends on that callback — fresh array literals per render would loop forever.
 const BUILTINS = ["a", "b", "c", "d", "e", "f"];
+const OTHER_BUILTINS = ["g", "h", "i", "j", "k", "l"];
 const NO_CUSTOM: string[] = [];
 const NO_PINS: string[] = [];
 
@@ -49,6 +50,35 @@ describe("useCategoryBoard", () => {
       }),
     );
     expect(result.current.drawnCategories).toEqual([]);
+  });
+
+  it("keeps a mid-round deck edit for the next redraw, even after the round ends", () => {
+    const { result, rerender } = renderHook(
+      ({ deck, deferCompose }: { deck: string[]; deferCompose: boolean }) =>
+        useCategoryBoard({
+          customCategories: NO_CUSTOM,
+          deckBuiltins: deck,
+          pinned: NO_PINS,
+          count: 3,
+          deferCompose,
+        }),
+      { initialProps: { deck: BUILTINS, deferCompose: false } },
+    );
+    const drawn = result.current.drawnCategories;
+
+    rerender({ deck: BUILTINS, deferCompose: true });
+    rerender({ deck: OTHER_BUILTINS, deferCompose: true });
+    expect(result.current.drawnCategories).toEqual(drawn);
+
+    rerender({ deck: OTHER_BUILTINS, deferCompose: false });
+    expect(result.current.drawnCategories).toEqual(drawn);
+
+    act(() => {
+      result.current.redrawCategories(false);
+    });
+    expect(result.current.drawnCategories.every((name) => OTHER_BUILTINS.includes(name))).toBe(
+      true,
+    );
   });
 
   it("lands on the final deck after an animated redraw", () => {
