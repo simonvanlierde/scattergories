@@ -88,7 +88,14 @@ def _fold_initial(letter: str) -> tuple[str, ...]:
 
 
 def normalize_initial(letter: str, alphabet_set: set[str]) -> str | None:
-    """Fold a Unicode initial to a locale-specific alphabet symbol when possible."""
+    """Map a Unicode initial to a locale's alphabet symbol, folding only when needed.
+
+    A letter the alphabet lists itself (Polish `Ś`) counts as itself; any other initial
+    folds to its base letter (`Á` to `A`, `Ł` to `L`) when the alphabet has that.
+    """
+    upper = letter.upper()
+    if upper in alphabet_set:
+        return upper
     for candidate in _fold_initial(letter):
         if candidate in alphabet_set:
             return candidate

@@ -23,9 +23,15 @@ the same bytes.
 | weight | Share of counted distinct words whose initial folded to this letter | fraction from 0 to 1, 8 decimals; a locale's weights sum to about 1 |
 
 A word is a run of letters, and each distinct word counts once, ignoring case, so frequent words
-such as "the" and "of" do not inflate their letters. Accents are stripped and
-stroked letters folded (`Á` counts as `A`, `Ł` as `L`), and initials that fold to no letter of the
-alphabet are skipped. The game draws each letter with a chance proportional to its weight, so a
+such as "the" and "of" do not inflate their letters. An initial that is itself a letter of the
+alphabet counts as that letter (Polish `Ł` counts as `Ł`). Any other initial has its accent
+stripped or its stroke folded (`Á` counts as `A`, Polish `Ć` as `C`), and initials that fold to no
+letter of the alphabet are skipped.
+
+A letter with a diacritic joins a locale's alphabet only when at least 0.1% of that locale's
+distinct words start with it. That is just under the rarest letter any locale draws (German `X`,
+about 0.11%). Polish keeps `Ł`, `Ś` and `Ż` (each about 0.4 to 0.5%) and folds `Ć` (0.04%), `Ź`,
+`Ó`, `Ę`, `Ą` and `Ń` into their base letters. The game draws each letter with a chance proportional to its weight, so a
 letter with twice the weight comes up about twice as often; with "avoid repeats" on, it skips the
 last 8 letters drawn.
 

@@ -1,7 +1,7 @@
 {
-  "tableVersion": "2.0.0",
+  "tableVersion": "2.1.0",
   "file": "letterWeights.json",
-  "sha256": "8af97788ba6e475d8e96ea796dcf78ee18c08566ec2de925f1bd8fd6b77717f6",
+  "sha256": "8dd6a8bc9ce0458e629ffb3ee9caf5183e88f559d1cdfa9d2baaca056163564e",
   "corpus": {
     "id": "wikimedia/wikipedia",
     "snapshot": "20231101",
@@ -59,7 +59,7 @@
   "generator": {
     "tool": "scattergories-tools",
     "version": "0.2.0",
-    "commit": "8db61c2fbf3f1d0e9a9af7fb3fe53e853f13d422"
+    "commit": "6bbb3501deb25595540106b64cbad2421c0716d1"
   },
-  "generatedOn": "2026-10-13"
+  "generatedOn": "2026-10-18"
 }

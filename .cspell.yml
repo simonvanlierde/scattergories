@@ -117,8 +117,9 @@ words:
   - Runde
   - Starten
   - Spielanleitung
-  # Greek letters used in locale registry
+  # Greek and Polish alphabets in the locale registry
   - ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ
+  - ABCDEFGHIJKLŁMNOPQRSŚTUVWXYZŻ
   # Words not in the above dictionaries but used in the app or tests
   - Ammazzatempo
   - Cartoonfiguren

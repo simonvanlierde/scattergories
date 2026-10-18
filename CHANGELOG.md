@@ -9,6 +9,8 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- Polish rounds can now land on Ł, Ś and Ż. Rarer Polish initials such as Ć and Ź still
+  count toward C and Z.
 - A Grown-ups category pack. Add it to your deck for Offensive Words, 4-Letter Words,
   Bar Things, Beers, Crimes, Weapons, Deadly Things and Medicine/Drugs.
 - While a skip is armed, "Tap again" now shows as text under the controls, so it is
@@ -20,7 +22,7 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   deck. A deck you already saved keeps them. The pack that was labelled "All" is now
   called "Classic".
 - Letter draws follow how often each letter starts a word, and with "avoid repeats" on
-  they skip the last 12 letters drawn. Before, every letter came up exactly once per
+  they skip the last 8 letters drawn. Before, every letter came up exactly once per
   cycle, so rare letters such as Q, X and Z bunched up at the end.
 - On a phone, the letter and its ring grow to fill the space the categories leave.
 - Every control in the settings and deck sheets is at least 44 px tall, so it is easier
