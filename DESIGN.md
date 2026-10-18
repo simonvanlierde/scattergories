@@ -206,9 +206,12 @@ list, is Geist.
   open, they take the height their list needs and the ring gets the rest. While that row is under
   19rem tall, the ring sits next to the controls and never gets smaller than `min(36vw, 9rem)`.
   From 19rem up, it sits above them and grows to 20rem. With the categories collapsed, the ring is
-  full size (20rem) with the controls below. Categories flow in columns at least 11.5rem wide.
+  full size (20rem) with the controls below. Categories flow in columns at least 10rem wide, so a
+  360px phone still gets two. The letter is half the ring in the side-by-side row.
 - From 52rem, there are two columns: playmat on the left, categories on the right, with a hairline
   between them. Collapsing the categories centers the playmat. From 64rem the ring grows to 26rem.
+  Under 32rem tall (a phone on its side), the ring sits next to the controls and takes the height
+  the footer leaves.
 - Spacing uses a 4px scale (`--space-1` = 0.25rem). The playmat and grid gaps are 1rem, except
   0.75rem between the playmat and the categories below 52rem.
 - Safe-area insets pad the column for installed PWAs.

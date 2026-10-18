@@ -347,10 +347,14 @@
   /* Wrap long names onto multiple lines instead of truncating — drawn
      categories are essential to read, and hover tooltips don't work on touch.
      Wrap at word boundaries (break-word only splits a token as a last resort),
-     and balance the lines so a wrapped name never leaves a lonely orphan word. */
+     and balance the lines so a wrapped name never leaves a lonely orphan word.
+     A word too long for its chip ("Reptiles/Amphibians" on a phone) is
+     hyphenated by the page language instead of losing its last letter to a
+     line of its own. */
   .category-checklist__label {
     min-width: 0;
     overflow-wrap: break-word;
+    hyphens: auto;
     text-wrap: balance;
     font-weight: 400;
     letter-spacing: var(--tracking-normal);
@@ -431,10 +435,12 @@
     }
 
     /* A phone has no room for two content-sized columns, so it keeps the compact
-       pair (2 × 11.5rem fits a 393px viewport) and buys the width back inside
-       the chip instead: the numeral goes inline and the pin goes away. */
+       pair and buys the width back inside the chip instead: the numeral goes
+       inline and the pin goes away. 10rem keeps two columns down to a 360px
+       phone; one column there doubled the list's height and left the letter
+       under 60px. */
     .category-checklist__list {
-      column-width: 11.5rem;
+      column-width: 10rem;
     }
 
     /* Two columns leave each label ~10rem, so the chip drops its three-column
@@ -456,14 +462,15 @@
     }
 
     /* A superscript figure, set like a footnote marker: it gives up the gutter a
-       full-size numeral would need, so the name starts at the chip's edge and
-       even the longest one holds a single line. */
+       full-size numeral would need. It still keeps a fixed two-digit slot, so
+       "1" and "12" push their names to the same edge and the names line up. */
     .category-checklist__mark {
-      display: inline;
-      min-width: 0;
+      display: inline-block;
+      min-width: 2ch;
       font-size: 0.72em;
       vertical-align: 0.35em;
-      margin-inline-end: 0.35em;
+      margin-inline-end: 0.3em;
+      text-align: end;
     }
 
     /* The pin icon only ever appears on :hover, which touch doesn't have — so on
@@ -481,7 +488,7 @@
      but always leaves 12rem beside it for its margin, the gap and the controls.
      It never drops below --ring-min, the row's minimum (layout.css), which
      is the size it gets on a phone whose categories fill the screen. The
-     letter is 0.4 of the ring. */
+     letter is half the ring, as large as it goes without touching it. */
   @container (max-height: 18.99rem) {
     .playmat__hero {
       --hero: max(var(--ring-min), min(100cqb, 100cqi - 12rem));
@@ -490,7 +497,7 @@
     }
 
     .playmat .letter-hero__glyph {
-      font-size: calc(var(--hero) * 0.4);
+      font-size: calc(var(--hero) * 0.5);
     }
 
     .playmat .timer-ring__readout {
@@ -606,6 +613,35 @@
       min-height: 3rem;
       padding-inline: var(--space-2);
       font-size: var(--text-lg);
+    }
+  }
+
+  /* A phone on its side is wide enough for the two-column layout but too short
+     for a ring stacked over the controls: it ran past the screen and the play
+     grid scrolled. Under 32rem tall, the ring sits beside the controls, as in
+     the phone's short row, and takes the height the footer leaves. */
+  @media (min-width: 52rem) and (max-height: 32rem) {
+    .playmat {
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      padding-block: var(--space-2);
+    }
+
+    .playmat__hero {
+      --hero: min(20rem, 100dvh - 11rem, 100cqi - 12rem);
+      width: var(--hero);
+    }
+
+    .playmat .letter-hero__glyph {
+      font-size: calc(var(--hero) * 0.5);
+    }
+
+    .playmat .timer-ring__readout {
+      font-size: min(var(--text-3xl), var(--hero) * 0.14);
+    }
+
+    .playmat .action-bar {
+      width: 100%;
     }
   }
 
