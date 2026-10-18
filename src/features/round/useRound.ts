@@ -47,6 +47,8 @@ export function useRound({
   phaseRef.current = state.phase;
   const secondsLeftRef = useRef(state.secondsLeft);
   secondsLeftRef.current = state.secondsLeft;
+  const gameSecondsRef = useRef(gameSeconds);
+  gameSecondsRef.current = gameSeconds;
   // Kept memoized: it's read in useEffect dependency arrays below, where a
   // render-body function would trip biome's useExhaustiveDependencies lint.
   const clearAlarmTimeout = useCallback(() => {
@@ -85,8 +87,10 @@ export function useRound({
       const elapsedTicks = Math.max(1, Math.floor((now - targetAt) / ONE_SECOND_MS) + 1);
       targetAt += elapsedTicks * ONE_SECOND_MS;
       // Cap the catch-up burst: draining the clock needs at most secondsLeft + 1
-      // ticks, however many hours a suspended tab actually slept.
-      const ticks = Math.min(elapsedTicks, secondsLeftRef.current + 1);
+      // ticks, however many hours a suspended tab actually slept. During get-ready
+      // the game clock follows the buffer, so its seconds count too.
+      const gameSecondsAhead = phaseRef.current === "buffer" ? gameSecondsRef.current : 0;
+      const ticks = Math.min(elapsedTicks, secondsLeftRef.current + gameSecondsAhead + 1);
       for (let i = 0; i < ticks; i += 1) {
         dispatch({ type: "TICK" });
       }
