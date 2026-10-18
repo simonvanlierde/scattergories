@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { expect, it, vi } from "vitest";
+import { beforeEach, expect, it, vi } from "vitest";
 import { App } from "./App";
 
 vi.mock("@/i18n/config", async (importActual) => ({
@@ -7,6 +7,10 @@ vi.mock("@/i18n/config", async (importActual) => ({
   bootLanguage: "de",
   initI18n: () => Promise.reject(new Error("chunk 404 at /assets/de.js")),
 }));
+
+beforeEach(() => {
+  document.documentElement.lang = "en";
+});
 
 it("shows a localized recovery screen without the raw error", async () => {
   vi.spyOn(console, "error").mockImplementation(() => undefined);
@@ -16,10 +20,13 @@ it("shows a localized recovery screen without the raw error", async () => {
   expect(alert).toHaveTextContent("Die App konnte nicht starten.");
   expect(screen.getByRole("button", { name: "App neu laden" })).toBeInTheDocument();
   expect(alert).not.toHaveTextContent("chunk 404");
+  // Screen readers pick the voice from <html lang>, which still says "en" from index.html.
+  expect(document.documentElement.lang).toBe("de");
 });
 
 it("shows the loading screen in the boot language", () => {
   render(<App />);
 
   expect(screen.getByRole("status")).toHaveTextContent("Dein Spieleabend wird geladen...");
+  expect(document.documentElement.lang).toBe("de");
 });

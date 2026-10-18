@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { I18nextProvider, useTranslation } from "react-i18next";
 import { SettingsProvider } from "@/features/settings/SettingsProvider";
 import { getPreferredTheme } from "@/features/settings/schema";
-import { i18n, initI18n } from "@/i18n/config";
+import { bootLanguage, i18n, initI18n } from "@/i18n/config";
 import { AppLoading } from "./AppLoading";
 import { bootMessages } from "./bootMessages";
 import { ErrorBoundary } from "./ErrorBoundary";
@@ -78,6 +78,12 @@ function AppProviders() {
 function App() {
   const [isReady, setIsReady] = useState(false);
   const [bootFailed, setBootFailed] = useState(false);
+
+  // The boot screens speak the saved language before i18n loads (i18n keeps
+  // <html lang> in step after that), so screen readers pick the right voice.
+  useEffect(() => {
+    document.documentElement.lang = bootLanguage;
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
