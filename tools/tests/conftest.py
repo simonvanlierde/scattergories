@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Protocol, cast
 import pytest
 from typer.testing import CliRunner
 
+from scattergories_tools.shared.context import AppContext, Deps
 from scattergories_tools.shared.paths import RepoPaths
 from scattergories_tools.shared.registry import LocaleRegistry, load_locale_registry
 from scattergories_tools.weights.analyze import LetterRow, LocaleAnalysis, SampleAnalysis
@@ -117,6 +118,13 @@ def repo_context(
         translation_cache_path=cache_dir / "translation.sqlite3",
     )
     return paths, load_locale_registry(registry_path)
+
+
+@pytest.fixture
+def deps(repo_context: tuple[RepoPaths, LocaleRegistry]) -> Deps:
+    """CLI dependencies bound to the temporary repo layout, with no network seams set."""
+    paths, registry = repo_context
+    return Deps(create_context=lambda: AppContext(paths, registry))
 
 
 @pytest.fixture

@@ -4,8 +4,6 @@ import json
 from typing import TYPE_CHECKING
 
 from scattergories_tools import cli
-from scattergories_tools.commands import weights
-from scattergories_tools.shared.context import AppContext
 from scattergories_tools.shared.paths import default_repo_paths
 from scattergories_tools.weights.analyze import LetterRow, LocaleAnalysis
 from scattergories_tools.weights.provenance import (
@@ -19,9 +17,9 @@ from scattergories_tools.weights.render import write_locale_app_file
 if TYPE_CHECKING:
     from pathlib import Path
 
-    import pytest
     from typer.testing import CliRunner
 
+    from scattergories_tools.shared.context import Deps
     from scattergories_tools.shared.paths import RepoPaths
     from scattergories_tools.shared.registry import LocaleRegistry
 
@@ -108,17 +106,16 @@ def test_check_reports_missing_metadata(tmp_path: Path) -> None:
 def test_verify_command_exit_codes(
     runner: CliRunner,
     repo_context: tuple[RepoPaths, LocaleRegistry],
-    monkeypatch: pytest.MonkeyPatch,
+    deps: Deps,
 ) -> None:
     """`weights verify` exits 0 on a consistent table and 1 after drift."""
-    paths, registry = repo_context
-    monkeypatch.setattr(weights, "create_context", lambda: AppContext(paths, registry))
+    paths, _ = repo_context
     _write_table(paths.generated_weights_path)
 
-    assert runner.invoke(cli.app, ["weights", "verify"]).exit_code == 0
+    assert runner.invoke(cli.app, ["weights", "verify"], obj=deps).exit_code == 0
 
     with paths.generated_weights_path.open("a", encoding="utf-8") as table:
         table.write("\n")
-    result = runner.invoke(cli.app, ["weights", "verify"])
+    result = runner.invoke(cli.app, ["weights", "verify"], obj=deps)
     assert result.exit_code == 1
     assert "sha256 mismatch" in result.stderr

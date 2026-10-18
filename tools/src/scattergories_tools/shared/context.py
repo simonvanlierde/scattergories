@@ -1,9 +1,24 @@
 """Runtime context shared by CLI commands."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
 
 from scattergories_tools.shared.paths import RepoPaths, default_repo_paths
 from scattergories_tools.shared.registry import LocaleRegistry, load_locale_registry
+from scattergories_tools.translate.engine import ArgosProvider
+from scattergories_tools.weights.analyze import (
+    LocaleAnalysis,
+    SampleAnalysis,
+    analyze_locale,
+    analyze_sample_dataset,
+)
+
+type TranslateText = Callable[[str, str, str], str]
+
+
+def argos_translator() -> TranslateText:
+    """Load Argos Translate and return its translate function."""
+    return ArgosProvider().translate
 
 
 @dataclass(frozen=True)
@@ -18,3 +33,16 @@ def create_context() -> AppContext:
     """Load the canonical CLI context from the current repo layout."""
     paths = default_repo_paths()
     return AppContext(paths=paths, registry=load_locale_registry(paths.registry_path))
+
+
+@dataclass(frozen=True)
+class Deps:
+    """What the commands reach outside the process for, passed as the Typer context object.
+
+    Tests pass their own through `CliRunner.invoke(..., obj=Deps(...))`.
+    """
+
+    create_context: Callable[[], AppContext] = create_context
+    analyze_locale: Callable[..., LocaleAnalysis] = analyze_locale
+    analyze_sample_dataset: Callable[..., SampleAnalysis] = analyze_sample_dataset
+    translator: Callable[[], TranslateText] = argos_translator

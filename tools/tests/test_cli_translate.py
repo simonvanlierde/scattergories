@@ -2,16 +2,15 @@
 # spell-checker: ignore Listo
 
 import json
+from dataclasses import replace
 from typing import TYPE_CHECKING
 
 from scattergories_tools import cli
-from scattergories_tools.commands import translate
-from scattergories_tools.shared.context import AppContext
 
 if TYPE_CHECKING:
-    import pytest
     from typer.testing import CliRunner
 
+    from scattergories_tools.shared.context import Deps
     from scattergories_tools.shared.paths import RepoPaths
     from scattergories_tools.shared.registry import LocaleRegistry
 
@@ -22,17 +21,17 @@ def test_translate_categories_preview_uses_fake_provider(
     runner: CliRunner,
     repo_context: tuple[RepoPaths, LocaleRegistry],
     fake_provider_factory: FakeProviderFactory,
-    monkeypatch: pytest.MonkeyPatch,
+    deps: Deps,
 ) -> None:
     """Preview mode shows translated category samples without writing files."""
-    paths, registry = repo_context
+    paths, _ = repo_context
     provider = fake_provider_factory({("en", "es", "Animals"): "Animales"})
-    monkeypatch.setattr(translate, "create_context", lambda: AppContext(paths, registry))
-    monkeypatch.setattr(translate, "ArgosProvider", lambda: provider)
+    cli_deps = replace(deps, translator=lambda: provider.translate)
 
     result = runner.invoke(
         cli.app,
-        ["translate", "categories", "--target-locales", "es"],
+        obj=cli_deps,
+        args=["translate", "categories", "--target-locales", "es"],
     )
 
     assert result.exit_code == 0
@@ -45,19 +44,17 @@ def test_translate_categories_preview_uses_fake_provider(
 
 def test_translate_categories_accepts_comma_separated_locales(
     runner: CliRunner,
-    repo_context: tuple[RepoPaths, LocaleRegistry],
     fake_provider_factory: FakeProviderFactory,
-    monkeypatch: pytest.MonkeyPatch,
+    deps: Deps,
 ) -> None:
     """A single comma-separated value expands into multiple target locales."""
-    paths, registry = repo_context
     provider = fake_provider_factory()
-    monkeypatch.setattr(translate, "create_context", lambda: AppContext(paths, registry))
-    monkeypatch.setattr(translate, "ArgosProvider", lambda: provider)
+    cli_deps = replace(deps, translator=lambda: provider.translate)
 
     result = runner.invoke(
         cli.app,
-        ["translate", "categories", "--target-locales", "es,el"],
+        obj=cli_deps,
+        args=["translate", "categories", "--target-locales", "es,el"],
     )
 
     assert result.exit_code == 0
@@ -69,22 +66,22 @@ def test_translate_categories_write_updates_app_files(
     runner: CliRunner,
     repo_context: tuple[RepoPaths, LocaleRegistry],
     fake_provider_factory: FakeProviderFactory,
-    monkeypatch: pytest.MonkeyPatch,
+    deps: Deps,
 ) -> None:
     """Write mode persists translated category JSON files."""
-    paths, registry = repo_context
+    paths, _ = repo_context
     provider = fake_provider_factory(
         {
             ("en", "es", "Animals"): "Animales",
             ("en", "es", "Foods"): "Comidas",
         }
     )
-    monkeypatch.setattr(translate, "create_context", lambda: AppContext(paths, registry))
-    monkeypatch.setattr(translate, "ArgosProvider", lambda: provider)
+    cli_deps = replace(deps, translator=lambda: provider.translate)
 
     result = runner.invoke(
         cli.app,
-        ["translate", "categories", "--target-locales", "es", "--write-app-files"],
+        obj=cli_deps,
+        args=["translate", "categories", "--target-locales", "es", "--write-app-files"],
     )
 
     output_path = paths.locale_dir / "categories.es.json"
@@ -100,10 +97,10 @@ def test_translate_locales_preview_preserves_non_string_values(
     runner: CliRunner,
     repo_context: tuple[RepoPaths, LocaleRegistry],
     fake_provider_factory: FakeProviderFactory,
-    monkeypatch: pytest.MonkeyPatch,
+    deps: Deps,
 ) -> None:
     """Preview mode translates string leaves and leaves structure intact."""
-    paths, registry = repo_context
+    paths, _ = repo_context
     paths.locale_payload_source_path.write_text(
         json.dumps(
             {
@@ -122,12 +119,12 @@ def test_translate_locales_preview_preserves_non_string_values(
             ("en", "es", "Go __PH_0__"): "Ir __PH_0__",
         }
     )
-    monkeypatch.setattr(translate, "create_context", lambda: AppContext(paths, registry))
-    monkeypatch.setattr(translate, "ArgosProvider", lambda: provider)
+    cli_deps = replace(deps, translator=lambda: provider.translate)
 
     result = runner.invoke(
         cli.app,
-        ["translate", "locales", "--target-locales", "es"],
+        obj=cli_deps,
+        args=["translate", "locales", "--target-locales", "es"],
     )
 
     assert result.exit_code == 0
@@ -140,22 +137,22 @@ def test_translate_locales_write_updates_app_files(
     runner: CliRunner,
     repo_context: tuple[RepoPaths, LocaleRegistry],
     fake_provider_factory: FakeProviderFactory,
-    monkeypatch: pytest.MonkeyPatch,
+    deps: Deps,
 ) -> None:
     """Write mode persists translated locale JSON files."""
-    paths, registry = repo_context
+    paths, _ = repo_context
     provider = fake_provider_factory(
         {
             ("en", "es", "Play"): "Jugar",
             ("en", "es", "Round __PH_0__ of __PH_1__"): "Ronda __PH_0__ de __PH_1__",
         }
     )
-    monkeypatch.setattr(translate, "create_context", lambda: AppContext(paths, registry))
-    monkeypatch.setattr(translate, "ArgosProvider", lambda: provider)
+    cli_deps = replace(deps, translator=lambda: provider.translate)
 
     result = runner.invoke(
         cli.app,
-        ["translate", "locales", "--target-locales", "es", "--write-app-files"],
+        obj=cli_deps,
+        args=["translate", "locales", "--target-locales", "es", "--write-app-files"],
     )
 
     output_path = paths.locale_dir / "es.json"

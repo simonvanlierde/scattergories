@@ -5,7 +5,7 @@ from typing import Annotated
 
 import typer
 
-from scattergories_tools.shared.context import create_context
+from scattergories_tools.shared.context import Deps
 from scattergories_tools.shared.registry import parse_locale_args
 from scattergories_tools.weights.analyze import (
     DEFAULT_MAX_BYTES,
@@ -13,8 +13,6 @@ from scattergories_tools.weights.analyze import (
     WIKIPEDIA_DATASET,
     WIKIPEDIA_DATASET_DATE,
     LetterRow,
-    analyze_locale,
-    analyze_sample_dataset,
 )
 from scattergories_tools.weights.provenance import (
     check_metadata,
@@ -39,6 +37,7 @@ def print_rows_summary(rows: list[LetterRow], *, label: str) -> None:
 
 @app.command("sample")
 def sample(
+    ctx: typer.Context,
     dataset: Annotated[str, typer.Option(help="Sample dataset key.")] = "wikitext-2",
     hf_token: Annotated[
         str | None,
@@ -54,12 +53,13 @@ def sample(
     write: Annotated[bool, typer.Option(help="Write output under tools/out/.")] = False,
 ) -> None:
     """Analyze a Wikitext corpus and optionally write ephemeral artifacts."""
-    context = create_context()
+    deps = ctx.ensure_object(Deps)
+    context = deps.create_context()
     if dataset not in SAMPLE_DATASETS:
         msg = f"Unsupported dataset: {dataset}"
         raise typer.BadParameter(msg)
 
-    analysis = analyze_sample_dataset(dataset, hf_token=hf_token)
+    analysis = deps.analyze_sample_dataset(dataset, registry=context.registry, hf_token=hf_token)
     typer.echo(f"Dataset: {analysis.dataset_config}")
     typer.echo(f"Total initials: {analysis.total}")
     print_rows_summary(analysis.rows, label="Top letters:")
@@ -76,6 +76,7 @@ def sample(
 
 @app.command("locales")
 def locales(
+    ctx: typer.Context,
     locales_arg: Annotated[
         str | None, typer.Option("--locales", help="Comma-separated locale codes.")
     ] = None,
@@ -93,10 +94,11 @@ def locales(
     ] = False,
 ) -> None:
     """Analyze locale corpora and optionally update the app weight file."""
-    context = create_context()
+    deps = ctx.ensure_object(Deps)
+    context = deps.create_context()
     selected_locales = parse_locale_args(locales_arg, context.registry)
     analyses = {
-        locale: analyze_locale(
+        locale: deps.analyze_locale(
             locale, registry=context.registry, hf_token=hf_token, max_bytes=max_bytes
         )
         for locale in selected_locales
@@ -125,9 +127,9 @@ def locales(
 
 
 @app.command("verify")
-def verify() -> None:
+def verify(ctx: typer.Context) -> None:
     """Check the shipped table against its metadata and checksum. Needs no corpus access."""
-    table_path = create_context().paths.generated_weights_path
+    table_path = ctx.ensure_object(Deps).create_context().paths.generated_weights_path
     problems = check_metadata(table_path)
     for problem in problems:
         typer.echo(problem, err=True)
