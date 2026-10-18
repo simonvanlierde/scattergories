@@ -19,7 +19,14 @@ test("runs a full single-round game to completion", async ({ app, page }) => {
   // The done phase keeps the hero showing the played letter; the primary button advances.
   await expect(app.currentLetter).toBeVisible();
   // Scope to the primary CTA; the secondary "Next round" icon button shares the name.
-  await expect(
-    page.getByRole("button", { name: "Next round" }).and(page.locator(".action-bar__primary")),
-  ).toBeVisible();
+  const nextRound = page
+    .getByRole("button", { name: "Next round" })
+    .and(page.locator(".action-bar__primary"));
+  await expect(nextRound).toBeVisible();
+  // The board stays up for checking answers, and the table can see which round it was.
+  await expect(page.getByRole("list", { name: "Selected categories" })).toBeVisible();
+  await expect(page.getByText("Round 1", { exact: true })).toBeVisible();
+
+  await nextRound.click();
+  await expect(page.getByText("Round 2", { exact: true })).toBeVisible();
 });

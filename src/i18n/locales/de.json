@@ -2,7 +2,8 @@
   "title": "Scattergories",
   "round": {
     "letterLabel": "Aktueller Buchstabe",
-    "timerLabel": "Rundenuhr"
+    "timerLabel": "Rundenuhr",
+    "number": "Runde {{number}}"
   },
   "controls": {
     "roundGroup": "Rundensteuerung"

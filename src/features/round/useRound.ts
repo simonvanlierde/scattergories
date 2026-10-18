@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useReducer, useRef } from "react";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { drawRoundLetter } from "@/domain/deck";
 import { initialRoundState, roundReducer } from "@/domain/game/roundReducer";
 import { useAudio } from "./useAudio";
@@ -31,6 +31,9 @@ export function useRound({
   onLetterPicked = () => undefined,
 }: UseRoundOptions) {
   const [state, dispatch] = useReducer(roundReducer, initialRoundState);
+  // Rounds played this session, so the table knows where it is. Not saved: a
+  // reload starts the count again. A reroll keeps the round; a skip starts one.
+  const [roundNumber, setRoundNumber] = useState(0);
   const roller = useLetterRoller(locale);
   const { playTick, playAlarm, playLetterLand } = useAudio(isMuted);
   const resetRoller = roller.reset;
@@ -220,7 +223,10 @@ export function useRound({
   };
 
   const newLetter = () => runSpin({ redrawCategories: false });
-  const nextRound = () => runSpin({ redrawCategories: true });
+  const nextRound = () => {
+    setRoundNumber((n) => n + 1);
+    runSpin({ redrawCategories: true });
+  };
   const togglePause = () => dispatch({ type: "PAUSE_TOGGLE" });
 
   const primaryAction = () => {
@@ -244,6 +250,7 @@ export function useRound({
     isPaused: state.isPaused,
     alarmOn: state.alarmOn,
     statusKey: state.statusKey,
+    roundNumber,
     letter: roller.letter,
     letterVisible: roller.visible,
     letterLanding: roller.landing,

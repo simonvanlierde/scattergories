@@ -2,7 +2,8 @@
   "title": "Scattergories",
   "round": {
     "letterLabel": "Lettera attuale",
-    "timerLabel": "Timer del round"
+    "timerLabel": "Timer del round",
+    "number": "Round {{number}}"
   },
   "controls": {
     "roundGroup": "Comandi del round"
