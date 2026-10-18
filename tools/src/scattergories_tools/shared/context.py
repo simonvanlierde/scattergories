@@ -1,7 +1,7 @@
 """Runtime context shared by CLI commands."""
 
-from collections.abc import Callable
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from scattergories_tools.shared.paths import RepoPaths, default_repo_paths
 from scattergories_tools.shared.registry import LocaleRegistry, load_locale_registry
@@ -13,12 +13,8 @@ from scattergories_tools.weights.analyze import (
     analyze_sample_dataset,
 )
 
-type TranslateText = Callable[[str, str, str], str]
-
-
-def argos_translator() -> TranslateText:
-    """Load Argos Translate and return its translate function."""
-    return ArgosProvider().translate
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 @dataclass(frozen=True)
@@ -45,4 +41,4 @@ class Deps:
     create_context: Callable[[], AppContext] = create_context
     analyze_locale: Callable[..., LocaleAnalysis] = analyze_locale
     analyze_sample_dataset: Callable[..., SampleAnalysis] = analyze_sample_dataset
-    translator: Callable[[], TranslateText] = argos_translator
+    translator: Callable[[], Callable[[str, str, str], str]] = lambda: ArgosProvider().translate
