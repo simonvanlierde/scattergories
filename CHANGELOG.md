@@ -22,7 +22,7 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   deck. A deck you already saved keeps them. The pack that was labelled "All" is now
   called "Classic".
 - Letter draws follow how often each letter starts a word, and with "avoid repeats" on
-  they skip the last 12 letters drawn. Before, every letter came up exactly once per
+  they skip the last 8 letters drawn. Before, every letter came up exactly once per
   cycle, so rare letters such as Q, X and Z bunched up at the end.
 - On a phone, the letter and its ring grow to fill the space the categories leave.
 - Every control in the settings and deck sheets is at least 44 px tall, so it is easier
