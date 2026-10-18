@@ -37,8 +37,10 @@ function passedThreshold(phase: Phase, secondsLeft: number, gameSeconds: number)
   );
 }
 
-// The readout ticks silently (aria-live off); this region speaks only when its
+// The readout ticks silently (aria-live off); these regions speak only when their
 // text changes, so a threshold is announced once, as the ring changes colour.
+// The last 5 seconds and the end of the round interrupt whatever is being read;
+// everything else waits its turn. Only one region holds text at a time.
 function PlaymatStatus({ statusKey, phase, secondsLeft, gameSeconds }: PlaymatStatusProps) {
   const { t } = useTranslation();
   const threshold = passedThreshold(phase, secondsLeft, gameSeconds);
@@ -46,11 +48,17 @@ function PlaymatStatus({ statusKey, phase, secondsLeft, gameSeconds }: PlaymatSt
   if (threshold !== null) {
     text = t("timer.secondsWarning", { seconds: threshold });
   }
+  const isUrgent = threshold === CRITICAL_THRESHOLD_SECONDS || statusKey === "timer.roundOver";
 
   return (
-    <p data-testid="round-status" className="sr-only" aria-live="polite" aria-atomic="true">
-      {text}
-    </p>
+    <div data-testid="round-status" className="sr-only">
+      <p aria-live="polite" aria-atomic="true">
+        {isUrgent ? "" : text}
+      </p>
+      <p aria-live="assertive" aria-atomic="true">
+        {isUrgent ? text : ""}
+      </p>
+    </div>
   );
 }
 
