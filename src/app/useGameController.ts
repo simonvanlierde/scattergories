@@ -1,4 +1,3 @@
-import type { RefObject } from "react";
 import { lazy } from "react";
 import { useTranslation } from "react-i18next";
 import { useRound } from "@/features/round/useRound";
@@ -73,7 +72,7 @@ function useGameController() {
       ...promptDeck,
       availableCount: roundSetup.availableCount,
       redraw: () => board.redrawCategories(true),
-      inputRef: app.newCategoryInputRef as RefObject<HTMLInputElement>,
+      inputRef: app.newCategoryInputRef,
     },
     settings: {
       ...settings,
