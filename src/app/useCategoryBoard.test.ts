@@ -39,14 +39,13 @@ describe("useCategoryBoard", () => {
   });
 
   it("defers the compose while a round is in progress", () => {
-    const deferComposeRef = { current: true };
     const { result } = renderHook(() =>
       useCategoryBoard({
         customCategories: NO_CUSTOM,
         deckBuiltins: BUILTINS,
         pinned: NO_PINS,
         count: 3,
-        deferComposeRef,
+        deferCompose: true,
       }),
     );
     expect(result.current.drawnCategories).toEqual([]);

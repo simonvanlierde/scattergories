@@ -35,8 +35,7 @@ function ControlBar({ game }: { game: GameController }) {
       <div
         className={cx(
           "controlbar__brand",
-          (game.round.phase === "spinning" || game.categories.isRerolling) &&
-            "controlbar__brand--rolling",
+          (game.round.phase === "spinning" || game.deck.spinning) && "controlbar__brand--rolling",
         )}
       >
         {/* Big enough to carry all three glyphs — they are what visibly roll. */}
@@ -47,22 +46,22 @@ function ControlBar({ game }: { game: GameController }) {
       <div className="controlbar__actions">
         <SettingsCluster
           language={i18n.resolvedLanguage ?? i18n.language}
-          isLanguagePending={game.flags.isLanguagePending}
+          isLanguagePending={game.app.isLanguagePending}
           theme={game.settings.theme}
           isMuted={game.settings.isMuted}
           avoidRepeats={game.settings.avoidRepeats}
           durationInput={game.settings.durationInput}
           bufferSecondsInput={game.settings.bufferSecondsInput}
-          onLanguageChange={game.controls.onLanguageChange}
-          onToggleTheme={game.controls.onToggleTheme}
-          onToggleMute={game.controls.onToggleMute}
-          onToggleAvoidRepeats={game.controls.onToggleAvoidRepeats}
-          onUpdateTimingField={game.controls.onUpdateField}
+          onLanguageChange={game.app.changeLanguage}
+          onToggleTheme={game.settings.toggleTheme}
+          onToggleMute={() => game.settings.toggle("isMuted")}
+          onToggleAvoidRepeats={() => game.settings.toggle("avoidRepeats")}
+          onUpdateTimingField={game.settings.update}
         />
         <IconButton
           label={t("buttons.howToPlay")}
           icon={<Icon icon={HelpCircle} size={20} />}
-          onClick={game.controls.onOpenHowToPlay}
+          onClick={game.app.openHowToPlay}
         />
       </div>
     </footer>
@@ -94,7 +93,7 @@ function PlayGrid({ game }: PlayGridProps) {
 
   return (
     <section
-      className={cx("play-grid", !game.flags.isPromptDeckOpen && "play-grid--deck-collapsed")}
+      className={cx("play-grid", !game.deck.isPromptDeckOpen && "play-grid--deck-collapsed")}
     >
       <Playmat
         phase={game.round.phase}
@@ -105,39 +104,39 @@ function PlayGrid({ game }: PlayGridProps) {
         letterVisible={game.round.letterVisible}
         letterLanding={game.round.letterLanding}
         statusKey={game.round.statusKey}
-        onPrimary={game.controls.onStartRound}
-        onNewLetter={game.controls.onNewLetter}
-        onNextRound={game.controls.onNextRound}
+        onPrimary={game.round.primaryAction}
+        onNewLetter={game.round.newLetter}
+        onNextRound={game.round.nextRound}
       />
 
       <CategoriesPanel
         categories={{
-          availableCount: game.categories.availableCount,
+          availableCount: game.deck.availableCount,
           catCountInput: game.settings.catCountInput,
           customCategories: game.settings.customCategories,
           deckBuiltins: game.settings.deckBuiltins,
           pinned: game.settings.pinned,
-          drawnCategories: game.categories.drawnCategories,
-          drawnCustomCategories: game.categories.drawnCustomCategories,
-          isLanding: game.categories.isLanding,
-          isRerolling: game.categories.isRerolling,
-          isPromptDeckOpen: game.flags.isPromptDeckOpen,
+          drawnCategories: game.deck.drawnCategories,
+          drawnCustomCategories: game.deck.drawnCustom,
+          isLanding: game.deck.landing,
+          isRerolling: game.deck.spinning,
+          isPromptDeckOpen: game.deck.isPromptDeckOpen,
           canEdit,
         }}
-        inputRef={game.categories.inputRef}
+        inputRef={game.deck.inputRef}
         actions={{
-          onAddCustom: game.controls.onAddCustomCategory,
-          onRemoveCustom: game.controls.onRemoveCustomCategory,
-          onRemoveBuiltin: game.controls.onRemoveBuiltin,
-          onTogglePin: game.controls.onTogglePin,
-          onAddPack: game.controls.onAddPack,
-          onRemoveAllCustom: game.controls.onRemoveAllCustom,
-          onRemoveAllBuiltins: game.controls.onRemoveAllBuiltins,
-          onCatCountChange: (value) => game.controls.onUpdateField("catCountInput", value),
-          onRedraw: game.controls.onRedrawCategories,
-          onTogglePinAll: game.controls.onTogglePinAll,
-          onTogglePromptDeck: game.controls.onTogglePromptDeck,
-          onTogglePause: game.controls.onTogglePause,
+          onAddCustom: game.deck.addCustom,
+          onRemoveCustom: game.deck.removeCustom,
+          onRemoveBuiltin: game.deck.removeBuiltin,
+          onTogglePin: game.deck.togglePin,
+          onAddPack: game.deck.addPack,
+          onRemoveAllCustom: game.deck.removeAllCustom,
+          onRemoveAllBuiltins: game.deck.removeAllBuiltins,
+          onCatCountChange: (value) => game.settings.update("catCountInput", value),
+          onRedraw: game.deck.redraw,
+          onTogglePinAll: game.deck.togglePinAll,
+          onTogglePromptDeck: game.deck.togglePromptDeck,
+          onTogglePause: game.round.togglePause,
         }}
       />
     </section>
@@ -161,9 +160,7 @@ function GameShell({ game }: GameShellProps) {
       data-theme={game.settings.theme}
     >
       <div className="app">
-        {game.flags.hasChunkError ? (
-          <ChunkErrorBanner onReload={game.controls.onReloadAfterChunkError} />
-        ) : null}
+        {game.app.hasChunkError ? <ChunkErrorBanner onReload={game.app.reload} /> : null}
 
         <PlayGrid game={game} />
 
@@ -172,7 +169,7 @@ function GameShell({ game }: GameShellProps) {
 
       {/* The rules are the welcome: on first run they open with a CTA that rolls
           the opening letter, otherwise they are the ? button's dialog. */}
-      {onboarding.needsOnboarding || game.flags.isHowToPlayOpen ? (
+      {onboarding.needsOnboarding || game.app.isHowToPlayOpen ? (
         <Suspense
           fallback={
             <div className="modal-loading" role="status" aria-live="polite">
@@ -180,15 +177,13 @@ function GameShell({ game }: GameShellProps) {
             </div>
           }
         >
-          <game.howToPlayDialog
-            onClose={
-              onboarding.needsOnboarding ? onboarding.complete : game.controls.onCloseHowToPlay
-            }
+          <game.app.HowToPlayDialog
+            onClose={onboarding.needsOnboarding ? onboarding.complete : game.app.closeHowToPlay}
             onStart={
               onboarding.needsOnboarding
                 ? () => {
                     onboarding.complete();
-                    game.controls.onStartRound();
+                    game.round.primaryAction();
                   }
                 : undefined
             }

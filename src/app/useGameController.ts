@@ -1,7 +1,6 @@
 import type { RefObject } from "react";
-import { type ComponentType, lazy, useEffect, useRef } from "react";
+import { lazy } from "react";
 import { useTranslation } from "react-i18next";
-import type { Phase, StatusKey } from "@/domain/game/roundReducer";
 import { useRound } from "@/features/round/useRound";
 import { useSettings } from "@/features/settings/SettingsProvider";
 import { useAppControls } from "./useAppControls";
@@ -9,62 +8,6 @@ import { useCategoryBoard } from "./useCategoryBoard";
 import { useKeyboardShortcuts } from "./useKeyboardShortcuts";
 import { usePromptDeckState } from "./usePromptDeckState";
 import { useRoundSetup } from "./useRoundSetup";
-
-interface GameController {
-  categories: {
-    availableCount: number;
-    drawnCategories: string[];
-    drawnCustomCategories: string[];
-    isLanding: boolean;
-    isRerolling: boolean;
-    isPromptDeckOpen: boolean;
-    inputRef: RefObject<HTMLInputElement>;
-  };
-  controls: {
-    onAddCustomCategory: (name: string) => void;
-    onTogglePin: (name: string) => void;
-    onTogglePinAll: (names: string[]) => void;
-    onAddPack: (packId: string) => void;
-    onRemoveBuiltin: (name: string) => void;
-    onRemoveAllCustom: () => void;
-    onRemoveAllBuiltins: () => void;
-    onCloseHowToPlay: () => void;
-    onLanguageChange: (language: string) => void;
-    onOpenHowToPlay: () => void;
-    onReloadAfterChunkError: () => void;
-    onRemoveCustomCategory: (category: string) => void;
-    onRedrawCategories: () => void;
-    onStartRound: () => void;
-    onToggleAvoidRepeats: () => void;
-    onToggleMute: () => void;
-    onTogglePause: () => void;
-    onTogglePromptDeck: () => void;
-    onToggleTheme: () => void;
-    onUpdateField: ReturnType<typeof useSettings>["update"];
-    onNewLetter: () => void;
-    onNextRound: () => void;
-  };
-  flags: {
-    hasChunkError: boolean;
-    isHowToPlayOpen: boolean;
-    isLanguagePending: boolean;
-    isPromptDeckOpen: boolean;
-  };
-  round: {
-    alarmOn: boolean;
-    isPaused: boolean;
-    letter: string;
-    letterLanding: boolean;
-    letterVisible: boolean;
-    phase: Phase;
-    secondsLeft: number;
-    statusKey: StatusKey;
-  };
-  settings: ReturnType<typeof useSettings>["settings"] & {
-    gameSeconds: number;
-  };
-  howToPlayDialog: ComponentType<{ onClose: () => void; onStart?: () => void }>;
-}
 
 // NOTE: fetch starts at module load (app boot), not at first Suspense — first-run
 // visitors need this chunk immediately, so warming it early avoids a loading flash
@@ -75,53 +18,40 @@ const HowToPlayDialog = lazy(async () => ({
   default: (await howToPlayModalPromise).HowToPlayModal,
 }));
 
-// biome-ignore lint/complexity/noExcessiveLinesPerFunction: aggregator hook — the body wires together the sub-hooks and returns one flat controller object; splitting it would only scatter that shape.
-function useGameController(): GameController {
-  const {
-    settings,
-    update,
-    addCustom,
-    removeCustom,
-    togglePin,
-    togglePinAll,
-    addPack,
-    removeBuiltin,
-    removeAllCustom,
-    removeAllBuiltins,
-  } = useSettings();
+/**
+ * The one boundary between src/app/ and the feature hooks, grouped by concern:
+ * `round` (letter and clock), `deck` (drawn categories and deck edits),
+ * `settings` (saved values and their setters) and `app` (dialogs, language, errors).
+ */
+function useGameController() {
+  const { settings, update, ...deckEdits } = useSettings();
   const { i18n } = useTranslation();
   const promptDeck = usePromptDeckState(settings.promptDeckPreference, update);
   const roundSetup = useRoundSetup(settings);
-  // True while a round is mid-flight (buffer/running, paused or not). Deck edits
-  // made during a round are deferred to the next redraw rather than applied live.
-  const roundInProgressRef = useRef(false);
-  const board = useCategoryBoard({
-    customCategories: roundSetup.customCategories,
-    deckBuiltins: roundSetup.deckBuiltins,
-    pinned: roundSetup.pinned,
-    count: roundSetup.normalizedCategoryCount,
-    deferComposeRef: roundInProgressRef,
-  });
   const round = useRound({
     gameSeconds: roundSetup.gameSeconds,
     bufferSeconds: roundSetup.bufferSeconds,
     isMuted: settings.isMuted,
     locale: i18n.resolvedLanguage ?? i18n.language,
     avoidRepeats: settings.avoidRepeats,
+    // Only called from a spin, after this render has defined `board`.
     onLetterPicked: () => board.redrawCategories(true),
   });
-
-  useEffect(() => {
-    roundInProgressRef.current = round.phase === "buffer" || round.phase === "running";
-  }, [round.phase]);
-
-  const controls = useAppControls({ i18n });
+  const board = useCategoryBoard({
+    customCategories: roundSetup.customCategories,
+    deckBuiltins: roundSetup.deckBuiltins,
+    pinned: roundSetup.pinned,
+    count: roundSetup.normalizedCategoryCount,
+    // Deck edits made mid-round wait for the next redraw.
+    deferCompose: round.phase === "buffer" || round.phase === "running",
+  });
+  const app = useAppControls({ i18n });
+  const openHowToPlay = () => app.setIsHowToPlayOpen(true);
 
   // Same gate as ActionBar's New-letter button so the 'R' shortcut can't wipe a
   // running round the button wouldn't let you touch: reroll only during the
   // get-ready countdown or while paused, never mid-play.
-  const isPausedRound = (round.phase === "buffer" || round.phase === "running") && round.isPaused;
-  const canReroll = round.phase === "buffer" || isPausedRound;
+  const canReroll = round.phase === "buffer" || (round.phase === "running" && round.isPaused);
 
   useKeyboardShortcuts({
     onSpace: round.primaryAction,
@@ -132,66 +62,40 @@ function useGameController(): GameController {
     },
     onP: round.togglePause,
     onC: promptDeck.togglePromptDeck,
-    onHelp: () => controls.setIsHowToPlayOpen(true),
+    onHelp: openHowToPlay,
   });
 
   return {
-    categories: {
+    round,
+    deck: {
+      ...board,
+      ...deckEdits,
+      ...promptDeck,
       availableCount: roundSetup.availableCount,
-      drawnCategories: board.drawnCategories,
-      drawnCustomCategories: board.drawnCustom,
-      isLanding: board.landing,
-      isRerolling: board.spinning,
-      isPromptDeckOpen: promptDeck.isPromptDeckOpen,
-      inputRef: controls.newCategoryInputRef as RefObject<HTMLInputElement>,
-    },
-    controls: {
-      onAddCustomCategory: addCustom,
-      onTogglePin: togglePin,
-      onTogglePinAll: togglePinAll,
-      onAddPack: addPack,
-      onRemoveBuiltin: removeBuiltin,
-      onRemoveAllCustom: removeAllCustom,
-      onRemoveAllBuiltins: removeAllBuiltins,
-      onCloseHowToPlay: () => controls.setIsHowToPlayOpen(false),
-      onLanguageChange: controls.handleLanguageChange,
-      onOpenHowToPlay: () => controls.setIsHowToPlayOpen(true),
-      onReloadAfterChunkError: () => window.location.reload(),
-      onRemoveCustomCategory: removeCustom,
-      onRedrawCategories: () => board.redrawCategories(true),
-      onStartRound: round.primaryAction,
-      onToggleAvoidRepeats: () => update("avoidRepeats", !settings.avoidRepeats),
-      onToggleMute: () => update("isMuted", !settings.isMuted),
-      onTogglePause: round.togglePause,
-      onTogglePromptDeck: promptDeck.togglePromptDeck,
-      onToggleTheme: () => update("theme", settings.theme === "light" ? "dark" : "light"),
-      onUpdateField: update,
-      onNewLetter: round.newLetter,
-      onNextRound: round.nextRound,
-    },
-    flags: {
-      hasChunkError: controls.hasChunkError,
-      isHowToPlayOpen: controls.isHowToPlayOpen,
-      isLanguagePending: controls.isLanguagePending,
-      isPromptDeckOpen: promptDeck.isPromptDeckOpen,
-    },
-    round: {
-      alarmOn: round.alarmOn,
-      isPaused: round.isPaused,
-      letter: round.letter,
-      letterLanding: round.letterLanding,
-      letterVisible: round.letterVisible,
-      phase: round.phase,
-      secondsLeft: round.secondsLeft,
-      statusKey: round.statusKey,
+      redraw: () => board.redrawCategories(true),
+      inputRef: app.newCategoryInputRef as RefObject<HTMLInputElement>,
     },
     settings: {
       ...settings,
       gameSeconds: roundSetup.gameSeconds,
+      update,
+      toggle: (key: "isMuted" | "avoidRepeats") => update(key, !settings[key]),
+      toggleTheme: () => update("theme", settings.theme === "light" ? "dark" : "light"),
     },
-    howToPlayDialog: HowToPlayDialog,
+    app: {
+      hasChunkError: app.hasChunkError,
+      isHowToPlayOpen: app.isHowToPlayOpen,
+      isLanguagePending: app.isLanguagePending,
+      changeLanguage: app.handleLanguageChange,
+      openHowToPlay,
+      closeHowToPlay: () => app.setIsHowToPlayOpen(false),
+      reload: () => window.location.reload(),
+      HowToPlayDialog,
+    },
   };
 }
+
+type GameController = ReturnType<typeof useGameController>;
 
 export type { GameController };
 export { useGameController };
