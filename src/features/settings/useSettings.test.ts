@@ -95,9 +95,9 @@ describe("useSettings", () => {
       expect(result.current.settings.pinned).toEqual(["Foo"]);
     });
 
-    it("loads settings saved with string numbers and stores them back as numbers", () => {
-      // The shape saved before numbers were stored: form strings for the three number fields.
-      const savedWithStrings = {
+    it("loads a full saved settings object and stores it back unchanged", () => {
+      // The three number fields are saved as the form's strings.
+      const saved = {
         durationInput: "120",
         catCountInput: "8",
         bufferSecondsInput: "5",
@@ -110,20 +110,13 @@ describe("useSettings", () => {
         themeSource: "user",
         promptDeckPreference: "collapsed",
       };
-      window.localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(savedWithStrings));
+      window.localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(saved));
       const { result } = renderHook(() => useSettings(), { wrapper });
-      expect(result.current.settings).toEqual(savedWithStrings);
-
-      const stored = JSON.parse(window.localStorage.getItem(SETTINGS_STORAGE_KEY) ?? "{}");
-      expect(stored).toEqual({
-        ...savedWithStrings,
-        durationInput: 120,
-        catCountInput: 8,
-        bufferSecondsInput: 5,
-      });
+      expect(result.current.settings).toEqual(saved);
+      expect(JSON.parse(window.localStorage.getItem(SETTINGS_STORAGE_KEY) ?? "{}")).toEqual(saved);
     });
 
-    it("clamps stored numbers into range", () => {
+    it("reads number fields saved as numbers, clamped into range", () => {
       window.localStorage.setItem(
         SETTINGS_STORAGE_KEY,
         JSON.stringify({ durationInput: 9999, catCountInput: 4.7, bufferSecondsInput: null }),
@@ -191,7 +184,7 @@ describe("useSettings", () => {
       expect(result.current.settings.durationInput).toBe("90");
       const stored = JSON.parse(window.localStorage.getItem(SETTINGS_STORAGE_KEY) ?? "null");
       expect(stored).not.toBeNull();
-      expect(stored.durationInput).toBe(90);
+      expect(stored.durationInput).toBe("90");
     });
 
     it("syncs when another tab updates localStorage", async () => {

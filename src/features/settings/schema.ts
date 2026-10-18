@@ -49,8 +49,8 @@ function getPreferredTheme(): Theme {
 }
 
 /**
- * Clamp a stored number into the form field's string, so a bad value from another tab
- * can't slip through. Strings are what saved settings held before numbers were stored.
+ * Clamp a stored number field into the form field's string, so a bad value from another
+ * tab can't slip through. Accepts a number as well as the string the app saves.
  */
 function sanitizeNumericInput(value: unknown, min: number, max: number, fallback: number): string {
   return typeof value === "number" || typeof value === "string"
@@ -180,16 +180,6 @@ function parseStoredSettings(raw: string | null): Settings {
   }
 }
 
-/** The form fields hold strings; storage holds the numbers they stand for. */
-function serializeSettings(settings: Settings): string {
-  return JSON.stringify({
-    ...settings,
-    durationInput: Number(settings.durationInput),
-    catCountInput: Number(settings.catCountInput),
-    bufferSecondsInput: Number(settings.bufferSecondsInput),
-  });
-}
-
 function readStoredSettings(): Settings {
   return parseStoredSettings(safeStorage.getItem(SETTINGS_STORAGE_KEY));
 }
@@ -204,5 +194,4 @@ export {
   SETTINGS_STORAGE_KEY,
   sanitizeSettings,
   sanitizeStrings,
-  serializeSettings,
 };
