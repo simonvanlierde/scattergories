@@ -4,6 +4,7 @@ import { categories } from "@/domain/game/constants";
 import { safeStorage } from "@/shared/lib/safeStorage";
 import {
   DARK_SCHEME_QUERY,
+  MAX_STRING_COUNT,
   readStoredSettings,
   SETTINGS_STORAGE_KEY,
   type Settings,
@@ -73,7 +74,8 @@ function settingsReducer(state: Settings, action: SettingsAction): Settings {
 
     case "addCustom": {
       const trimmed = action.value.trim();
-      if (!trimmed) {
+      // sanitizeStrings drops a name past the cap, so pinning it would leave a ghost pin.
+      if (!trimmed || state.customCategories.length >= MAX_STRING_COUNT) {
         return state;
       }
       // A custom name can't repeat another custom or shadow a built-in key, in any case.

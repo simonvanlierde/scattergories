@@ -4,7 +4,7 @@ import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ADULT_KEYS } from "@/domain/deck";
 import { SettingsProvider, useSettings } from "./SettingsProvider";
-import { SETTINGS_STORAGE_KEY } from "./schema";
+import { MAX_STRING_COUNT, SETTINGS_STORAGE_KEY } from "./schema";
 
 function wrapper({ children }: { children: ReactNode }) {
   return React.createElement(SettingsProvider, null, children);
@@ -265,6 +265,19 @@ describe("useSettings", () => {
         result.current.addCustom("animals");
       });
       expect(result.current.settings.customCategories).toEqual([]);
+    });
+  });
+
+  describe("addCustom cap", () => {
+    it("ignores a new name once 200 customs exist, and does not pin it", () => {
+      const { result } = renderHook(() => useSettings(), { wrapper });
+      act(() => {
+        for (let index = 0; index <= MAX_STRING_COUNT; index += 1) {
+          result.current.addCustom(`Custom ${index}`);
+        }
+      });
+      expect(result.current.settings.customCategories).toHaveLength(MAX_STRING_COUNT);
+      expect(result.current.settings.pinned).not.toContain(`Custom ${MAX_STRING_COUNT}`);
     });
   });
 

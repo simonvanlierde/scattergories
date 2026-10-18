@@ -71,7 +71,7 @@ function getDefaultSettings(): Settings {
 
 /** Caps guard against a corrupted/hostile localStorage payload bloating the deck. */
 const MAX_STRING_LENGTH = 50;
-const MAX_STRING_COUNT = 200;
+export const MAX_STRING_COUNT = 200;
 
 function sanitizeStrings(value: unknown): string[] {
   if (!Array.isArray(value)) {
