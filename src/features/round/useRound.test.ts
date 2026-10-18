@@ -314,6 +314,22 @@ it("caps the catch-up burst after a long tab suspension", () => {
   expect(tickCount).toBeLessThanOrEqual(SHORT_ROUND_SECONDS + 1);
 });
 
+it("keeps the seconds missed during get-ready on the game clock", () => {
+  const gameSeconds = 60;
+  const missedSeconds = 40;
+  const driver = createRoundDriver({ gameSeconds });
+
+  driver.start();
+  driver.landLetter();
+  act(() => {
+    vi.setSystemTime(Date.now() + missedSeconds * ONE_SECOND_MS);
+    vi.advanceTimersByTime(ONE_SECOND_MS);
+  });
+
+  expect(driver.current.phase).toBe("running");
+  expect(driver.current.secondsLeft).toBe(BUFFER_SECONDS + gameSeconds - (missedSeconds + 1));
+});
+
 it("skips only immediate repeats when avoidRepeats is off", () => {
   const driver = createRoundDriver({ avoidRepeats: false });
 
