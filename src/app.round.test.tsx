@@ -141,8 +141,15 @@ it("shows the skip confirmation as visible text while armed", async () => {
   await user.click(screen.getByRole("button", { name: "Roll a letter" }));
   await screen.findByRole("button", { name: "Pause" });
   expect(screen.queryByText("Tap again to skip this round")).not.toBeInTheDocument();
+  // A live region only speaks about changes, so it must be there before the tap.
+  const live = document.querySelector('.action-bar [aria-live="polite"]');
+  expect(live).toBeEmptyDOMElement();
 
   await user.click(screen.getByRole("button", { name: "Next round" }));
 
-  expect(screen.getByText("Tap again to skip this round")).toBeVisible();
+  const prompt = screen.getByText("Tap again to skip this round");
+  expect(prompt).toBeVisible();
+  // Screen readers hear it too: a focused button's new label is often not read out.
+  expect(live).toContainElement(prompt);
+  expect(prompt.closest('[aria-hidden="true"]')).toBeNull();
 });

@@ -565,6 +565,12 @@
     translate: -50% 0;
   }
 
+  /* Disarmed it stays in the DOM as a live region, drawn as nothing. */
+  .action-bar__confirm:empty {
+    padding: 0;
+    border: 0;
+  }
+
   .action-bar__group {
     display: inline-flex;
     align-items: center;
