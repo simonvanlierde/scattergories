@@ -122,6 +122,10 @@
       "Épinglez une catégorie pour la garantir à chaque manche ; les catégories non épinglées sont tirées au hasard pour compléter.",
       "Relancez pour tirer un nouvel ensemble de catégories pour la lettre en cours, sans changer la lettre."
     ],
+    "odds": "Chances des lettres",
+    "oddsText": "La probabilité de tirer chaque lettre, d’après le nombre de mots qui commencent par elle sur Wikipédia dans cette langue (version de {{snapshot}}). Un tirage ne répète jamais la lettre précédente et, avec « {{setting}} » activé, il écarte les {{window}} dernières lettres tirées.",
+    "oddsLetter": "Lettre",
+    "oddsChance": "Chance",
     "shortcuts": "Raccourcis clavier",
     "about": "À propos",
     "attribution": "Scattergories est le jeu de société original de Hasbro. Ceci est un compagnon gratuit et non officiel pour y jouer autour de la table. Parcourez le <official>jeu officiel</official> ou le <repo>code source</repo> de cette application, publié sous la <license>licence MIT</license>.",

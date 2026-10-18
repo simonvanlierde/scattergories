@@ -122,6 +122,10 @@
       "Fissa una categoria per garantirla a ogni round; quelle non fissate vengono estratte a caso per completare.",
       "Rilancia per estrarre un nuovo set di categorie per la lettera attuale, senza cambiare la lettera."
     ],
+    "odds": "Probabilità delle lettere",
+    "oddsText": "La probabilità di estrarre ogni lettera, in base a quante parole iniziano con essa su Wikipedia in questa lingua (versione di {{snapshot}}). Un’estrazione non ripete mai la lettera precedente e, con «{{setting}}» attivo, salta le ultime {{window}} lettere estratte.",
+    "oddsLetter": "Lettera",
+    "oddsChance": "Probabilità",
     "shortcuts": "Scorciatoie da tastiera",
     "about": "Informazioni",
     "attribution": "Scattergories è il gioco di società originale di Hasbro. Questo è un supporto gratuito e non ufficiale per giocarci al tavolo. Sfoglia il <official>gioco ufficiale</official> o il <repo>codice sorgente</repo> di questa app, rilasciata sotto la <license>licenza MIT</license>.",

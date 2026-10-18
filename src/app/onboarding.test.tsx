@@ -58,3 +58,24 @@ it("opens the same rules from the help button, without the first-run CTA", async
   expect(within(rules).getByText(/Score points/i)).toBeInTheDocument();
   expect(within(rules).queryByRole("button", { name: "Roll a letter" })).not.toBeInTheDocument();
 });
+
+it("lists each letter's chance in the rules as a table", async () => {
+  window.localStorage.setItem(ONBOARDED_KEY, "1");
+  const user = userEvent.setup();
+  render(<App />);
+
+  await screen.findByRole("heading", { level: 1, name: "Scattergories" });
+  await user.click(screen.getByRole("button", { name: "How to play" }));
+  const rules = await screen.findByRole("dialog", { name: "How to play" });
+  await user.click(within(rules).getByText("Letter odds", { selector: "summary *" }));
+
+  const table = within(rules).getByRole("table", { name: "Letter odds" });
+  const letters = within(table)
+    .getAllByRole("rowheader")
+    .map((cell) => cell.textContent);
+  expect(letters).toEqual([..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"]);
+  expect(within(table).getByRole("row", { name: /^S \d+\.\d%$/ })).toBeInTheDocument();
+  expect(within(rules).getByText(/November 2023 snapshot/)).toHaveTextContent(
+    "with “Avoid letter repeats” on it skips the last 8 letters drawn",
+  );
+});

@@ -122,6 +122,10 @@
       "Fixiere eine Kategorie, damit sie in jeder Runde vorkommt; nicht fixierte werden zufällig für den Rest gezogen.",
       "Ziehe neu, um für den aktuellen Buchstaben ein frisches Set an Kategorien zu ziehen, ohne den Buchstaben zu ändern."
     ],
+    "odds": "Buchstaben-Chancen",
+    "oddsText": "Wie wahrscheinlich jeder Buchstabe gezogen wird, danach, wie viele Wörter in der Wikipedia dieser Sprache mit ihm beginnen (Stand {{snapshot}}). Eine Ziehung wiederholt nie den vorigen Buchstaben, und mit „{{setting}}“ überspringt sie die letzten {{window}} gezogenen Buchstaben.",
+    "oddsLetter": "Buchstabe",
+    "oddsChance": "Chance",
     "shortcuts": "Tastenkürzel",
     "about": "Über",
     "attribution": "Scattergories ist das Original-Partyspiel von Hasbro. Dies ist ein kostenloser, inoffizieller Begleiter fürs Spielen am Tisch. Sieh dir das <official>offizielle Spiel</official> oder den <repo>Quellcode</repo> dieser App an, veröffentlicht unter der <license>MIT-Lizenz</license>.",

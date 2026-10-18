@@ -122,6 +122,10 @@
       "Fija una categoría para asegurarla en cada ronda; las no fijadas se sortean al azar para completar el resto.",
       "Vuelve a sortear para obtener un conjunto nuevo de categorías para la letra actual, sin cambiar la letra."
     ],
+    "odds": "Probabilidad de las letras",
+    "oddsText": "La probabilidad de que salga cada letra, según cuántas palabras empiezan por ella en la Wikipedia de este idioma (copia de {{snapshot}}). Un sorteo nunca repite la letra anterior y, con «{{setting}}» activado, omite las últimas {{window}} letras sacadas.",
+    "oddsLetter": "Letra",
+    "oddsChance": "Probabilidad",
     "shortcuts": "Atajos de teclado",
     "about": "Acerca de",
     "attribution": "Scattergories es el juego de fiesta original de Hasbro. Esta es una herramienta gratuita y no oficial para jugarlo en la mesa. Explora el <official>juego oficial</official> o el <repo>código fuente</repo> de esta app, publicado bajo la <license>licencia MIT</license>.",

@@ -64,6 +64,23 @@ test("@smoke has no detectable accessibility violations with the how-to-play mod
   expect(accessibilityScanResults.violations).toEqual([]);
 });
 
+test("@smoke has no detectable accessibility violations with the letter odds open", async ({
+  app,
+  page,
+}) => {
+  await app.openHelp();
+  const help = page.getByRole("dialog", { name: /How to play/i });
+  await help.locator("summary", { hasText: "Letter odds" }).click();
+
+  const odds = help.getByRole("table", { name: "Letter odds" });
+  await expect(odds).toBeVisible();
+  await expect(odds.getByRole("rowheader")).toHaveCount(26);
+
+  const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
+
+  expect(accessibilityScanResults.violations).toEqual([]);
+});
+
 test("@smoke syncs the document language to the selected locale", async ({ app, page }) => {
   await app.switchLanguage("es");
 

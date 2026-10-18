@@ -122,6 +122,10 @@
       "Przypnij kategorię, aby pojawiała się w każdej rundzie; nieprzypięte są losowane na resztę miejsc.",
       "Losuj ponownie, aby wylosować nowy zestaw kategorii dla bieżącej litery, bez zmiany litery."
     ],
+    "odds": "Szanse liter",
+    "oddsText": "Szansa na wylosowanie każdej litery, według tego, ile słów zaczyna się od niej w Wikipedii w tym języku (stan: {{snapshot}}). Losowanie nigdy nie powtarza poprzedniej litery, a z włączoną opcją „{{setting}}” pomija ostatnie {{window}} wylosowanych liter.",
+    "oddsLetter": "Litera",
+    "oddsChance": "Szansa",
     "shortcuts": "Skróty klawiszowe",
     "about": "O aplikacji",
     "attribution": "Scattergories to oryginalna gra imprezowa firmy Hasbro. To bezpłatny, nieoficjalny dodatek do gry przy stole. Przejrzyj <official>oficjalną grę</official> lub <repo>kod źródłowy</repo> tej aplikacji, wydany na <license>licencji MIT</license>.",

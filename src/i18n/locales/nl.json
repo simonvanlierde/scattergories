@@ -122,6 +122,10 @@
       "Zet een categorie vast zodat die elke ronde meedoet; de rest wordt willekeurig aangevuld met niet-vastgezette categorieën.",
       "Loot opnieuw om een nieuwe set categorieën voor de huidige letter te trekken, zonder de letter te veranderen."
     ],
+    "odds": "Kans per letter",
+    "oddsText": "De kans dat elke letter getrokken wordt, op basis van hoeveel woorden ermee beginnen op Wikipedia in deze taal (stand van {{snapshot}}). Een trekking herhaalt nooit de vorige letter, en met ‘{{setting}}’ aan slaat hij de laatste {{window}} getrokken letters over.",
+    "oddsLetter": "Letter",
+    "oddsChance": "Kans",
     "shortcuts": "Sneltoetsen",
     "about": "Over",
     "attribution": "Scattergories is het originele partyspel van Hasbro. Dit is een gratis, onofficiële hulp om het aan tafel te spelen. Bekijk het <official>officiële spel</official> of de <repo>broncode</repo> van deze app, uitgebracht onder de <license>MIT-licentie</license>.",

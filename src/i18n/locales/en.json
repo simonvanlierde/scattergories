@@ -122,6 +122,10 @@
       "Pin a category to lock it into every round; unpinned ones are drawn at random to fill the rest.",
       "Reroll to draw a fresh set of categories for the current letter, without changing the letter."
     ],
+    "odds": "Letter odds",
+    "oddsText": "Each letter's chance of being drawn, from how often words start with it on Wikipedia in this language ({{snapshot}} snapshot). A draw never repeats the previous letter, and with “{{setting}}” on it skips the last {{window}} letters drawn.",
+    "oddsLetter": "Letter",
+    "oddsChance": "Chance",
     "shortcuts": "Keyboard shortcuts",
     "about": "About",
     "attribution": "Scattergories is the original party game by Hasbro. This is a free, unofficial companion for playing it around the table. Browse the <official>official game</official> or this app's <repo>source code</repo>, released under the <license>MIT license</license>.",

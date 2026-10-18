@@ -9,6 +9,8 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- A "Letter odds" section in How to play shows each letter's chance of being drawn in your
+  language, with where the numbers come from.
 - Polish rounds can now land on Ł, Ś and Ż. Rarer Polish initials such as Ć and Ź still
   count toward C and Z.
 - A Grown-ups category pack. Add it to your deck for Offensive Words, 4-Letter Words,
