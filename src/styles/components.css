@@ -693,8 +693,15 @@
     text-align: right;
   }
 
+  /* First run: the rules outgrow a phone's sheet, so the start button sticks to
+     the sheet's bottom edge instead of waiting below the fold. The paper-coloured
+     spread masks the rules scrolling under it. */
   .howto__start {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
     width: 100%;
     margin-bottom: var(--space-6);
+    box-shadow: 0 0 0 var(--space-3) var(--bg-raised);
   }
 }

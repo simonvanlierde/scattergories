@@ -120,6 +120,7 @@ function PlayGrid({ game }: PlayGridProps) {
           drawnCategories: game.categories.drawnCategories,
           drawnCustomCategories: game.categories.drawnCustomCategories,
           isLanding: game.categories.isLanding,
+          isRerolling: game.categories.isRerolling,
           isPromptDeckOpen: game.flags.isPromptDeckOpen,
           canEdit,
         }}

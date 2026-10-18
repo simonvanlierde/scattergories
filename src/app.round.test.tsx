@@ -1,8 +1,14 @@
 import { screen, waitFor, within } from "@testing-library/react";
-import { beforeEach, expect, it } from "vitest";
+import { afterEach, beforeEach, expect, it } from "vitest";
 import { renderApp, resetAppTestState, SELECTED_CATEGORIES } from "./test/renderApp";
 
+const defaultMatchMedia = window.matchMedia;
+
 beforeEach(resetAppTestState);
+// One test turns on reduced motion; the rest need the roll animation back.
+afterEach(() => {
+  window.matchMedia = defaultMatchMedia;
+});
 
 it("persists the category panel preference across remount with the same localStorage", async () => {
   const first = await renderApp();
@@ -81,6 +87,49 @@ it("locks the category pins while the clock runs and unlocks them on pause", asy
   }
 });
 
+it("locks the pins while the categories roll, so a tap cannot pin a passing name", async () => {
+  const { user } = await renderApp();
+  const pinButtons = () =>
+    within(screen.getByRole("list", { name: SELECTED_CATEGORIES })).getAllByRole("button");
+
+  await user.click(screen.getByRole("button", { name: "Redraw" }));
+
+  for (const chip of pinButtons()) {
+    expect(chip).toBeDisabled();
+  }
+  expect(screen.getByRole("button", { name: "Pin all" })).toBeDisabled();
+
+  await waitFor(() => {
+    for (const chip of pinButtons()) {
+      expect(chip).toBeEnabled();
+    }
+  });
+});
+
+it("keeps the board in place when pins change during a paused round", async () => {
+  const { user } = await renderApp();
+  const drawnList = screen.getByRole("list", { name: SELECTED_CATEGORIES });
+  const names = () =>
+    within(drawnList)
+      .getAllByRole("listitem")
+      .map((item) => item.textContent);
+
+  await user.click(screen.getByRole("button", { name: "Roll a letter" }));
+  await user.click(await screen.findByRole("button", { name: "Pause" }));
+  await waitFor(() => expect(within(drawnList).getAllByRole("button")[0]).toBeEnabled());
+  const board = names();
+
+  const [first, second] = within(drawnList).getAllByRole("button");
+  await user.click(first as HTMLElement);
+  await user.click(second as HTMLElement);
+  await user.click(first as HTMLElement);
+  await user.click(screen.getByRole("button", { name: "Resume" }));
+
+  expect(names()).toEqual(board);
+  expect(second).toHaveAttribute("aria-pressed", "true");
+  expect(first).toHaveAttribute("aria-pressed", "false");
+});
+
 it("shows the skip confirmation as visible text while armed", async () => {
   // No get-ready countdown, so the letter lands straight into the live clock.
   window.localStorage.setItem(
@@ -92,8 +141,15 @@ it("shows the skip confirmation as visible text while armed", async () => {
   await user.click(screen.getByRole("button", { name: "Roll a letter" }));
   await screen.findByRole("button", { name: "Pause" });
   expect(screen.queryByText("Tap again to skip this round")).not.toBeInTheDocument();
+  // A live region only speaks about changes, so it must be there before the tap.
+  const live = document.querySelector('.action-bar [aria-live="polite"]');
+  expect(live).toBeEmptyDOMElement();
 
   await user.click(screen.getByRole("button", { name: "Next round" }));
 
-  expect(screen.getByText("Tap again to skip this round")).toBeVisible();
+  const prompt = screen.getByText("Tap again to skip this round");
+  expect(prompt).toBeVisible();
+  // Screen readers hear it too: a focused button's new label is often not read out.
+  expect(live).toContainElement(prompt);
+  expect(prompt.closest('[aria-hidden="true"]')).toBeNull();
 });

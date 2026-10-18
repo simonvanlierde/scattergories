@@ -95,12 +95,12 @@ export function ActionBar({
         />
       </ControlGroup>
       {/* Touch has no hover title, so the armed state says it in plain text too.
-          Hidden from screen readers: the button's own label already changed. */}
-      {skip.armed ? (
-        <p className="action-bar__confirm" aria-hidden="true">
-          {t("buttons.skipConfirm")}
-        </p>
-      ) : null}
+          Always rendered and live: screen readers rarely read out a new label on
+          the button that already has focus, and only announce a region that
+          existed before its text changed. */}
+      <p className="action-bar__confirm" aria-live="polite">
+        {skip.armed ? t("buttons.skipConfirm") : null}
+      </p>
     </div>
   );
 }
