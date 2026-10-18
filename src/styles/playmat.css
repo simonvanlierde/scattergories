@@ -558,6 +558,13 @@
       padding: var(--space-0-5) var(--space-2);
       font-size: var(--text-lg);
     }
+
+    /* On the smallest ring, "Time's up!" shrinks with it so the longer
+       translations (German, Portuguese) stay within the ring's width. */
+    .playmat .timer-ring--done .timer-ring__readout {
+      padding-inline: var(--space-1);
+      font-size: min(var(--text-lg), var(--hero) * 0.13);
+    }
   }
 
   /* Tall row: once a stacked ring beats a side-by-side one, the ring goes on

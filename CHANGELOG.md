@@ -43,6 +43,8 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - The first-run rules open at their intro instead of scrolled down to the start button.
 - The unpinned pin icon has enough contrast to see in both themes.
 - Long button labels wrap instead of being cut off on narrow phones.
+- On a 320 px phone the board no longer runs past the right edge of the screen, and a long
+  "Time's up!", as in German or Portuguese, fits inside the small timer ring.
 
 ## [0.3.0] - 2026-08-24
 

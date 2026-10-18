@@ -209,7 +209,10 @@ Geist.
   19rem tall, the ring sits next to the controls and never gets smaller than `min(36vw, 9rem)`.
   From 19rem up, it sits above them and grows to 20rem. With the categories collapsed, the ring is
   full size (20rem) with the controls below. Categories flow in columns at least 10rem wide, so a
-  360px phone still gets two. The letter is half the ring in the side-by-side row.
+  360px phone still gets two. The letter is half the ring in the side-by-side row, and on that
+  smallest ring "Time's up!" shrinks with it (13% of the ring) so long translations stay inside.
+  Under 21rem wide the categories heading drops its icon, so the title, the chevron and the three
+  tools fit on one row.
 - From 52rem, there are two columns: playmat on the left, categories on the right, with a hairline
   between them. Collapsing the categories centers the playmat. From 64rem the ring grows to 26rem.
   Under 32rem tall (a phone on its side), the ring sits next to the controls and takes the height
