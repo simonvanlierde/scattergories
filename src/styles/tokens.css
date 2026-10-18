@@ -7,9 +7,8 @@
       "Fraunces Variable", "Fraunces", "Iowan Old Style", "Apple Garamond", Georgia,
       "Times New Roman", serif;
     --font-ui: "Geist Variable", "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
-    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Geist Mono", monospace;
-    /* The loaded UI face, not a mono stack (Geist Mono is not bundled): set
-       font-variant-numeric: tabular-nums where digits must hold their width. */
+    /* Every figure that is counted or timed is Geist: it has tabular figures,
+       Fraunces does not. Set font-variant-numeric: tabular-nums with it. */
     --font-numeric: var(--font-ui);
 
     /* Fluid type scale (minor third, mobile → desktop) */

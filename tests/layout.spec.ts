@@ -35,7 +35,9 @@ function measureLayout(page: Page): Promise<Layout> {
 // the height the categories leave free, so it must grow where there is room,
 // stay put between idle and running, and never push anything off screen.
 const viewports = [
-  { width: 360, height: 740, minGlyphPx: 48 },
+  // Two narrow columns keep the 360px list short; the ring never drops below
+  // min(36vw, 9rem), and the letter is half the ring.
+  { width: 360, height: 740, minGlyphPx: 64 },
   { width: 390, height: 844, minGlyphPx: 96 },
   { width: 820, height: 1180, minGlyphPx: 160 },
 ];
@@ -55,13 +57,40 @@ for (const { width, height, minGlyphPx } of viewports) {
       expect(running.glyphPx).toBe(idle.glyphPx);
       expect(running.horizontalOverflow).toBe(0);
       expect(running.playmatBottom).toBeLessThanOrEqual(running.categoriesTop);
-      // Two columns of twelve fit from 390px up; the 360px single column scrolls.
+      // Twelve fit from 390px up; at 360px a board of long, wrapped names may scroll.
       if (width >= 390) {
         expect(running.listFits).toBe(true);
       }
     });
   });
 }
+
+// A phone on its side: the ring sits beside the controls, so the whole playmat
+// fits on screen and the play grid has nothing to scroll.
+test.describe("844x390 landscape", () => {
+  test.use({ viewport: { width: 844, height: 390 } });
+
+  test("fits the ring and controls without scrolling", async ({ app, page }) => {
+    await app.toggleMute();
+    await app.startRound();
+    await app.expectRunning();
+    const fit = await page.evaluate(() => {
+      const grid = document.querySelector(".play-grid") as HTMLElement;
+      const hero = (
+        document.querySelector(".playmat__hero") as HTMLElement
+      ).getBoundingClientRect();
+      return {
+        gridScrolls: grid.scrollHeight > grid.clientHeight,
+        heroTop: hero.top,
+        heroBottom: hero.bottom,
+        gridBottom: grid.getBoundingClientRect().bottom,
+      };
+    });
+    expect(fit.gridScrolls).toBe(false);
+    expect(fit.heroTop).toBeGreaterThanOrEqual(0);
+    expect(fit.heroBottom).toBeLessThanOrEqual(fit.gridBottom);
+  });
+});
 
 // Controls shorter than the 44px touch-target floor, by name and height.
 function shortControls(dialog: Locator) {

@@ -81,3 +81,42 @@ for (const theme of ["Light", "Dark"] as const) {
     expect(contrastRatio(fg, bg)).toBeGreaterThanOrEqual(3);
   });
 }
+
+for (const theme of ["Light", "Dark"] as const) {
+  test(`category numerals keep AA contrast during a round in ${theme.toLowerCase()} mode`, async ({
+    app,
+    page,
+  }) => {
+    await app.waitUntilReady();
+    await app.switchTheme(theme);
+    await app.toggleMute();
+    await app.startRound();
+    await app.expectRunning();
+
+    const { fg, bg, opacity } = await page.evaluate(() => {
+      const mark = document.querySelector(".category-checklist__mark") as Element;
+      const chip = mark.closest(".category-checklist__chip") as Element;
+      const toRgb = (color: string): number[] => {
+        const canvas = document.createElement("canvas");
+        canvas.width = 1;
+        canvas.height = 1;
+        const ctx = canvas.getContext("2d")!;
+        ctx.fillStyle = color;
+        ctx.fillRect(0, 0, 1, 1);
+        const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+        return [r, g, b];
+      };
+      return {
+        fg: toRgb(getComputedStyle(mark).color),
+        bg: toRgb(
+          getComputedStyle(document.querySelector(".app-shell") as Element).backgroundColor,
+        ),
+        // The chips are disabled mid-round; a faded chip would fade its numeral too.
+        opacity: Number(getComputedStyle(chip).opacity),
+      };
+    });
+
+    expect(opacity).toBe(1);
+    expect(contrastRatio(fg, bg)).toBeGreaterThanOrEqual(4.5);
+  });
+}

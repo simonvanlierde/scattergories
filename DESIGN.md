@@ -30,7 +30,6 @@ typography:
     fontWeight: 500
     lineHeight: 0.85
     letterSpacing: "-0.02em"
-    fontFeature: "\"ss01\" 1"
     fontVariation: "\"opsz\" 144"
   headline:
     fontFamily: "Fraunces Variable, Fraunces, Georgia, serif"
@@ -191,12 +190,15 @@ danger, never decoration.
 - **Label** (uppercase): field labels. The footer wordmark uses Fraunces uppercase with the same
   letter spacing.
 
-The type scale is fluid (minor third, `--text-xs` to `--text-hero`). Category numerals are
-Fraunces italic.
+The type scale is fluid (minor third, `--text-xs` to `--text-hero`). Every number that counts or
+times something (the clock, category numerals, the How to play steps) is Geist with tabular
+figures, because Fraunces has none. Fraunces ships with its optical-size axis, so the letter is set
+at the display size (`opsz` 144) and headings pick their own size; the italic file loads only for
+"Time's up!".
 
 **The Serif Is a Moment Rule.** Fraunces marks a moment or a heading: the letter, the end of a
-round, titles, the How to play lead and the italic numerals. Anything you tap, and every name in a
-list, is Geist.
+round, titles and the How to play lead. Anything you tap, every name in a list and every number is
+Geist.
 
 ## Layout
 
@@ -206,9 +208,12 @@ list, is Geist.
   open, they take the height their list needs and the ring gets the rest. While that row is under
   19rem tall, the ring sits next to the controls and never gets smaller than `min(36vw, 9rem)`.
   From 19rem up, it sits above them and grows to 20rem. With the categories collapsed, the ring is
-  full size (20rem) with the controls below. Categories flow in columns at least 11.5rem wide.
+  full size (20rem) with the controls below. Categories flow in columns at least 10rem wide, so a
+  360px phone still gets two. The letter is half the ring in the side-by-side row.
 - From 52rem, there are two columns: playmat on the left, categories on the right, with a hairline
   between them. Collapsing the categories centers the playmat. From 64rem the ring grows to 26rem.
+  Under 32rem tall (a phone on its side), the ring sits next to the controls and takes the height
+  the footer leaves.
 - Spacing uses a 4px scale (`--space-1` = 0.25rem). The playmat and grid gaps are 1rem, except
   0.75rem between the playmat and the categories below 52rem.
 - Safe-area insets pad the column for installed PWAs.
@@ -240,9 +245,10 @@ the readout. Panels and the playmat have no corners at all. Rules separate them.
 
 ### Category chips
 
-- **Style:** a row with a hairline border, an italic serif numeral, the name and a pin icon. On
+- **Style:** a row with a hairline border, a muted Geist numeral, the name and a pin icon. On
   phones the numeral becomes a superscript and the pin is hidden.
-- **State:** pinned chips get a navy border and navy wash. Custom categories are semibold with a
+- **State:** pinned chips get a 2px navy edge (drawn inside the border) and navy wash; the wash
+  alone is too close to the page to carry the state. Custom categories are semibold with a
   navy star. During a round the chips are read-only but not dimmed.
 - **Motion:** a new board is dealt, each chip landing 35ms after the one before.
 

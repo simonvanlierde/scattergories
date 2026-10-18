@@ -1,12 +1,12 @@
 {
   "name": "Scattergories",
   "short_name": "Scattergories",
-  "description": "An unofficial Scattergories companion for letters, rounds, prompts, and timing.",
+  "description": "An unofficial Scattergories companion: roll a letter, draw the categories and time the round.",
   "id": "/",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#fdfaf4",
-  "theme_color": "#fdfaf4",
+  "background_color": "#fcfaf4",
+  "theme_color": "#fcfaf4",
   "icons": [
     {
       "src": "/favicon.svg",
@@ -34,6 +34,21 @@
     }
   ],
   "categories": ["games"],
-  "screenshots": [],
+  "screenshots": [
+    {
+      "src": "/screenshots/narrow.jpg",
+      "sizes": "780x1688",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "A round on a phone: the letter, the clock and twelve categories"
+    },
+    {
+      "src": "/screenshots/wide.jpg",
+      "sizes": "1280x800",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "A round on a laptop, with the categories beside the letter"
+    }
+  ],
   "prefer_related_applications": false
 }
