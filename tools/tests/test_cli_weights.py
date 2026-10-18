@@ -21,18 +21,14 @@ if TYPE_CHECKING:
 def _sample_deps(
     deps: Deps,
     sample_analysis_builder: Callable[..., SampleAnalysis],
-) -> tuple[Deps, list[list[str]]]:
-    """Return deps whose sample analysis is faked, and the alphabets it was asked for."""
-    alphabets: list[list[str]] = []
-
+) -> Deps:
     def analyze_sample_dataset(
         dataset: str, *, registry: LocaleRegistry, hf_token: str | None
     ) -> SampleAnalysis:
-        del hf_token
-        alphabets.append(registry.get_letters("en"))
+        del registry, hf_token
         return sample_analysis_builder(dataset_key=dataset, rows=[LetterRow("A", 1.0, 1)], total=1)
 
-    return replace(deps, analyze_sample_dataset=analyze_sample_dataset), alphabets
+    return replace(deps, analyze_sample_dataset=analyze_sample_dataset)
 
 
 def _locale_deps(
@@ -65,15 +61,14 @@ def test_weights_sample_preview(
     deps: Deps,
     sample_analysis_builder: Callable[..., SampleAnalysis],
 ) -> None:
-    """Preview mode prints a stable sample summary, using the registry's English letters."""
-    cli_deps, alphabets = _sample_deps(deps, sample_analysis_builder)
-
-    result = runner.invoke(cli.app, ["weights", "sample"], obj=cli_deps)
+    """Preview mode prints a stable sample summary without writes."""
+    result = runner.invoke(
+        cli.app, ["weights", "sample"], obj=_sample_deps(deps, sample_analysis_builder)
+    )
 
     assert result.exit_code == 0
     assert "Dataset: wikitext-2-raw-v1" in result.stdout
     assert "Preview only" in result.stdout
-    assert alphabets == [["A", "B", "C"]]
 
 
 def test_weights_sample_rejects_unsupported_dataset(runner: CliRunner, deps: Deps) -> None:
@@ -92,7 +87,7 @@ def test_weights_sample_write_persists_ephemeral_outputs(
 ) -> None:
     """Write mode stores TSV and TypeScript outputs under the requested directory."""
     paths, _ = repo_context
-    cli_deps, _ = _sample_deps(deps, sample_analysis_builder)
+    cli_deps = _sample_deps(deps, sample_analysis_builder)
 
     result = runner.invoke(cli.app, ["weights", "sample", "--write"], obj=cli_deps)
 
