@@ -28,6 +28,8 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Every control in the settings and deck sheets is at least 44 px tall, so it is easier
   to tap.
 - The timer uses the app's own font with even-width digits.
+- Saved settings store the round length, get-ready time and category count as numbers.
+  Settings saved by an earlier version still load.
 
 ### Fixed
 

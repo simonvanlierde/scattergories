@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ADULT_KEYS } from "@/domain/deck";
+import { durationMax } from "@/domain/game/constants";
 import { SettingsProvider, useSettings } from "./SettingsProvider";
 import { SETTINGS_STORAGE_KEY } from "./schema";
 
@@ -94,6 +95,45 @@ describe("useSettings", () => {
       expect(result.current.settings.pinned).toEqual(["Foo"]);
     });
 
+    it("loads settings saved with string numbers and stores them back as numbers", () => {
+      // The shape saved before numbers were stored: form strings for the three number fields.
+      const savedWithStrings = {
+        durationInput: "120",
+        catCountInput: "8",
+        bufferSecondsInput: "5",
+        deckBuiltins: ["Animals"],
+        customCategories: ["Foo"],
+        pinned: ["Foo"],
+        isMuted: true,
+        avoidRepeats: false,
+        theme: "dark",
+        themeSource: "user",
+        promptDeckPreference: "collapsed",
+      };
+      window.localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(savedWithStrings));
+      const { result } = renderHook(() => useSettings(), { wrapper });
+      expect(result.current.settings).toEqual(savedWithStrings);
+
+      const stored = JSON.parse(window.localStorage.getItem(SETTINGS_STORAGE_KEY) ?? "{}");
+      expect(stored).toEqual({
+        ...savedWithStrings,
+        durationInput: 120,
+        catCountInput: 8,
+        bufferSecondsInput: 5,
+      });
+    });
+
+    it("clamps stored numbers into range", () => {
+      window.localStorage.setItem(
+        SETTINGS_STORAGE_KEY,
+        JSON.stringify({ durationInput: 9999, catCountInput: 4.7, bufferSecondsInput: null }),
+      );
+      const { result } = renderHook(() => useSettings(), { wrapper });
+      expect(result.current.settings.durationInput).toBe(String(durationMax));
+      expect(result.current.settings.catCountInput).toBe("4");
+      expect(result.current.settings.bufferSecondsInput).toBe("3");
+    });
+
     it("keeps an adult category already in a stored deck", () => {
       window.localStorage.setItem(
         SETTINGS_STORAGE_KEY,
@@ -151,7 +191,7 @@ describe("useSettings", () => {
       expect(result.current.settings.durationInput).toBe("90");
       const stored = JSON.parse(window.localStorage.getItem(SETTINGS_STORAGE_KEY) ?? "null");
       expect(stored).not.toBeNull();
-      expect(stored.durationInput).toBe("90");
+      expect(stored.durationInput).toBe(90);
     });
 
     it("syncs when another tab updates localStorage", async () => {

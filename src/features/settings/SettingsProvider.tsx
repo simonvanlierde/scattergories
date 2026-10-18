@@ -8,6 +8,7 @@ import {
   SETTINGS_STORAGE_KEY,
   type Settings,
   sanitizeStrings,
+  serializeSettings,
   type Theme,
 } from "./schema";
 
@@ -152,7 +153,7 @@ function SettingsProvider({ children }: PropsWithChildren) {
   const [settings, dispatch] = useReducer(settingsReducer, undefined, readStoredSettings);
 
   useEffect(() => {
-    safeStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+    safeStorage.setItem(SETTINGS_STORAGE_KEY, serializeSettings(settings));
   }, [settings]);
 
   useEffect(() => {
