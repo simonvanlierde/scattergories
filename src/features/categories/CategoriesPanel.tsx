@@ -18,6 +18,8 @@ interface CategoriesState {
   /** Which drawn names were custom at draw time (frozen — survives mid-round deck edits). */
   drawnCustomCategories: string[];
   isLanding: boolean;
+  /** True while the unpinned slots flip through passing names. */
+  isRerolling: boolean;
   availableCount: number;
   customCategories: string[];
   deckBuiltins: string[];
@@ -407,7 +409,7 @@ function CategoriesCardHeader({
             label={allPinned ? t("categories.unpinAll") : t("categories.pinAll")}
             icon={<Icon icon={Pin} size={18} />}
             aria-pressed={allPinned}
-            disabled={!canEdit}
+            disabled={!canEdit || categories.isRerolling}
             onClick={() => actions.onTogglePinAll(drawnCategories)}
           />
           <CustomizeSheetBlock categories={categories} actions={actions} inputRef={inputRef} />
@@ -452,7 +454,8 @@ function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps
               landing={categories.isLanding}
               pinnedSet={pinnedSet}
               customSet={customSet}
-              disabled={!categories.canEdit}
+              // A tap mid-roll would pin whichever name was passing through.
+              disabled={!categories.canEdit || categories.isRerolling}
               onTogglePin={actions.onTogglePin}
             />
           </div>
