@@ -247,7 +247,8 @@ the readout. Panels and the playmat have no corners at all. Rules separate them.
 
 - **Style:** a row with a hairline border, a muted Geist numeral, the name and a pin icon. On
   phones the numeral becomes a superscript and the pin is hidden.
-- **State:** pinned chips get a navy border and navy wash. Custom categories are semibold with a
+- **State:** pinned chips get a 2px navy edge (drawn inside the border) and navy wash; the wash
+  alone is too close to the page to carry the state. Custom categories are semibold with a
   navy star. During a round the chips are read-only but not dimmed.
 - **Motion:** a new board is dealt, each chip landing 35ms after the one before.
 

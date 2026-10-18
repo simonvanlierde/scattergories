@@ -326,9 +326,12 @@
     outline-offset: 2px;
   }
 
-  /* Disabled during active play: non-interactive but fully readable (no dimming). */
+  /* Disabled during active play: non-interactive but fully readable. The base
+     layer fades every disabled button to 0.6, which took the numerals under
+     3:1 mid-round, so the chip opts out. */
   .category-checklist__chip:disabled {
     cursor: default;
+    opacity: 1;
   }
 
   .category-checklist__mark {
@@ -381,9 +384,13 @@
     color: var(--text-secondary);
   }
 
+  /* The wash alone is barely darker than the page (about 1.2:1), and phones
+     hide the pin icon, so the edge carries the pinned state: a 2px accent rule,
+     drawn inside so the chip keeps its size. */
   .category-checklist__item--pinned .category-checklist__chip {
     border-color: var(--accent-primary);
     background: var(--accent-soft);
+    box-shadow: inset 0 0 0 1px var(--accent-primary);
   }
 
   .category-checklist__item--pinned .category-checklist__pin {
