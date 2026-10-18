@@ -58,19 +58,19 @@ function AppErrorFallback() {
 function AppContent() {
   const game = useGameController();
 
-  return (
-    <ErrorBoundary fallback={<AppErrorFallback />}>
-      <GameShell game={game} />
-    </ErrorBoundary>
-  );
+  return <GameShell game={game} />;
 }
 
+// The boundary sits inside the i18n provider, so its fallback is translated, and
+// above the settings and game state, so a throw while building them is caught too.
 function AppProviders() {
   return (
     <I18nextProvider i18n={i18n}>
-      <SettingsProvider>
-        <AppContent />
-      </SettingsProvider>
+      <ErrorBoundary fallback={<AppErrorFallback />}>
+        <SettingsProvider>
+          <AppContent />
+        </SettingsProvider>
+      </ErrorBoundary>
     </I18nextProvider>
   );
 }
