@@ -123,7 +123,7 @@
       "Relancez pour tirer un nouvel ensemble de catégories pour la lettre en cours, sans changer la lettre."
     ],
     "odds": "Chances des lettres",
-    "oddsText": "La probabilité de tirer chaque lettre, d’après le nombre de mots qui commencent par elle sur Wikipédia dans cette langue (version de {{snapshot}}). Un tirage ne répète jamais la lettre précédente et, avec « {{setting}} » activé, il écarte les {{window}} dernières lettres tirées.",
+    "oddsText": "La probabilité de tirer chaque lettre, d’après le nombre de mots qui commencent par elle sur Wikipédia dans cette langue (version de {{snapshot}}). Un tirage ne répète jamais la lettre précédente et, avec « {{setting}} » activé, il écarte les {{window}} dernières lettres tirées. Les lettres rares sortent donc un peu plus souvent qu’indiqué.",
     "oddsLetter": "Lettre",
     "oddsChance": "Chance",
     "shortcuts": "Raccourcis clavier",

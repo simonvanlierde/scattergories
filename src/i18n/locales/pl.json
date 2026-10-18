@@ -123,7 +123,7 @@
       "Losuj ponownie, aby wylosować nowy zestaw kategorii dla bieżącej litery, bez zmiany litery."
     ],
     "odds": "Szanse liter",
-    "oddsText": "Szansa na wylosowanie każdej litery, według tego, ile słów zaczyna się od niej w Wikipedii w tym języku (stan: {{snapshot}}). Losowanie nigdy nie powtarza poprzedniej litery, a z włączoną opcją „{{setting}}” pomija ostatnie {{window}} wylosowanych liter.",
+    "oddsText": "Szansa na wylosowanie każdej litery, według tego, ile słów zaczyna się od niej w Wikipedii w tym języku (stan: {{snapshot}}). Losowanie nigdy nie powtarza poprzedniej litery, a z włączoną opcją „{{setting}}” pomija ostatnie {{window}} wylosowanych liter. Dlatego rzadkie litery wypadają nieco częściej, niż pokazano.",
     "oddsLetter": "Litera",
     "oddsChance": "Szansa",
     "shortcuts": "Skróty klawiszowe",

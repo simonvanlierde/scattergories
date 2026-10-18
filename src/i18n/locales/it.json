@@ -123,7 +123,7 @@
       "Rilancia per estrarre un nuovo set di categorie per la lettera attuale, senza cambiare la lettera."
     ],
     "odds": "Probabilità delle lettere",
-    "oddsText": "La probabilità di estrarre ogni lettera, in base a quante parole iniziano con essa su Wikipedia in questa lingua (versione di {{snapshot}}). Un’estrazione non ripete mai la lettera precedente e, con «{{setting}}» attivo, salta le ultime {{window}} lettere estratte.",
+    "oddsText": "La probabilità di estrarre ogni lettera, in base a quante parole iniziano con essa su Wikipedia in questa lingua (versione di {{snapshot}}). Un’estrazione non ripete mai la lettera precedente e, con «{{setting}}» attivo, salta le ultime {{window}} lettere estratte. Per questo le lettere rare escono un po’ più spesso di quanto indicato.",
     "oddsLetter": "Lettera",
     "oddsChance": "Probabilità",
     "shortcuts": "Scorciatoie da tastiera",

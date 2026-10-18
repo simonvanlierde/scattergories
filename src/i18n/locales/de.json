@@ -123,7 +123,7 @@
       "Ziehe neu, um für den aktuellen Buchstaben ein frisches Set an Kategorien zu ziehen, ohne den Buchstaben zu ändern."
     ],
     "odds": "Buchstaben-Chancen",
-    "oddsText": "Wie wahrscheinlich jeder Buchstabe gezogen wird, danach, wie viele Wörter in der Wikipedia dieser Sprache mit ihm beginnen (Stand {{snapshot}}). Eine Ziehung wiederholt nie den vorigen Buchstaben, und mit „{{setting}}“ überspringt sie die letzten {{window}} gezogenen Buchstaben.",
+    "oddsText": "Wie wahrscheinlich jeder Buchstabe gezogen wird, danach, wie viele Wörter in der Wikipedia dieser Sprache mit ihm beginnen (Stand {{snapshot}}). Eine Ziehung wiederholt nie den vorigen Buchstaben, und mit „{{setting}}“ überspringt sie die letzten {{window}} gezogenen Buchstaben. Dadurch kommen seltene Buchstaben etwas häufiger vor als angegeben.",
     "oddsLetter": "Buchstabe",
     "oddsChance": "Chance",
     "shortcuts": "Tastenkürzel",

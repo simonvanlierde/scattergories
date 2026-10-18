@@ -123,7 +123,7 @@
       "Loot opnieuw om een nieuwe set categorieën voor de huidige letter te trekken, zonder de letter te veranderen."
     ],
     "odds": "Kans per letter",
-    "oddsText": "De kans dat elke letter getrokken wordt, op basis van hoeveel woorden ermee beginnen op Wikipedia in deze taal (stand van {{snapshot}}). Een trekking herhaalt nooit de vorige letter, en met ‘{{setting}}’ aan slaat hij de laatste {{window}} getrokken letters over.",
+    "oddsText": "De kans dat elke letter getrokken wordt, op basis van hoeveel woorden ermee beginnen op Wikipedia in deze taal (stand van {{snapshot}}). Een trekking herhaalt nooit de vorige letter, en met ‘{{setting}}’ aan slaat hij de laatste {{window}} getrokken letters over. Daardoor komen zeldzame letters iets vaker voor dan hier staat.",
     "oddsLetter": "Letter",
     "oddsChance": "Kans",
     "shortcuts": "Sneltoetsen",
