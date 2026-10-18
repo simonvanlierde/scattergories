@@ -246,6 +246,24 @@ describe("drawRoundLetter", () => {
     expect(recentLetters).toEqual([...recent.slice(1), letter]);
   });
 
+  // A literal 9, not the constant: players notice a letter that comes back within nine rounds.
+  it.each(["en", "es", "fr", "de", "it", "nl", "pl", "pt", "el"])(
+    "never repeats a letter within 9 rounds in %s",
+    (locale) => {
+      const random = seededRandom(7);
+      let recent: string[] = [];
+      const draws: string[] = [];
+      for (let i = 0; i < 2_000; i += 1) {
+        const result = drawRoundLetter(locale, recent, true, random);
+        recent = result.recentLetters;
+        draws.push(result.letter);
+      }
+      for (let i = 9; i <= draws.length; i += 1) {
+        expect(new Set(draws.slice(i - 9, i)).size).toBe(9);
+      }
+    },
+  );
+
   it("skips only the previous letter with avoidRepeats off", () => {
     // random 0 picks the first candidate, so "A" comes back unless it is the previous letter.
     expect(drawRoundLetter("en", ["B", "A"], false, () => 0).letter).toBe("B");

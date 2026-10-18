@@ -46,7 +46,7 @@
     "gameplay": "Spelregels",
     "durationHint": "Hoe lang een ronde duurt.",
     "getReadyHint": "Aftellen voordat de timer start.",
-    "avoidRepeatsHint": "Slaat de laatste 12 getrokken letters over; veelvoorkomende letters komen nog steeds vaker."
+    "avoidRepeatsHint": "Slaat de laatste 8 getrokken letters over; veelvoorkomende letters komen nog steeds vaker."
   },
   "packs": {
     "classic": {

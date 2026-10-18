@@ -46,7 +46,7 @@
     "gameplay": "Zasady",
     "durationHint": "Jak długo trwa runda.",
     "getReadyHint": "Odliczanie przed startem stopera.",
-    "avoidRepeatsHint": "Pomija ostatnie 12 wylosowanych liter; częste litery nadal wypadają częściej."
+    "avoidRepeatsHint": "Pomija ostatnie 8 wylosowanych liter; częste litery nadal wypadają częściej."
   },
   "packs": {
     "classic": {

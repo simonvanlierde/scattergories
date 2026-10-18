@@ -46,7 +46,7 @@
     "gameplay": "Déroulement",
     "durationHint": "Durée de chaque manche.",
     "getReadyHint": "Décompte avant le départ du chrono.",
-    "avoidRepeatsHint": "Écarte les 12 dernières lettres tirées ; les lettres courantes sortent toujours plus souvent."
+    "avoidRepeatsHint": "Écarte les 8 dernières lettres tirées ; les lettres courantes sortent toujours plus souvent."
   },
   "packs": {
     "classic": {

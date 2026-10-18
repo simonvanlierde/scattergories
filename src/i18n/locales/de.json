@@ -46,7 +46,7 @@
     "gameplay": "Ablauf",
     "durationHint": "Wie lange eine Runde dauert.",
     "getReadyHint": "Countdown, bevor der Timer startet.",
-    "avoidRepeatsHint": "Überspringt die letzten 12 gezogenen Buchstaben; häufige Buchstaben kommen trotzdem öfter."
+    "avoidRepeatsHint": "Überspringt die letzten 8 gezogenen Buchstaben; häufige Buchstaben kommen trotzdem öfter."
   },
   "packs": {
     "classic": {
