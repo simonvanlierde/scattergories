@@ -30,7 +30,6 @@ typography:
     fontWeight: 500
     lineHeight: 0.85
     letterSpacing: "-0.02em"
-    fontFeature: "\"ss01\" 1"
     fontVariation: "\"opsz\" 144"
   headline:
     fontFamily: "Fraunces Variable, Fraunces, Georgia, serif"
@@ -191,12 +190,15 @@ danger, never decoration.
 - **Label** (uppercase): field labels. The footer wordmark uses Fraunces uppercase with the same
   letter spacing.
 
-The type scale is fluid (minor third, `--text-xs` to `--text-hero`). Category numerals are
-Fraunces italic.
+The type scale is fluid (minor third, `--text-xs` to `--text-hero`). Every number that counts or
+times something (the clock, category numerals, the How to play steps) is Geist with tabular
+figures, because Fraunces has none. Fraunces ships with its optical-size axis, so the letter is set
+at the display size (`opsz` 144) and headings pick their own size; the italic file loads only for
+"Time's up!".
 
 **The Serif Is a Moment Rule.** Fraunces marks a moment or a heading: the letter, the end of a
-round, titles, the How to play lead and the italic numerals. Anything you tap, and every name in a
-list, is Geist.
+round, titles and the How to play lead. Anything you tap, every name in a list and every number is
+Geist.
 
 ## Layout
 
@@ -243,7 +245,7 @@ the readout. Panels and the playmat have no corners at all. Rules separate them.
 
 ### Category chips
 
-- **Style:** a row with a hairline border, an italic serif numeral, the name and a pin icon. On
+- **Style:** a row with a hairline border, a muted Geist numeral, the name and a pin icon. On
   phones the numeral becomes a superscript and the pin is hidden.
 - **State:** pinned chips get a navy border and navy wash. Custom categories are semibold with a
   navy star. During a round the chips are read-only but not dimmed.
