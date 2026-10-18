@@ -352,8 +352,12 @@ function composeDeck({
 // ---------------------------------------------------------------------------
 // Letters.
 
-/** How many of the latest letters an "avoid repeats" draw skips. */
-const RECENT_LETTER_WINDOW = 12;
+/**
+ * How many of the latest letters an "avoid repeats" draw skips. At 12, rare letters (Q, X, Y in
+ * English) came up about twice their weight; at 8 they run about 1.5x, and a repeat within 10
+ * rounds happens in about 9% of sessions, never before round 9.
+ */
+const RECENT_LETTER_WINDOW = 8;
 
 /**
  * Draws one letter with probability proportional to its weight, skipping the

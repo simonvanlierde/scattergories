@@ -46,7 +46,7 @@
     "gameplay": "Reglas de juego",
     "durationHint": "Cuánto dura cada ronda.",
     "getReadyHint": "Cuenta atrás antes de iniciar el temporizador.",
-    "avoidRepeatsHint": "Omite las últimas 12 letras sacadas; las letras comunes siguen saliendo más a menudo."
+    "avoidRepeatsHint": "Omite las últimas 8 letras sacadas; las letras comunes siguen saliendo más a menudo."
   },
   "packs": {
     "classic": {

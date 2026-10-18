@@ -46,7 +46,7 @@
     "gameplay": "Svolgimento",
     "durationHint": "Quanto dura ogni round.",
     "getReadyHint": "Conto alla rovescia prima dell'avvio del timer.",
-    "avoidRepeatsHint": "Salta le ultime 12 lettere estratte; le lettere comuni escono comunque più spesso."
+    "avoidRepeatsHint": "Salta le ultime 8 lettere estratte; le lettere comuni escono comunque più spesso."
   },
   "packs": {
     "classic": {

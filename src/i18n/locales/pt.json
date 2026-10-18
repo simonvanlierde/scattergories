@@ -46,7 +46,7 @@
     "gameplay": "Regras do jogo",
     "durationHint": "Quanto dura cada rodada.",
     "getReadyHint": "Contagem regressiva antes de o temporizador começar.",
-    "avoidRepeatsHint": "Ignora as últimas 12 letras sorteadas; as letras comuns continuam a sair mais vezes."
+    "avoidRepeatsHint": "Ignora as últimas 8 letras sorteadas; as letras comuns continuam a sair mais vezes."
   },
   "packs": {
     "classic": {

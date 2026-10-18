@@ -46,7 +46,7 @@
     "gameplay": "Gameplay",
     "durationHint": "How long each round lasts.",
     "getReadyHint": "Countdown before the timer starts.",
-    "avoidRepeatsHint": "Skips the last 12 letters drawn; common letters still come up more often."
+    "avoidRepeatsHint": "Skips the last 8 letters drawn; common letters still come up more often."
   },
   "packs": {
     "classic": {
