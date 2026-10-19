@@ -1,4 +1,4 @@
-import { type RefObject, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { composeDeck } from "@/domain/deck";
 import { pickRandom } from "@/domain/game/utils";
 import { prefersReducedMotion } from "@/shared/lib/prefersReducedMotion";
@@ -10,15 +10,15 @@ interface UseCategoryBoardParams {
   pinned: string[];
   count: number;
   /**
-   * When `.current` is true (a round is in progress), deck edits are NOT applied
-   * to the drawn categories instantly — they take effect on the next redraw.
+   * When true (a round is in progress), deck edits are NOT applied to the drawn
+   * categories instantly — they take effect on the next redraw.
    */
-  deferComposeRef?: RefObject<boolean>;
+  deferCompose?: boolean;
 }
 
 // biome-ignore lint/complexity/noExcessiveLinesPerFunction: cohesive board hook — the redraw callback closes over local state and setters that don't extract without threading them all back through.
 function useCategoryBoard(params: UseCategoryBoardParams) {
-  const { customCategories, deckBuiltins, pinned, count, deferComposeRef } = params;
+  const { customCategories, deckBuiltins, pinned, count, deferCompose = false } = params;
   const [displayCategories, setDisplayCategories] = useState<string[]>([]);
   // Which drawn names were custom AT DRAW TIME. Snapshotted alongside the deck so
   // a round's "custom" styling stays frozen even if the deck is edited mid-round.
@@ -36,6 +36,10 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
   pinnedRef.current = pinned;
   const displayRef = useRef(displayCategories);
   displayRef.current = displayCategories;
+  // Read through a ref too, so a round ending doesn't recompose on its own: the
+  // deferred edits wait for the next explicit redraw.
+  const deferComposeRef = useRef(deferCompose);
+  deferComposeRef.current = deferCompose;
 
   // Kept memoized: it's read in the useEffect dependency array below, where a
   // render-body function would trip biome's useExhaustiveDependencies lint.
@@ -92,11 +96,11 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
   // skipped so the drawn categories stay put, and the edits are picked up on the
   // next redraw (next round / Redraw button).
   useEffect(() => {
-    if (deferComposeRef?.current) {
+    if (deferComposeRef.current) {
       return;
     }
     redrawCategories(false);
-  }, [redrawCategories, deferComposeRef]);
+  }, [redrawCategories]);
 
   return {
     drawnCategories: displayCategories,

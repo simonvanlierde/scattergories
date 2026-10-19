@@ -48,9 +48,14 @@ function getPreferredTheme(): Theme {
   return window.matchMedia(DARK_SCHEME_QUERY).matches ? "dark" : "light";
 }
 
-/** Clamp a stored numeric-input string into range so a bad value from another tab can't slip through. */
+/**
+ * Clamp a stored number field into the form field's string, so a bad value from another
+ * tab can't slip through. Accepts a number as well as the string the app saves.
+ */
 function sanitizeNumericInput(value: unknown, min: number, max: number, fallback: number): string {
-  return typeof value === "string" ? String(clampInt(value, min, max, fallback)) : String(fallback);
+  return typeof value === "number" || typeof value === "string"
+    ? String(clampInt(String(value), min, max, fallback))
+    : String(fallback);
 }
 
 function getDefaultSettings(): Settings {

@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ADULT_KEYS } from "@/domain/deck";
+import { durationMax } from "@/domain/game/constants";
 import { SettingsProvider, useSettings } from "./SettingsProvider";
 import { MAX_STRING_COUNT, SETTINGS_STORAGE_KEY } from "./schema";
 
@@ -92,6 +93,38 @@ describe("useSettings", () => {
       expect(result.current.settings.isMuted).toBe(true);
       expect(result.current.settings.customCategories).toEqual(["Foo"]);
       expect(result.current.settings.pinned).toEqual(["Foo"]);
+    });
+
+    it("loads a full saved settings object and stores it back unchanged", () => {
+      // The three number fields are saved as the form's strings.
+      const saved = {
+        durationInput: "120",
+        catCountInput: "8",
+        bufferSecondsInput: "5",
+        deckBuiltins: ["Animals"],
+        customCategories: ["Foo"],
+        pinned: ["Foo"],
+        isMuted: true,
+        avoidRepeats: false,
+        theme: "dark",
+        themeSource: "user",
+        promptDeckPreference: "collapsed",
+      };
+      window.localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(saved));
+      const { result } = renderHook(() => useSettings(), { wrapper });
+      expect(result.current.settings).toEqual(saved);
+      expect(JSON.parse(window.localStorage.getItem(SETTINGS_STORAGE_KEY) ?? "{}")).toEqual(saved);
+    });
+
+    it("reads number fields saved as numbers, clamped into range", () => {
+      window.localStorage.setItem(
+        SETTINGS_STORAGE_KEY,
+        JSON.stringify({ durationInput: 9999, catCountInput: 4.7, bufferSecondsInput: null }),
+      );
+      const { result } = renderHook(() => useSettings(), { wrapper });
+      expect(result.current.settings.durationInput).toBe(String(durationMax));
+      expect(result.current.settings.catCountInput).toBe("4");
+      expect(result.current.settings.bufferSecondsInput).toBe("3");
     });
 
     it("keeps an adult category already in a stored deck", () => {
