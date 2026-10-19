@@ -15,7 +15,6 @@ if TYPE_CHECKING:
 
     from scattergories_tools.shared.registry import LocaleRegistry
 
-ALPHABET = tuple("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 DEFAULT_MAX_BYTES = 150_000_000
 WIKIPEDIA_DATASET = "wikimedia/wikipedia"
 WIKIPEDIA_DATASET_DATE = "20231101"
@@ -182,8 +181,10 @@ def iter_dataset_texts(
             yield stripped
 
 
-def analyze_sample_dataset(dataset_key: str, *, hf_token: str | None) -> SampleAnalysis:
-    """Analyze one sample Wikitext corpus."""
+def analyze_sample_dataset(
+    dataset_key: str, *, registry: LocaleRegistry, hf_token: str | None
+) -> SampleAnalysis:
+    """Analyze one sample Wikitext corpus, which is English, with the English alphabet."""
     config_name = SAMPLE_DATASETS[dataset_key]
     rows, total = analyze_texts(
         iter_dataset_texts(
@@ -191,7 +192,7 @@ def analyze_sample_dataset(dataset_key: str, *, hf_token: str | None) -> SampleA
             config_name,
             DatasetStreamOptions(split_names=DATASET_SPLITS, hf_token=hf_token),
         ),
-        ALPHABET,
+        registry.get_letters("en"),
     )
     return SampleAnalysis(
         dataset_key=dataset_key, dataset_config=config_name, rows=rows, total=total

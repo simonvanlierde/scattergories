@@ -3,6 +3,7 @@ import {
   Info,
   Keyboard,
   type LucideIcon,
+  Percent,
   Pin,
   RefreshCw,
   SlidersHorizontal,
@@ -10,6 +11,9 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { RECENT_LETTER_WINDOW } from "@/domain/deck";
+import { getLetterOdds } from "@/domain/game/localeWeights";
+import letterWeightsMeta from "@/i18n/__generated__/letterWeights.meta.json";
 import { BrandMark } from "@/shared/ui/BrandMark";
 import { Button } from "@/shared/ui/Button";
 import { Icon } from "@/shared/ui/Icon";
@@ -81,6 +85,72 @@ function Attribution() {
         }}
       />
     </p>
+  );
+}
+
+/** The corpus snapshot date ("20231101") as a month and year in the reader's language. */
+function formatSnapshot(locale: string): string {
+  const { snapshot } = letterWeightsMeta.corpus;
+  const date = Date.UTC(Number(snapshot.slice(0, 4)), Number(snapshot.slice(4, 6)) - 1, 1);
+  return new Intl.DateTimeFormat(locale, {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(date);
+}
+
+function LetterOdds() {
+  const { t, i18n } = useTranslation();
+  const locale = i18n.resolvedLanguage ?? i18n.language;
+  const odds = getLetterOdds(locale);
+  const top = Math.max(...odds.map(({ chance }) => chance));
+  const percent = new Intl.NumberFormat(locale, {
+    style: "percent",
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  });
+
+  return (
+    <>
+      <p>
+        {t("modal.oddsText", {
+          snapshot: formatSnapshot(locale),
+          setting: t("settings.avoidRepeats"),
+          window: RECENT_LETTER_WINDOW,
+        })}
+      </p>
+      <table className="odds">
+        <caption className="sr-only">{t("modal.odds")}</caption>
+        <thead>
+          <tr>
+            <th scope="col">{t("modal.oddsLetter")}</th>
+            <th scope="col">{t("modal.oddsChance")}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {odds.map(({ letter, chance }) => (
+            <tr key={letter}>
+              <th scope="row">{letter}</th>
+              <td>
+                <span className="odds__chance">
+                  <span className="odds__value">{percent.format(chance)}</span>
+                  {/* An SVG attribute sets the bar length, so no inline style is needed. */}
+                  <svg
+                    className="odds__bar"
+                    viewBox="0 0 100 1"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <rect width={top > 0 ? (chance / top) * 100 : 0} height="1" />
+                  </svg>
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
   );
 }
 
@@ -156,6 +226,10 @@ export function HowToPlayModal({ onClose, onStart }: HowToPlayModalProps) {
               </li>
             ))}
           </ul>
+        </Section>
+
+        <Section icon={Percent} title={t("modal.odds")}>
+          <LetterOdds />
         </Section>
 
         <Section icon={Keyboard} title={t("modal.shortcuts")}>

@@ -13,6 +13,7 @@ from scattergories_tools.weights.analyze import (
     LocaleAnalysis,
     SampleAnalysis,
     analyze_locale,
+    analyze_sample_dataset,
     analyze_texts,
     iter_dataset_texts,
 )
@@ -20,6 +21,8 @@ from scattergories_tools.weights.render import render_letter_weights_json, write
 
 if TYPE_CHECKING:
     import pytest
+
+    from .conftest import RegistryFixture
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -160,6 +163,27 @@ def test_analyze_locale_uses_registry_letters(monkeypatch: pytest.MonkeyPatch) -
     alpha_row = next(row for row in analysis.rows if row.letter == "Α")  # noqa: RUF001 # Greek letter alpha, not A
     assert analysis.total == 1
     assert alpha_row.count == 1
+
+
+def test_analyze_sample_dataset_uses_registry_english_letters(
+    monkeypatch: pytest.MonkeyPatch, write_registry: RegistryFixture
+) -> None:
+    """The sample corpus is counted against the registry's English alphabet only."""
+    registry = write_registry()  # English alphabet "ABC"
+
+    def load_dataset_stub(*_args: object, **_kwargs: object) -> list[dict[str, str]]:
+        return [{"text": "Apple cat zebra"}]
+
+    def tqdm_stub(items: object, **_kwargs: object) -> object:
+        return items
+
+    monkeypatch.setattr("scattergories_tools.weights.analyze.load_dataset", load_dataset_stub)
+    monkeypatch.setattr("scattergories_tools.weights.analyze.tqdm", tqdm_stub)
+
+    analysis = analyze_sample_dataset("wikitext-2", registry=registry, hf_token=None)
+
+    assert {row.letter: row.count for row in analysis.rows} == {"A": 1, "B": 0, "C": 1}
+    assert analysis.total == 2  # noqa: PLR2004
 
 
 def test_render_letter_weights_json_is_sorted_and_byte_stable() -> None:

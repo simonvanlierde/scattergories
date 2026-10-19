@@ -6,10 +6,9 @@ from typing import TYPE_CHECKING, Annotated
 
 import typer
 
-from scattergories_tools.shared.context import create_context
+from scattergories_tools.shared.context import Deps
 from scattergories_tools.shared.registry import split_locale_csv
 from scattergories_tools.translate.cache import open_translation_cache
-from scattergories_tools.translate.engine import ArgosProvider
 from scattergories_tools.translate.parse import (
     JSONValue,
     load_category_names,
@@ -41,6 +40,7 @@ def write_translation_outputs(
 
 
 def _run_translation(  # noqa: PLR0913 - cohesive per-command hooks for one shared flow.
+    deps: Deps,
     *,
     target_locales: str,
     from_locale: str,
@@ -51,10 +51,10 @@ def _run_translation(  # noqa: PLR0913 - cohesive per-command hooks for one shar
     summarize: Callable[[str, TranslationResult], None],
 ) -> None:
     """Shared translate flow for the category and locale commands."""
-    context = create_context()
+    context = deps.create_context()
     selected_locales = context.registry.validate_locales(split_locale_csv(target_locales))
     source = load_source(context)
-    provider_instance = ArgosProvider()
+    translate_text = deps.translator()
 
     output_paths = {
         locale: context.paths.locale_dir / output_name(locale) for locale in selected_locales
@@ -66,7 +66,7 @@ def _run_translation(  # noqa: PLR0913 - cohesive per-command hooks for one shar
                 source,
                 from_locale=from_locale,
                 to_locale=locale,
-                translate_text=provider_instance.translate,
+                translate_text=translate_text,
                 cache=cache,
             )
 
@@ -93,6 +93,7 @@ def _summarize_locale(locale: str, result: TranslationResult) -> None:
 
 @app.command("categories")
 def categories(
+    ctx: typer.Context,
     target_locales: Annotated[str, typer.Option(..., help="Comma-separated target locales.")],
     from_locale: Annotated[str, typer.Option(help="Source locale.")] = "en",
     *,
@@ -102,6 +103,7 @@ def categories(
 ) -> None:
     """Translate canonical category names."""
     _run_translation(
+        ctx.ensure_object(Deps),
         target_locales=target_locales,
         from_locale=from_locale,
         write_app_files=write_app_files,
@@ -114,6 +116,7 @@ def categories(
 
 @app.command("locales")
 def locales(
+    ctx: typer.Context,
     target_locales: Annotated[str, typer.Option(..., help="Comma-separated target locales.")],
     from_locale: Annotated[str, typer.Option(help="Source locale.")] = "en",
     *,
@@ -123,6 +126,7 @@ def locales(
 ) -> None:
     """Translate the English locale payload into target locale files."""
     _run_translation(
+        ctx.ensure_object(Deps),
         target_locales=target_locales,
         from_locale=from_locale,
         write_app_files=write_app_files,

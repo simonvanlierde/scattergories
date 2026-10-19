@@ -5,13 +5,13 @@ import sys
 
 import typer
 
-from scattergories_tools.shared.context import create_context
-from scattergories_tools.translate.engine import ArgosProvider
+from scattergories_tools.shared.context import Deps
 
 
-def doctor() -> None:
+def doctor(ctx: typer.Context) -> None:
     """Validate runtime, optional dependencies, and repo path health."""
-    context = create_context()
+    deps = ctx.ensure_object(Deps)
+    context = deps.create_context()
     paths = context.paths
     hf_token = os.environ.get("HF_TOKEN")
 
@@ -55,7 +55,7 @@ def doctor() -> None:
     )
 
     try:
-        ArgosProvider()
+        deps.translator()
     except RuntimeError as error:
         checks.append(("argos", False, str(error)))
     else:  # pragma: no cover - exercised only when optional deps are installed
