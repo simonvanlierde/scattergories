@@ -413,3 +413,17 @@ it("draws from the new alphabet when the locale changes", () => {
   expect(getLocaleLetters("el")).toContain(elLetter);
   expect(getLocaleLetters("en")).not.toContain(elLetter);
 });
+
+it("counts rounds started, not letters rerolled", () => {
+  const driver = createRoundDriver();
+  expect(driver.current.roundNumber).toBe(0);
+
+  driver.start();
+  driver.landLetter();
+  act(() => driver.current.newLetter());
+  driver.landLetter();
+  expect(driver.current.roundNumber).toBe(1);
+
+  act(() => driver.current.nextRound());
+  expect(driver.current.roundNumber).toBe(2);
+});

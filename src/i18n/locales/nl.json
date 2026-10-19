@@ -2,7 +2,8 @@
   "title": "Scattergories",
   "round": {
     "letterLabel": "Huidige letter",
-    "timerLabel": "Rondeklok"
+    "timerLabel": "Rondeklok",
+    "number": "Ronde {{number}}"
   },
   "controls": {
     "roundGroup": "Rondebediening"

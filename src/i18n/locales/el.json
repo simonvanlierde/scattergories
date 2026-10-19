@@ -2,7 +2,8 @@
   "title": "Scattergories",
   "round": {
     "letterLabel": "Τρέχον γράμμα",
-    "timerLabel": "Ρολόι γύρου"
+    "timerLabel": "Ρολόι γύρου",
+    "number": "Γύρος {{number}}"
   },
   "controls": {
     "roundGroup": "Χειριστήρια γύρου"

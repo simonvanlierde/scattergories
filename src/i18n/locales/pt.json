@@ -2,7 +2,8 @@
   "title": "Scattergories",
   "round": {
     "letterLabel": "Letra atual",
-    "timerLabel": "Relógio da rodada"
+    "timerLabel": "Relógio da rodada",
+    "number": "Rodada {{number}}"
   },
   "controls": {
     "roundGroup": "Controles da rodada"

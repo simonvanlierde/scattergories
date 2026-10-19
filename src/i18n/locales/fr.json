@@ -2,7 +2,8 @@
   "title": "Scattergories",
   "round": {
     "letterLabel": "Lettre actuelle",
-    "timerLabel": "Chrono de manche"
+    "timerLabel": "Chrono de manche",
+    "number": "Manche {{number}}"
   },
   "controls": {
     "roundGroup": "Commandes de manche"

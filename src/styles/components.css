@@ -147,6 +147,14 @@
     color: var(--text-secondary);
   }
 
+  /* Under 21rem the header's title, chevron and three tools ran about 14px past
+     the screen; the decorative icon goes so the row fits, and the title stays. */
+  @media (max-width: 21rem) {
+    .categories-card__heading h2 > svg {
+      display: none;
+    }
+  }
+
   .categories-card__title-text {
     font-family: var(--font-display);
     font-size: var(--text-lg);

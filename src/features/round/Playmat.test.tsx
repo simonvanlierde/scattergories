@@ -12,8 +12,11 @@ beforeAll(async () => {
 function renderAt(
   secondsLeft: number,
   gameSeconds = 60,
-  phase: Phase = "running",
-  statusKey: StatusKey = "timer.go",
+  {
+    phase = "running",
+    statusKey = "timer.go",
+    roundNumber = 1,
+  }: { phase?: Phase; statusKey?: StatusKey; roundNumber?: number } = {},
 ) {
   const noop = () => undefined;
   render(
@@ -27,6 +30,7 @@ function renderAt(
         letterVisible
         letterLanding={false}
         statusKey={statusKey}
+        roundNumber={roundNumber}
         onPrimary={noop}
         onNewLetter={noop}
         onNextRound={noop}
@@ -62,8 +66,18 @@ it.each([
 });
 
 it("says the round is over at once", () => {
-  expect(renderAt(0, 60, "done", "timer.roundOver")).toMatchObject({
+  expect(renderAt(0, 60, { phase: "done", statusKey: "timer.roundOver" })).toMatchObject({
     polite: "",
     assertive: "Round over!",
   });
+});
+
+it("shows which round the table is on once one has started", () => {
+  renderAt(0, 60, { phase: "done", statusKey: "timer.roundOver", roundNumber: 4 });
+  expect(screen.getByText("Round 4")).toBeInTheDocument();
+});
+
+it("shows no round count before the first roll", () => {
+  renderAt(0, 60, { phase: "idle", statusKey: null, roundNumber: 0 });
+  expect(screen.queryByText(/Round \d/)).not.toBeInTheDocument();
 });

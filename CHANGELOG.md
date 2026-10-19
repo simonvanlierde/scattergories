@@ -17,6 +17,8 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   Bar Things, Beers, Crimes, Weapons, Deadly Things and Medicine/Drugs.
 - While a skip is armed, "Tap again" now shows as text under the controls, so it is
   visible on touch screens too.
+- A quiet round count ("Round 4") inside the timer ring, so the table knows where it is. It
+  counts the rounds started since the app was opened and starts again at 1 on reload.
 
 ### Changed
 
@@ -30,6 +32,9 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Every control in the settings and deck sheets is at least 44 px tall, so it is easier
   to tap.
 - The timer uses the app's own font with even-width digits.
+- "Time's up!" now lands as one clear beat you can catch from across the table: the ring
+  closes thick and "Time's up!" stamps down while the letter settles. With reduced motion
+  turned on, it simply appears.
 
 ### Fixed
 
@@ -38,6 +43,8 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - The first-run rules open at their intro instead of scrolled down to the start button.
 - The unpinned pin icon has enough contrast to see in both themes.
 - Long button labels wrap instead of being cut off on narrow phones.
+- On a 320 px phone the board no longer runs past the right edge of the screen, and a long
+  "Time's up!", as in German or Portuguese, fits inside the small timer ring.
 
 ## [0.3.0] - 2026-08-24
 

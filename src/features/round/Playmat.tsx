@@ -13,6 +13,7 @@ interface PlaymatProps {
   letterVisible: boolean;
   letterLanding: boolean;
   statusKey: StatusKey;
+  roundNumber: number;
   onPrimary: () => void;
   onNewLetter: () => void;
   onNextRound: () => void;
@@ -71,6 +72,7 @@ export function Playmat({
   letterVisible,
   letterLanding,
   statusKey,
+  roundNumber,
   onPrimary,
   onNewLetter,
   onNextRound,
@@ -87,6 +89,9 @@ export function Playmat({
           gameSeconds={gameSeconds}
         />
         <LetterHero letter={letter} visible={letterVisible} landing={letterLanding} />
+        {roundNumber > 0 && (
+          <p className="playmat__round">{t("round.number", { number: roundNumber })}</p>
+        )}
       </div>
 
       <PlaymatStatus

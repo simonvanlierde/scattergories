@@ -104,6 +104,7 @@ function PlayGrid({ game }: PlayGridProps) {
         letterVisible={game.round.letterVisible}
         letterLanding={game.round.letterLanding}
         statusKey={game.round.statusKey}
+        roundNumber={game.round.roundNumber}
         onPrimary={game.round.primaryAction}
         onNewLetter={game.round.newLetter}
         onNextRound={game.round.nextRound}
