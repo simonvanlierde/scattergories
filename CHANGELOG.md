@@ -13,7 +13,7 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   language, with where the numbers come from.
 - Polish rounds can now land on Ł, Ś and Ż. Rarer Polish initials such as Ć and Ź still
   count toward C and Z.
-- A Grown-ups category pack. Add it to your deck for Offensive Words, 4-Letter Words,
+- A Grown-ups category pack. Add it to your deck for Offensive Words, Swear Words,
   Bar Things, Beers, Crimes, Weapons, Deadly Things and Medicine/Drugs.
 - While a skip is armed, "Tap again" now shows as text under the controls, so it is
   visible on touch screens too.
