@@ -52,9 +52,7 @@ jobs:
       # Checks every locked dependency, dev group included, against the OSV database
       # for known vulnerabilities and deprecated or quarantined projects. Still
       # experimental in uv, hence the preview flag.
-      # stanza 1.10.1 (PYSEC-2026-3075): argostranslate pins it, and only the opt-in
-      # translation group installs it. Drop the ignore once argostranslate allows 1.12.2.
-      - run: uv audit --locked --preview-features audit-command --ignore PYSEC-2026-3075
+      - run: uv audit --locked --preview-features audit-command
 
       - run: uv run ruff check --output-format=github
       - run: uv run ruff format --check
