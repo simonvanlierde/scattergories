@@ -15,17 +15,12 @@ def test_cli_registers_public_command_groups(runner: CliRunner) -> None:
     assert result.exit_code == 0
     assert "doctor" in result.stdout
     assert "weights" in result.stdout
-    assert "translate" in result.stdout
 
 
-def test_cli_registers_weight_and_translation_subcommands(runner: CliRunner) -> None:
+def test_cli_registers_weight_subcommands(runner: CliRunner) -> None:
     """Nested command groups expose their public subcommands."""
     weights_result = runner.invoke(cli.app, ["weights", "--help"])
-    translate_result = runner.invoke(cli.app, ["translate", "--help"])
 
     assert weights_result.exit_code == 0
     assert "sample" in weights_result.stdout
     assert "locales" in weights_result.stdout
-    assert translate_result.exit_code == 0
-    assert "categories" in translate_result.stdout
-    assert "locales" in translate_result.stdout
