@@ -4,13 +4,12 @@ from typing import Annotated
 
 import typer
 
-from scattergories_tools.commands import doctor, translate, weights
+from scattergories_tools.commands import doctor, weights
 from scattergories_tools.shared.logging import configure_logging
 
 app = typer.Typer(help="Scattergories data tools")
 app.command("doctor")(doctor.doctor)
 app.add_typer(weights.app, name="weights")
-app.add_typer(translate.app, name="translate")
 
 
 @app.callback()
