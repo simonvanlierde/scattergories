@@ -7,8 +7,8 @@ interface LocaleNamespaces {
   categories: CategoriesResource;
 }
 
-type TranslationResource = Record<string, unknown>;
-type CategoriesResource = Record<string, string>;
+export type TranslationResource = Record<string, unknown>;
+export type CategoriesResource = Record<string, string>;
 
 const translationResourceEn: TranslationResource = enTranslation;
 const categoriesResourceEnValue: CategoriesResource = categoriesResourceEn;
