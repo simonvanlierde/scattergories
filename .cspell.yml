@@ -107,7 +107,6 @@ words:
   - simonvanlierde
   - zizmor
   - addopts
-  - argostranslate
   - ACMRT
   - huggingface
   - justfile
