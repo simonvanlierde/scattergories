@@ -33,8 +33,8 @@
     "getReady": "Preparati…",
     "go": "Via!",
     "roundOver": "Round terminato!",
-    "startIn": "Inizia tra {{seconds}}s",
-    "secondsLeft": "{{seconds}}s",
+    "startIn": "Inizia tra {{seconds}} s",
+    "secondsLeft": "{{seconds}} s",
     "secondsWarning": "Mancano {{seconds}} secondi"
   },
   "settings": {
@@ -109,7 +109,7 @@
   },
   "modal": {
     "title": "Come giocare",
-    "objectiveText": "Guadagna punti scrivendo parole che iniziano con la lettera data e rientrano nelle categorie selezionate.",
+    "objectiveText": "Guadagna punti scrivendo parole che rientrano nelle categorie e iniziano con la lettera estratta.",
     "gameplayPoints": [
       "Viene estratta una lettera a caso: tutte le risposte devono iniziare con essa.",
       "Scrivi una parola per ogni categoria prima che scada il timer (90 s di default).",

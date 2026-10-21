@@ -33,7 +33,7 @@
     "getReady": "Prepárate…",
     "go": "¡Ya!",
     "roundOver": "¡Ronda terminada!",
-    "startIn": "Empieza en {{seconds}}s",
+    "startIn": "Empieza en {{seconds}} s",
     "secondsLeft": "{{seconds}}s",
     "secondsWarning": "Quedan {{seconds}} segundos"
   },
@@ -109,7 +109,7 @@
   },
   "modal": {
     "title": "Cómo jugar",
-    "objectiveText": "Gana puntos escribiendo palabras que empiecen por la letra dada y encajen en las categorías.",
+    "objectiveText": "Gana puntos escribiendo palabras que encajen en las categorías y empiecen por la letra sorteada.",
     "gameplayPoints": [
       "Se sortea una letra al azar: todas las respuestas deben empezar por ella.",
       "Escribe una palabra para cada categoría antes de que acabe el tiempo (90 s por defecto).",

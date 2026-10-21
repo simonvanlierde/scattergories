@@ -33,8 +33,8 @@
     "getReady": "Maak je klaar…",
     "go": "Start!",
     "roundOver": "Ronde voorbij!",
-    "startIn": "Start over {{seconds}}s",
-    "secondsLeft": "{{seconds}}s",
+    "startIn": "Start over {{seconds}} s",
+    "secondsLeft": "{{seconds}} s",
     "secondsWarning": "Nog {{seconds}} seconden"
   },
   "settings": {
@@ -109,7 +109,7 @@
   },
   "modal": {
     "title": "Hoe te spelen",
-    "objectiveText": "Verdien punten door woorden op te schrijven die beginnen met de gekozen letter en passen in de categorieën.",
+    "objectiveText": "Verdien punten door woorden op te schrijven die in de categorieën passen en beginnen met de gelote letter.",
     "gameplayPoints": [
       "Er wordt willekeurig een letter getrokken. Elk antwoord moet daarmee beginnen.",
       "Schrijf een woord voor elke categorie voordat de timer afloopt (standaard 90 seconden).",
