@@ -1,0 +1,6 @@
+# Commits that only reformat code. `git blame` skips them once you run
+#   git config blame.ignoreRevsFile .git-blame-ignore-revs
+# GitHub's blame view reads this file on its own.
+
+# style: reformat to 120 columns
+4e370e467bc04cc5fc38c50d2d8b8237a31f28fc
