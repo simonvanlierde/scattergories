@@ -17,7 +17,6 @@
 
 [dependency-groups]
   dev         = ['pytest>=9.1.1', 'pytest-cov>=7.1.0', 'ruff>=0.15.21', 'ty>=0.0.58', "uv-build>=0.11.28,<0.14"]
-  translation = ['argostranslate>=1.9.6']
 
 # Resolve only releases at least a week old: a compromised release is usually
 # caught and yanked within that window. Dependabot's cooldown waits the same.

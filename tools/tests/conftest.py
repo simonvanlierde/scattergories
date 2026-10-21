@@ -10,7 +10,6 @@ from scattergories_tools.shared.context import AppContext, Deps
 from scattergories_tools.shared.paths import RepoPaths
 from scattergories_tools.shared.registry import LocaleRegistry, load_locale_registry
 from scattergories_tools.weights.analyze import LetterRow, LocaleAnalysis, SampleAnalysis
-from tests.fakes import FakeProviderFactory, FakeTranslationProvider
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -78,12 +77,10 @@ def repo_context(
     """Create a temporary repo layout for CLI tests."""
     repo_root = tmp_path / "repo"
     tools_root = repo_root / "tools"
-    cache_dir = tools_root / ".cache"
     out_dir = tools_root / "out"
     locale_dir = repo_root / "src" / "i18n" / "locales"
     generated_dir = repo_root / "src" / "i18n" / "__generated__"
 
-    cache_dir.mkdir(parents=True)
     out_dir.mkdir(parents=True)
     locale_dir.mkdir(parents=True)
     generated_dir.mkdir(parents=True)
@@ -108,14 +105,12 @@ def repo_context(
     paths = RepoPaths(
         repo_root=repo_root,
         tools_root=tools_root,
-        cache_dir=cache_dir,
         out_dir=out_dir,
         registry_path=registry_path,
         generated_weights_path=generated_dir / "letterWeights.json",
         locale_dir=locale_dir,
         categories_source_path=locale_dir / "categories.en.json",
         locale_payload_source_path=locale_dir / "en.json",
-        translation_cache_path=cache_dir / "translation.sqlite3",
     )
     return paths, load_locale_registry(registry_path)
 
@@ -125,18 +120,6 @@ def deps(repo_context: tuple[RepoPaths, LocaleRegistry]) -> Deps:
     """CLI dependencies bound to the temporary repo layout, with no network seams set."""
     paths, registry = repo_context
     return Deps(create_context=lambda: AppContext(paths, registry))
-
-
-@pytest.fixture
-def fake_provider_factory() -> FakeProviderFactory:
-    """Build fake translation providers with optional overrides."""
-
-    def build(
-        translations: dict[tuple[str, str, str], str] | None = None,
-    ) -> FakeTranslationProvider:
-        return FakeTranslationProvider(translations=translations or {})
-
-    return build
 
 
 @pytest.fixture

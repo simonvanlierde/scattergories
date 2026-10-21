@@ -24,15 +24,3 @@ weights-locales-write locales='en,es,fr,de,it,nl,pl,pt,el' max_bytes='150000000'
 # Check the shipped table against its metadata (offline, as in CI).
 weights-verify:
     @uv run sg-tools weights verify
-
-translate-categories locales='es':
-    @uv run --group translation sg-tools translate categories --target-locales {{ locales }}
-
-translate-categories-write locales='es':
-    @uv run --group translation sg-tools translate categories --target-locales {{ locales }} --write-app-files
-
-translate-locales locales='es':
-    @uv run --group translation sg-tools translate locales --target-locales {{ locales }}
-
-translate-locales-write locales='es':
-    @uv run --group translation sg-tools translate locales --target-locales {{ locales }} --write-app-files

@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING
 
 from scattergories_tools.shared.paths import RepoPaths, default_repo_paths
 from scattergories_tools.shared.registry import LocaleRegistry, load_locale_registry
-from scattergories_tools.translate.engine import ArgosProvider
 from scattergories_tools.weights.analyze import (
     LocaleAnalysis,
     SampleAnalysis,
@@ -41,4 +40,3 @@ class Deps:
     create_context: Callable[[], AppContext] = create_context
     analyze_locale: Callable[..., LocaleAnalysis] = analyze_locale
     analyze_sample_dataset: Callable[..., SampleAnalysis] = analyze_sample_dataset
-    translator: Callable[[], Callable[[str, str, str], str]] = lambda: ArgosProvider().translate
