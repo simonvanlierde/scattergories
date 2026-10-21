@@ -33,7 +33,7 @@
     "getReady": "Bereit machen…",
     "go": "Los!",
     "roundOver": "Runde vorbei!",
-    "startIn": "Start in {{seconds}}s",
+    "startIn": "Start in {{seconds}} Sek.",
     "secondsLeft": "{{seconds}}s",
     "secondsWarning": "Noch {{seconds}} Sekunden"
   },
@@ -109,7 +109,7 @@
   },
   "modal": {
     "title": "Spielanleitung",
-    "objectiveText": "Sammle Punkte, indem du Begriffe aufschreibst, die mit dem gewählten Buchstaben beginnen und in die jeweilige Kategorie passen.",
+    "objectiveText": "Sammle Punkte, indem du Wörter aufschreibst, die mit dem gezogenen Buchstaben beginnen und in die jeweilige Kategorie passen.",
     "gameplayPoints": [
       "Ein zufälliger Buchstabe wird gezogen. Jede Antwort muss damit beginnen.",
       "Schreibe ein Wort für jede Kategorie, bevor der Timer abläuft (standardmäßig 90 Sek.).",
@@ -120,7 +120,7 @@
     "categoriesText": "Das Deck enthält integrierte Kategorien, und du kannst eigene hinzufügen.",
     "categoriesItems": [
       "Passe das Deck an, um Kategorien und Sets hinzuzufügen oder solche zu entfernen, die du überspringen möchtest.",
-      "Fixiere eine Kategorie, damit sie in jeder Runde vorkommt; nicht fixierte werden zufällig für den Rest gezogen.",
+      "Fixiere eine Kategorie, damit sie in jeder Runde vorkommt; nicht fixierte werden zufällig gezogen, um den Rest aufzufüllen.",
       "Ziehe neu, um für den aktuellen Buchstaben ein frisches Set an Kategorien zu ziehen, ohne den Buchstaben zu ändern."
     ],
     "odds": "Buchstaben-Chancen",

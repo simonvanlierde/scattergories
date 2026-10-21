@@ -38,6 +38,7 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- More translation fixes after a second review in all eight languages: how-to-play text, timer labels with a space before the unit ("10 s"), and category names that read naturally.
 - Translation fixes after a review in Dutch, Greek, Italian, Polish and
   Portuguese, mostly category names that now read as a list item.
 - A language that fails to load once no longer switches you to English for good.

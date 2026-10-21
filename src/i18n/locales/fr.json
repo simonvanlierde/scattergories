@@ -33,7 +33,7 @@
     "getReady": "Préparez-vous…",
     "go": "C'est parti !",
     "roundOver": "Manche terminée !",
-    "startIn": "Départ dans {{seconds}}s",
+    "startIn": "Départ dans {{seconds}} s",
     "secondsLeft": "{{seconds}}s",
     "secondsWarning": "Plus que {{seconds}} secondes"
   },
@@ -109,7 +109,7 @@
   },
   "modal": {
     "title": "Comment jouer",
-    "objectiveText": "Marquez des points en écrivant des mots qui commencent par la lettre donnée et correspondent aux catégories.",
+    "objectiveText": "Marquez des points en écrivant des mots qui correspondent aux catégories et commencent par la lettre tirée.",
     "gameplayPoints": [
       "Une lettre est tirée au hasard : toutes les réponses doivent commencer par elle.",
       "Écrivez un mot pour chaque catégorie avant la fin du minuteur (90 s par défaut).",
