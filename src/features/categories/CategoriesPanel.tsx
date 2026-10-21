@@ -172,15 +172,7 @@ interface DeckRow {
   isCustom: boolean;
 }
 
-function DeckListItem({
-  row,
-  isPinned,
-  actions,
-}: {
-  row: DeckRow;
-  isPinned: boolean;
-  actions: CategoriesActions;
-}) {
+function DeckListItem({ row, isPinned, actions }: { row: DeckRow; isPinned: boolean; actions: CategoriesActions }) {
   const { t } = useTranslation();
   return (
     <li className={cx("deck-list__item", row.isCustom && "deck-list__item--custom")}>
@@ -189,11 +181,7 @@ function DeckListItem({
       </span>
       <span className="deck-list__actions">
         <IconButton
-          label={
-            isPinned
-              ? t("categories.unpinOne", { name: row.label })
-              : t("categories.pinOne", { name: row.label })
-          }
+          label={isPinned ? t("categories.unpinOne", { name: row.label }) : t("categories.pinOne", { name: row.label })}
           icon={<Icon icon={Pin} size={16} />}
           aria-pressed={isPinned}
           onClick={() => actions.onTogglePin(row.name)}
@@ -201,9 +189,7 @@ function DeckListItem({
         <IconButton
           label={t("buttons.remove")}
           icon={<Icon icon={Trash2} size={16} />}
-          onClick={() =>
-            row.isCustom ? actions.onRemoveCustom(row.name) : actions.onRemoveBuiltin(row.name)
-          }
+          onClick={() => (row.isCustom ? actions.onRemoveCustom(row.name) : actions.onRemoveBuiltin(row.name))}
         />
       </span>
     </li>
@@ -226,16 +212,10 @@ function DeckBulkActions({
   return (
     <div className="deck-list__bulk">
       {hasCustom ? (
-        <BulkRemoveButton
-          label={t("categories.removeAllCustom")}
-          onRemove={actions.onRemoveAllCustom}
-        />
+        <BulkRemoveButton label={t("categories.removeAllCustom")} onRemove={actions.onRemoveAllCustom} />
       ) : null}
       {hasBuiltins ? (
-        <BulkRemoveButton
-          label={t("categories.removeAllBuiltins")}
-          onRemove={actions.onRemoveAllBuiltins}
-        />
+        <BulkRemoveButton label={t("categories.removeAllBuiltins")} onRemove={actions.onRemoveAllBuiltins} />
       ) : null}
     </div>
   );
@@ -277,9 +257,7 @@ function DeckList({
     }
     return a.label.localeCompare(b.label);
   };
-  const customs = customCategories
-    .map((name) => ({ name, label: name, isCustom: true }))
-    .sort(byPinThenLabel);
+  const customs = customCategories.map((name) => ({ name, label: name, isCustom: true })).sort(byPinThenLabel);
   const builtins = deckBuiltins
     .map((name) => ({ name, label: t(name, { ns: "categories" }), isCustom: false }))
     .sort(byPinThenLabel);
@@ -427,8 +405,7 @@ function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps
   // the deck mid-round never re-styles (or blanks) the categories already drawn.
   const customSet = new Set(categories.drawnCustomCategories);
   const deckToggleLabel = isPromptDeckOpen ? t("categories.hideDeck") : t("categories.showDeck");
-  const allPinned =
-    drawnCategories.length > 0 && drawnCategories.every((name) => pinnedSet.has(name));
+  const allPinned = drawnCategories.length > 0 && drawnCategories.every((name) => pinnedSet.has(name));
 
   return (
     <section

@@ -27,9 +27,7 @@ describe("category packs", () => {
   });
 
   it("the classic pack means every category except the adult ones", () => {
-    expect(getPackCategories(CLASSIC_PACK_ID)).toEqual(
-      CATEGORY_KEYS.filter((key) => !ADULT_KEYS.includes(key)),
-    );
+    expect(getPackCategories(CLASSIC_PACK_ID)).toEqual(CATEGORY_KEYS.filter((key) => !ADULT_KEYS.includes(key)));
   });
 
   it("only grown-ups lists adult keys, apart from Beers in foodie", () => {

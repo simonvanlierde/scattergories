@@ -19,10 +19,9 @@ const translationLoaders = import.meta.glob<TranslationResource>(
   ["./*.json", "!./categories.*.json", "!./registry.json", "!./en.json"],
   { import: "default" },
 );
-const categoryLoaders = import.meta.glob<CategoriesResource>(
-  ["./categories.*.json", "!./categories.en.json"],
-  { import: "default" },
-);
+const categoryLoaders = import.meta.glob<CategoriesResource>(["./categories.*.json", "!./categories.en.json"], {
+  import: "default",
+});
 
 async function loadLocaleNamespaces(locale: string): Promise<LocaleNamespaces> {
   const loc = resolveLocale(locale) as LocaleCode;

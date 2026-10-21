@@ -42,9 +42,7 @@ async function bootI18n(loadFails = false) {
   if (loadFails) {
     // English is bundled in the real loader, so only the other locales can fail.
     vi.mocked(loadLocaleNamespaces).mockImplementation((locale) =>
-      locale === "en"
-        ? Promise.resolve({ translation: {}, categories: {} })
-        : Promise.reject(new Error("chunk 404")),
+      locale === "en" ? Promise.resolve({ translation: {}, categories: {} }) : Promise.reject(new Error("chunk 404")),
     );
   } else {
     vi.mocked(loadLocaleNamespaces).mockResolvedValue({ translation: {}, categories: {} });

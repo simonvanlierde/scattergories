@@ -1,11 +1,6 @@
 import { screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, expect, it } from "vitest";
-import {
-  CUSTOM_CATEGORY,
-  KEYBOARD_CATEGORY,
-  ONLY_CUSTOM_CATEGORY,
-  PERSISTED_CATEGORY,
-} from "./test/constants";
+import { CUSTOM_CATEGORY, KEYBOARD_CATEGORY, ONLY_CUSTOM_CATEGORY, PERSISTED_CATEGORY } from "./test/constants";
 import { DEFAULT_DRAW_COUNT } from "./test/gameConstants";
 import {
   openCustomizeDeck,
@@ -22,10 +17,7 @@ const MIN_VISIBLE_BOARD_ITEMS = 1;
 beforeEach(resetAppTestState);
 
 // Bulk removal is a two-tap action: the first tap arms, the second confirms.
-async function removeAllBuiltins(
-  user: Awaited<ReturnType<typeof renderApp>>["user"],
-  dialog: HTMLElement,
-) {
+async function removeAllBuiltins(user: Awaited<ReturnType<typeof renderApp>>["user"], dialog: HTMLElement) {
   const button = within(dialog).getByRole("button", { name: "Remove all built-in" });
   await user.click(button);
   await user.click(button);
@@ -50,13 +42,9 @@ it("adds and removes a custom category from the deck", async () => {
 
   expect(within(dialog).getByRole("list", { name: DECK_LABEL })).toHaveTextContent(CUSTOM_CATEGORY);
 
-  await user.click(
-    within(deckRow(dialog, CUSTOM_CATEGORY)).getByRole("button", { name: "Remove" }),
-  );
+  await user.click(within(deckRow(dialog, CUSTOM_CATEGORY)).getByRole("button", { name: "Remove" }));
 
-  expect(within(dialog).getByRole("list", { name: DECK_LABEL })).not.toHaveTextContent(
-    CUSTOM_CATEGORY,
-  );
+  expect(within(dialog).getByRole("list", { name: DECK_LABEL })).not.toHaveTextContent(CUSTOM_CATEGORY);
 });
 
 it("shows guidance when the deck is emptied and accepts a custom entry", async () => {
@@ -70,27 +58,20 @@ it("shows guidance when the deck is emptied and accepts a custom entry", async (
   const input = within(dialog).getByRole("textbox", { name: "Add custom category" });
   await user.type(input, `${KEYBOARD_CATEGORY}{Enter}`);
 
-  expect(within(dialog).getByRole("list", { name: DECK_LABEL })).toHaveTextContent(
-    KEYBOARD_CATEGORY,
-  );
+  expect(within(dialog).getByRole("list", { name: DECK_LABEL })).toHaveTextContent(KEYBOARD_CATEGORY);
 });
 
 it("always shows custom categories and lets built-ins be cleared and re-added", async () => {
   const { user } = await renderApp();
   const dialog = await openCustomizeDeck(user);
 
-  await user.type(
-    within(dialog).getByRole("textbox", { name: "Add custom category" }),
-    ONLY_CUSTOM_CATEGORY,
-  );
+  await user.type(within(dialog).getByRole("textbox", { name: "Add custom category" }), ONLY_CUSTOM_CATEGORY);
   await user.click(within(dialog).getByRole("button", { name: "Add" }));
 
   // The custom category appears in the drawn deck alongside built-ins.
   const drawnList = screen.getByRole("list", { name: SELECTED_CATEGORIES });
   expect(drawnList).toHaveTextContent(ONLY_CUSTOM_CATEGORY);
-  expect(within(drawnList).getAllByRole("listitem").length).toBeGreaterThan(
-    MIN_VISIBLE_BOARD_ITEMS,
-  );
+  expect(within(drawnList).getAllByRole("listitem").length).toBeGreaterThan(MIN_VISIBLE_BOARD_ITEMS);
 
   // Clearing built-ins leaves only the custom one.
   await removeAllBuiltins(user, dialog);
@@ -122,17 +103,12 @@ it("persists custom categories across remount with the same localStorage", async
   const first = await renderApp();
   const dialog = await openCustomizeDeck(first.user);
 
-  await first.user.type(
-    within(dialog).getByRole("textbox", { name: "Add custom category" }),
-    PERSISTED_CATEGORY,
-  );
+  await first.user.type(within(dialog).getByRole("textbox", { name: "Add custom category" }), PERSISTED_CATEGORY);
   await first.user.click(within(dialog).getByRole("button", { name: "Add" }));
 
   first.view.unmount();
 
   const second = await renderApp();
   const remountedDialog = await openCustomizeDeck(second.user);
-  expect(within(remountedDialog).getByRole("list", { name: DECK_LABEL })).toHaveTextContent(
-    PERSISTED_CATEGORY,
-  );
+  expect(within(remountedDialog).getByRole("list", { name: DECK_LABEL })).toHaveTextContent(PERSISTED_CATEGORY);
 });

@@ -1,9 +1,7 @@
 import { useEffect, useEffectEvent } from "react";
 
 function isTextEntryTarget(target: HTMLElement | null, tag: string | undefined): boolean {
-  return (
-    tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || Boolean(target?.isContentEditable)
-  );
+  return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || Boolean(target?.isContentEditable);
 }
 
 export interface ShortcutHandlers {

@@ -34,15 +34,7 @@ interface SettingsClusterProps {
 }
 
 /** A titled group. One-control groups put the control on the title row instead of below it. */
-function SettingsSection({
-  title,
-  action,
-  children,
-}: {
-  title: string;
-  action?: ReactNode;
-  children?: ReactNode;
-}) {
+function SettingsSection({ title, action, children }: { title: string; action?: ReactNode; children?: ReactNode }) {
   return (
     <section className="settings-section">
       <div className="settings-section__head">
@@ -81,10 +73,7 @@ function LanguageSelect({
 }
 
 /** Light/dark as a segmented choice — a settings panel should show the state, not just flip it. */
-function ThemeChoice({
-  theme,
-  onToggleTheme,
-}: Pick<SettingsClusterProps, "theme" | "onToggleTheme">) {
+function ThemeChoice({ theme, onToggleTheme }: Pick<SettingsClusterProps, "theme" | "onToggleTheme">) {
   const { t } = useTranslation();
   const isDark = theme === "dark";
 
@@ -115,11 +104,7 @@ function GameplaySettings({
   onUpdateTimingField,
 }: Pick<
   SettingsClusterProps,
-  | "avoidRepeats"
-  | "durationInput"
-  | "bufferSecondsInput"
-  | "onToggleAvoidRepeats"
-  | "onUpdateTimingField"
+  "avoidRepeats" | "durationInput" | "bufferSecondsInput" | "onToggleAvoidRepeats" | "onUpdateTimingField"
 >) {
   const { t } = useTranslation();
 
@@ -220,11 +205,7 @@ export function SettingsCluster({
           <SettingsSection
             title={t("language.label")}
             action={
-              <LanguageSelect
-                language={language}
-                isLanguagePending={isLanguagePending}
-                onSelect={onLanguageChange}
-              />
+              <LanguageSelect language={language} isLanguagePending={isLanguagePending} onSelect={onLanguageChange} />
             }
           />
 

@@ -64,9 +64,7 @@ export function CategoryChecklist({
                 aria-pressed={isPinned}
                 disabled={disabled}
                 aria-label={
-                  isPinned
-                    ? t("categories.unpinOne", { name: label })
-                    : t("categories.pinOne", { name: label })
+                  isPinned ? t("categories.unpinOne", { name: label }) : t("categories.pinOne", { name: label })
                 }
                 onClick={() => onTogglePin(category)}
               >

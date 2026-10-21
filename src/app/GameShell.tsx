@@ -92,9 +92,7 @@ function PlayGrid({ game }: PlayGridProps) {
   const canEdit = canEditDeck(game.round.phase, game.round.isPaused);
 
   return (
-    <section
-      className={cx("play-grid", !game.deck.isPromptDeckOpen && "play-grid--deck-collapsed")}
-    >
+    <section className={cx("play-grid", !game.deck.isPromptDeckOpen && "play-grid--deck-collapsed")}>
       <Playmat
         phase={game.round.phase}
         isPaused={game.round.isPaused}
@@ -156,10 +154,7 @@ function GameShell({ game }: GameShellProps) {
   }, [game.settings.theme]);
 
   return (
-    <main
-      className={cx("app-shell", game.round.alarmOn && "alarm")}
-      data-theme={game.settings.theme}
-    >
+    <main className={cx("app-shell", game.round.alarmOn && "alarm")} data-theme={game.settings.theme}>
       <div className="app">
         {game.app.hasChunkError ? <ChunkErrorBanner onReload={game.app.reload} /> : null}
 

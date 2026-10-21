@@ -107,10 +107,7 @@ function createAppFixture(page: Page): AppFixture {
       if (getReadySeconds !== undefined) {
         // The get-ready countdown is real wall-clock time; "0" skips it so a test
         // waiting out a full round doesn't also sit through the buffer.
-        await fillNumericField(
-          settingsSheet.getByLabel("Get ready", { exact: true }),
-          getReadySeconds,
-        );
+        await fillNumericField(settingsSheet.getByLabel("Get ready", { exact: true }), getReadySeconds);
       }
       await closeSheet(page, settingsSheet);
     },
@@ -140,9 +137,7 @@ function createAppFixture(page: Page): AppFixture {
       await closeSheet(page, settingsSheet);
     },
     async toggleMute() {
-      await page
-        .getByRole("button", { name: MUTE_BUTTON_LABEL })
-        .click({ position: { x: 12, y: 12 } });
+      await page.getByRole("button", { name: MUTE_BUTTON_LABEL }).click({ position: { x: 12, y: 12 } });
     },
     async waitUntilReady() {
       await expect(readyHeading).toBeVisible();

@@ -311,9 +311,7 @@ function composeDeck({
   const pinnedOrdered = [...pinnedCustoms, ...pinnedBuiltins];
 
   const unpinnedCustoms = customCategories.filter((name) => !pinnedSet.has(name));
-  const unpinnedBuiltins = deckBuiltins.filter(
-    (name) => !(pinnedSet.has(name) || customSet.has(name)),
-  );
+  const unpinnedBuiltins = deckBuiltins.filter((name) => !(pinnedSet.has(name) || customSet.has(name)));
   const pool = [...unpinnedCustoms, ...unpinnedBuiltins];
 
   const slots: (string | null)[] = new Array(count).fill(null);

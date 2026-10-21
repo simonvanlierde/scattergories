@@ -156,9 +156,7 @@ def sample_analysis_builder() -> Callable[..., SampleAnalysis]:
         sample_rows = coerce_rows(rows)
         return SampleAnalysis(
             dataset_key=dataset_key if isinstance(dataset_key, str) else "wikitext-2",
-            dataset_config=(
-                dataset_config if isinstance(dataset_config, str) else "wikitext-2-raw-v1"
-            ),
+            dataset_config=(dataset_config if isinstance(dataset_config, str) else "wikitext-2-raw-v1"),
             rows=sample_rows,
             total=total if isinstance(total, int) else sum(row.count for row in sample_rows),
         )

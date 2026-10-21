@@ -76,9 +76,7 @@ describe("useCategoryBoard", () => {
     act(() => {
       result.current.redrawCategories(false);
     });
-    expect(result.current.drawnCategories.every((name) => OTHER_BUILTINS.includes(name))).toBe(
-      true,
-    );
+    expect(result.current.drawnCategories.every((name) => OTHER_BUILTINS.includes(name))).toBe(true);
   });
 
   it("lands on the final deck after an animated redraw", () => {

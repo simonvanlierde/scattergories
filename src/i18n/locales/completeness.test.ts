@@ -3,21 +3,14 @@ import { BOOT_MESSAGES } from "@/app/bootMessages";
 import { PACKS } from "@/domain/deck";
 import { CATEGORY_KEYS } from "@/domain/game/categoryKeys";
 import { LETTER_WEIGHTS_BY_LOCALE } from "@/domain/game/localeWeights";
-import {
-  FALLBACK_LOCALE,
-  getLocaleLetters,
-  getNativeName,
-  SUPPORTED_LOCALES,
-} from "@/i18n/localeRegistry";
+import { FALLBACK_LOCALE, getLocaleLetters, getNativeName, SUPPORTED_LOCALES } from "@/i18n/localeRegistry";
 import { loadLocaleNamespaces } from "./resources";
 
 function flattenEntries(value: unknown, prefix = ""): [string, unknown][] {
   if (value === null || typeof value !== "object" || Array.isArray(value)) {
     return [[prefix, value]];
   }
-  return Object.entries(value).flatMap(([key, child]) =>
-    flattenEntries(child, prefix ? `${prefix}.${key}` : key),
-  );
+  return Object.entries(value).flatMap(([key, child]) => flattenEntries(child, prefix ? `${prefix}.${key}` : key));
 }
 
 function flattenKeys(value: unknown): string[] {
@@ -29,10 +22,7 @@ const PLACEHOLDER_OR_TAG = /\{\{[^}]+\}\}|<\/?[\w-]+>/g;
 /** Each string's `{{var}}` placeholders and `<tag>`s, sorted so word order may differ. */
 function markupByKey(value: unknown): Record<string, string[]> {
   return Object.fromEntries(
-    flattenEntries(value).map(([key, text]) => [
-      key,
-      String(text).match(PLACEHOLDER_OR_TAG)?.sort() ?? [],
-    ]),
+    flattenEntries(value).map(([key, text]) => [key, String(text).match(PLACEHOLDER_OR_TAG)?.sort() ?? []]),
   );
 }
 
@@ -45,9 +35,7 @@ describe("locale asset completeness", () => {
     // A letter missing from the table gets weight 1, far above the real frequencies
     // (under 0.2), so it would come up far more often than any real letter. Weights
     // must cover the alphabet exactly.
-    expect(Object.keys(LETTER_WEIGHTS_BY_LOCALE[locale] ?? {}).sort()).toEqual(
-      getLocaleLetters(locale).sort(),
-    );
+    expect(Object.keys(LETTER_WEIGHTS_BY_LOCALE[locale] ?? {}).sort()).toEqual(getLocaleLetters(locale).sort());
   });
 
   it.each(SUPPORTED_LOCALES)("%s has boot screen messages", (locale) => {
@@ -71,9 +59,7 @@ describe("locale asset completeness", () => {
   it("every pack label key resolves in the English translations", async () => {
     const { translation } = await loadLocaleNamespaces(FALLBACK_LOCALE);
     const keys = new Set(flattenKeys(translation));
-    expect(PACKS.filter((pack) => !keys.has(pack.labelKey)).map((pack) => pack.labelKey)).toEqual(
-      [],
-    );
+    expect(PACKS.filter((pack) => !keys.has(pack.labelKey)).map((pack) => pack.labelKey)).toEqual([]);
   });
 
   // Guards against key drift: every locale must ship exactly the keys en does —

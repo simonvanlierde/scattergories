@@ -22,9 +22,7 @@ describe("getLetterOdds", () => {
 
   it("keeps the ratios of the shipped weights", () => {
     const weights = getLocaleLetterWeights("en");
-    const odds = Object.fromEntries(
-      getLetterOdds("en").map(({ letter, chance }) => [letter, chance]),
-    );
+    const odds = Object.fromEntries(getLetterOdds("en").map(({ letter, chance }) => [letter, chance]));
 
     expect((odds.S ?? 0) / (odds.Q ?? 1)).toBeCloseTo((weights.S ?? 0) / (weights.Q ?? 1), 10);
     expect(odds.S).toBeGreaterThan(odds.X ?? 1);

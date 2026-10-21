@@ -5,9 +5,7 @@ import type { LocaleCode } from "@/i18n/locales/resources";
 export const LETTER_WEIGHTS_BY_LOCALE: Partial<Record<string, Readonly<Record<string, number>>>> =
   letterWeights satisfies Record<LocaleCode, Record<string, number>>;
 
-export function getLocaleLetterWeights(
-  locale: string | null | undefined,
-): Readonly<Record<string, number>> {
+export function getLocaleLetterWeights(locale: string | null | undefined): Readonly<Record<string, number>> {
   const normalized = normalizeLocale(locale);
   // FALLBACK_LOCALE always exists in the generated table; the empty-object tail is
   // an unreachable guard for noUncheckedIndexedAccess (a missing weight is treated
@@ -19,9 +17,7 @@ export function getLocaleLetterWeights(
  * Each letter of the locale's alphabet, in alphabet order, with its chance of being drawn
  * when no letter is skipped: its weight over the alphabet's total, as `drawLetter` uses them.
  */
-export function getLetterOdds(
-  locale: string | null | undefined,
-): { letter: string; chance: number }[] {
+export function getLetterOdds(locale: string | null | undefined): { letter: string; chance: number }[] {
   const letters = getLocaleLetters(locale);
   const weights = getLocaleLetterWeights(locale);
   const total = letters.reduce((sum, letter) => sum + (weights[letter] ?? 1), 0);

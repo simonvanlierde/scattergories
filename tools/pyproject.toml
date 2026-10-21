@@ -42,7 +42,7 @@
 [tool.ruff]
   extend-exclude               = ['.venv', '.cache', 'out']
   format.docstring-code-format = true
-  line-length                  = 100
+  line-length                  = 120
   src                          = ['src', 'tests']
   target-version               = 'py314'
 

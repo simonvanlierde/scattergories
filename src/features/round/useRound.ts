@@ -199,11 +199,7 @@ export function useRound({
     clearAlarmTimeout();
     // A fresh spin restarts the countdown from a full second.
     tickRemainderRef.current = null;
-    const { letter: chosen, recentLetters } = drawRoundLetter(
-      locale,
-      state.recentLetters,
-      avoidRepeats,
-    );
+    const { letter: chosen, recentLetters } = drawRoundLetter(locale, state.recentLetters, avoidRepeats);
     if (opts.redrawCategories) {
       onLetterPicked();
     }

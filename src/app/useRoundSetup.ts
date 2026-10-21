@@ -21,12 +21,7 @@ function useRoundSetup(settings: {
   pinned: string[];
 }) {
   const gameSeconds = clampInt(settings.durationInput, durationMin, durationMax, durationDefault);
-  const bufferSeconds = clampInt(
-    settings.bufferSecondsInput,
-    bufferSecondsMin,
-    bufferSecondsMax,
-    bufferSecondsDefault,
-  );
+  const bufferSeconds = clampInt(settings.bufferSecondsInput, bufferSecondsMin, bufferSecondsMax, bufferSecondsDefault);
   const categoryCount = clampInt(settings.catCountInput, catCountMin, catCountMax, catCountDefault);
 
   const availableCount = getDeckSize(settings.customCategories, settings.deckBuiltins);

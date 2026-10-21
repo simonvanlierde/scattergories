@@ -53,11 +53,7 @@ function useAppControls(params: { i18n: I18nInstance }) {
   const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
   const [isLanguagePending, setIsLanguagePending] = useState(false);
   const newCategoryInputRef = useRef<HTMLInputElement>(null);
-  const handleLanguageChange = useLanguageSwitcher(
-    params.i18n,
-    setIsLanguagePending,
-    setHasChunkError,
-  );
+  const handleLanguageChange = useLanguageSwitcher(params.i18n, setIsLanguagePending, setHasChunkError);
 
   useChunkErrorListener(setHasChunkError);
 

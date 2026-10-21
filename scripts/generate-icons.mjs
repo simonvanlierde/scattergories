@@ -52,19 +52,13 @@ const OUTPUTS = [
 ];
 
 const source = await readFile(new URL("assets/brand/mark.svg", ROOT), "utf8");
-const mark = source.slice(
-  source.indexOf(">", source.indexOf("<svg")) + 1,
-  source.lastIndexOf("</svg>"),
-);
+const mark = source.slice(source.indexOf(">", source.indexOf("<svg")) + 1, source.lastIndexOf("</svg>"));
 
 /** The side-face glyphs only survive at icon sizes where they stay legible. */
 const GLYPH_FLOOR = 64;
 const plain = mark.slice(0, mark.indexOf('<g id="glyphs"'));
 
-await writeFile(
-  new URL("public/favicon.svg", ROOT),
-  `${compose(plain, { scale: 0.86, radius: 4 })}\n`,
-);
+await writeFile(new URL("public/favicon.svg", ROOT), `${compose(plain, { scale: 0.86, radius: 4 })}\n`);
 
 const browser = await chromium.launch();
 for (const { file, size, scale, radius } of OUTPUTS) {

@@ -76,8 +76,6 @@ it("lists each letter's chance in the rules as a table", async () => {
   expect(letters).toEqual([..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"]);
   expect(within(table).getByRole("row", { name: /^S \d+\.\d%$/ })).toBeInTheDocument();
   const note = within(rules).getByText(/November 2023 snapshot/);
-  expect(note).toHaveTextContent(
-    "with “Avoid letter repeats” on it skips the last 8 letters drawn",
-  );
+  expect(note).toHaveTextContent("with “Avoid letter repeats” on it skips the last 8 letters drawn");
   expect(note).toHaveTextContent("rare letters come up a little more often than shown");
 });

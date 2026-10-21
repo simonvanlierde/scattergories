@@ -48,7 +48,5 @@ self.addEventListener("fetch", (event) => {
   if (request.method !== "GET" || new URL(request.url).origin !== self.location.origin) {
     return;
   }
-  event.respondWith(
-    request.mode === "navigate" ? networkFirst(request) : staleWhileRevalidate(request),
-  );
+  event.respondWith(request.mode === "navigate" ? networkFirst(request) : staleWhileRevalidate(request));
 });

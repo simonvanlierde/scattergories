@@ -6,10 +6,7 @@ import { test } from "./fixtures";
 const MINUTE_TO_MS = 60_000;
 test.setTimeout(MINUTE_TO_MS);
 
-test("@smoke has no detectable accessibility violations on the idle screen", async ({
-  app,
-  page,
-}) => {
+test("@smoke has no detectable accessibility violations on the idle screen", async ({ app, page }) => {
   await expect(app.readyHeading).toBeVisible();
 
   const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
@@ -17,10 +14,7 @@ test("@smoke has no detectable accessibility violations on the idle screen", asy
   expect(accessibilityScanResults.violations).toEqual([]);
 });
 
-test("@smoke has no detectable accessibility violations during an active round", async ({
-  app,
-  page,
-}) => {
+test("@smoke has no detectable accessibility violations during an active round", async ({ app, page }) => {
   await app.toggleMute();
   await app.startRound();
   await app.expectRunning();
@@ -38,19 +32,14 @@ test("has no detectable accessibility violations when time is up", async ({ app,
   await app.startRound();
   await expect(app.roundStatus).toHaveText(ROUND_OVER, { timeout: ROUND_MESSAGE_TIMEOUT_MS });
   // "Time's up" fades in as it stamps down; let it land before axe samples contrast.
-  await app.roundClock.evaluate((el) =>
-    Promise.all(el.getAnimations({ subtree: true }).map((a) => a.finished)),
-  );
+  await app.roundClock.evaluate((el) => Promise.all(el.getAnimations({ subtree: true }).map((a) => a.finished)));
 
   const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
 
   expect(accessibilityScanResults.violations).toEqual([]);
 });
 
-test("@smoke has no detectable accessibility violations with the prompt deck collapsed", async ({
-  app,
-  page,
-}) => {
+test("@smoke has no detectable accessibility violations with the prompt deck collapsed", async ({ app, page }) => {
   await app.collapseCategories();
 
   const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
@@ -58,10 +47,7 @@ test("@smoke has no detectable accessibility violations with the prompt deck col
   expect(accessibilityScanResults.violations).toEqual([]);
 });
 
-test("@smoke has no detectable accessibility violations with the settings sheet open", async ({
-  app,
-  page,
-}) => {
+test("@smoke has no detectable accessibility violations with the settings sheet open", async ({ app, page }) => {
   await app.openSettings();
 
   const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
@@ -69,10 +55,7 @@ test("@smoke has no detectable accessibility violations with the settings sheet 
   expect(accessibilityScanResults.violations).toEqual([]);
 });
 
-test("@smoke has no detectable accessibility violations with the how-to-play modal open", async ({
-  app,
-  page,
-}) => {
+test("@smoke has no detectable accessibility violations with the how-to-play modal open", async ({ app, page }) => {
   await app.openHelp();
 
   const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
@@ -80,10 +63,7 @@ test("@smoke has no detectable accessibility violations with the how-to-play mod
   expect(accessibilityScanResults.violations).toEqual([]);
 });
 
-test("@smoke has no detectable accessibility violations with the letter odds open", async ({
-  app,
-  page,
-}) => {
+test("@smoke has no detectable accessibility violations with the letter odds open", async ({ app, page }) => {
   await app.openHelp();
   const help = page.getByRole("dialog", { name: /How to play/i });
   await help.locator("summary", { hasText: "Letter odds" }).click();

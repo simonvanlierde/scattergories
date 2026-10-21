@@ -66,9 +66,7 @@ def test_mask_and_unmask_placeholders_restore_multiple_tokens() -> None:
     """Placeholder masking is reversible and preserves order."""
     masked, tokens = mask_placeholders("Round {{current}} of {{total}}")
     assert masked == "Round __PH_0__ of __PH_1__"
-    assert unmask_placeholders("Ronda __PH_0__ de __PH_1__", tokens) == (
-        "Ronda {{current}} de {{total}}"
-    )
+    assert unmask_placeholders("Ronda __PH_0__ de __PH_1__", tokens) == ("Ronda {{current}} de {{total}}")
 
 
 def test_translate_string_uses_cache_before_calling_provider(

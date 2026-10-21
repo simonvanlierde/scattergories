@@ -30,12 +30,8 @@ it("keeps the main surface lean and categories outside the playmat", async () =>
   const playmat = screen.getByRole("region", { name: "Game board" });
   const categoriesPanel = screen.getByRole("region", { name: "Categories" });
 
-  expect(
-    within(playmat).queryByRole("list", { name: SELECTED_CATEGORIES }),
-  ).not.toBeInTheDocument();
-  expect(
-    within(categoriesPanel).getByRole("list", { name: SELECTED_CATEGORIES }),
-  ).toBeInTheDocument();
+  expect(within(playmat).queryByRole("list", { name: SELECTED_CATEGORIES })).not.toBeInTheDocument();
+  expect(within(categoriesPanel).getByRole("list", { name: SELECTED_CATEGORIES })).toBeInTheDocument();
   expect(within(categoriesPanel).queryByRole("button", { pressed: true })).not.toBeInTheDocument();
   expect(within(categoriesPanel).queryByText(SOURCE_SUMMARY_PATTERN)).not.toBeInTheDocument();
   expect(within(categoriesPanel).queryByText(DRAW_SUMMARY_PATTERN)).not.toBeInTheDocument();

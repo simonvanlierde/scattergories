@@ -46,9 +46,7 @@ def sample(
             help="Hugging Face token. Prefer setting the HF_TOKEN env var over this flag.",
         ),
     ] = None,
-    out_dir: Annotated[
-        Path | None, typer.Option(help="Ephemeral output directory under tools/out/.")
-    ] = None,
+    out_dir: Annotated[Path | None, typer.Option(help="Ephemeral output directory under tools/out/.")] = None,
     *,
     write: Annotated[bool, typer.Option(help="Write output under tools/out/.")] = False,
 ) -> None:
@@ -77,9 +75,7 @@ def sample(
 @app.command("locales")
 def locales(
     ctx: typer.Context,
-    locales_arg: Annotated[
-        str | None, typer.Option("--locales", help="Comma-separated locale codes.")
-    ] = None,
+    locales_arg: Annotated[str | None, typer.Option("--locales", help="Comma-separated locale codes.")] = None,
     max_bytes: Annotated[int, typer.Option(help="Byte cap per locale.")] = DEFAULT_MAX_BYTES,
     hf_token: Annotated[
         str | None,
@@ -89,18 +85,14 @@ def locales(
         ),
     ] = None,
     *,
-    write_app_file: Annotated[
-        bool, typer.Option(help="Write src/i18n/__generated__/letterWeights.json.")
-    ] = False,
+    write_app_file: Annotated[bool, typer.Option(help="Write src/i18n/__generated__/letterWeights.json.")] = False,
 ) -> None:
     """Analyze locale corpora and optionally update the app weight file."""
     deps = ctx.ensure_object(Deps)
     context = deps.create_context()
     selected_locales = parse_locale_args(locales_arg, context.registry)
     analyses = {
-        locale: deps.analyze_locale(
-            locale, registry=context.registry, hf_token=hf_token, max_bytes=max_bytes
-        )
+        locale: deps.analyze_locale(locale, registry=context.registry, hf_token=hf_token, max_bytes=max_bytes)
         for locale in selected_locales
     }
 
@@ -108,10 +100,7 @@ def locales(
     typer.echo(f"Dataset date: {WIKIPEDIA_DATASET_DATE}")
     for locale in selected_locales:
         analysis = analyses[locale]
-        typer.echo(
-            f"[{locale}] total={analysis.total} "
-            f"rows={analysis.source_count} bytes={analysis.processed_bytes}"
-        )
+        typer.echo(f"[{locale}] total={analysis.total} rows={analysis.source_count} bytes={analysis.processed_bytes}")
         print_rows_summary(analysis.rows, label=f"[{locale}] top letters:")
 
     if write_app_file:
@@ -134,8 +123,6 @@ def verify(ctx: typer.Context) -> None:
     for problem in problems:
         typer.echo(problem, err=True)
     if problems:
-        typer.echo(
-            "Regenerate the table with `sg-tools weights locales --write-app-file`.", err=True
-        )
+        typer.echo("Regenerate the table with `sg-tools weights locales --write-app-file`.", err=True)
         raise typer.Exit(1)
     typer.echo(f"OK: {table_path.name} matches {metadata_path_for(table_path).name}")

@@ -56,9 +56,7 @@ def _run_translation(  # noqa: PLR0913 - cohesive per-command hooks for one shar
     source = load_source(context)
     translate_text = deps.translator()
 
-    output_paths = {
-        locale: context.paths.locale_dir / output_name(locale) for locale in selected_locales
-    }
+    output_paths = {locale: context.paths.locale_dir / output_name(locale) for locale in selected_locales}
     results: dict[str, TranslationResult] = {}
     with open_translation_cache(context.paths.translation_cache_path) as cache:
         for locale in selected_locales:
@@ -97,9 +95,7 @@ def categories(
     target_locales: Annotated[str, typer.Option(..., help="Comma-separated target locales.")],
     from_locale: Annotated[str, typer.Option(help="Source locale.")] = "en",
     *,
-    write_app_files: Annotated[
-        bool, typer.Option(help="Write src/i18n/locales/categories.<locale>.json.")
-    ] = False,
+    write_app_files: Annotated[bool, typer.Option(help="Write src/i18n/locales/categories.<locale>.json.")] = False,
 ) -> None:
     """Translate canonical category names."""
     _run_translation(
@@ -120,9 +116,7 @@ def locales(
     target_locales: Annotated[str, typer.Option(..., help="Comma-separated target locales.")],
     from_locale: Annotated[str, typer.Option(help="Source locale.")] = "en",
     *,
-    write_app_files: Annotated[
-        bool, typer.Option(help="Write src/i18n/locales/<locale>.json.")
-    ] = False,
+    write_app_files: Annotated[bool, typer.Option(help="Write src/i18n/locales/<locale>.json.")] = False,
 ) -> None:
     """Translate the English locale payload into target locale files."""
     _run_translation(

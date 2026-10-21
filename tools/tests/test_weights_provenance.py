@@ -47,9 +47,7 @@ def test_written_metadata_records_provenance(tmp_path: Path) -> None:
     meta = json.loads(metadata_path_for(table_path).read_text(encoding="utf-8"))
     assert meta["sha256"] == sha256_file(table_path)
     assert meta["corpus"]["id"] == "wikimedia/wikipedia"
-    assert meta["samples"] == {
-        locale: {"sourceCount": 2, "total": 4, "processedBytes": 8} for locale in ("en", "es")
-    }
+    assert meta["samples"] == {locale: {"sourceCount": 2, "total": 4, "processedBytes": 8} for locale in ("en", "es")}
     assert meta["maxBytesPerLocale"] == 100  # noqa: PLR2004
     assert meta["tableVersion"] == "1.0.0"
     assert check_metadata(table_path) == []
