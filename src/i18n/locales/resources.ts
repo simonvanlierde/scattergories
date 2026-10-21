@@ -7,7 +7,7 @@ interface LocaleNamespaces {
   categories: CategoriesResource;
 }
 
-export type TranslationResource = Record<string, unknown>;
+export type TranslationResource = typeof enTranslation;
 export type CategoriesResource = Record<string, string>;
 
 const translationResourceEn: TranslationResource = enTranslation;

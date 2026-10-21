@@ -1,3 +1,4 @@
+import type { ParseKeys } from "i18next";
 import {
   ChevronDown,
   Info,
@@ -34,7 +35,7 @@ interface HowToPlayModalProps {
 
 interface ShortcutDefinition {
   keys: string;
-  labelKey: string;
+  labelKey: ParseKeys;
 }
 
 const SHORTCUTS: readonly ShortcutDefinition[] = [

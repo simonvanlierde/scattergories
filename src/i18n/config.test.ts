@@ -1,5 +1,6 @@
 import type { InitOptions } from "i18next";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import enTranslation from "./locales/en.json";
 
 // A throwaway i18next instance per module reset, so each case boots config.ts
 // from scratch — the real singleton stays initialized across tests.
@@ -42,10 +43,12 @@ async function bootI18n(loadFails = false) {
   if (loadFails) {
     // English is bundled in the real loader, so only the other locales can fail.
     vi.mocked(loadLocaleNamespaces).mockImplementation((locale) =>
-      locale === "en" ? Promise.resolve({ translation: {}, categories: {} }) : Promise.reject(new Error("chunk 404")),
+      locale === "en"
+        ? Promise.resolve({ translation: enTranslation, categories: {} })
+        : Promise.reject(new Error("chunk 404")),
     );
   } else {
-    vi.mocked(loadLocaleNamespaces).mockResolvedValue({ translation: {}, categories: {} });
+    vi.mocked(loadLocaleNamespaces).mockResolvedValue({ translation: enTranslation, categories: {} });
   }
   const { initI18n } = await import("./config");
   return await initI18n();
@@ -73,7 +76,7 @@ describe("initI18n", () => {
     const i18n = await bootI18n(true);
 
     expect(i18n.language).toBe("en");
-    expect(i18n.addResourceBundle).toHaveBeenCalledWith("en", "translation", {}, true, true);
+    expect(i18n.addResourceBundle).toHaveBeenCalledWith("en", "translation", enTranslation, true, true);
     expect(window.localStorage.getItem(STORAGE_KEY)).toBe("fr");
   });
 

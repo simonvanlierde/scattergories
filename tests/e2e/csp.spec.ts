@@ -97,5 +97,13 @@ test("a round and the sheets run under the Content-Security-Policy", async ({ pa
   await settings.getByLabel("Language").selectOption("de");
   await expect(page.locator("html")).toHaveAttribute("lang", "de");
 
-  expect(violations).toEqual([]);
+  // Violation events arrive a moment after their cause, so an empty list proves
+  // nothing yet. Trigger a known one: events are delivered in order, so once it
+  // shows up any earlier violation would be listed ahead of it.
+  await page.evaluate(() => {
+    const script = document.createElement("script");
+    script.textContent = "void 0";
+    document.head.append(script);
+  });
+  await expect.poll(() => violations).toEqual([expect.stringMatching(/^script-src-elem inline/)]);
 });
