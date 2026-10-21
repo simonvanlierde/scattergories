@@ -9,7 +9,7 @@ from scattergories_tools.shared.context import Deps
 
 
 def doctor(ctx: typer.Context) -> None:
-    """Validate runtime, optional dependencies, and repo path health."""
+    """Validate the runtime, the HF token, and repo path health."""
     deps = ctx.ensure_object(Deps)
     context = deps.create_context()
     paths = context.paths
@@ -53,13 +53,6 @@ def doctor(ctx: typer.Context) -> None:
             "set" if hf_token else "missing",
         )
     )
-
-    try:
-        deps.translator()
-    except RuntimeError as error:
-        checks.append(("argos", False, str(error)))
-    else:  # pragma: no cover - exercised only when optional deps are installed
-        checks.append(("argos", True, "available"))
 
     overall_ok = True
     for name, ok, detail in checks:

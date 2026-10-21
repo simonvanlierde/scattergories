@@ -9,9 +9,7 @@ py-check:
     uv --directory tools run ty check
     uv --directory tools run sg-tools weights verify
     uv --directory tools run pytest
-    # stanza 1.10.1 (PYSEC-2026-3075): argostranslate pins it, and only the opt-in
-    # translation group installs it. Drop the ignore once argostranslate allows 1.12.2.
-    uv --directory tools audit --locked --preview-features audit-command --ignore PYSEC-2026-3075
+    uv --directory tools audit --locked --preview-features audit-command
 
 # Fix what ruff can fix, then format.
 py-fmt:
