@@ -26,9 +26,7 @@ class LocaleRegistry:
     def get_letters(self, locale: str | None) -> list[str]:
         """Return the locale-specific alphabet, with fallback handling."""
         normalized = self.normalize_locale(locale)
-        letters = self.letters_by_locale.get(normalized) or self.letters_by_locale.get(
-            self.fallback_locale
-        )
+        letters = self.letters_by_locale.get(normalized) or self.letters_by_locale.get(self.fallback_locale)
         if letters is None:
             msg = f"No letters configured for locale {locale!r}"
             raise ValueError(msg)

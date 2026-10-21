@@ -217,9 +217,7 @@ it("draws common letters far more often than rare ones", () => {
   const trials = 60;
   const rareShareLimit = 0.3;
   const weights = getLocaleLetterWeights("en");
-  const rare = new Set(
-    [...getLocaleLetters("en")].sort((a, b) => (weights[a] ?? 0) - (weights[b] ?? 0)).slice(0, 5),
-  );
+  const rare = new Set([...getLocaleLetters("en")].sort((a, b) => (weights[a] ?? 0) - (weights[b] ?? 0)).slice(0, 5));
 
   let rareFirst = 0;
   for (let i = 0; i < trials; i += 1) {
@@ -248,17 +246,14 @@ it("draws from the weighted order when avoidRepeats is off", () => {
 });
 
 it("keeps the letter and roller when the locale changes mid-round", () => {
-  const { result, rerender } = renderHook(
-    (props: Parameters<typeof useRound>[0]) => useRound(props),
-    {
-      initialProps: {
-        gameSeconds: SHORT_ROUND_SECONDS,
-        bufferSeconds: BUFFER_SECONDS,
-        isMuted: false,
-        locale: "en",
-      },
+  const { result, rerender } = renderHook((props: Parameters<typeof useRound>[0]) => useRound(props), {
+    initialProps: {
+      gameSeconds: SHORT_ROUND_SECONDS,
+      bufferSeconds: BUFFER_SECONDS,
+      isMuted: false,
+      locale: "en",
     },
-  );
+  });
 
   let landCallback: (() => void) | undefined;
   mockSpinTo.mockImplementation((_letter: string, callback: () => void) => {
@@ -307,9 +302,7 @@ it("caps the catch-up burst after a long tab suspension", () => {
     vi.advanceTimersByTime(ONE_SECOND_MS);
   });
 
-  const tickCount = vi
-    .mocked(roundReducer)
-    .mock.calls.filter(([, action]) => action.type === "TICK").length;
+  const tickCount = vi.mocked(roundReducer).mock.calls.filter(([, action]) => action.type === "TICK").length;
   expect(driver.current.phase).toBe("done");
   expect(tickCount).toBeLessThanOrEqual(SHORT_ROUND_SECONDS + 1);
 });
@@ -384,17 +377,14 @@ it("draws from the new alphabet when the locale changes", () => {
   mockSpinTo.mockImplementation((_letter: string, callback: () => void) => {
     landCallback = callback;
   });
-  const { result, rerender } = renderHook(
-    (props: Parameters<typeof useRound>[0]) => useRound(props),
-    {
-      initialProps: {
-        gameSeconds: SHORT_ROUND_SECONDS,
-        bufferSeconds: BUFFER_SECONDS,
-        isMuted: false,
-        locale: "en",
-      },
+  const { result, rerender } = renderHook((props: Parameters<typeof useRound>[0]) => useRound(props), {
+    initialProps: {
+      gameSeconds: SHORT_ROUND_SECONDS,
+      bufferSeconds: BUFFER_SECONDS,
+      isMuted: false,
+      locale: "en",
     },
-  );
+  });
 
   act(() => result.current.nextRound());
   const enLetter = mockSpinTo.mock.calls[0]?.[0];

@@ -181,9 +181,7 @@ def iter_dataset_texts(
             yield stripped
 
 
-def analyze_sample_dataset(
-    dataset_key: str, *, registry: LocaleRegistry, hf_token: str | None
-) -> SampleAnalysis:
+def analyze_sample_dataset(dataset_key: str, *, registry: LocaleRegistry, hf_token: str | None) -> SampleAnalysis:
     """Analyze one sample Wikitext corpus, which is English, with the English alphabet."""
     config_name = SAMPLE_DATASETS[dataset_key]
     rows, total = analyze_texts(
@@ -194,14 +192,10 @@ def analyze_sample_dataset(
         ),
         registry.get_letters("en"),
     )
-    return SampleAnalysis(
-        dataset_key=dataset_key, dataset_config=config_name, rows=rows, total=total
-    )
+    return SampleAnalysis(dataset_key=dataset_key, dataset_config=config_name, rows=rows, total=total)
 
 
-def analyze_locale(
-    locale: str, *, registry: LocaleRegistry, hf_token: str | None, max_bytes: int
-) -> LocaleAnalysis:
+def analyze_locale(locale: str, *, registry: LocaleRegistry, hf_token: str | None, max_bytes: int) -> LocaleAnalysis:
     """Analyze one locale using a capped Wikipedia stream."""
     stats: dict[str, int] = {"row_count": 0, "processed_bytes": 0}
     rows, total = analyze_texts(

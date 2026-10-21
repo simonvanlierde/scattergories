@@ -42,9 +42,7 @@ const SettingsContext = createContext<SettingsContextValue | null>(null);
 
 /** Pin every drawn name, or unpin them all if they are already pinned. */
 function applyTogglePinAll(state: Settings, names: string[]): Settings {
-  const inDeck = names.filter(
-    (name) => state.customCategories.includes(name) || state.deckBuiltins.includes(name),
-  );
+  const inDeck = names.filter((name) => state.customCategories.includes(name) || state.deckBuiltins.includes(name));
   if (inDeck.length === 0) {
     return state;
   }
@@ -80,9 +78,7 @@ function settingsReducer(state: Settings, action: SettingsAction): Settings {
       }
       // A custom name can't repeat another custom or shadow a built-in key, in any case.
       const lower = trimmed.toLowerCase();
-      if (
-        [...state.customCategories, ...categories].some((entry) => entry.toLowerCase() === lower)
-      ) {
+      if ([...state.customCategories, ...categories].some((entry) => entry.toLowerCase() === lower)) {
         return state;
       }
       return {
@@ -101,8 +97,7 @@ function settingsReducer(state: Settings, action: SettingsAction): Settings {
       };
 
     case "togglePin": {
-      const inDeck =
-        state.customCategories.includes(action.name) || state.deckBuiltins.includes(action.name);
+      const inDeck = state.customCategories.includes(action.name) || state.deckBuiltins.includes(action.name);
       if (!inDeck) {
         return state;
       }

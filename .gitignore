@@ -1,50 +1,48 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# One ignore file for every stack in this repo.
 
-# Node
-node_modules
-dist
-
-# Tests
-coverage
-*.lcov
-playwright-report
-test-results
-
-# OS
+# OS / editor
 .DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
 
-# Env
+# Secrets
 .env
 .env.*
 !.env.example
 
-# IDE
-.idea
-*.swp
-
-# TypeScript incremental build
-*.tsbuildinfo
-
-# Python tooling caches (from tools/)
-.ruff_cache
-.pytest_cache
-.ty_cache
+# Python
 __pycache__/
-
-# Test coverage reports
-coverage/
-.coverage
+*.py[cod]
+.venv/
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
 htmlcov/
+.coverage
+coverage.xml
 
-# Misc
+# Node
+node_modules/
+.pnpm-store/
+*.tsbuildinfo
+coverage/
+playwright-report/
+test-results/
+blob-report/
+.wrangler/
+dev-dist/
+
+# Rust
+target/
+
+# App extras
+*.log
+*.lcov
+*.swp
+.ty_cache/
 .cspellcache
-
-# pnpm
-.pnpm-store

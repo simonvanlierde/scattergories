@@ -19,9 +19,7 @@ class TranslationProviderLike(Protocol):
 class FakeProviderFactory(Protocol):
     """Factory that builds the fake translation provider used in tests."""
 
-    def __call__(
-        self, translations: dict[tuple[str, str, str], str] | None = None
-    ) -> TranslationProviderLike:
+    def __call__(self, translations: dict[tuple[str, str, str], str] | None = None) -> TranslationProviderLike:
         """Build a fake translation provider."""
 
 

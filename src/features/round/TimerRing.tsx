@@ -102,11 +102,7 @@ function TimerRing({ phase, isPaused, secondsLeft, gameSeconds }: TimerRingProps
 
   return (
     <div
-      className={cx(
-        "timer-ring",
-        `timer-ring--${stage}`,
-        isRunning && isPaused && "timer-ring--paused",
-      )}
+      className={cx("timer-ring", `timer-ring--${stage}`, isRunning && isPaused && "timer-ring--paused")}
       data-testid="round-clock"
       role="timer"
       aria-label={t("round.timerLabel")}

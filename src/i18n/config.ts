@@ -65,10 +65,7 @@ function initI18n(): Promise<typeof i18n> {
 async function ensureLanguageLoaded(language: string): Promise<string> {
   const resolved = resolveLocale(language);
 
-  if (
-    i18n.hasResourceBundle(resolved, "translation") &&
-    i18n.hasResourceBundle(resolved, "categories")
-  ) {
+  if (i18n.hasResourceBundle(resolved, "translation") && i18n.hasResourceBundle(resolved, "categories")) {
     return resolved;
   }
 

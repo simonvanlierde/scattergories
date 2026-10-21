@@ -9,6 +9,8 @@
   readme          = 'README.md'
   requires-python = '>=3.14'
   version         = '0.2.0'
+  # PyPI rejects unknown classifiers, so this one blocks an accidental upload.
+  classifiers = ['Private :: Do Not Upload']
 
   [project.scripts]
     sg-tools = 'scattergories_tools.cli:main'
@@ -16,6 +18,14 @@
 [dependency-groups]
   dev         = ['pytest>=9.1.1', 'pytest-cov>=7.1.0', 'ruff>=0.15.21', 'ty>=0.0.58', "uv-build>=0.11.28,<0.14"]
   translation = ['argostranslate>=1.9.6']
+
+# Resolve only releases at least a week old: a compromised release is usually
+# caught and yanked within that window. Dependabot's cooldown waits the same.
+[tool.uv]
+  exclude-newer = '1 week'
+  # certifi 2026.10.19 removes the compromised emSign roots (PYSEC-2026-4320); it is
+  # inside the week above. Drop this once that release is a week old (2026-10-27).
+  exclude-newer-package = { certifi = '2026-10-21T00:00:00Z' }
 
 [tool.pytest.ini_options]
   addopts = [
@@ -32,7 +42,7 @@
 [tool.ruff]
   extend-exclude               = ['.venv', '.cache', 'out']
   format.docstring-code-format = true
-  line-length                  = 100
+  line-length                  = 120
   src                          = ['src', 'tests']
   target-version               = 'py314'
 

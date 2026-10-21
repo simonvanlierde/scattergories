@@ -32,9 +32,7 @@ if (!mainEntry) {
 const mainEntryGzipBytes = gzipSync(readFileSync(join(DIST_ASSETS_DIR, mainEntry))).length;
 
 if (mainEntryGzipBytes > MAX_ASSET_BYTES) {
-  throw new Error(
-    `Main entry gzip budget exceeded: ${mainEntryGzipBytes} bytes > ${MAX_ASSET_BYTES} bytes.`,
-  );
+  throw new Error(`Main entry gzip budget exceeded: ${mainEntryGzipBytes} bytes > ${MAX_ASSET_BYTES} bytes.`);
 }
 
 for (const { pattern, label, budgetKib } of ALWAYS_LOADED_CHUNK_BUDGETS_KIB) {
@@ -55,9 +53,7 @@ for (const asset of imageAssets) {
   const size = statSync(join(DIST_ASSETS_DIR, asset)).size;
 
   if (size > MAX_ASSET_BYTES) {
-    throw new Error(
-      `Image budget exceeded for ${asset}: ${size} bytes > ${MAX_ASSET_BYTES} bytes.`,
-    );
+    throw new Error(`Image budget exceeded for ${asset}: ${size} bytes > ${MAX_ASSET_BYTES} bytes.`);
   }
 }
 

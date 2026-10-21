@@ -25,8 +25,7 @@ function resolveLocale(locale: string | null | undefined): string {
 
 function getLocaleLetters(locale: string | null | undefined): string[] {
   const normalized = normalizeLocale(locale);
-  const letters =
-    LETTERS_BY_LOCALE_VALUE[normalized] ?? LETTERS_BY_LOCALE_VALUE[FALLBACK_LOCALE_VALUE];
+  const letters = LETTERS_BY_LOCALE_VALUE[normalized] ?? LETTERS_BY_LOCALE_VALUE[FALLBACK_LOCALE_VALUE];
   return Array.from(letters ?? "");
 }
 

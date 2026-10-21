@@ -35,9 +35,7 @@ describe("useSettings", () => {
 
     it("keeps adult categories out of the default deck until grown-ups is added", () => {
       const { result } = renderHook(() => useSettings(), { wrapper });
-      expect(
-        result.current.settings.deckBuiltins.filter((key) => ADULT_KEYS.includes(key)),
-      ).toEqual([]);
+      expect(result.current.settings.deckBuiltins.filter((key) => ADULT_KEYS.includes(key))).toEqual([]);
       act(() => {
         result.current.addPack("grown-ups");
       });
@@ -191,10 +189,7 @@ describe("useSettings", () => {
       const { result } = renderHook(() => useSettings(), { wrapper });
 
       act(() => {
-        window.localStorage.setItem(
-          SETTINGS_STORAGE_KEY,
-          JSON.stringify({ durationInput: "45", theme: "dark" }),
-        );
+        window.localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify({ durationInput: "45", theme: "dark" }));
         window.dispatchEvent(
           new StorageEvent("storage", {
             key: SETTINGS_STORAGE_KEY,
@@ -219,10 +214,8 @@ describe("useSettings", () => {
         onchange: null,
         addListener: vi.fn(),
         removeListener: vi.fn(),
-        addEventListener: (_: string, cb: (event: MediaQueryListEvent) => void) =>
-          listeners.add(cb),
-        removeEventListener: (_: string, cb: (event: MediaQueryListEvent) => void) =>
-          listeners.delete(cb),
+        addEventListener: (_: string, cb: (event: MediaQueryListEvent) => void) => listeners.add(cb),
+        removeEventListener: (_: string, cb: (event: MediaQueryListEvent) => void) => listeners.delete(cb),
         dispatchEvent: vi.fn(),
       }));
       return {

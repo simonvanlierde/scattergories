@@ -46,10 +46,7 @@ test("@smoke categories heading meets AA contrast in dark mode", async ({ app, p
 });
 
 for (const theme of ["Light", "Dark"] as const) {
-  test(`unpinned pin icon meets 3:1 non-text contrast in ${theme.toLowerCase()} mode`, async ({
-    app,
-    page,
-  }) => {
+  test(`unpinned pin icon meets 3:1 non-text contrast in ${theme.toLowerCase()} mode`, async ({ app, page }) => {
     await app.waitUntilReady();
     await app.switchTheme(theme);
 
@@ -83,10 +80,7 @@ for (const theme of ["Light", "Dark"] as const) {
 }
 
 for (const theme of ["Light", "Dark"] as const) {
-  test(`category numerals keep AA contrast during a round in ${theme.toLowerCase()} mode`, async ({
-    app,
-    page,
-  }) => {
+  test(`category numerals keep AA contrast during a round in ${theme.toLowerCase()} mode`, async ({ app, page }) => {
     await app.waitUntilReady();
     await app.switchTheme(theme);
     await app.toggleMute();
@@ -108,9 +102,7 @@ for (const theme of ["Light", "Dark"] as const) {
       };
       return {
         fg: toRgb(getComputedStyle(mark).color),
-        bg: toRgb(
-          getComputedStyle(document.querySelector(".app-shell") as Element).backgroundColor,
-        ),
+        bg: toRgb(getComputedStyle(document.querySelector(".app-shell") as Element).backgroundColor),
         // The chips are disabled mid-round; a faded chip would fade its numeral too.
         opacity: Number(getComputedStyle(chip).opacity),
       };

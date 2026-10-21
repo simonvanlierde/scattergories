@@ -19,9 +19,7 @@ def render_frequencies_tsv(rows: list[LetterRow]) -> str:
 def render_letter_weights_module(rows: list[LetterRow]) -> str:
     """Render one alphabet table as a small TypeScript module."""
     lines = ["export const LETTER_WEIGHTS: Record<string, number> = {"]
-    lines.extend(
-        f"  {row.letter}: {row.frequency:.8f}," for row in sorted(rows, key=lambda row: row.letter)
-    )
+    lines.extend(f"  {row.letter}: {row.frequency:.8f}," for row in sorted(rows, key=lambda row: row.letter))
     lines.append("};")
     return "\n".join(lines) + "\n"
 

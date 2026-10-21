@@ -34,20 +34,12 @@ function resolvePrimary(phase: Phase, isPaused: boolean, t: Translate) {
     return { label: t("buttons.nextRound"), icon: Play };
   }
   if (phase === "buffer" || phase === "running") {
-    return isPaused
-      ? { label: t("buttons.resume"), icon: Play }
-      : { label: t("buttons.pause"), icon: Pause };
+    return isPaused ? { label: t("buttons.resume"), icon: Play } : { label: t("buttons.pause"), icon: Pause };
   }
   return { label: t("buttons.startRound"), icon: Play };
 }
 
-export function ActionBar({
-  phase,
-  isPaused,
-  onPrimary,
-  onNewLetter,
-  onNextRound,
-}: ActionBarProps) {
+export function ActionBar({ phase, isPaused, onPrimary, onNewLetter, onNextRound }: ActionBarProps) {
   const { t } = useTranslation();
   const isPausedRound = (phase === "buffer" || phase === "running") && isPaused;
   const roundControlsLabel = t("controls.roundGroup");

@@ -87,7 +87,6 @@ const BOOT_MESSAGES = {
   },
 } satisfies Record<LocaleCode, BootMessages>;
 
-const bootMessages: BootMessages =
-  BOOT_MESSAGES[bootLanguage as keyof typeof BOOT_MESSAGES] ?? BOOT_MESSAGES.en;
+const bootMessages: BootMessages = BOOT_MESSAGES[bootLanguage as keyof typeof BOOT_MESSAGES] ?? BOOT_MESSAGES.en;
 
 export { BOOT_MESSAGES, bootMessages };

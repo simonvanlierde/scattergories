@@ -41,9 +41,7 @@ export function DebouncedNumberField({
     }
   }, [value]);
 
-  const { schedule, cancel } = useDebouncedCommit((raw: string) =>
-    onCommit(String(clampInt(raw, min, max, fallback))),
-  );
+  const { schedule, cancel } = useDebouncedCommit((raw: string) => onCommit(String(clampInt(raw, min, max, fallback))));
 
   // Cancel any pending debounce and commit the clamped value now.
   // Shared by blur and the flush-on-unmount effect below.

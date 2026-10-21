@@ -57,9 +57,7 @@ def write_metadata(table_path: Path, analyses: dict[str, LocaleAnalysis]) -> Pat
     meta_path = metadata_path_for(table_path)
     table_version = INITIAL_TABLE_VERSION
     if meta_path.exists():
-        table_version = json.loads(meta_path.read_text(encoding="utf-8")).get(
-            "tableVersion", INITIAL_TABLE_VERSION
-        )
+        table_version = json.loads(meta_path.read_text(encoding="utf-8")).get("tableVersion", INITIAL_TABLE_VERSION)
     # The CLI applies one --max-bytes to every locale.
     max_bytes = next(iter(analyses.values())).max_bytes
     payload: dict[str, object] = {
@@ -107,9 +105,7 @@ def check_metadata(table_path: Path) -> list[str]:
     if meta.get("sha256") != actual:
         problems.append(f"sha256 mismatch: metadata has {meta.get('sha256')}, table is {actual}")
     if meta.get("file") != table_path.name:
-        problems.append(
-            f"file mismatch: metadata names {meta.get('file')}, table is {table_path.name}"
-        )
+        problems.append(f"file mismatch: metadata names {meta.get('file')}, table is {table_path.name}")
     if not _SEMVER_RE.match(str(meta.get("tableVersion", ""))):
         problems.append(f"tableVersion is not x.y.z: {meta.get('tableVersion')}")
 

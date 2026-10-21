@@ -128,23 +128,13 @@ function sanitizeSettings(raw: unknown): Settings {
   const deckBuiltins = migrateDeckBuiltins(parsed);
   const inDeck = new Set<string>([...customCategories, ...deckBuiltins]);
   // Old model pinned customs implicitly; new model persists an explicit pin list.
-  const pinned = (
-    Array.isArray(parsed.pinned) ? sanitizeStrings(parsed.pinned) : customCategories
-  ).filter((name) => inDeck.has(name));
+  const pinned = (Array.isArray(parsed.pinned) ? sanitizeStrings(parsed.pinned) : customCategories).filter((name) =>
+    inDeck.has(name),
+  );
 
   return {
-    durationInput: sanitizeNumericInput(
-      parsed.durationInput,
-      durationMin,
-      durationMax,
-      durationDefault,
-    ),
-    catCountInput: sanitizeNumericInput(
-      parsed.catCountInput,
-      catCountMin,
-      catCountMax,
-      catCountDefault,
-    ),
+    durationInput: sanitizeNumericInput(parsed.durationInput, durationMin, durationMax, durationDefault),
+    catCountInput: sanitizeNumericInput(parsed.catCountInput, catCountMin, catCountMax, catCountDefault),
     bufferSecondsInput: sanitizeNumericInput(
       parsed.bufferSecondsInput,
       bufferSecondsMin,
@@ -155,8 +145,7 @@ function sanitizeSettings(raw: unknown): Settings {
     customCategories,
     pinned,
     isMuted: typeof parsed.isMuted === "boolean" ? parsed.isMuted : fallback.isMuted,
-    avoidRepeats:
-      typeof parsed.avoidRepeats === "boolean" ? parsed.avoidRepeats : fallback.avoidRepeats,
+    avoidRepeats: typeof parsed.avoidRepeats === "boolean" ? parsed.avoidRepeats : fallback.avoidRepeats,
     theme: parsed.theme === "light" || parsed.theme === "dark" ? parsed.theme : fallback.theme,
     themeSource: parsed.themeSource === "user" ? "user" : "system",
     promptDeckPreference:
@@ -184,14 +173,5 @@ function readStoredSettings(): Settings {
   return parseStoredSettings(safeStorage.getItem(SETTINGS_STORAGE_KEY));
 }
 
-export type { PromptDeckPreference, Settings, Theme, ThemeSource };
-export {
-  DARK_SCHEME_QUERY,
-  getDefaultSettings,
-  getPreferredTheme,
-  parseStoredSettings,
-  readStoredSettings,
-  SETTINGS_STORAGE_KEY,
-  sanitizeSettings,
-  sanitizeStrings,
-};
+export type { PromptDeckPreference, Settings, Theme };
+export { DARK_SCHEME_QUERY, getPreferredTheme, readStoredSettings, SETTINGS_STORAGE_KEY, sanitizeStrings };

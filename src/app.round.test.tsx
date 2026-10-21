@@ -14,18 +14,12 @@ it("persists the category panel preference across remount with the same localSto
   const first = await renderApp();
 
   await first.user.click(screen.getByRole("button", { name: "Hide categories" }));
-  expect(screen.getByRole("button", { name: "Open categories" })).toHaveAttribute(
-    "aria-expanded",
-    "false",
-  );
+  expect(screen.getByRole("button", { name: "Open categories" })).toHaveAttribute("aria-expanded", "false");
 
   first.view.unmount();
 
   await renderApp();
-  expect(screen.getByRole("button", { name: "Open categories" })).toHaveAttribute(
-    "aria-expanded",
-    "false",
-  );
+  expect(screen.getByRole("button", { name: "Open categories" })).toHaveAttribute("aria-expanded", "false");
 });
 
 it("redraws categories on a fresh round but keeps them when rerolling the letter", async () => {
@@ -70,8 +64,7 @@ it("redraws categories on a fresh round but keeps them when rerolling the letter
 
 it("locks the category pins while the clock runs and unlocks them on pause", async () => {
   const { user } = await renderApp();
-  const pinButtons = () =>
-    within(screen.getByRole("list", { name: SELECTED_CATEGORIES })).getAllByRole("button");
+  const pinButtons = () => within(screen.getByRole("list", { name: SELECTED_CATEGORIES })).getAllByRole("button");
 
   await user.click(screen.getByRole("button", { name: "Roll a letter" }));
   const pause = await screen.findByRole("button", { name: "Pause" });
@@ -89,8 +82,7 @@ it("locks the category pins while the clock runs and unlocks them on pause", asy
 
 it("locks the pins while the categories roll, so a tap cannot pin a passing name", async () => {
   const { user } = await renderApp();
-  const pinButtons = () =>
-    within(screen.getByRole("list", { name: SELECTED_CATEGORIES })).getAllByRole("button");
+  const pinButtons = () => within(screen.getByRole("list", { name: SELECTED_CATEGORIES })).getAllByRole("button");
 
   await user.click(screen.getByRole("button", { name: "Redraw" }));
 
@@ -132,10 +124,7 @@ it("keeps the board in place when pins change during a paused round", async () =
 
 it("shows the skip confirmation as visible text while armed", async () => {
   // No get-ready countdown, so the letter lands straight into the live clock.
-  window.localStorage.setItem(
-    "scattergories.settings.v1",
-    JSON.stringify({ bufferSecondsInput: "0" }),
-  );
+  window.localStorage.setItem("scattergories.settings.v1", JSON.stringify({ bufferSecondsInput: "0" }));
   const { user } = await renderApp();
 
   await user.click(screen.getByRole("button", { name: "Roll a letter" }));

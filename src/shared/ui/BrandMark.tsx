@@ -30,10 +30,7 @@ export function BrandMark({ size }: { size: number }) {
 
       <g fill="var(--paper-0)" stroke="var(--paper-0)">
         {/* S — starts on the top face, drawn upright and flattened onto its plane */}
-        <g
-          className="brand-mark__glyph brand-mark__glyph--mark"
-          transform="matrix(0.55 0 0 0.32 12 7)"
-        >
+        <g className="brand-mark__glyph brand-mark__glyph--mark" transform="matrix(0.55 0 0 0.32 12 7)">
           <path
             d="M4.6 -5.4C2.4 -7.4 -4.8 -7.4 -4.8 -3.2C-4.8 0.6 4.8 0.4 4.8 4.2C4.8 8.4 -2.4 8.4 -4.8 6.2"
             fill="none"
@@ -43,10 +40,7 @@ export function BrandMark({ size }: { size: number }) {
         </g>
 
         {/* the prompt — starts on the left face */}
-        <g
-          className="brand-mark__glyph brand-mark__glyph--ask"
-          transform="matrix(0.36 0.2 0 0.4 7.5 14.5)"
-        >
+        <g className="brand-mark__glyph brand-mark__glyph--ask" transform="matrix(0.36 0.2 0 0.4 7.5 14.5)">
           <path
             d="M-3.4 -3.6C-3.4 -7.4 3.8 -7.6 3.8 -3.4C3.8 -0.4 0 -0.2 0 2.8"
             fill="none"
@@ -57,10 +51,7 @@ export function BrandMark({ size }: { size: number }) {
         </g>
 
         {/* the roll — starts on the right face */}
-        <g
-          className="brand-mark__glyph brand-mark__glyph--go"
-          transform="matrix(0.36 -0.2 0 0.4 16.5 14.5)"
-        >
+        <g className="brand-mark__glyph brand-mark__glyph--go" transform="matrix(0.36 -0.2 0 0.4 16.5 14.5)">
           <path d="M-3.2 -6.2 5.6 0 -3.2 6.2Z" strokeWidth="1.8" strokeLinejoin="round" />
         </g>
       </g>

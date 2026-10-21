@@ -22,9 +22,7 @@ def _sample_deps(
     deps: Deps,
     sample_analysis_builder: Callable[..., SampleAnalysis],
 ) -> Deps:
-    def analyze_sample_dataset(
-        dataset: str, *, registry: LocaleRegistry, hf_token: str | None
-    ) -> SampleAnalysis:
+    def analyze_sample_dataset(dataset: str, *, registry: LocaleRegistry, hf_token: str | None) -> SampleAnalysis:
         del registry, hf_token
         return sample_analysis_builder(dataset_key=dataset, rows=[LetterRow("A", 1.0, 1)], total=1)
 
@@ -62,9 +60,7 @@ def test_weights_sample_preview(
     sample_analysis_builder: Callable[..., SampleAnalysis],
 ) -> None:
     """Preview mode prints a stable sample summary without writes."""
-    result = runner.invoke(
-        cli.app, ["weights", "sample"], obj=_sample_deps(deps, sample_analysis_builder)
-    )
+    result = runner.invoke(cli.app, ["weights", "sample"], obj=_sample_deps(deps, sample_analysis_builder))
 
     assert result.exit_code == 0
     assert "Dataset: wikitext-2-raw-v1" in result.stdout
@@ -104,9 +100,7 @@ def test_weights_locales_preview_supports_multiple_locales(
     locale_analysis_builder: Callable[..., LocaleAnalysis],
 ) -> None:
     """Preview mode reports one summary block per selected locale."""
-    cli_deps = _locale_deps(
-        deps, locale_analysis_builder, [LetterRow("A", 0.75, 3), LetterRow("B", 0.25, 1)]
-    )
+    cli_deps = _locale_deps(deps, locale_analysis_builder, [LetterRow("A", 0.75, 3), LetterRow("B", 0.25, 1)])
 
     result = runner.invoke(cli.app, ["weights", "locales", "--locales", "en,es"], obj=cli_deps)
 
@@ -125,9 +119,7 @@ def test_weights_locales_write_updates_generated_app_file(
 ) -> None:
     """Write mode updates the generated letter-weight artifact."""
     paths, _ = repo_context
-    cli_deps = _locale_deps(
-        deps, locale_analysis_builder, [LetterRow("A", 1.0, 1), LetterRow("B", 0.0, 0)]
-    )
+    cli_deps = _locale_deps(deps, locale_analysis_builder, [LetterRow("A", 1.0, 1), LetterRow("B", 0.0, 0)])
 
     result = runner.invoke(
         cli.app,
@@ -148,9 +140,7 @@ def test_weights_locales_write_rejects_partial_locale_set(
 ) -> None:
     """A partial --write-app-file refuses rather than dropping registry locales."""
     paths, _ = repo_context
-    cli_deps = _locale_deps(
-        deps, locale_analysis_builder, [LetterRow("A", 0.75, 3), LetterRow("B", 0.25, 1)]
-    )
+    cli_deps = _locale_deps(deps, locale_analysis_builder, [LetterRow("A", 0.75, 3), LetterRow("B", 0.25, 1)])
 
     result = runner.invoke(
         cli.app,

@@ -24,8 +24,7 @@ function measureLayout(page: Page): Promise<Layout> {
       glyphPx: glyph ? Number.parseFloat(getComputedStyle(glyph).fontSize) : 0,
       playmatBottom: box(".playmat").bottom,
       categoriesTop: box(".categories-card").top,
-      horizontalOverflow:
-        document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      horizontalOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       listFits: drawn ? drawn.scrollHeight <= drawn.clientHeight : false,
     };
   });
@@ -76,9 +75,7 @@ test.describe("844x390 landscape", () => {
     await app.expectRunning();
     const fit = await page.evaluate(() => {
       const grid = document.querySelector(".play-grid") as HTMLElement;
-      const hero = (
-        document.querySelector(".playmat__hero") as HTMLElement
-      ).getBoundingClientRect();
+      const hero = (document.querySelector(".playmat__hero") as HTMLElement).getBoundingClientRect();
       return {
         gridScrolls: grid.scrollHeight > grid.clientHeight,
         heroTop: hero.top,
@@ -108,10 +105,7 @@ function shortControls(dialog: Locator) {
 test.describe("touch targets", () => {
   test.use({ viewport: { width: 360, height: 740 } });
 
-  test("keeps every control in the settings and deck sheets at least 44px tall", async ({
-    app,
-    page,
-  }) => {
+  test("keeps every control in the settings and deck sheets at least 44px tall", async ({ app, page }) => {
     await app.openSettings();
     expect(await shortControls(app.settingsSheet)).toEqual([]);
     await app.closeSettings();

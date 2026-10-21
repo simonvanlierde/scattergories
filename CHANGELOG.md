@@ -50,6 +50,12 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - On a 320 px phone the board no longer runs past the right edge of the screen, and a long
   "Time's up!", as in German or Portuguese, fits inside the small timer ring.
 
+### Security
+
+- The site now sends stricter response headers: HSTS, a ban on being framed, cross-origin
+  isolation for windows and files, and a content policy that also blocks inline styles and
+  form submissions.
+
 ## [0.3.0] - 2026-08-24
 
 ### Added

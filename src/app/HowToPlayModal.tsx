@@ -173,12 +173,7 @@ export function HowToPlayModal({ onClose, onStart }: HowToPlayModalProps) {
   const categoriesItems = toStringArray(t("modal.categoriesItems", { returnObjects: true }));
 
   return (
-    <Sheet
-      open={true}
-      onClose={onClose}
-      title={t("modal.title")}
-      closeLabel={t("buttons.closeTooltip")}
-    >
+    <Sheet open={true} onClose={onClose} title={t("modal.title")} closeLabel={t("buttons.closeTooltip")}>
       <div className="howto">
         <p className="howto__masthead">
           <BrandMark size={72} />
@@ -201,13 +196,7 @@ export function HowToPlayModal({ onClose, onStart }: HowToPlayModalProps) {
         </ol>
 
         {onStart ? (
-          <Button
-            variant="primary"
-            size="lg"
-            className="howto__start"
-            onClick={onStart}
-            data-autofocus
-          >
+          <Button variant="primary" size="lg" className="howto__start" onClick={onStart} data-autofocus>
             {t("buttons.startRound")}
           </Button>
         ) : null}
@@ -217,11 +206,7 @@ export function HowToPlayModal({ onClose, onStart }: HowToPlayModalProps) {
           <ul className="howto__settings">
             {categoriesItems.map((item, index) => (
               <li key={item}>
-                <Icon
-                  icon={CATEGORY_ICONS[index] ?? Tags}
-                  size={16}
-                  className="howto__settings-icon"
-                />
+                <Icon icon={CATEGORY_ICONS[index] ?? Tags} size={16} className="howto__settings-icon" />
                 <span>{item}</span>
               </li>
             ))}

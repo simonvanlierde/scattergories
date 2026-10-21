@@ -19,10 +19,9 @@ const translationLoaders = import.meta.glob<TranslationResource>(
   ["./*.json", "!./categories.*.json", "!./registry.json", "!./en.json"],
   { import: "default" },
 );
-const categoryLoaders = import.meta.glob<CategoriesResource>(
-  ["./categories.*.json", "!./categories.en.json"],
-  { import: "default" },
-);
+const categoryLoaders = import.meta.glob<CategoriesResource>(["./categories.*.json", "!./categories.en.json"], {
+  import: "default",
+});
 
 async function loadLocaleNamespaces(locale: string): Promise<LocaleNamespaces> {
   const loc = resolveLocale(locale) as LocaleCode;
@@ -43,9 +42,5 @@ async function loadLocaleNamespaces(locale: string): Promise<LocaleNamespaces> {
   return { translation, categories };
 }
 
-export type { CategoriesResource, LocaleCode, LocaleNamespaces, TranslationResource };
-export {
-  categoriesResourceEnValue as categoriesResourceEn,
-  loadLocaleNamespaces,
-  translationResourceEn,
-};
+export type { LocaleCode };
+export { loadLocaleNamespaces };

@@ -38,8 +38,7 @@ function renderAt(
     </I18nextProvider>,
   );
   const status = screen.getByTestId("round-status");
-  const region = (politeness: string) =>
-    status.querySelector(`[aria-live="${politeness}"]`)?.textContent ?? null;
+  const region = (politeness: string) => status.querySelector(`[aria-live="${politeness}"]`)?.textContent ?? null;
   return { status, polite: region("polite"), assertive: region("assertive") };
 }
 

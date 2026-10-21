@@ -1,11 +1,6 @@
 type RandomSource = () => number;
 
-export function clampInt(
-  value: string | number,
-  min: number,
-  max: number,
-  fallback: number,
-): number {
+export function clampInt(value: string | number, min: number, max: number, fallback: number): number {
   const parsed = typeof value === "number" ? value : Number.parseInt(value, 10);
 
   if (Number.isNaN(parsed)) {
@@ -30,10 +25,7 @@ export function pickRandom<T>(items: readonly T[], random: RandomSource = Math.r
   return item;
 }
 
-export function shuffleFisherYates<T>(
-  items: readonly T[],
-  random: RandomSource = Math.random,
-): T[] {
+export function shuffleFisherYates<T>(items: readonly T[], random: RandomSource = Math.random): T[] {
   const shuffled = [...items];
 
   for (let i = shuffled.length - 1; i > 0; i -= 1) {
