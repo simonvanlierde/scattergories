@@ -1,6 +1,7 @@
 /* The deck rules: which built-in packs exist, what the default deck holds, how a round's
  * categories are drawn and how its letter is drawn. Pure functions only; the settings and the
  * board hooks call these and keep the state. */
+import type { ParseKeys } from "i18next";
 import { getLocaleLetters } from "@/i18n/localeRegistry";
 import { CATEGORY_KEYS } from "./game/categoryKeys";
 import { catCountMin } from "./game/constants";
@@ -17,7 +18,7 @@ const CLASSIC_PACK_ID = "classic";
 
 interface CategoryPack {
   id: string;
-  labelKey: string;
+  labelKey: ParseKeys;
   /* Empty list means "every category except the adult ones" (Classic). */
   keys: readonly string[];
 }
