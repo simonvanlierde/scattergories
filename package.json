@@ -80,7 +80,7 @@
     "@cspell/dict-pl_pl": "^3.0.8",
     "@cspell/dict-pt-br": "^2.4.4",
     "@j178/prek": "^0.5.5",
-    "@playwright/test": "^1.64.0",
+    "@playwright/test": "^1.64.1",
     "@rolldown/plugin-babel": "^0.2.4",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^7.0.1",
