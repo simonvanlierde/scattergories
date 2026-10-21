@@ -2,5 +2,6 @@
 #   git config blame.ignoreRevsFile .git-blame-ignore-revs
 # GitHub's blame view reads this file on its own.
 
-# style: reformat to 120 columns
-4e370e467bc04cc5fc38c50d2d8b8237a31f28fc
+# chore: adopt the project-templates Copier template (#109). Squash-merged, so this one
+# commit holds the 120-column reformat and the template changes beside it.
+fe1388a11f1236ece2dd282947e7072735489231
