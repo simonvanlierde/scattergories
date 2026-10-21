@@ -1,0 +1,13 @@
+[global]
+  # READMEs have long badge and link lines that don't wrap, so MD013 would flag nearly every line.
+  disable = ["MD013"]
+  flavor  = "gfm"
+
+# App files that break a rule on purpose.
+[per-file-ignores]
+  # DESIGN.md follows the design.md format: YAML front matter, then its own section names.
+  "DESIGN.md"                        = ["MD025", "MD026", "MD036"]
+  # The PR template opens with an HTML comment for the author, not a heading.
+  ".github/PULL_REQUEST_TEMPLATE.md" = ["MD041"]
+  # <picture> swaps the screenshots for dark mode; Markdown has no syntax for that.
+  "README.md"                        = ["MD033"]

@@ -1,0 +1,24 @@
+# Managed by copier. Do not edit by hand. Run: copier update
+_commit: v0.10.0-40-g97f3073
+_src_path: gh:simonvanlierde/project-templates
+author_email: simonvanlierde@gmail.com
+author_name: Simon van Lierde
+codecov: true
+copyright_year: '2026'
+dependency_bot: dependabot
+github_user: simonvanlierde
+kind: app
+license: MIT
+module_name: scattergories_tools
+node_version: '26'
+project_description: A browser-based, local-first companion for playing Scattergories
+    at the table — locale-aware letter rolling, timer, and category packs.
+project_name: scattergories
+python_dir: tools
+python_version: '3.14'
+stacks:
+- python
+- ts
+ts_dir: .
+ts_kind: web-app
+web_framework: react

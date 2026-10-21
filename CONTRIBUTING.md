@@ -8,7 +8,7 @@ Install [Node and pnpm](https://nodejs.org/en/download), then run `pnpm install`
 
 Node is pinned in [`.node-version`](.node-version), which version managers such as fnm, mise and nvm read. pnpm is pinned in the `packageManager` field of [`package.json`](package.json). Node 25 and later no longer bundle Corepack, so install pnpm yourself. pnpm then switches to the pinned version on its own.
 
-[uv](https://docs.astral.sh/uv/) manages the Python tooling in [`tools/`](tools/README.md). On `uv sync` it installs the Python version pinned in [`tools/.python-version`](tools/.python-version).
+[uv](https://docs.astral.sh/uv/) manages the Python tooling in [`tools/`](tools/README.md). On `uv sync` it installs the Python version pinned in [`tools/.python-version`](tools/.python-version). [just](https://just.systems) runs the checks, and [prek](https://github.com/j178/prek) runs the git hooks (`pnpm install` brings prek; then run `pnpm exec prek install` once per clone).
 
 ## Development loop
 
@@ -21,13 +21,13 @@ pnpm test:e2e     # end-to-end tests (playwright)
 ## Before you open a PR
 
 ```bash
-pnpm verify       # typecheck + spellcheck + lint + test + build + bundle budget
-pnpm run ci       # if you touched tools/: verify, then the tools' ruff, format check, ty, table check and pytest
+pnpm verify       # lint + unused code + spellcheck + typecheck + tests with coverage + build + bundle budgets
+just check        # what CI runs: verify plus the dependency audit, then the tools' ruff, format check, ty, table check, pytest and audit
+pnpm test:e2e     # Playwright against the production build (E2E_PORT moves it off port 4173)
+just hooks        # every git hook over the whole repo, as CI's hooks job runs them
 ```
 
-Keep the `run`: a bare `pnpm ci` is pnpm's own clean-install command and skips every check.
-
-A [Lefthook](lefthook.yml) pre-commit hook formats and spell-checks staged files, and the pre-push hook runs `pnpm verify`. Add new project-specific words to [`.cspell.yml`](.cspell.yml). [`docs/quality.md`](docs/quality.md) lists the coverage thresholds, the bundle budget and the accessibility checks.
+The [prek](.pre-commit-config.yaml) pre-commit hooks format, lint and spell-check staged files, and the pre-push hook runs `pnpm verify`. Add new project-specific words to [`.cspell.yml`](.cspell.yml). [`docs/quality.md`](docs/quality.md) lists the coverage thresholds, the bundle budget and the accessibility checks.
 
 ## Architecture
 
@@ -47,7 +47,7 @@ I keep the app lean on purpose. It runs a round with a letter, a timer and promp
 - **TypeScript**: strict mode, no `any` (use `unknown`), verbatim module syntax.
 - **React**: small single-purpose components. Try plain state and props before custom hooks. Test
   the behavior a user can see.
-- **Style**: Biome (`pnpm lint:fix` fixes what it can). Plain CSS only, reuse the tokens in `src/styles/`.
+- **Style**: Biome (`pnpm fix` fixes what it can). Plain CSS only, reuse the tokens in `src/styles/`.
 - **Accessibility**: semantic HTML and correct ARIA. Respect `prefers-reduced-motion`. In tests, query
   by ARIA role, label or text first.
 - **i18n**: when you change wording a user sees, update the tests and every locale in the same

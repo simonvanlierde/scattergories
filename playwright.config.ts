@@ -2,7 +2,8 @@
 import process from "node:process";
 import { defineConfig, devices } from "@playwright/test";
 
-const PORT = 4173;
+// vite preview's default port; E2E_PORT moves it when another run holds 4173.
+const PORT = Number(process.env.E2E_PORT ?? 4173);
 const HOST = "localhost";
 const BASE_URL = `http://${HOST}:${PORT}`;
 const smokeTag = /@smoke/;
@@ -48,7 +49,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: `pnpm preview --host ${HOST} --port ${PORT} --strictPort`,
+    // The tests run against the production build, which is what Cloudflare Pages serves.
+    command: `pnpm build && pnpm preview --host ${HOST} --port ${PORT} --strictPort`,
     url: BASE_URL,
     reuseExistingServer: !isCi,
     timeout: 120_000,

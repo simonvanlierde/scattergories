@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "editorconfig.editorconfig",
+    "rvben.rumdl",
+    "tombi-toml.tombi",
+    "bluebrown.yamlfmt",
+    "ms-python.python",
+    "charliermarsh.ruff",
+    "astral-sh.ty",
+    "biomejs.biome"
+  ]
+}

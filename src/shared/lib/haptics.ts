@@ -39,5 +39,4 @@ function vibrate(pattern: HapticPattern): void {
   }
 }
 
-export type { HapticPattern };
 export { vibrate };

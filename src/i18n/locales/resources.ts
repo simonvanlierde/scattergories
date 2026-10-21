@@ -43,9 +43,5 @@ async function loadLocaleNamespaces(locale: string): Promise<LocaleNamespaces> {
   return { translation, categories };
 }
 
-export type { CategoriesResource, LocaleCode, LocaleNamespaces, TranslationResource };
-export {
-  categoriesResourceEnValue as categoriesResourceEn,
-  loadLocaleNamespaces,
-  translationResourceEn,
-};
+export type { LocaleCode };
+export { loadLocaleNamespaces };

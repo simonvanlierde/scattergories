@@ -184,14 +184,11 @@ function readStoredSettings(): Settings {
   return parseStoredSettings(safeStorage.getItem(SETTINGS_STORAGE_KEY));
 }
 
-export type { PromptDeckPreference, Settings, Theme, ThemeSource };
+export type { PromptDeckPreference, Settings, Theme };
 export {
   DARK_SCHEME_QUERY,
-  getDefaultSettings,
   getPreferredTheme,
-  parseStoredSettings,
   readStoredSettings,
   SETTINGS_STORAGE_KEY,
-  sanitizeSettings,
   sanitizeStrings,
 };

@@ -1,0 +1,71 @@
+name: python
+
+on:
+  push:
+    branches: [main]
+    paths: ["tools/**", ".github/workflows/python.yml"]
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths: ["tools/**", ".github/workflows/python.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  # The event is in the group because a queued run replaces a pending one in its group
+  # whatever cancel-in-progress says, so a push to main must not wait beside the weekly run.
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+  # Only a newer push to the same pull request cancels a run. A push to main must not cancel
+  # the weekly scheduled run, or that week's revision report is lost.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  # uv checks every package against OSV's malware advisories before its code
+  # runs, and fails if OSV is unreachable. The preview flag only silences the
+  # "experimental" warning.
+  UV_MALWARE_CHECK: "1"
+  UV_PREVIEW_FEATURES: malware-check
+
+jobs:
+  check:
+    name: lint, types, tests
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Only `run:` steps take this. setup-uv needs no path: its cache glob is **/uv.lock,
+    # which finds a nested lockfile.
+    defaults:
+      run:
+        working-directory: tools
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          enable-cache: true
+          version: "0.13.0"
+
+      - run: uv sync --locked
+      # Checks every locked dependency, dev group included, against the OSV database
+      # for known vulnerabilities and deprecated or quarantined projects. Still
+      # experimental in uv, hence the preview flag.
+      # stanza 1.10.1 (PYSEC-2026-3075): argostranslate pins it, and only the opt-in
+      # translation group installs it. Drop the ignore once argostranslate allows 1.12.2.
+      - run: uv audit --locked --preview-features audit-command --ignore PYSEC-2026-3075
+
+      - run: uv run ruff check --output-format=github
+      - run: uv run ruff format --check
+      - run: uv run ty check
+      # Offline: compares the committed letter-weight table with its metadata and checksum.
+      - run: uv run sg-tools weights verify
+      - run: uv run pytest --cov --cov-report=xml
+
+      # Dependabot pull requests get no secrets, so their upload fails without failing CI.
+      - uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: tools/coverage.xml
+          flags: python

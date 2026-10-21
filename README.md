@@ -1,6 +1,6 @@
 # Scattergories
 
-[![CI](https://github.com/simonvanlierde/scattergories/actions/workflows/ci.yml/badge.svg)](https://github.com/simonvanlierde/scattergories/actions/workflows/ci.yml)
+[![ts](https://github.com/simonvanlierde/scattergories/actions/workflows/ts.yml/badge.svg)](https://github.com/simonvanlierde/scattergories/actions/workflows/ts.yml)
 [![codecov](https://codecov.io/gh/simonvanlierde/scattergories/branch/main/graph/badge.svg)](https://codecov.io/gh/simonvanlierde/scattergories)
 [![License: MIT](https://img.shields.io/github/license/simonvanlierde/scattergories)](LICENSE)
 [![PWA](https://img.shields.io/badge/PWA-installable-5A0FC8?)](https://scattergories.duinlab.nl)

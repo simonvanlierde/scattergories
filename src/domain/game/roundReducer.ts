@@ -150,5 +150,5 @@ function roundReducer(state: RoundState, action: RoundAction): RoundState {
   }
 }
 
-export type { Phase, RoundAction, RoundState, StatusKey };
+export type { Phase, RoundAction, StatusKey };
 export { canEditDeck, initialRoundState, roundReducer };

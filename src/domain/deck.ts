@@ -406,7 +406,6 @@ function drawRoundLetter(
   return { letter, recentLetters: [...recentLetters, letter].slice(-RECENT_LETTER_WINDOW) };
 }
 
-export type { CategoryPack };
 export {
   ADULT_KEYS,
   addPackToDeck,

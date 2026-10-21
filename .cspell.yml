@@ -1,4 +1,3 @@
----
 version: "0.2"
 language: en
 dictionaries:
@@ -95,6 +94,18 @@ words:
   - Português
   - Ελληνικά
   # Tools ecosystem
+  - certifi
+  - clippy
+  - dejavu
+  - golangci
+  - HSTS
+  - jactionlint
+  - nbstripout
+  - prek
+  - rumdl
+  - shellcheck
+  - simonvanlierde
+  - zizmor
   - addopts
   - argostranslate
   - ACMRT
