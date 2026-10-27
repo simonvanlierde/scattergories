@@ -4,7 +4,7 @@
   "version": "0.3.0",
   "description": "A browser-based, local-first companion for playing Scattergories at the table — locale-aware letter rolling, timer, and category packs.",
   "license": "MIT",
-  "author": "Simon van Lierde <simonvanlierde@gmail.com>",
+  "author": "Simon van Lierde <code@duinlab.nl>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/simonvanlierde/scattergories.git"
@@ -62,11 +62,11 @@
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.3.0",
     "@fontsource-variable/geist": "^5.3.0",
-    "i18next": "^26.4.4",
-    "lucide-react": "^1.57.0",
+    "i18next": "^26.5.3",
+    "lucide-react": "^1.60.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "react-i18next": "^17.0.16"
+    "react-i18next": "^17.1.0"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
