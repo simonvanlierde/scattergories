@@ -63,15 +63,17 @@ export function CategoryChecklist({
                 className="category-checklist__chip"
                 aria-pressed={isPinned}
                 disabled={disabled}
-                aria-label={
-                  isPinned ? t("categories.unpinOne", { name: label }) : t("categories.pinOne", { name: label })
-                }
                 onClick={() => onTogglePin(category)}
               >
                 <span className="category-checklist__mark" aria-hidden="true">
                   {index + 1}
                 </span>
-                <span className={labelClass} style={{ "--i": index } as CSSProperties}>
+                {/* The name comes from this hidden span, not aria-label: axe counts the
+                   aria-hidden numeral as visible text, so "1 Birds" would not match "Pin Birds". */}
+                <span className="sr-only">
+                  {isPinned ? t("categories.unpinOne", { name: label }) : t("categories.pinOne", { name: label })}
+                </span>
+                <span className={labelClass} style={{ "--i": index } as CSSProperties} aria-hidden="true">
                   {label}
                 </span>
                 <Icon icon={Pin} size={16} className="category-checklist__pin" />
