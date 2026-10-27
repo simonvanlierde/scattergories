@@ -4,7 +4,7 @@
   "version": "0.3.0",
   "description": "A browser-based, local-first companion for playing Scattergories at the table — locale-aware letter rolling, timer, and category packs.",
   "license": "MIT",
-  "author": "Simon van Lierde <simonvanlierde@gmail.com>",
+  "author": "Simon van Lierde <code@duinlab.nl>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/simonvanlierde/scattergories.git"
