@@ -332,6 +332,8 @@
   /* Each drawn category is a tap-to-pin chip. */
   .category-checklist__chip {
     width: 100%;
+    /* Anchors the visually hidden name, so it cannot stretch the scrolling grid. */
+    position: relative;
     display: grid;
     /* Wide enough for "12" in every chip, so the names line up; a wider numeral
        grows its own column instead of running into the name. */
