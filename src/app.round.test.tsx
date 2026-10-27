@@ -104,7 +104,7 @@ it("keeps the board in place when pins change during a paused round", async () =
   const names = () =>
     within(drawnList)
       .getAllByRole("listitem")
-      .map((item) => item.textContent);
+      .map((item) => item.querySelector(".category-checklist__label")?.textContent);
 
   await user.click(screen.getByRole("button", { name: "Roll a letter" }));
   await user.click(await screen.findByRole("button", { name: "Pause" }));
