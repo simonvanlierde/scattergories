@@ -10,6 +10,7 @@ import { Button } from "@/shared/ui/Button";
 import { cx } from "@/shared/ui/cx";
 import { Icon } from "@/shared/ui/Icon";
 import { IconButton } from "@/shared/ui/IconButton";
+import { LegalFooter } from "./LegalPages";
 import type { GameController } from "./useGameController";
 import { useOnboarding } from "./useOnboarding";
 
@@ -154,39 +155,42 @@ function GameShell({ game }: GameShellProps) {
   }, [game.settings.theme]);
 
   return (
-    <main className={cx("app-shell", game.round.alarmOn && "alarm")} data-theme={game.settings.theme}>
-      <div className="app">
-        {game.app.hasChunkError ? <ChunkErrorBanner onReload={game.app.reload} /> : null}
+    <>
+      <main className={cx("app-shell", game.round.alarmOn && "alarm")} data-theme={game.settings.theme}>
+        <div className="app">
+          {game.app.hasChunkError ? <ChunkErrorBanner onReload={game.app.reload} /> : null}
 
-        <PlayGrid game={game} />
+          <PlayGrid game={game} />
 
-        <ControlBar game={game} />
-      </div>
+          <ControlBar game={game} />
+        </div>
 
-      {/* The rules are the welcome: on first run they open with a CTA that rolls
+        {/* The rules are the welcome: on first run they open with a CTA that rolls
           the opening letter, otherwise they are the ? button's dialog. */}
-      {onboarding.needsOnboarding || game.app.isHowToPlayOpen ? (
-        <Suspense
-          fallback={
-            <div className="modal-loading" role="status" aria-live="polite">
-              {t("modal.loading")}
-            </div>
-          }
-        >
-          <game.app.HowToPlayDialog
-            onClose={onboarding.needsOnboarding ? onboarding.complete : game.app.closeHowToPlay}
-            onStart={
-              onboarding.needsOnboarding
-                ? () => {
-                    onboarding.complete();
-                    game.round.primaryAction();
-                  }
-                : undefined
+        {onboarding.needsOnboarding || game.app.isHowToPlayOpen ? (
+          <Suspense
+            fallback={
+              <div className="modal-loading" role="status" aria-live="polite">
+                {t("modal.loading")}
+              </div>
             }
-          />
-        </Suspense>
-      ) : null}
-    </main>
+          >
+            <game.app.HowToPlayDialog
+              onClose={onboarding.needsOnboarding ? onboarding.complete : game.app.closeHowToPlay}
+              onStart={
+                onboarding.needsOnboarding
+                  ? () => {
+                      onboarding.complete();
+                      game.round.primaryAction();
+                    }
+                  : undefined
+              }
+            />
+          </Suspense>
+        ) : null}
+      </main>
+      <LegalFooter showHome={false} />
+    </>
   );
 }
 
