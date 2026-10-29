@@ -45,7 +45,7 @@ pnpm run verify
 
 ## Links
 
-- [Architecture and deployment](docs/architecture.md), [decision records](docs/adr/)
+- [Architecture and deployment](docs/architecture.md), [decision records](docs/decisions/)
 - [Quality checks](docs/quality.md)
 - [Contributing](CONTRIBUTING.md)
 - [Locale tools](tools/README.md)

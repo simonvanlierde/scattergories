@@ -36,7 +36,7 @@ The [prek](.pre-commit-config.yaml) pre-commit hooks format, lint and spell-chec
 - `useGameController` is the one boundary between `src/app/` and the feature hooks. Go through it rather than reaching into feature internals.
 - Round state runs on a `useReducer`. Saved settings use hooks backed by localStorage. Keep short-lived UI state next to the component that owns it.
 
-Record a design decision that isn't obvious as an ADR under [`docs/adr/`](docs/adr/).
+Record a design decision that isn't obvious under [`docs/decisions/`](docs/decisions/README.md).
 
 ## Product contract
 
