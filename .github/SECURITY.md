@@ -27,8 +27,9 @@ CHANGELOG entry for that release links the advisory.
 
 ## Scope
 
-<!-- Say what this project is and what it is not: a server, stored user data, a
-     published package. Keep the lists below in line with it. -->
+Scattergories is a browser game served as static files, with no backend and no accounts. Its
+settings and custom categories stay in the player's browser, in `localStorage`, and are never sent
+to a server.
 
 In scope:
 
