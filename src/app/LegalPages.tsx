@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { getPreferredTheme } from "@/features/settings/schema";
+import { readStoredSettings } from "@/features/settings/schema";
 import accessibility from "../../docs/accessibility.md";
 import privacy from "../../docs/privacy.md";
 
@@ -47,7 +47,7 @@ function LegalPage() {
   }
 
   return (
-    <div className="app-shell legal-page" data-theme={getPreferredTheme()}>
+    <div className="app-shell legal-page" data-theme={readStoredSettings().theme}>
       <main>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: our own Markdown, rendered at build time */}
         <article dangerouslySetInnerHTML={{ __html: page.html }} />
