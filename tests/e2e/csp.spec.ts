@@ -1,6 +1,9 @@
 import { expect, type Page, test } from "@playwright/test";
 import { ROUTES } from "./routes";
 
+// The service worker would answer later routes itself, past the interception below.
+test.use({ serviceWorkers: "block" });
+
 // vite preview sends no headers, so serve every response with the Content-Security-Policy
 // from the built _headers file, the one Cloudflare Pages serves, and collect each
 // violation the page reports. Both run before the first load.

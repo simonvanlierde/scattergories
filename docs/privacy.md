@@ -35,6 +35,9 @@ scattergories sets no cookies. It uses local storage only to keep your work, whi
 asked it to do. Storage that only does what you asked for needs no consent, so there's no cookie
 banner.
 
+TODO: the app also installs a service worker that keeps a copy of its own files in the browser's
+cache, so it works offline. Say so here, and that it holds no personal data.
+
 ## Other services
 
 None besides the host above. scattergories loads every file from scattergories.duinlab.nl and sends nothing
