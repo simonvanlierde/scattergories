@@ -13,30 +13,35 @@ and decides what happens to any data about you, which makes Simon van Lierde the
 
 ## What scattergories keeps
 
-scattergories keeps your work in your browser's local storage, on your device, so it's still
+scattergories keeps your choices in your browser's local storage, on your device, so they're still
 there when you come back. It never leaves your device: we don't get it, and nor does anyone else.
-Nothing is stored until you start working. To remove it, clear this site's data in your browser's
-settings.
+To remove it, clear this site's data in your browser's settings.
 
-TODO: list what the app stores in the browser, in plain words, such as "the list you are
-editing".
+It keeps three things:
+
+- your settings, such as the round length, the categories and the theme;
+- your chosen language;
+- whether you have seen the rules on your first visit.
+
+The first page you load also saves your settings and language, even before you change anything.
 
 ## Server logs
 
 [Cloudflare Pages](https://www.cloudflare.com/privacypolicy/) hosts scattergories. To send you
 a page, the host sees your IP address and browser details, which can count as personal data.
 
-TODO: say what the host logs, what for (such as keeping the site running and safe), the legal
-basis (such as a legitimate interest), how long the logs are kept, and whether you can see them.
+We run no logs of our own and add no analytics. Cloudflare may log requests to keep the site
+running and safe, on the basis of a legitimate interest. How long it keeps them is set by
+Cloudflare, in the policy linked above. We don't see them.
 
 ## Cookies and storage
 
-scattergories sets no cookies. It uses local storage only to keep your work, which is what you
+scattergories sets no cookies. It uses local storage only to keep your choices, which is what you
 asked it to do. Storage that only does what you asked for needs no consent, so there's no cookie
 banner.
 
-TODO: the app also installs a service worker that keeps a copy of its own files in the browser's
-cache, so it works offline. Say so here, and that it holds no personal data.
+The app also installs a service worker that keeps a copy of its own files in the browser's cache,
+so it works offline. That cache holds the app's files only, with no personal data.
 
 ## Other services
 

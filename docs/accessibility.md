@@ -16,10 +16,9 @@ Simon van Lierde builds and maintains it, and is responsible for this statement.
 You should be able to:
 
 - use it on a screen 320 px wide, or zoomed in to 400%, without scrolling sideways;
-- use a dark theme, which follows your system setting.
-
-TODO: add what else you have checked, such as using every feature with the keyboard alone or
-with a screen reader. List only what a test or a recorded hand check backs.
+- use a dark theme, which follows your system setting;
+- have animation turned off, which follows your system's reduced-motion setting;
+- use dialogs that keep keyboard focus inside them and return it when they close.
 
 ## How accessible scattergories is
 
@@ -33,10 +32,7 @@ has a result.
 
 ## Known problems
 
-TODO: list each problem you know of, most harmful first. For each, say what the reader will
-notice, why (one clause), what to do instead, and a fix date or "No fix planned". Put the WCAG
-criterion in brackets at the end, such as [1.1.1 Non-text Content]. With none known, write
-"We don't know of any problems yet."
+We don't know of any problems yet.
 
 ## Tell us about a problem
 
@@ -75,8 +71,7 @@ reader.
 
 - Chromium, in Playwright's desktop Chrome profile, with axe-core, on every pull request.
 
-TODO: add the browser and assistive-technology pairs you tried by hand, with the date, such as
-"Firefox with NVDA on 30 October 2026".
+No browser and assistive-technology pair has been tried by hand and recorded yet.
 
 scattergories relies on HTML, CSS and JavaScript.
 
