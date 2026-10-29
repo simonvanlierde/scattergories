@@ -7,59 +7,58 @@ says how to fill it in, and how the template builds and tests it.
 
 # Privacy statement
 
-This statement covers scattergories at [scattergories.duinlab.nl](https://scattergories.duinlab.nl). Simon van Lierde runs it
-and decides what happens to any data about you, which makes Simon van Lierde the data controller.
-"We" on this page means Simon van Lierde.
+scattergories keeps your settings on your device. They aren't sent to us or to anyone else. The
+game has no accounts, no cookies and no analytics.
 
-## What scattergories keeps
+This page covers scattergories at [scattergories.duinlab.nl](https://scattergories.duinlab.nl).
+Simon van Lierde runs scattergories and is responsible for it. "We" on this page means him.
 
-scattergories keeps your choices in your browser's local storage, on your device, so they're still
-there when you come back. It never leaves your device: we don't get it, and nor does anyone else.
-To remove it, clear this site's data in your browser's settings.
+## What scattergories stores on your device
 
-It keeps three things:
+scattergories saves three things in your browser's local storage:
 
-- your settings, such as the round length, the categories and the theme;
-- your chosen language;
-- whether you have seen the rules on your first visit.
+- your game settings, such as the round length, the categories (including any you add yourself),
+  sound and theme;
+- the language you pick;
+- whether you've closed the rules shown on your first visit.
 
-The first page you load also saves your settings and language, even before you change anything.
+It saves your settings, with their default values, as soon as you first open the game.
 
-## Server logs
+## How to delete it
 
-[Cloudflare Pages](https://www.cloudflare.com/privacypolicy/) hosts scattergories. To send you
-a page, the host sees your IP address and browser details, which can count as personal data.
+Clear this site's data in your browser's settings.
 
-We run no logs of our own and add no analytics. Cloudflare may log requests to keep the site
-running and safe, on the basis of a legitimate interest. How long it keeps them is set by
-Cloudflare, in the policy linked above. We don't see them.
+## What our host sees
 
-## Cookies and storage
+[Cloudflare Pages](https://www.cloudflare.com/privacypolicy/) hosts scattergories. As with any
+website, Cloudflare sees your IP address and browser details when you load the game. It may log
+these to keep the site running and safe, and its privacy policy says for how long. We don't get
+these logs and keep none of our own.
 
-scattergories sets no cookies. It uses local storage only to keep your choices, which is what you
-asked it to do. Storage that only does what you asked for needs no consent, so there's no cookie
-banner.
+scattergories loads all its files from scattergories.duinlab.nl and contacts no other site.
 
-The app also installs a service worker that keeps a copy of its own files in the browser's cache,
-so it works offline. That cache holds the app's files only, with no personal data.
+## Cookies and offline use
 
-## Other services
+scattergories sets no cookies, so there's no cookie banner. Local storage holds only what you
+asked the game to keep, and that needs no consent.
 
-None besides the host above. scattergories loads every file from scattergories.duinlab.nl and sends nothing
-to anyone else.
+To work offline, scattergories keeps a copy of its own files in your browser's cache. That copy
+holds no personal data.
 
 ## Your rights
 
-You can ask us to show you the data about you, to correct or delete it, to limit how we use it,
-or to object to how we use it. To ask, or to ask anything else about this statement, email
-[code@duinlab.nl](mailto:code@duinlab.nl). If you're not happy with our answer, you can
-complain to your data protection authority. In the Netherlands, that's the
+You can ask us to show you the data we have about you, and to correct it, delete it, limit how we
+use it, or stop using it. We never get your settings, so we can't see or change them.
+
+To ask, or with any other question about this page, email
+[code@duinlab.nl](mailto:code@duinlab.nl). If you're not happy with our answer, you can complain
+to your data protection authority. In the Netherlands, that's the
 [Autoriteit Persoonsgegevens](https://www.autoriteitpersoonsgegevens.nl/).
 
-## About this statement
+## About this page
 
 Last updated: 29 October 2026
 
 scattergories is free software under the
-[MIT licence](https://github.com/simonvanlierde/scattergories/blob/main/LICENSE), and
-comes with no warranty.
+[MIT licence](https://github.com/simonvanlierde/scattergories/blob/main/LICENSE) and comes with no
+warranty.
