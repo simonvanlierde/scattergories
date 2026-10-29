@@ -36,9 +36,26 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "26"
-          cache: pnpm
+
+      # The pnpm store is cached by hand: setup-node's cache saves on every event and has
+      # no switch to stop that. A cache a pull request saves is readable by that pull
+      # request alone, and it pushes main's entries out of the 10 GB per-repo limit, so
+      # pull requests only restore.
+      - id: pnpm-store
+        run: echo "path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+      - id: pnpm-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.pnpm-store.outputs.path }}
+          key: pnpm-check-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: pnpm-check-${{ runner.os }}-
 
       - run: pnpm install --frozen-lockfile
+      - if: github.event_name != 'pull_request' && steps.pnpm-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.pnpm-store.outputs.path }}
+          key: ${{ steps.pnpm-cache.outputs.cache-primary-key }}
 
       # The e2e container's tag must match the installed Playwright exactly, so it
       # is read from the package the lockfile resolved, not kept in sync by hand.
@@ -89,9 +106,24 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "26"
-          cache: pnpm
+
+      # Cached by hand, saved off pull requests only, as in the check job. The container's
+      # store path differs from the runner's, so this is a cache of its own.
+      - id: pnpm-store
+        run: echo "path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+      - id: pnpm-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.pnpm-store.outputs.path }}
+          key: pnpm-e2e-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: pnpm-e2e-${{ runner.os }}-
 
       - run: pnpm install --frozen-lockfile
+      - if: github.event_name != 'pull_request' && steps.pnpm-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.pnpm-store.outputs.path }}
+          key: ${{ steps.pnpm-cache.outputs.cache-primary-key }}
       - run: pnpm run test:e2e
 
       - if: failure()

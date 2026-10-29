@@ -43,9 +43,12 @@ jobs:
         with:
           persist-credentials: false
 
+      # Saved off pull requests only: a cache a pull request saves is readable by that
+      # pull request alone, and it pushes main's entries out of the 10 GB per-repo limit.
       - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
         with:
           enable-cache: true
+          save-cache: ${{ github.event_name != 'pull_request' }}
           version: "0.13.1"
 
       - run: uv sync --locked

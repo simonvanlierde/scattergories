@@ -45,10 +45,11 @@ repo-settings:
         file=.github/rulesets/$name.json
         id=$(gh api "repos/{owner}/{repo}/rulesets?includes_parents=false" --jq ".[] | select(.name == \"$name\") | .id" 2>"$err") || fail
         if [ -n "$id" ]; then
-            gh api -X PUT "repos/{owner}/{repo}/rulesets/$id" --input "$file" >/dev/null 2>"$err" || fail
+            gh api -X PUT "repos/{owner}/{repo}/rulesets/$id" --input "$file" >"$err" 2>&1 || fail
             echo "Updated ruleset '$name' ($id)."
         else
-            gh api -X POST repos/{owner}/{repo}/rulesets --input "$file" >/dev/null 2>"$err" || fail
+            # gh prints GitHub's reason for a refusal on stdout, so fail() needs both.
+            gh api -X POST repos/{owner}/{repo}/rulesets --input "$file" >"$err" 2>&1 || fail
             echo "Created ruleset '$name'."
         fi
     done
