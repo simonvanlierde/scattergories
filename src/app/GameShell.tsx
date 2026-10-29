@@ -155,8 +155,9 @@ function GameShell({ game }: GameShellProps) {
   }, [game.settings.theme]);
 
   return (
-    <>
-      <main className={cx("app-shell", game.round.alarmOn && "alarm")} data-theme={game.settings.theme}>
+    // The footer sits outside <main> but inside the themed shell, so it takes the app's theme.
+    <div className={cx("app-shell", game.round.alarmOn && "alarm")} data-theme={game.settings.theme}>
+      <main>
         <div className="app">
           {game.app.hasChunkError ? <ChunkErrorBanner onReload={game.app.reload} /> : null}
 
@@ -190,7 +191,7 @@ function GameShell({ game }: GameShellProps) {
         ) : null}
       </main>
       <LegalFooter showHome={false} />
-    </>
+    </div>
   );
 }
 

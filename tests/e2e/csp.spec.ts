@@ -79,7 +79,7 @@ test("a round and the sheets run under the Content-Security-Policy", async ({ pa
   await settings.getByLabel("Round length").fill("10");
   await settings.getByLabel("Get ready").fill("0");
   await settings.getByRole("radio", { name: "Dark" }).check();
-  await expect(page.getByRole("main")).toHaveAttribute("data-theme", "dark");
+  await expect(page.locator(".app-shell")).toHaveAttribute("data-theme", "dark");
   await settings.getByRole("radio", { name: "Light" }).check();
   await settings.getByRole("button", { name: "Close this window" }).click();
 
