@@ -1,0 +1,92 @@
+<!--
+Keep this page true. The app serves it at /accessibility, without this note.
+https://github.com/simonvanlierde/project-templates/blob/main/docs/web-legal.md
+says how to fill it in, and how the template builds and tests it.
+Say "partially conformant" only once docs/accessibility-assessment.md has a result for every
+criterion, and link it from the status sentence.
+-->
+
+# Accessibility statement
+
+This statement covers scattergories at [scattergories.duinlab.nl](https://scattergories.duinlab.nl).
+Simon van Lierde builds and maintains it, and is responsible for this statement.
+
+## Using scattergories
+
+You should be able to:
+
+- use it on a screen 320 px wide, or zoomed in to 400%, without scrolling sideways;
+- use a dark theme, which follows your system setting.
+
+TODO: add what else you have checked, such as using every feature with the keyboard alone or
+with a screen reader. List only what a test or a recorded hand check backs.
+
+## How accessible scattergories is
+
+scattergories aims to meet [WCAG 2.2](https://www.w3.org/TR/WCAG22/) at level AA.
+
+Its conformance is **not assessed**. Nobody has checked it against every WCAG 2.2 criterion yet,
+and no outside auditor has tested it: the developer checks it. How we check, below, says what is
+checked and how. The criterion-by-criterion check goes in
+[docs/accessibility-assessment.md](https://github.com/simonvanlierde/scattergories/blob/main/docs/accessibility-assessment.md), and the status links it once every criterion
+has a result.
+
+## Known problems
+
+TODO: list each problem you know of, most harmful first. For each, say what the reader will
+notice, why (one clause), what to do instead, and a fix date or "No fix planned". Put the WCAG
+criterion in brackets at the end, such as [1.1.1 Non-text Content]. With none known, write
+"We don't know of any problems yet."
+
+## Tell us about a problem
+
+If something in scattergories is hard or impossible for you to use, email
+[code@duinlab.nl](mailto:code@duinlab.nl). You can also
+[open an issue on GitHub](https://github.com/simonvanlierde/scattergories/issues/new), but you don't
+need a GitHub account to tell us.
+
+Say what you were trying to do, what happened, and which browser and assistive technology you use,
+if any. We'll reply within 10 working days. If you need anything from scattergories in another
+format, ask and we'll send it.
+
+## How we check
+
+- **Automated scan.** The end-to-end tests run [axe-core](https://github.com/dequelabs/axe-core)
+  with the WCAG 2.0, 2.1 and 2.2 level A and AA rules and axe's best practices, on every page,
+  in the light and the dark theme. See
+  [tests/e2e/a11y.spec.ts](https://github.com/simonvanlierde/scattergories/blob/main/tests/e2e/a11y.spec.ts).
+- **Reflow.** The tests load every page 320 px wide and fail if it scrolls sideways. See
+  [tests/e2e/reflow.spec.ts](https://github.com/simonvanlierde/scattergories/blob/main/tests/e2e/reflow.spec.ts).
+- **Lint.** [Biome's accessibility rules](https://biomejs.dev/linter/javascript/rules/#a11y) check
+  every change for missing alt text, invalid ARIA, click handlers without a keyboard equivalent and
+  other mistakes in the code.
+- **This statement.**
+  [tests/e2e/accessibility-statement.spec.ts](https://github.com/simonvanlierde/scattergories/blob/main/tests/e2e/accessibility-statement.spec.ts)
+  fails when this page loses a section, claims a status it has not earned, loses its email contact,
+  or goes more than 400 days without a review.
+
+All of this runs on every pull request. Automated tools catch only part of the problems people run
+into, so a passing run doesn't mean there are none.
+
+Not checked yet: nobody has tried scattergories by hand with only a keyboard, or with a screen
+reader.
+
+## Tested with
+
+- Chromium, in Playwright's desktop Chrome profile, with axe-core, on every pull request.
+
+TODO: add the browser and assistive-technology pairs you tried by hand, with the date, such as
+"Firefox with NVDA on 30 October 2026".
+
+scattergories relies on HTML, CSS and JavaScript.
+
+## About this statement
+
+Prepared: 29 October 2026
+
+Last reviewed: 29 October 2026
+
+Next review: within 12 months of the last review, or at the next major release if that comes first.
+
+Method: the developer's own checks, listed under How we check. No outside auditor has tested
+it.

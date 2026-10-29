@@ -26,3 +26,36 @@ fmt:
 # Run every git hook over the whole repo, not just staged files.
 hooks:
     prek run -a
+
+# Protect the default branch (no deletion, no force-push, linear history, PRs squash-merged after the always-on checks pass and one approval) and the v* tags. Turn on private vulnerability reporting. Safe to rerun.
+repo-settings:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    err=$(mktemp)
+    trap 'rm -f "$err"' EXIT
+    fail() {
+        cat "$err" >&2
+        grep -qE 'HTTP (403|404)' "$err" && echo "Rulesets on a private repo need a paid GitHub plan (or the repo does not exist, or you lack admin rights)." >&2
+        exit 1
+    }
+    # Merge-method switches live on the repo itself; the ruleset also limits the PR button.
+    gh api -X PATCH repos/{owner}/{repo} -F allow_squash_merge=true -F allow_merge_commit=false -F allow_rebase_merge=false >/dev/null 2>"$err" || fail
+    # Each file's "name" matches its file name, so the recipe needs no jq to read it.
+    for name in main main-checks tags; do
+        file=.github/rulesets/$name.json
+        id=$(gh api "repos/{owner}/{repo}/rulesets?includes_parents=false" --jq ".[] | select(.name == \"$name\") | .id" 2>"$err") || fail
+        if [ -n "$id" ]; then
+            gh api -X PUT "repos/{owner}/{repo}/rulesets/$id" --input "$file" >/dev/null 2>"$err" || fail
+            echo "Updated ruleset '$name' ($id)."
+        else
+            gh api -X POST repos/{owner}/{repo}/rulesets --input "$file" >/dev/null 2>"$err" || fail
+            echo "Created ruleset '$name'."
+        fi
+    done
+    # SECURITY.md sends reports to a private security advisory, which this turns on.
+    gh api -X PUT repos/{owner}/{repo}/private-vulnerability-reporting >/dev/null 2>"$err" || fail
+    echo "Turned on private vulnerability reporting."
+
+# Set the GitHub About box from your answers: description, homepage and a topic per stack. Adds topics, never removes yours. Safe to rerun.
+repo-about:
+    gh repo edit --description 'A browser-based, local-first companion for playing Scattergories at the table — locale-aware letter rolling, timer, and category packs.' --homepage 'https://scattergories.duinlab.nl' --add-topic python --add-topic typescript

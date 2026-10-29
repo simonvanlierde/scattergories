@@ -2,8 +2,24 @@
 
 import babel from "@rolldown/plugin-babel";
 import react, { reactCompilerPreset } from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { marked } from "marked";
+import { defineConfig, type Plugin } from "vite";
 import pkg from "./package.json" with { type: "json" };
+
+/**
+ * Turns an imported .md file into its HTML at build time, so the pages in docs/
+ * ship as HTML and no Markdown code reaches the browser. GitHub shows the same files.
+ * HTML comments are notes for the author, so they are dropped before visitors see them.
+ */
+const markdown = (): Plugin => ({
+  name: "markdown-html",
+  transform(code, id) {
+    if (id.endsWith(".md")) {
+      const html = marked.parse(code.replace(/<!--[\s\S]*?-->/g, ""), { async: false });
+      return { code: `export default ${JSON.stringify(html)};`, map: null };
+    }
+  },
+});
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -12,6 +28,7 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    markdown(),
     babel({
       presets: [reactCompilerPreset()],
     }),
