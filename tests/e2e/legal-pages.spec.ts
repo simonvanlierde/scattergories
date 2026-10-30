@@ -39,3 +39,23 @@ for (const path of ROUTES) {
     }
   });
 }
+
+// The pages and footer are English only, so they must say so when the app runs in another language.
+test.describe("in a German browser", () => {
+  test.use({ locale: "de-DE" });
+  const lang = (el: Element) => el.closest("[lang]")?.getAttribute("lang");
+
+  for (const [href] of PAGES) {
+    test(`${href} marks its text as English`, async ({ page }) => {
+      await page.goto(href);
+      await expect.poll(() => page.locator("article").evaluate(lang)).toBe("en");
+    });
+  }
+
+  for (const path of ROUTES) {
+    test(`${path} marks its footer as English`, async ({ page }) => {
+      await page.goto(path);
+      await expect.poll(() => page.getByRole("contentinfo").getByRole("navigation").evaluate(lang)).toBe("en");
+    });
+  }
+});

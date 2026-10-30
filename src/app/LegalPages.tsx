@@ -21,7 +21,7 @@ function LegalFooter({ showHome }: { showHome: boolean }) {
 
   return (
     <footer className="legal-footer">
-      <nav aria-label="About this site">
+      <nav lang="en" aria-label="About this site">
         {showHome ? <a href="/">{SITE_TITLE}</a> : null}
         {Object.entries(PAGES).map(([path, { title }]) => (
           <a key={path} href={path} aria-current={PAGES[path] === page ? "page" : undefined}>
@@ -50,7 +50,7 @@ function LegalPage() {
     <div className="app-shell legal-page" data-theme={readStoredSettings().theme}>
       <main>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: our own Markdown, rendered at build time */}
-        <article dangerouslySetInnerHTML={{ __html: page.html }} />
+        <article lang="en" dangerouslySetInnerHTML={{ __html: page.html }} />
       </main>
       <LegalFooter showHome />
     </div>
