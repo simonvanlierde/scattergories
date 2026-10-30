@@ -56,6 +56,7 @@ words:
   - Lierde
   - scattergories
   - duinlab
+  - jsonvet
   - Wikitext
   # Codecov setting
   - carryforward
@@ -106,6 +107,18 @@ words:
   - shellcheck
   - simonvanlierde
   - zizmor
+  # Template answers, workflow actions and legal pages from the copier template
+  - codspeed
+  - customise
+  - openssf
+  - ossf
+  - lycheeverse
+  - sarif
+  - taiki
+  - trixie
+  - overclaims
+  - Autoriteit
+  - Persoonsgegevens
   - addopts
   - ACMRT
   - huggingface

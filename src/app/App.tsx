@@ -7,6 +7,7 @@ import { AppLoading } from "./AppLoading";
 import { bootMessages } from "./bootMessages";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { GameShell } from "./GameShell";
+import { currentLegalPage, LegalPage } from "./LegalPages";
 import { useGameController } from "./useGameController";
 
 interface ErrorViewProps {
@@ -76,6 +77,15 @@ function AppProviders() {
 }
 
 function App() {
+  // The legal pages are static text: they need neither the i18n boot nor the game state.
+  if (currentLegalPage()) {
+    return <LegalPage />;
+  }
+
+  return <GameApp />;
+}
+
+function GameApp() {
   const [isReady, setIsReady] = useState(false);
   const [bootFailed, setBootFailed] = useState(false);
 

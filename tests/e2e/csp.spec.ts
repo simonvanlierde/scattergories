@@ -1,6 +1,9 @@
 import { expect, type Page, test } from "@playwright/test";
 import { ROUTES } from "./routes";
 
+// The service worker would answer later routes itself, past the interception below.
+test.use({ serviceWorkers: "block" });
+
 // vite preview sends no headers, so serve every response with the Content-Security-Policy
 // from the built _headers file, the one Cloudflare Pages serves, and collect each
 // violation the page reports. Both run before the first load.
@@ -76,7 +79,7 @@ test("a round and the sheets run under the Content-Security-Policy", async ({ pa
   await settings.getByLabel("Round length").fill("10");
   await settings.getByLabel("Get ready").fill("0");
   await settings.getByRole("radio", { name: "Dark" }).check();
-  await expect(page.getByRole("main")).toHaveAttribute("data-theme", "dark");
+  await expect(page.locator(".app-shell")).toHaveAttribute("data-theme", "dark");
   await settings.getByRole("radio", { name: "Light" }).check();
   await settings.getByRole("button", { name: "Close this window" }).click();
 

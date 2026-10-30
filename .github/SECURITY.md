@@ -1,9 +1,42 @@
 # Security
 
 <!-- The advisories link below works only once Settings > Code security >
-     Private vulnerability reporting is on. Turn it on when you create the repo. -->
+     Private vulnerability reporting is on. `just repo-settings` turns it on. -->
 
-Report vulnerabilities privately, via
-[GitHub security advisories](https://github.com/simonvanlierde/scattergories/security/advisories/new)
-or by email to <code@duinlab.nl>. Please don't open a public issue for anything
-exploitable.
+## Report a vulnerability
+
+Report it privately, through
+[a GitHub security advisory](https://github.com/simonvanlierde/scattergories/security/advisories/new)
+or by email to <code@duinlab.nl>. Don't open a public issue or pull request for it:
+anyone can read those before there is a fix.
+
+Please include:
+
+- What the problem is and where it is: a file, a function or a dependency.
+- Steps to reproduce it, or a proof of concept.
+- The impact you expect, and the version you saw it in.
+
+I acknowledge a report within 14 days, then tell you whether I can reproduce it and when I
+expect a fix.
+
+## Fixes and disclosure
+
+A fix ships in a new release. When it is out, I publish the GitHub security advisory for
+it, with a CVE where one applies, and credit you unless you'd rather not be named. The
+CHANGELOG entry for that release links the advisory.
+
+## Scope
+
+Scattergories is a browser game served as static files, with no backend and no accounts. Its
+settings and custom categories stay in the player's browser, in `localStorage`, and are never sent
+to a server.
+
+In scope:
+
+- The code in this repository and what it builds.
+- The CI and release workflows in `.github/workflows`.
+- The dependencies in the lockfiles, when the problem affects this project.
+
+Out of scope:
+
+- A problem in a dependency that doesn't affect this project. Report it upstream.

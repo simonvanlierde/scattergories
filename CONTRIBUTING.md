@@ -36,7 +36,7 @@ The [prek](.pre-commit-config.yaml) pre-commit hooks format, lint and spell-chec
 - `useGameController` is the one boundary between `src/app/` and the feature hooks. Go through it rather than reaching into feature internals.
 - Round state runs on a `useReducer`. Saved settings use hooks backed by localStorage. Keep short-lived UI state next to the component that owns it.
 
-Record a design decision that isn't obvious as an ADR under [`docs/adr/`](docs/adr/).
+Record a design decision that isn't obvious under [`docs/decisions/`](docs/decisions/README.md).
 
 ## Product contract
 
@@ -54,3 +54,11 @@ I keep the app lean on purpose. It runs a round with a letter, a timer and promp
   change. `completeness.test.ts` checks that the locales stay in step.
 
 Commits follow [Conventional Commits](https://www.conventionalcommits.org/).
+
+## Sign off your commits
+
+Sign every commit with `git commit -s`. It adds a `Signed-off-by:` line, which says you wrote the
+change or have the right to submit it under this project's license: the
+[Developer Certificate of Origin 1.1](https://developercertificate.org/). The `dco` check refuses a
+pull request from a fork that has an unsigned commit. To sign commits you already made, run
+`git rebase --signoff main` and force-push the branch.

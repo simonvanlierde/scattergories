@@ -57,7 +57,7 @@ it("toggles avoid letter repeats", async () => {
 
 it("switches theme from the appearance control", async () => {
   const { user } = await renderApp();
-  const shell = screen.getByRole("main");
+  const shell = screen.getByRole("main").closest(".app-shell");
   expect(shell).toHaveAttribute("data-theme", "light");
 
   const settings = await openSettings(user);

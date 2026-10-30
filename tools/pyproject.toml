@@ -19,7 +19,8 @@
   dev         = ['pytest>=9.1.1', 'pytest-cov>=7.1.0', 'ruff>=0.15.21', 'ty>=0.0.58', "uv-build>=0.11.28,<0.14"]
 
 # Resolve only releases at least a week old: a compromised release is usually
-# caught and yanked within that window. Dependabot's cooldown waits the same.
+# caught and yanked within that window. The dependency bot waits the same week.
+# Set here, not user-wide, so every machine writes the same uv.lock.
 [tool.uv]
   exclude-newer = '1 week'
   # certifi 2026.10.19 removes the compromised emSign roots (PYSEC-2026-4320); it is
@@ -65,3 +66,7 @@
 
     [tool.ruff.lint.per-file-ignores]
       'tests/**/*.py' = ['S101']
+
+# A rule set to "warn" reports without failing: ty otherwise exits 1 on warnings too.
+[tool.ty.terminal]
+  error-on-warning = false

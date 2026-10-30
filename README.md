@@ -34,9 +34,18 @@ pnpm build        # static build to dist/
 
 Deploy `dist/` to any static host with an SPA fallback to `index.html`.
 
+## Development
+
+Install, then run the checks and build:
+
+```bash
+pnpm install
+pnpm run verify
+```
+
 ## Links
 
-- [Architecture and deployment](docs/architecture.md), [decision records](docs/adr/)
+- [Architecture and deployment](docs/architecture.md), [decision records](docs/decisions/)
 - [Quality checks](docs/quality.md)
 - [Contributing](CONTRIBUTING.md)
 - [Locale tools](tools/README.md)

@@ -1,0 +1,2 @@
+# index.html links its icons from the site root, which is public/.
+root_dir = "public"
