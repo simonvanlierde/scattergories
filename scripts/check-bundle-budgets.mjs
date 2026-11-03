@@ -11,11 +11,12 @@ const BYTES_PER_KIB = 1024;
 const MAX_ASSET_BYTES = BUNDLE_BUDGET_KIB * BYTES_PER_KIB;
 const IMAGE_ASSET_PATTERN = /\.(png|webp|avif)$/u;
 
-// Always-loaded chunks (referenced from index.html directly), budgeted individually with
-// ~15% headroom over their measured gzip size at the time this budget was set.
+// Always-loaded chunks (referenced from index.html directly), budgeted one by one with at
+// least 25% headroom, as in checkBundleBudget.mjs. Measured when set: react 65,244 bytes,
+// i18n 22,482 bytes.
 const ALWAYS_LOADED_CHUNK_BUDGETS_KIB = [
-  { pattern: /^react-.*\.js$/u, label: "react vendor chunk", budgetKib: 64 },
-  { pattern: /^i18n-.*\.js$/u, label: "i18n vendor chunk", budgetKib: 24 },
+  { pattern: /^react-.*\.js$/u, label: "react vendor chunk", budgetKib: 80 },
+  { pattern: /^i18n-.*\.js$/u, label: "i18n vendor chunk", budgetKib: 28 },
 ];
 
 const isMainEntryChunk = (name) => name.startsWith("index-") && name.endsWith(".js");

@@ -5,10 +5,12 @@ import { join } from "node:path";
 import process from "node:process";
 import { gzipSync } from "node:zlib";
 
-// The budget, in gzipped bytes. Raise it on purpose, in its own commit.
-// Set at 68 KiB: the React vendor chunk, the largest, measured 65,244 bytes (63.7 KiB).
+// The budget, in gzipped bytes. It catches a dependency or a chunk split gone wrong, not
+// the next feature: keep it at least 25% above the build. When a change goes over, find
+// what grew first, then raise it in its own commit, back to 25% headroom.
+// The React vendor chunk, the largest, measured 65,244 bytes when this was set.
 // scripts/check-bundle-budgets.mjs budgets the always-loaded chunks one by one.
-const MAX_GZIP_BYTES = 68 * 1024;
+const MAX_GZIP_BYTES = 80 * 1024;
 const DIST_ASSETS_DIR = join(process.cwd(), "dist", "assets");
 
 const jsAssets = readdirSync(DIST_ASSETS_DIR).filter((filename) => filename.endsWith(".js"));
