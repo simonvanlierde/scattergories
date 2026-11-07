@@ -1126,3 +1126,9 @@ msgstr "Motivi di licenziamento"
 
 msgid "category.Holiday Activities"
 msgstr "Attività festive"
+
+msgid "modal.privacyLink"
+msgstr "Privacy (inglese)"
+
+msgid "modal.accessibilityLink"
+msgstr "Accessibilità (inglese)"

@@ -1126,3 +1126,9 @@ msgstr "Causas de demissão"
 
 msgid "category.Holiday Activities"
 msgstr "Atividades de férias"
+
+msgid "modal.privacyLink"
+msgstr "Privacidade (inglês)"
+
+msgid "modal.accessibilityLink"
+msgstr "Acessibilidade (inglês)"

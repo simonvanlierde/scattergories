@@ -1126,3 +1126,9 @@ msgstr "Fireable Offenses"
 
 msgid "category.Holiday Activities"
 msgstr "Holiday Activities"
+
+msgid "modal.privacyLink"
+msgstr "Privacy (English)"
+
+msgid "modal.accessibilityLink"
+msgstr "Accessibility (English)"

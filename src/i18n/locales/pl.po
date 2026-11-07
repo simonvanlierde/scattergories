@@ -1126,3 +1126,9 @@ msgstr "Powody zwolnienia"
 
 msgid "category.Holiday Activities"
 msgstr "Zajęcia świąteczne"
+
+msgid "modal.privacyLink"
+msgstr "Prywatność (angielski)"
+
+msgid "modal.accessibilityLink"
+msgstr "Dostępność (angielski)"

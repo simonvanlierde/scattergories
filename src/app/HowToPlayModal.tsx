@@ -225,6 +225,10 @@ export function HowToPlayModal({ onClose, onStart }: HowToPlayModalProps) {
         <Section icon={Info} title={t("modal.about")}>
           <Attribution />
           <p className="modal-privacy">{t("modal.privacy")}</p>
+          <p className="modal-legal-links">
+            <a href="/privacy">{t("modal.privacyLink")}</a>
+            <a href="/accessibility">{t("modal.accessibilityLink")}</a>
+          </p>
           <p className="modal-version">{t("modal.version", { version: __APP_VERSION__ })}</p>
         </Section>
       </div>

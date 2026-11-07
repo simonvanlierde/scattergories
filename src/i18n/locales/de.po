@@ -1126,3 +1126,9 @@ msgstr "Rauswurfgründe"
 
 msgid "category.Holiday Activities"
 msgstr "Ferienaktivitäten"
+
+msgid "modal.privacyLink"
+msgstr "Datenschutz (Englisch)"
+
+msgid "modal.accessibilityLink"
+msgstr "Barrierefreiheit (Englisch)"

@@ -1126,3 +1126,9 @@ msgstr "Λόγοι απόλυσης"
 
 msgid "category.Holiday Activities"
 msgstr "Ασχολίες διακοπών"
+
+msgid "modal.privacyLink"
+msgstr "Απόρρητο (Αγγλικά)"
+
+msgid "modal.accessibilityLink"
+msgstr "Προσβασιμότητα (Αγγλικά)"

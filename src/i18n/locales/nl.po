@@ -1126,3 +1126,9 @@ msgstr "Redenen voor ontslag"
 
 msgid "category.Holiday Activities"
 msgstr "Vakantieactiviteiten"
+
+msgid "modal.privacyLink"
+msgstr "Privacy (Engels)"
+
+msgid "modal.accessibilityLink"
+msgstr "Toegankelijkheid (Engels)"

@@ -7,6 +7,7 @@ import { AppLoading } from "./AppLoading";
 import { bootMessages } from "./bootMessages";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { GameShell } from "./GameShell";
+import { LegalPage } from "./LegalPages";
 import { useGameController } from "./useGameController";
 
 interface ErrorViewProps {
@@ -64,11 +65,12 @@ function AppContent() {
 // The boundary sits inside the i18n provider, so its fallback is translated, and
 // above the settings and game state, so a throw while building them is caught too.
 function AppProviders() {
+  const path = window.location.pathname;
   return (
     <I18nProvider i18n={i18n}>
       <ErrorBoundary fallback={<AppErrorFallback />}>
         <SettingsProvider>
-          <AppContent />
+          {path === "/privacy" || path === "/accessibility" ? <LegalPage path={path} /> : <AppContent />}
         </SettingsProvider>
       </ErrorBoundary>
     </I18nProvider>

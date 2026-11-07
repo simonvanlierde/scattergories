@@ -1126,3 +1126,9 @@ msgstr "Motifs de renvoi"
 
 msgid "category.Holiday Activities"
 msgstr "Loisirs de vacances"
+
+msgid "modal.privacyLink"
+msgstr "Confidentialité (anglais)"
+
+msgid "modal.accessibilityLink"
+msgstr "Accessibilité (anglais)"
