@@ -11,7 +11,7 @@ interface BootMessages {
 }
 
 // Shown before (or instead of) the locale chunks loading, so they cannot live in
-// the lazy-loaded JSON files; kept short to stay cheap in the main bundle.
+// the lazy-loaded catalogs; kept short to stay cheap in the main bundle.
 const BOOT_MESSAGES = {
   en: {
     loadingTitle: "Loading your game night...",

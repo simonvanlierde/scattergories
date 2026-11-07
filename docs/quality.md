@@ -2,11 +2,11 @@
 
 ## Reproducible builds
 
-Every dependency is locked (`../pnpm-lock.yaml`, [`tools/uv.lock`](../tools/uv.lock)) and every tool version is pinned ([`.node-version`](../.node-version), the `packageManager` field in [`package.json`](../package.json), and [`tools/.python-version`](../tools/.python-version)). The same checks run locally (`just check`) and in CI: [`ts.yml`](../.github/workflows/ts.yml) for the app, [`python.yml`](../.github/workflows/python.yml) for `tools/`, and [`checks.yml`](../.github/workflows/checks.yml) for the git hooks and dependency review. Both stacks audit their dependencies: `pnpm audit --prod` and `uv audit`. The commands are in [CONTRIBUTING](../CONTRIBUTING.md#before-you-open-a-pr).
+Every dependency is locked ([`pnpm-lock.yaml`](../pnpm-lock.yaml), [`tools/uv.lock`](../tools/uv.lock)) and every tool version is pinned ([`.node-version`](../.node-version), the `packageManager` field in [`package.json`](../package.json), and [`tools/.python-version`](../tools/.python-version)). The same checks run locally (`just check`) and in CI: [`ts.yml`](../.github/workflows/ts.yml) for the app, [`python.yml`](../.github/workflows/python.yml) for `tools/`, and [`checks.yml`](../.github/workflows/checks.yml) for the git hooks and dependency review. Both stacks audit their dependencies: `pnpm audit --prod` and `uv audit`. The commands are in [CONTRIBUTING](../CONTRIBUTING.md#before-you-open-a-pr).
 
 ## Enforced gates
 
-The core game logic in `src/domain/` must keep 95%+ line coverage and 100% function coverage, and the rest of `src/` 60% line coverage (see [`vitest.config.ts`](../vitest.config.ts)). Each chunk loaded at startup has its own gzip budget: 80 KiB for the main entry, 64 KiB for the React vendor chunk and 24 KiB for the i18n vendor chunk. No image asset may be over 80 KiB ([`scripts/check-bundle-budgets.mjs`](../scripts/check-bundle-budgets.mjs)). On top of those, no JavaScript file, lazy chunks included, may be over 68 KiB gzipped ([`scripts/checkBundleBudget.mjs`](../scripts/checkBundleBudget.mjs)).
+The core game logic in `src/domain/` must keep 95%+ line coverage and 100% function coverage, and the rest of `src/` 60% line coverage (see [`vitest.config.ts`](../vitest.config.ts)). Each chunk loaded at startup has its own gzip budget: 80 KiB for the main entry, 80 KiB for the React vendor chunk and 28 KiB for the i18n vendor chunk. No image asset may be over 80 KiB ([`scripts/check-bundle-budgets.mjs`](../scripts/check-bundle-budgets.mjs)). On top of those, no JavaScript file, lazy chunks included, may be over 80 KiB gzipped ([`scripts/checkBundleBudget.mjs`](../scripts/checkBundleBudget.mjs)).
 
 ## Accessibility
 

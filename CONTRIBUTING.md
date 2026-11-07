@@ -1,6 +1,8 @@
 # Contributing
 
 This is a small personal project, but issues and pull requests are welcome.
+Read the [Code of Conduct](.github/CODE_OF_CONDUCT.md). Report vulnerabilities through
+[the security policy](.github/SECURITY.md), rather than in a public issue.
 
 ## Prerequisites
 
@@ -53,4 +55,26 @@ I keep the app lean on purpose. It runs a round with a letter, a timer and promp
 - **i18n**: when you change wording a user sees, update the tests and every locale in the same
   change. `completeness.test.ts` checks that the locales stay in step.
 
-Commits follow [Conventional Commits](https://www.conventionalcommits.org/).
+## Commits and pull requests
+
+Commits and pull request titles follow [Conventional Commits](https://www.conventionalcommits.org/):
+`type(scope): summary`, in the imperative, with no trailing period.
+Use the [pull request template](.github/pull_request_template.md) to describe the change and its checks.
+
+Sign off each commit with `git commit -s`. The `Signed-off-by:` line confirms that you have the
+right to submit the change under the [Developer Certificate of Origin](https://developercertificate.org/).
+The commit-msg hook requires it. CI also checks commits in pull requests from forks.
+
+To sign off existing commits, fetch the upstream repository and run `git rebase --signoff origin/main`.
+In a fork, replace `origin` with the remote that points to this repository, often `upstream`.
+If you already pushed the branch, update it with `git push --force-with-lease`.
+
+## Repository setup and releases
+
+The maintainer can run `just repo-settings` to apply the repository rulesets and create the
+GitHub deployment environments. It also configures security features; review the recipe before running it.
+[Deployment](docs/architecture.md#deployment) lists the Cloudflare secrets and migration checks.
+
+Prepare a release with `just release X.Y.Z`. The first run prepares and commits the dated changelog section.
+Review and merge that commit through a pull request. On an up-to-date `main`, the second run signs and
+pushes the version tag. The release workflow publishes that version's changelog section after it verifies the tag signature.

@@ -32,7 +32,13 @@ pnpm dev          # http://localhost:5173
 pnpm build        # static build to dist/
 ```
 
-Deploy `dist/` to any static host with an SPA fallback to `index.html`.
+The repository configures Cloudflare Workers for production and pull request previews.
+[Deployment setup and the Pages migration](docs/architecture.md#deployment) describe the required GitHub environments and secrets.
+You can also serve `dist/` on a static host with a fallback to `index.html`.
+
+The app serves English privacy and accessibility statements at `/privacy` and `/accessibility`.
+Open **How to play** to find links to both pages. Their source is in
+[`docs/privacy.md`](docs/privacy.md) and [`docs/accessibility.md`](docs/accessibility.md).
 
 ## Links
 
