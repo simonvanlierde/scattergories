@@ -2,7 +2,7 @@ import { expect, type Page, test } from "@playwright/test";
 import { ROUTES } from "./routes";
 
 // vite preview sends no headers, so serve every response with the Content-Security-Policy
-// from the built _headers file, the one Cloudflare Pages serves, and collect each
+// from the built _headers file, the one Cloudflare Worker serves, and collect each
 // violation the page reports. Both run before the first load.
 async function underPolicy(page: Page) {
   const headersFile = await (await page.request.get("/_headers")).text();

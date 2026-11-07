@@ -1,0 +1,46 @@
+import { expect, test } from "@playwright/test";
+import { LEGAL_LINKED_FROM } from "./routes";
+
+/**
+ * The pages in docs/, as the app renders them, the links to them from every route in
+ * LEGAL_LINKED_FROM, and each page's link back home.
+ */
+
+const PAGES = [
+  ["/accessibility", "Accessibility statement"],
+  ["/privacy", "Privacy statement"],
+] as const;
+
+for (const [href, name] of PAGES) {
+  test(`${href} renders and gives an email contact`, async ({ page }) => {
+    await page.goto(href);
+    await expect(page).toHaveTitle(new RegExp(`^${name}`));
+    const article = page.locator("article");
+    await expect(article.getByRole("heading", { level: 1 })).toHaveText(name);
+    await expect(article.getByRole("link", { name: /@/ }).first()).toHaveAttribute("href", /^mailto:.+@.+/);
+  });
+}
+
+test("some route links the legal pages", () => {
+  expect(LEGAL_LINKED_FROM.length).toBeGreaterThan(0);
+});
+
+for (const path of LEGAL_LINKED_FROM) {
+  test(`${path} links every page`, async ({ page }) => {
+    await page.goto(path);
+    for (const [href, name] of PAGES) {
+      const link = page.getByRole("link", { name, exact: true });
+      await expect(link).toHaveAttribute("href", href);
+      if (href === path) await expect(link).toHaveAttribute("aria-current", "page");
+      else await expect(link).not.toHaveAttribute("aria-current");
+    }
+  });
+}
+
+// An installed app has no browser back button, so each page needs its own way home.
+for (const [href] of PAGES) {
+  test(`${href} links back home`, async ({ page }) => {
+    await page.goto(href);
+    await expect(page.locator('a[href="/"]').first()).toBeVisible();
+  });
+}

@@ -1,0 +1,33 @@
+import { expect, test } from "@playwright/test";
+
+/**
+ * Guards docs/accessibility.md as the app renders it at /accessibility. The
+ * statement's value is that it claims no more than the repo can show, so these
+ * fail when it overclaims or promises no reply time.
+ * a11y.spec.ts runs axe over it with the other routes, and legal-pages.spec.ts
+ * checks its title, email contact and the links to and from it.
+ */
+
+// The status sentence, with the W3C conformance terms the statement may use.
+// "Fully conformant" needs a full external audit: allow it only once one is done.
+const STATUS = /^Its conformance is (not assessed|partially conformant|non-conformant)\b/i;
+const SECTIONS = [
+  "Using scattergories",
+  "How accessible scattergories is",
+  "Known problems",
+  "Tell us about a problem",
+  "How we check",
+  "About this statement",
+];
+
+test("the statement renders its sections and claims no more than was checked", async ({ page }) => {
+  await page.goto("/accessibility");
+  const statement = page.locator("article");
+  await expect(statement.getByRole("heading", { level: 2 })).toHaveText(SECTIONS);
+
+  // The term must sit in the status sentence, not anywhere on the page.
+  await expect(statement.getByText(/^Its conformance is /)).toHaveText(STATUS);
+  await expect(statement).not.toContainText(/fully conformant/i);
+
+  await expect(statement).toContainText(/within \d+ working days/);
+});

@@ -2,8 +2,25 @@
 
 import babel from "@rolldown/plugin-babel";
 import react, { reactCompilerPreset } from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { marked } from "marked";
+import { defineConfig, type Plugin } from "vite";
 import pkg from "./package.json" with { type: "json" };
+
+// Convert trusted repository documents at build time so Markdown stays out of the browser.
+const markdown = (): Plugin => ({
+  name: "markdown-html",
+  transform(code, id) {
+    if (id.endsWith(".md")) {
+      let text = code;
+      for (let before = ""; before !== text; ) {
+        before = text;
+        text = text.replace(/<!--[\s\S]*?-->/g, "");
+      }
+      const html = marked.parse(text, { async: false });
+      return { code: `export default ${JSON.stringify(html)};`, map: null };
+    }
+  },
+});
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -12,6 +29,7 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    markdown(),
     babel({
       presets: [reactCompilerPreset()],
     }),
