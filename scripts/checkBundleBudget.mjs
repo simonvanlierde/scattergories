@@ -1,5 +1,6 @@
 // Fails when the largest JavaScript file in the build, gzipped, is over the
 // budget. Run after `pnpm build`.
+// biome-ignore-all lint/correctness/noNodejsModules: this build check runs in Node.
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import process from "node:process";
@@ -32,6 +33,6 @@ if (largestAsset.gzipBytes > MAX_GZIP_BYTES) {
   );
 }
 
-console.log(
-  `Bundle budget OK: ${largestAsset.filename} gzip size ${largestAsset.gzipBytes} bytes within ${MAX_GZIP_BYTES} bytes`,
+process.stdout.write(
+  `Bundle budget OK: ${largestAsset.filename} gzip size ${largestAsset.gzipBytes} bytes within ${MAX_GZIP_BYTES} bytes\n`,
 );
