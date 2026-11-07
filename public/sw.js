@@ -5,7 +5,23 @@ const PRECACHE = /* PRECACHE */ [];
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE).then(async (cache) => {
-      await cache.addAll(PRECACHE);
+      const responses = await Promise.all(
+        PRECACHE.map(async (path) => {
+          const response = await fetch(path, { cache: "reload" });
+          if (!isCacheable(path, response)) {
+            throw new Error(`Invalid offline response: ${path}`);
+          }
+          return { path, response };
+        }),
+      );
+      // Preserve the old shell until every asset has been validated and stored.
+      for (const { path, response } of responses.filter((entry) => entry.path !== "/")) {
+        await cache.put(path, response);
+      }
+      const shell = responses.find((entry) => entry.path === "/");
+      if (shell) {
+        await cache.put("/", shell.response);
+      }
       await self.skipWaiting();
     }),
   );
@@ -15,20 +31,21 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(self.clients.claim());
 });
 
-async function store(request, response) {
-  const path = new URL(request.url).pathname;
+function isCacheable(path, response) {
   const type = response.headers.get("content-type") ?? "";
   const wrongType =
     (path.endsWith(".js") && !/^(?:text|application)\/(?:javascript|ecmascript)\b/i.test(type)) ||
     (path.endsWith(".css") && !/^text\/css\b/i.test(type));
+  return response.ok && !wrongType;
+}
+
+async function store(request, response) {
   // A removed asset can return the host's HTML fallback with status 200.
-  if (wrongType) {
+  if (!isCacheable(new URL(request.url).pathname, response)) {
     return (await caches.match(request, { ignoreVary: true })) ?? response;
   }
-  if (response.ok) {
-    const cache = await caches.open(CACHE);
-    await cache.put(request, response.clone());
-  }
+  const cache = await caches.open(CACHE);
+  await cache.put(request, response.clone());
   return response;
 }
 
