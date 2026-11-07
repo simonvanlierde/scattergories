@@ -1,46 +1,19 @@
-import { FALLBACK_LOCALE, type LocaleCode, resolveLocale } from "../localeRegistry";
-import categoriesResourceEn from "./categories.en.json";
-import enTranslation from "./en.json";
+import type { Messages } from "@lingui/core";
+import { FALLBACK_LOCALE, resolveLocale } from "../localeRegistry";
+import { messages as english } from "./en.po";
 
-interface LocaleNamespaces {
-  translation: TranslationResource;
-  categories: CategoriesResource;
+const loaders = import.meta.glob<{ messages: Messages }>(["./*.po", "!./en.po"]);
+
+async function loadLocaleMessages(locale: string): Promise<Messages> {
+  const resolved = resolveLocale(locale);
+  if (resolved === FALLBACK_LOCALE) {
+    return english;
+  }
+  const loader = loaders[`./${resolved}.po`];
+  if (!loader) {
+    return english;
+  }
+  return (await loader()).messages;
 }
 
-export type TranslationResource = typeof enTranslation;
-export type CategoriesResource = Record<string, string>;
-
-const translationResourceEn: TranslationResource = enTranslation;
-const categoriesResourceEnValue: CategoriesResource = categoriesResourceEn;
-
-// en + registry are statically imported (bundled in main); exclude them so the
-// glob only owns the async per-locale chunks and Vite doesn't warn.
-const translationLoaders = import.meta.glob<TranslationResource>(
-  ["./*.json", "!./categories.*.json", "!./registry.json", "!./en.json"],
-  { import: "default" },
-);
-const categoryLoaders = import.meta.glob<CategoriesResource>(["./categories.*.json", "!./categories.en.json"], {
-  import: "default",
-});
-
-async function loadLocaleNamespaces(locale: string): Promise<LocaleNamespaces> {
-  const loc = resolveLocale(locale) as LocaleCode;
-
-  // The default locale is bundled synchronously; no async chunk needed.
-  if (loc === FALLBACK_LOCALE) {
-    return { translation: translationResourceEn, categories: categoriesResourceEnValue };
-  }
-
-  const translationLoader = translationLoaders[`./${loc}.json`];
-  const categoryLoader = categoryLoaders[`./categories.${loc}.json`];
-  if (!(translationLoader && categoryLoader)) {
-    // Unreachable for a resolved locale; fall back to the bundled English resources.
-    return { translation: translationResourceEn, categories: categoriesResourceEnValue };
-  }
-
-  const [translation, categories] = await Promise.all([translationLoader(), categoryLoader()]);
-  return { translation, categories };
-}
-
-export type { LocaleCode };
-export { loadLocaleNamespaces };
+export { loadLocaleMessages };

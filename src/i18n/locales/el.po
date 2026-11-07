@@ -1,0 +1,1128 @@
+msgid ""
+msgstr ""
+"Language: el\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Scattergories
+msgid "title"
+msgstr "Scattergories"
+
+#. Current letter
+msgid "round.letterLabel"
+msgstr "Τρέχον γράμμα"
+
+#. Round clock
+msgid "round.timerLabel"
+msgstr "Ρολόι γύρου"
+
+#. Round {number}
+msgid "round.number"
+msgstr "Γύρος {number}"
+
+#. Round controls
+msgid "controls.roundGroup"
+msgstr "Χειριστήρια γύρου"
+
+#. Roll a letter
+msgid "buttons.startRound"
+msgstr "Κλήρωση γράμματος"
+
+#. Next round
+msgid "buttons.nextRound"
+msgstr "Επόμενος Γύρος"
+
+#. Spinning…
+msgid "buttons.spinning"
+msgstr "Περιστροφή…"
+
+#. New letter
+msgid "buttons.newLetter"
+msgstr "Νέο γράμμα"
+
+#. Pause
+msgid "buttons.pause"
+msgstr "Παύση"
+
+#. Resume
+msgid "buttons.resume"
+msgstr "Συνέχεια"
+
+#. Mute
+msgid "buttons.mute"
+msgstr "Σίγαση"
+
+#. Unmute
+msgid "buttons.unmute"
+msgstr "Ήχος"
+
+#. Redraw
+msgid "buttons.redraw"
+msgstr "Νέα κλήρωση"
+
+#. Add
+msgid "buttons.add"
+msgstr "Προσθήκη"
+
+#. Remove
+msgid "buttons.remove"
+msgstr "Αφαίρεση"
+
+#. Add this category to your custom collection
+msgid "buttons.addTooltip"
+msgstr "Προσθήκη αυτής της κατηγορίας στην προσωπική σας συλλογή"
+
+#. Close this window
+msgid "buttons.closeTooltip"
+msgstr "Κλείσιμο αυτού του παραθύρου"
+
+#. How to play
+msgid "buttons.howToPlay"
+msgstr "Οδηγίες"
+
+#. Tap again to skip this round
+msgid "buttons.skipConfirm"
+msgstr "Πάτησε ξανά για να παραλείψεις τον γύρο"
+
+#. Tap again to remove
+msgid "buttons.removeAllConfirm"
+msgstr "Πάτησε ξανά για αφαίρεση"
+
+#. Ready
+msgid "timer.ready"
+msgstr "Έτοιμο"
+
+#. Paused
+msgid "timer.paused"
+msgstr "Σε παύση"
+
+#. Time's up!
+msgid "timer.timeUp"
+msgstr "Τέλος χρόνου!"
+
+#. Get ready…
+msgid "timer.getReady"
+msgstr "Ετοιμάσου…"
+
+#. Go!
+msgid "timer.go"
+msgstr "Πάμε!"
+
+#. Round over!
+msgid "timer.roundOver"
+msgstr "Ο γύρος τελείωσε!"
+
+#. Start in {seconds}s
+msgid "timer.startIn"
+msgstr "Έναρξη σε {seconds} δευτ."
+
+#. {seconds}s
+msgid "timer.secondsLeft"
+msgstr "{seconds}δ"
+
+#. {seconds} seconds left
+msgid "timer.secondsWarning"
+msgstr "Απομένουν {seconds} δευτερόλεπτα"
+
+#. Settings
+msgid "settings.title"
+msgstr "Ρυθμίσεις"
+
+#. Round length
+msgid "settings.duration"
+msgstr "Διάρκεια γύρου"
+
+#. Get ready
+msgid "settings.getReady"
+msgstr "Προετοιμασία"
+
+#. Avoid letter repeats
+msgid "settings.avoidRepeats"
+msgstr "Αποφυγή επανάληψης γραμμάτων"
+
+#. Draw
+msgid "settings.categoryDraw"
+msgstr "Κλήρωση"
+
+#. Add custom category
+msgid "settings.addCustom"
+msgstr "Προσθήκη κατηγορίας"
+
+#. Gameplay
+msgid "settings.gameplay"
+msgstr "Τρόπος Παιχνιδιού"
+
+#. How long each round lasts.
+msgid "settings.durationHint"
+msgstr "Πόσο διαρκεί κάθε γύρος."
+
+#. Countdown before the timer starts.
+msgid "settings.getReadyHint"
+msgstr "Αντίστροφη μέτρηση πριν ξεκινήσει ο χρόνος."
+
+#. Skips the last 8 letters drawn; common letters still come up more often.
+msgid "settings.avoidRepeatsHint"
+msgstr "Παραλείπει τα 8 τελευταία γράμματα που βγήκαν· τα συχνά γράμματα βγαίνουν ακόμη πιο συχνά."
+
+#. Classic
+msgid "packs.classic.label"
+msgstr "Κλασικό"
+
+#. Foodie
+msgid "packs.foodie.label"
+msgstr "Φαγητό"
+
+#. Pop Culture
+msgid "packs.popCulture.label"
+msgstr "Ποπ κουλτούρα"
+
+#. Travel
+msgid "packs.travel.label"
+msgstr "Ταξίδια"
+
+#. Kids
+msgid "packs.kids.label"
+msgstr "Παιδιά"
+
+#. Around the House
+msgid "packs.household.label"
+msgstr "Στο σπίτι"
+
+#. Grown-ups
+msgid "packs.grownUps.label"
+msgstr "Για ενήλικες"
+
+#. Game board
+msgid "playmat.label"
+msgstr "Ταμπλό παιχνιδιού"
+
+#. Start or advance a round
+msgid "rail.shortcuts.space"
+msgstr "Έναρξη ή συνέχεια γύρου"
+
+#. Re-roll the current letter
+msgid "rail.shortcuts.r"
+msgstr "Νέα κλήρωση του τρέχοντος γράμματος"
+
+#. Pause or resume
+msgid "rail.shortcuts.p"
+msgstr "Παύση ή συνέχεια"
+
+#. Toggle the categories panel
+msgid "rail.shortcuts.c"
+msgstr "Εμφάνιση ή απόκρυψη του πίνακα κατηγοριών"
+
+#. Open this shortcut list
+msgid "rail.shortcuts.help"
+msgstr "Άνοιγμα αυτής της λίστας συντομεύσεων"
+
+#. Categories
+msgid "categories.title"
+msgstr "Κατηγορίες"
+
+#. Add categories to your deck to play.
+msgid "categories.minimumRequired"
+msgstr "Πρόσθεσε κατηγορίες στην τράπουλα για να παίξεις."
+
+#. Selected categories
+msgid "categories.drawnListLabel"
+msgstr "Επιλεγμένες κατηγορίες"
+
+#. Category deck
+msgid "categories.deckLabel"
+msgstr "Τράπουλα κατηγοριών"
+
+#. {custom} custom · {builtin} built-in
+msgid "categories.deckCount"
+msgstr "{custom} προσαρμοσμένες · {builtin} προεπιλεγμένες"
+
+#. The deck is empty. Add a pack or a custom category.
+msgid "categories.emptyDeck"
+msgstr "Η τράπουλα είναι άδεια. Πρόσθεσε ένα πακέτο ή μια δική σου κατηγορία."
+
+#. Open categories
+msgid "categories.showDeck"
+msgstr "Άνοιγμα κατηγοριών"
+
+#. Hide categories
+msgid "categories.hideDeck"
+msgstr "Απόκρυψη κατηγοριών"
+
+#. Customize deck
+msgid "categories.customize"
+msgstr "Προσαρμογή τράπουλας"
+
+#. Customize deck
+msgid "categories.customizeTitle"
+msgstr "Προσαρμογή τράπουλας"
+
+#. Add a category pack
+msgid "categories.addPack"
+msgstr "Προσθήκη πακέτου κατηγοριών"
+
+#. Add a pack…
+msgid "categories.addPackPlaceholder"
+msgstr "Προσθήκη πακέτου…"
+
+#. Remove all custom
+msgid "categories.removeAllCustom"
+msgstr "Αφαίρεση όλων των προσαρμοσμένων"
+
+#. Remove all built-in
+msgid "categories.removeAllBuiltins"
+msgstr "Αφαίρεση όλων των προεπιλεγμένων"
+
+#. Pin {name}
+msgid "categories.pinOne"
+msgstr "Καρφίτσωμα {name}"
+
+#. Unpin {name}
+msgid "categories.unpinOne"
+msgstr "Ξεκαρφίτσωμα {name}"
+
+#. Pin all
+msgid "categories.pinAll"
+msgstr "Καρφίτσωμα όλων"
+
+#. Unpin all
+msgid "categories.unpinAll"
+msgstr "Ξεκαρφίτσωμα όλων"
+
+#. Add categories
+msgid "categories.addSectionTitle"
+msgstr "Προσθήκη κατηγοριών"
+
+#. Your deck
+msgid "categories.deckSectionTitle"
+msgstr "Η τράπουλα"
+
+#. cards
+msgid "categories.drawUnit"
+msgstr "κάρτες"
+
+#. How to play
+msgid "modal.title"
+msgstr "Οδηγίες"
+
+#. Score points by writing words that fit each category and start with the drawn letter.
+msgid "modal.objectiveText"
+msgstr "Σκοπός είναι να μαζέψεις πόντους γράφοντας λέξεις που ξεκινούν με το γράμμα που κληρώθηκε και ταιριάζουν στις κατηγορίες."
+
+#. A random letter is drawn. Every answer must start with it.
+msgid "modal.gameplayPoints.0"
+msgstr "Τραβιέται ένα τυχαίο γράμμα. Κάθε απάντηση πρέπει να ξεκινά από αυτό."
+
+#. Write one word for each category before the timer runs out (90 seconds by default).
+msgid "modal.gameplayPoints.1"
+msgstr "Γράψε μία λέξη για κάθε κατηγορία πριν τελειώσει ο χρόνος (90 δευτ. από προεπιλογή)."
+
+#. Use a different word for each category, with no repeats within your own list.
+msgid "modal.gameplayPoints.2"
+msgstr "Χρησιμοποίησε διαφορετική λέξη για κάθε κατηγορία, χωρίς επαναλήψεις στη δική σου λίστα."
+
+#. Playing with others: answers nobody else wrote score 1 point, matching answers score 0.
+msgid "modal.gameplayPoints.3"
+msgstr "Με άλλους παίκτες: οι απαντήσεις που δεν έγραψε κανείς άλλος δίνουν 1 πόντο, οι διπλές 0."
+
+#. Categories
+msgid "modal.categories"
+msgstr "Κατηγορίες"
+
+#. The deck comes with a set of built-in categories, and you can add your own.
+msgid "modal.categoriesText"
+msgstr "Η τράπουλα περιλαμβάνει ενσωματωμένες κατηγορίες και μπορείς να προσθέσεις δικές σου."
+
+#. Customize the deck to add categories and built-in packs, or remove any you'd rather skip.
+msgid "modal.categoriesItems.0"
+msgstr "Προσάρμοσε την τράπουλα για να προσθέσεις κατηγορίες και πακέτα, ή αφαίρεσε όσες προτιμάς να παραλείψεις."
+
+#. Pin a category to lock it into every round; unpinned ones are drawn at random to fill the rest.
+msgid "modal.categoriesItems.1"
+msgstr "Καρφίτσωσε μια κατηγορία για να εμφανίζεται σε κάθε γύρο· οι μη καρφιτσωμένες τραβιούνται τυχαία για τις υπόλοιπες."
+
+#. Reroll to draw a fresh set of categories for the current letter, without changing the letter.
+msgid "modal.categoriesItems.2"
+msgstr "Κάνε νέα κλήρωση για να τραβήξεις ένα φρέσκο σύνολο κατηγοριών για το τρέχον γράμμα, χωρίς να αλλάξεις το γράμμα."
+
+#. Letter odds
+msgid "modal.odds"
+msgstr "Πιθανότητες γραμμάτων"
+
+#. Each letter's chance of being drawn, from how often words start with it on Wikipedia in this language ({snapshot} snapshot). A draw never repeats the previous letter, and with “{setting}” on it skips the last {window} letters drawn. That makes rare letters come up a little more often than shown.
+msgid "modal.oddsText"
+msgstr "Η πιθανότητα να βγει κάθε γράμμα, με βάση πόσες λέξεις ξεκινούν από αυτό στη Βικιπαίδεια αυτής της γλώσσας (στιγμιότυπο: {snapshot}). Μια κλήρωση δεν επαναλαμβάνει ποτέ το προηγούμενο γράμμα, και με το «{setting}» ενεργό παραλείπει τα {window} τελευταία γράμματα που βγήκαν. Έτσι τα σπάνια γράμματα βγαίνουν λίγο συχνότερα από όσο δείχνει ο πίνακας."
+
+#. Letter
+msgid "modal.oddsLetter"
+msgstr "Γράμμα"
+
+#. Chance
+msgid "modal.oddsChance"
+msgstr "Πιθανότητα"
+
+#. Keyboard shortcuts
+msgid "modal.shortcuts"
+msgstr "Συντομεύσεις πληκτρολογίου"
+
+#. About
+msgid "modal.about"
+msgstr "Σχετικά"
+
+#. Scattergories is the original party game by Hasbro. This is a free, unofficial companion for playing it around the table. Browse the <0>official game</0> or this app's <1>source code</1>, released under the <2>MIT license</2>.
+msgid "modal.attribution"
+msgstr "Το Scattergories είναι το πρωτότυπο επιτραπέζιο παιχνίδι της Hasbro. Αυτό είναι ένα δωρεάν, ανεπίσημο συνοδευτικό για να το παίζεις γύρω από το τραπέζι. Δες το <0>επίσημο παιχνίδι</0> ή τον <1>πηγαίο κώδικα</1> αυτής της εφαρμογής, που διατίθεται με την <2>άδεια MIT</2>."
+
+#. This app stores settings and custom categories in your browser only.
+msgid "modal.privacy"
+msgstr "Αυτή η εφαρμογή αποθηκεύει ρυθμίσεις και κατηγορίες μόνο στον περιηγητή σας."
+
+#. Version {version}
+msgid "modal.version"
+msgstr "Έκδοση {version}"
+
+#. Opening rules…
+msgid "modal.loading"
+msgstr "Άνοιγμα οδηγιών…"
+
+#. Language
+msgid "language.label"
+msgstr "Γλώσσα"
+
+#. Appearance
+msgid "theme.label"
+msgstr "Εμφάνιση"
+
+#. Light
+msgid "theme.light"
+msgstr "Φωτεινό"
+
+#. Dark
+msgid "theme.dark"
+msgstr "Σκούρο"
+
+#. A fresh app version is ready.
+msgid "errors.chunkTitle"
+msgstr "Μια νέα έκδοση της εφαρμογής είναι έτοιμη."
+
+#. One of the interface chunks changed while the app was open. Reload to continue safely.
+msgid "errors.chunkBody"
+msgstr "Ένα τμήμα της διεπαφής άλλαξε ενώ η εφαρμογή ήταν ανοιχτή. Κάνε επαναφόρτωση για να συνεχίσεις με ασφάλεια."
+
+#. Recovery mode
+msgid "errors.boundaryEyebrow"
+msgstr "Λειτουργία ανάκτησης"
+
+#. Something went wrong.
+msgid "errors.boundaryTitle"
+msgstr "Κάτι πήγε στραβά."
+
+#. Reload the app to reset the current round and continue playing.
+msgid "errors.boundaryBody"
+msgstr "Κάνε επαναφόρτωση της εφαρμογής για να μηδενίσεις τον τρέχοντα γύρο και να συνεχίσεις."
+
+#. Reload app
+msgid "errors.reload"
+msgstr "Επαναφόρτωση εφαρμογής"
+
+msgid "category.Animals"
+msgstr "Ζώα"
+
+msgid "category.Foods"
+msgstr "Φαγητά"
+
+msgid "category.Countries"
+msgstr "Χώρες"
+
+msgid "category.Cities"
+msgstr "Πόλεις"
+
+msgid "category.Movies"
+msgstr "Ταινίες"
+
+msgid "category.TV Shows"
+msgstr "Τηλεοπτικές σειρές"
+
+msgid "category.Sports"
+msgstr "Αθλήματα"
+
+msgid "category.Instruments"
+msgstr "Μουσικά όργανα"
+
+msgid "category.Types of Cars"
+msgstr "Μάρκες αυτοκινήτων"
+
+msgid "category.Kitchen Things"
+msgstr "Είδη κουζίνας"
+
+msgid "category.Beach Things"
+msgstr "Πράγματα παραλίας"
+
+msgid "category.Clothing Items"
+msgstr "Είδη ένδυσης"
+
+msgid "category.Famous People"
+msgstr "Διάσημοι"
+
+msgid "category.Fictional Characters"
+msgstr "Φανταστικοί ήρωες"
+
+msgid "category.Board Games"
+msgstr "Επιτραπέζια"
+
+msgid "category.Cold Things"
+msgstr "Κρύα πράγματα"
+
+msgid "category.Hot Things"
+msgstr "Ζεστά πράγματα"
+
+msgid "category.Colors"
+msgstr "Χρώματα"
+
+msgid "category.Fruits"
+msgstr "Φρούτα"
+
+msgid "category.Vegetables"
+msgstr "Λαχανικά"
+
+msgid "category.School Subjects"
+msgstr "Σχολικά μαθήματα"
+
+msgid "category.Bedroom Things"
+msgstr "Είδη υπνοδωματίου"
+
+msgid "category.Bathroom Things"
+msgstr "Είδη μπάνιου"
+
+msgid "category.Candy / Sweets"
+msgstr "Γλυκά"
+
+msgid "category.Beverages"
+msgstr "Ποτά"
+
+msgid "category.Morning Habits"
+msgstr "Πρωινές συνήθειες"
+
+msgid "category.Outdoor Things"
+msgstr "Ό,τι βρίσκεις έξω"
+
+msgid "category.Card Games"
+msgstr "Χαρτοπαίγνια"
+
+msgid "category.Outdoor Activities"
+msgstr "Δραστηριότητες έξω"
+
+msgid "category.Indoor Activities"
+msgstr "Δραστηριότητες μέσα"
+
+msgid "category.Fast Food Chains"
+msgstr "Αλυσίδες φαστ φουντ"
+
+msgid "category.Superheroes"
+msgstr "Υπερήρωες"
+
+msgid "category.Happy Things"
+msgstr "Χαρούμενα πράγματα"
+
+msgid "category.Scary Things"
+msgstr "Τρομακτικά πράγματα"
+
+msgid "category.Dance Styles"
+msgstr "Είδη χορού"
+
+msgid "category.Music Genres"
+msgstr "Είδη μουσικής"
+
+msgid "category.Hobbies"
+msgstr "Χόμπι"
+
+msgid "category.Things with Wheels"
+msgstr "Πράγματα με ρόδες"
+
+msgid "category.Soft Things"
+msgstr "Μαλακά πράγματα"
+
+msgid "category.Tools"
+msgstr "Εργαλεία"
+
+msgid "category.Plants & Flowers"
+msgstr "Φυτά & λουλούδια"
+
+msgid "category.Historical Figures"
+msgstr "Ιστορικά πρόσωπα"
+
+msgid "category.Things in a Bag"
+msgstr "Πράγματα σε τσάντα"
+
+msgid "category.Things in Space"
+msgstr "Διαστημικά πράγματα"
+
+msgid "category.Mythical Beasts"
+msgstr "Μυθικά πλάσματα"
+
+msgid "category.Tech Terms"
+msgstr "Όροι τεχνολογίας"
+
+msgid "category.Weather Types"
+msgstr "Καιρικά φαινόμενα"
+
+msgid "category.Modes of Transport"
+msgstr "Μέσα μεταφοράς"
+
+msgid "category.Office Things"
+msgstr "Είδη γραφείου"
+
+msgid "category.Pizza Toppings"
+msgstr "Υλικά πίτσας"
+
+msgid "category.Types of Cheese"
+msgstr "Είδη τυριών"
+
+msgid "category.Celebrations"
+msgstr "Γιορτές"
+
+msgid "category.Baby Items"
+msgstr "Βρεφικά είδη"
+
+msgid "category.Rhymes With 'Day'"
+msgstr "Ομοιοκαταληξίες με τη λέξη 'νερό'"
+
+msgid "category.Party Things"
+msgstr "Πράγματα σε πάρτι"
+
+msgid "category.Round Things"
+msgstr "Στρογγυλά πράγματα"
+
+msgid "category.Fairy Tale Figures"
+msgstr "Ήρωες παραμυθιών"
+
+msgid "category.A Boy's Name"
+msgstr "Όνομα αγοριού"
+
+msgid "category.U.S. Cities"
+msgstr "Ευρωπαϊκές πόλεις"
+
+msgid "category.School Supplies"
+msgstr "Σχολικά είδη"
+
+msgid "category.Sports Teams"
+msgstr "Αθλητικές ομάδες"
+
+msgid "category.Insects"
+msgstr "Έντομα"
+
+msgid "category.Breakfast Foods"
+msgstr "Είδη πρωινού"
+
+msgid "category.Furniture"
+msgstr "Έπιπλα"
+
+msgid "category.Ocean Things"
+msgstr "Πράγματα του ωκεανού"
+
+msgid "category.Presidents"
+msgstr "Αρχηγοί κρατών"
+
+msgid "category.Product Names"
+msgstr "Ονόματα προϊόντων"
+
+msgid "category.Appliances"
+msgstr "Οικιακές συσκευές"
+
+msgid "category.Personality Traits"
+msgstr "Στοιχεία χαρακτήρα"
+
+msgid "category.Desserts"
+msgstr "Επιδόρπια"
+
+msgid "category.Car Parts"
+msgstr "Μέρη αυτοκινήτου"
+
+msgid "category.Map Features"
+msgstr "Στοιχεία χάρτη"
+
+msgid "category.Athletes"
+msgstr "Αθλητές"
+
+msgid "category.4-Letter Words"
+msgstr "Βρισιές"
+
+msgid "category.Fridge Items"
+msgstr "Είδη ψυγείου"
+
+msgid "category.Farm Animals"
+msgstr "Ζώα φάρμας"
+
+msgid "category.Street Names"
+msgstr "Ονόματα δρόμων"
+
+msgid "category.A Girl's Name"
+msgstr "Όνομα κοριτσιού"
+
+msgid "category.Villains/Monsters"
+msgstr "Κακοί & τέρατα"
+
+msgid "category.Footwear"
+msgstr "Υποδήματα"
+
+msgid "category.Fears"
+msgstr "Φόβοι"
+
+msgid "category.Measurements"
+msgstr "Μονάδες μέτρησης"
+
+msgid "category.Book Titles"
+msgstr "Τίτλοι βιβλίων"
+
+msgid "category.Heroes"
+msgstr "Ήρωες"
+
+msgid "category.Gifts/Presents"
+msgstr "Δώρα"
+
+msgid "category.Black Things"
+msgstr "Μαύρα πράγματα"
+
+msgid "category.Vehicles"
+msgstr "Οχήματα"
+
+msgid "category.Tropical Places"
+msgstr "Τροπικά μέρη"
+
+msgid "category.College Majors"
+msgstr "Κλάδοι σπουδών"
+
+msgid "category.Dairy Products"
+msgstr "Γαλακτοκομικά"
+
+msgid "category.Souvenirs"
+msgstr "Σουβενίρ"
+
+msgid "category.Wallet Items"
+msgstr "Είδη πορτοφολιού"
+
+msgid "category.Famous Women"
+msgstr "Διάσημες γυναίκες"
+
+msgid "category.Medicine/Drugs"
+msgstr "Φάρμακα"
+
+msgid "category.Metal Things"
+msgstr "Μεταλλικά πράγματα"
+
+msgid "category.People in Uniform"
+msgstr "Άνθρωποι με στολή"
+
+msgid "category.Things You Plug In"
+msgstr "Συσκευές με πρίζα"
+
+msgid "category.Languages"
+msgstr "Γλώσσες"
+
+msgid "category.Bible Names"
+msgstr "Βιβλικά ονόματα"
+
+msgid "category.Junk Food"
+msgstr "Πρόχειρο φαγητό"
+
+msgid "category.Growing Things"
+msgstr "Ό,τι μεγαλώνει"
+
+msgid "category.Companies"
+msgstr "Εταιρείες"
+
+msgid "category.Video Games"
+msgstr "Βιντεοπαιχνίδια"
+
+msgid "category.Gadgets"
+msgstr "Γκάτζετ"
+
+msgid "category.Things With Remotes"
+msgstr "Με τηλεχειριστήριο"
+
+msgid "category.Internet Lingo"
+msgstr "Όροι διαδικτύου"
+
+msgid "category.Offensive Words"
+msgstr "Προσβλητικές λέξεις"
+
+msgid "category.Wireless Things"
+msgstr "Ασύρματες συσκευές"
+
+msgid "category.Computer Parts"
+msgstr "Μέρη υπολογιστή"
+
+msgid "category.Software"
+msgstr "Λογισμικό"
+
+msgid "category.Websites"
+msgstr "Ιστοσελίδες"
+
+msgid "category.Game Terms"
+msgstr "Όροι παιχνιδιών"
+
+msgid "category.Grocery Items"
+msgstr "Είδη σούπερ μάρκετ"
+
+msgid "category.Reasons to Quit"
+msgstr "Λόγοι παραίτησης"
+
+msgid "category.Striped Things"
+msgstr "Ριγέ πράγματα"
+
+msgid "category.Tourist Attractions"
+msgstr "Αξιοθέατα"
+
+msgid "category.Diet Foods"
+msgstr "Τροφές διαίτης"
+
+msgid "category.Hospital Things"
+msgstr "Είδη νοσοκομείου"
+
+msgid "category.Green Foods"
+msgstr "Πράσινα φαγητά"
+
+msgid "category.Weekend Activities"
+msgstr "Το Σαββατοκύριακο"
+
+msgid "category.Acronyms"
+msgstr "Ακρωνύμια"
+
+msgid "category.Seafood"
+msgstr "Θαλασσινά"
+
+msgid "category.Christmas Songs"
+msgstr "Γιορτινά τραγούδια"
+
+msgid "category.Words Ending in -N"
+msgstr "Λέξεις σε -ν"
+
+msgid "category.Double-Letter Words"
+msgstr "Με διπλά γράμματα"
+
+msgid "category.Children's Books"
+msgstr "Παιδικά βιβλία"
+
+msgid "category.Bar Things"
+msgstr "Πράγματα σε μπαρ"
+
+msgid "category.Indoor Sports"
+msgstr "Σπορ κλειστού χώρου"
+
+msgid "category.Names in Songs"
+msgstr "Ονόματα σε τραγούδια"
+
+msgid "category.Raw Foods"
+msgstr "Ωμά φαγητά"
+
+msgid "category.European Places"
+msgstr "Μέρη της Ευρώπης"
+
+msgid "category.Olympic Events"
+msgstr "Ολυμπιακά αθλήματα"
+
+msgid "category.Things at the Zoo"
+msgstr "Στον ζωολογικό κήπο"
+
+msgid "category.Math Terms"
+msgstr "Μαθηματικοί όροι"
+
+msgid "category.Famous Animals"
+msgstr "Διάσημα ζώα"
+
+msgid "category.Party Activities"
+msgstr "Δραστηριότητες πάρτι"
+
+msgid "category.Sandwiches"
+msgstr "Σάντουιτς"
+
+msgid "category.Catalog Items"
+msgstr "Είδη καταλόγου"
+
+msgid "category.World Leaders"
+msgstr "Ηγέτες κρατών"
+
+msgid "category.Excuses to Be Late"
+msgstr "Δικαιολογίες καθυστέρησης"
+
+msgid "category.Ice Cream Flavors"
+msgstr "Γεύσεις παγωτού"
+
+msgid "category.Bouncy Things"
+msgstr "Ό,τι αναπηδά"
+
+msgid "category.TV Stars"
+msgstr "Τηλεαστέρες"
+
+msgid "category.Park Things"
+msgstr "Πράγματα στο πάρκο"
+
+msgid "category.Foreign Cities"
+msgstr "Ξένες πόλεις"
+
+msgid "category.Stones/Gems"
+msgstr "Πέτρες & πετράδια"
+
+msgid "category.Nicknames"
+msgstr "Παρατσούκλια"
+
+msgid "category.Things in the Sky"
+msgstr "Στον ουρανό"
+
+msgid "category.Universities"
+msgstr "Πανεπιστήμια"
+
+msgid "category.Fish"
+msgstr "Ψάρια"
+
+msgid "category.Spotted Things"
+msgstr "Πράγματα με βούλες"
+
+msgid "category.Terms of Endearment"
+msgstr "Χαϊδευτικά"
+
+msgid "category.Items in This Room"
+msgstr "Σε αυτό το δωμάτιο"
+
+msgid "category.Menu Items"
+msgstr "Είδη μενού"
+
+msgid "category.Magazines"
+msgstr "Περιοδικά"
+
+msgid "category.Capitals"
+msgstr "Πρωτεύουσες"
+
+msgid "category.Big Purchases"
+msgstr "Μεγάλες αγορές"
+
+msgid "category.Hidden Things"
+msgstr "Κρυφά πράγματα"
+
+msgid "category.Suitcase Items"
+msgstr "Είδη βαλίτσας"
+
+msgid "category.Things With Tails"
+msgstr "Πράγματα με ουρά"
+
+msgid "category.Sports Gear"
+msgstr "Αθλητικά είδη"
+
+msgid "category.Crimes"
+msgstr "Εγκλήματα"
+
+msgid "category.Sticky Things"
+msgstr "Ό,τι κολλάει"
+
+msgid "category.Awards"
+msgstr "Βραβεία"
+
+msgid "category.Spices/Herbs"
+msgstr "Μπαχαρικά & βότανα"
+
+msgid "category.Bad Habits"
+msgstr "Κακές συνήθειες"
+
+msgid "category.Cosmetics"
+msgstr "Καλλυντικά"
+
+msgid "category.Celebrities"
+msgstr "Διασημότητες"
+
+msgid "category.Utensils"
+msgstr "Μαγειρικά σκεύη"
+
+msgid "category.Reptiles/Amphibians"
+msgstr "Ερπετά & αμφίβια"
+
+msgid "category.Parks"
+msgstr "Πάρκα"
+
+msgid "category.Allergies"
+msgstr "Αλλεργίες"
+
+msgid "category.Restaurants"
+msgstr "Εστιατόρια"
+
+msgid "category.Infamous People"
+msgstr "Διαβόητοι"
+
+msgid "category.Medicine Cabinet"
+msgstr "Ντουλάπι φαρμάκων"
+
+msgid "category.Toys"
+msgstr "Παιδικά παιχνίδια"
+
+msgid "category.Chores"
+msgstr "Δουλειές σπιτιού"
+
+msgid "category.Bodies of Water"
+msgstr "Υδάτινα σώματα"
+
+msgid "category.Authors"
+msgstr "Συγγραφείς"
+
+msgid "category.Halloween Costumes"
+msgstr "Αποκριάτικες στολές"
+
+msgid "category.Weapons"
+msgstr "Όπλα"
+
+msgid "category.Exercise Words"
+msgstr "Λέξεις γυμναστικής"
+
+msgid "category.Song Titles"
+msgstr "Τίτλοι τραγουδιών"
+
+msgid "category.Body Parts"
+msgstr "Μέρη του σώματος"
+
+msgid "category.Ethnic Foods"
+msgstr "Ξένες κουζίνες"
+
+msgid "category.Things You Shout"
+msgstr "Ό,τι φωνάζεις"
+
+msgid "category.Birds"
+msgstr "Πουλιά"
+
+msgid "category.Flowers"
+msgstr "Λουλούδια"
+
+msgid "category.Things You Replace"
+msgstr "Ό,τι αντικαθιστάς"
+
+msgid "category.Duos & Trios"
+msgstr "Ντουέτα & τρίο"
+
+msgid "category.Desk Items"
+msgstr "Πάνω στο γραφείο"
+
+msgid "category.Vacation Spots"
+msgstr "Μέρη για διακοπές"
+
+msgid "category.Diseases"
+msgstr "Ασθένειες"
+
+msgid "category.Money Words"
+msgstr "Λέξεις για χρήματα"
+
+msgid "category.Vending Items"
+msgstr "Σε αυτόματο πωλητή"
+
+msgid "category.Beers"
+msgstr "Μπύρες"
+
+msgid "category.Circus Things"
+msgstr "Στο τσίρκο"
+
+msgid "category.States"
+msgstr "Νομοί της Ελλάδας"
+
+msgid "category.Throwaway Things"
+msgstr "Ό,τι πετάς"
+
+msgid "category.Occupations"
+msgstr "Δουλειές"
+
+msgid "category.Cartoon Characters"
+msgstr "Ήρωες καρτούν"
+
+msgid "category.Musical Groups"
+msgstr "Συγκροτήματα"
+
+msgid "category.Store Names"
+msgstr "Καταστήματα"
+
+msgid "category.Stadium Things"
+msgstr "Στο γήπεδο"
+
+msgid "category.Trees"
+msgstr "Δέντρα"
+
+msgid "category.Kinds of Soup"
+msgstr "Είδη σούπας"
+
+msgid "category.New York Things"
+msgstr "Στην Αθήνα"
+
+msgid "category.Reasons for Tickets"
+msgstr "Λόγοι για πρόστιμο"
+
+msgid "category.Work Tasks"
+msgstr "Καθήκοντα εργασίας"
+
+msgid "category.Borrowed Words"
+msgstr "Δάνειες λέξεις"
+
+msgid "category.Untouchable Things"
+msgstr "Ό,τι δεν αγγίζεις"
+
+msgid "category.Spicy Foods"
+msgstr "Καυτερά φαγητά"
+
+msgid "category.Carnival Things"
+msgstr "Στο καρναβάλι"
+
+msgid "category.Things You Make"
+msgstr "Ό,τι φτιάχνεις"
+
+msgid "category.Hangout Spots"
+msgstr "Στέκια"
+
+msgid "category.Honeymoon Spots"
+msgstr "Ταξίδι του μέλιτος"
+
+msgid "category.Things for Kids"
+msgstr "Πράγματα για παιδιά"
+
+msgid "category.Deadly Things"
+msgstr "Θανάσιμα πράγματα"
+
+msgid "category.Reasons for a Loan"
+msgstr "Λόγοι για δάνειο"
+
+msgid "category.Winter Words"
+msgstr "Λέξεις του χειμώνα"
+
+msgid "category.Date Ideas"
+msgstr "Ιδέες για ραντεβού"
+
+msgid "category.Historic Events"
+msgstr "Ιστορικά γεγονότα"
+
+msgid "category.Containers"
+msgstr "Δοχεία"
+
+msgid "category.Daily Habits"
+msgstr "Καθημερινή ρουτίνα"
+
+msgid "category.Mail Items"
+msgstr "Αλληλογραφία"
+
+msgid "category.Things to Sit On"
+msgstr "Καθίσματα"
+
+msgid "category.Reasons to Call"
+msgstr "Λόγοι για τηλέφωνο"
+
+msgid "category.Titles for People"
+msgstr "Προσφωνήσεις"
+
+msgid "category.Things With Buttons"
+msgstr "Πράγματα με κουμπιά"
+
+msgid "category.Travel Items"
+msgstr "Είδη ταξιδιού"
+
+msgid "category.Reasons to Call 911"
+msgstr "Λόγοι για το 112"
+
+msgid "category.Time Killers"
+msgstr "Για να περάσει η ώρα"
+
+msgid "category.Fireable Offenses"
+msgstr "Λόγοι απόλυσης"
+
+msgid "category.Holiday Activities"
+msgstr "Ασχολίες διακοπών"

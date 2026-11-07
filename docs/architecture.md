@@ -52,3 +52,10 @@ settings live in the Cloudflare dashboard. The repo only pins the output directo
 [`wrangler.jsonc`](../wrangler.jsonc).
 
 To deploy from a local checkout, run `pnpm build && pnpm dlx wrangler pages deploy dist`.
+
+Translations live in `src/i18n/locales/*.po`. Each catalog contains UI messages and
+category labels, with the English text in the source catalog. Message IDs stay the
+same across languages; interpolation uses ICU placeholders such as `{seconds}`.
+The rules attribution uses numbered tags for its three links. Edit the catalogs
+and run `pnpm i18n:compile` to check them. Vite compiles catalogs when building;
+English is bundled for offline fallback, and other languages load on demand.

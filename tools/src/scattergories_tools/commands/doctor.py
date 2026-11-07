@@ -34,16 +34,9 @@ def doctor(ctx: typer.Context) -> None:
     checks.append(("locale_dir", paths.locale_dir.is_dir(), str(paths.locale_dir)))
     checks.append(
         (
-            "category_source",
-            paths.categories_source_path.is_file(),
-            str(paths.categories_source_path),
-        )
-    )
-    checks.append(
-        (
             "locale_source",
-            paths.locale_payload_source_path.is_file(),
-            str(paths.locale_payload_source_path),
+            paths.catalog_source_path.is_file(),
+            str(paths.catalog_source_path),
         )
     )
     checks.append(

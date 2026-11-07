@@ -5,3 +5,7 @@ writeable = "writeable"
 WRITEABLE = "WRITEABLE"
 certifi = "certifi"
 finde = "finde"
+
+[files]
+# CSpell checks these catalogs with each locale's dictionary.
+extend-exclude = ["src/i18n/locales/*.po", "src/app/bootMessages.ts", "src/app/App.boot.test.tsx"]

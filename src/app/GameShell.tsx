@@ -1,6 +1,6 @@
+import { useLingui } from "@lingui/react";
 import { HelpCircle } from "lucide-react";
 import { Suspense, useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import { canEditDeck } from "@/domain/game/roundReducer";
 import { CategoriesPanel } from "@/features/categories/CategoriesPanel";
 import { Playmat } from "@/features/round/Playmat";
@@ -26,7 +26,7 @@ interface GameShellProps {
 const THEME_COLORS = { light: "#fcfaf4", dark: "#0d0804" } as const;
 
 function ControlBar({ game }: { game: GameController }) {
-  const { t, i18n } = useTranslation();
+  const { _: t, i18n } = useLingui();
 
   return (
     <footer className="controlbar">
@@ -45,7 +45,7 @@ function ControlBar({ game }: { game: GameController }) {
 
       <div className="controlbar__actions">
         <SettingsCluster
-          language={i18n.resolvedLanguage ?? i18n.language}
+          language={i18n.locale}
           isLanguagePending={game.app.isLanguagePending}
           theme={game.settings.theme}
           isMuted={game.settings.isMuted}
@@ -69,7 +69,7 @@ function ControlBar({ game }: { game: GameController }) {
 }
 
 function ChunkErrorBanner({ onReload }: { onReload: () => void }) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
 
   return (
     <section className="banner banner--danger" role="alert" aria-label={t("errors.chunkTitle")}>
@@ -143,7 +143,7 @@ function PlayGrid({ game }: PlayGridProps) {
 }
 
 function GameShell({ game }: GameShellProps) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
   const onboarding = useOnboarding();
 
   useEffect(() => {

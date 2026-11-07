@@ -1,5 +1,5 @@
+import type { I18n as I18nInstance } from "@lingui/core";
 import { act, renderHook, waitFor } from "@testing-library/react";
-import type { i18n as I18nInstance } from "i18next";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ensureLanguageLoaded, persistLanguage } from "@/i18n/config";
 import { useAppControls } from "./useAppControls";
@@ -10,7 +10,7 @@ vi.mock("@/i18n/config", () => ({
 }));
 
 function makeI18n() {
-  return { changeLanguage: vi.fn().mockResolvedValue(undefined) } as unknown as I18nInstance;
+  return { activate: vi.fn().mockResolvedValue(undefined) } as unknown as I18nInstance;
 }
 
 afterEach(() => {
@@ -50,7 +50,7 @@ describe("useAppControls", () => {
     expect(result.current.isLanguagePending).toBe(true);
 
     await waitFor(() => expect(result.current.isLanguagePending).toBe(false));
-    expect(i18n.changeLanguage).toHaveBeenCalledWith("fr");
+    expect(i18n.activate).toHaveBeenCalledWith("fr");
     expect(persistLanguage).toHaveBeenCalledExactlyOnceWith("fr");
     expect(result.current.hasChunkError).toBe(false);
   });

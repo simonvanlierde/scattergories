@@ -1,0 +1,1128 @@
+msgid ""
+msgstr ""
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Scattergories
+msgid "title"
+msgstr "Scattergories"
+
+#. Current letter
+msgid "round.letterLabel"
+msgstr "Aktualna litera"
+
+#. Round clock
+msgid "round.timerLabel"
+msgstr "Zegar rundy"
+
+#. Round {number}
+msgid "round.number"
+msgstr "Runda {number}"
+
+#. Round controls
+msgid "controls.roundGroup"
+msgstr "Sterowanie rundą"
+
+#. Roll a letter
+msgid "buttons.startRound"
+msgstr "Wylosuj literę"
+
+#. Next round
+msgid "buttons.nextRound"
+msgstr "Następna runda"
+
+#. Spinning…
+msgid "buttons.spinning"
+msgstr "Losowanie..."
+
+#. New letter
+msgid "buttons.newLetter"
+msgstr "Nowa litera"
+
+#. Pause
+msgid "buttons.pause"
+msgstr "Pauza"
+
+#. Resume
+msgid "buttons.resume"
+msgstr "Wznów"
+
+#. Mute
+msgid "buttons.mute"
+msgstr "Wycisz"
+
+#. Unmute
+msgid "buttons.unmute"
+msgstr "Włącz dźwięk"
+
+#. Redraw
+msgid "buttons.redraw"
+msgstr "Losuj ponownie"
+
+#. Add
+msgid "buttons.add"
+msgstr "Dodaj"
+
+#. Remove
+msgid "buttons.remove"
+msgstr "Usuń"
+
+#. Add this category to your custom collection
+msgid "buttons.addTooltip"
+msgstr "Dodaj tę kategorię do swojej własnej kolekcji"
+
+#. Close this window
+msgid "buttons.closeTooltip"
+msgstr "Zamknij to okno"
+
+#. How to play
+msgid "buttons.howToPlay"
+msgstr "Jak grać"
+
+#. Tap again to skip this round
+msgid "buttons.skipConfirm"
+msgstr "Dotknij ponownie, aby pominąć tę rundę"
+
+#. Tap again to remove
+msgid "buttons.removeAllConfirm"
+msgstr "Dotknij ponownie, aby usunąć"
+
+#. Ready
+msgid "timer.ready"
+msgstr "Gotowe"
+
+#. Paused
+msgid "timer.paused"
+msgstr "Wstrzymano"
+
+#. Time's up!
+msgid "timer.timeUp"
+msgstr "Czas minął!"
+
+#. Get ready…
+msgid "timer.getReady"
+msgstr "Przygotuj się..."
+
+#. Go!
+msgid "timer.go"
+msgstr "Start!"
+
+#. Round over!
+msgid "timer.roundOver"
+msgstr "Runda zakończona!"
+
+#. Start in {seconds}s
+msgid "timer.startIn"
+msgstr "Start za {seconds} s"
+
+#. {seconds}s
+msgid "timer.secondsLeft"
+msgstr "{seconds} s"
+
+#. {seconds} seconds left
+msgid "timer.secondsWarning"
+msgstr "Zostało {seconds} sekund"
+
+#. Settings
+msgid "settings.title"
+msgstr "Ustawienia"
+
+#. Round length
+msgid "settings.duration"
+msgstr "Długość rundy"
+
+#. Get ready
+msgid "settings.getReady"
+msgstr "Przygotowanie"
+
+#. Avoid letter repeats
+msgid "settings.avoidRepeats"
+msgstr "Unikaj powtórzeń liter"
+
+#. Draw
+msgid "settings.categoryDraw"
+msgstr "Losowanie"
+
+#. Add custom category
+msgid "settings.addCustom"
+msgstr "Własna kategoria"
+
+#. Gameplay
+msgid "settings.gameplay"
+msgstr "Zasady"
+
+#. How long each round lasts.
+msgid "settings.durationHint"
+msgstr "Jak długo trwa runda."
+
+#. Countdown before the timer starts.
+msgid "settings.getReadyHint"
+msgstr "Odliczanie przed startem stopera."
+
+#. Skips the last 8 letters drawn; common letters still come up more often.
+msgid "settings.avoidRepeatsHint"
+msgstr "Pomija ostatnie 8 wylosowanych liter; częste litery nadal wypadają częściej."
+
+#. Classic
+msgid "packs.classic.label"
+msgstr "Klasyczne"
+
+#. Foodie
+msgid "packs.foodie.label"
+msgstr "Jedzenie"
+
+#. Pop Culture
+msgid "packs.popCulture.label"
+msgstr "Popkultura"
+
+#. Travel
+msgid "packs.travel.label"
+msgstr "Podróże"
+
+#. Kids
+msgid "packs.kids.label"
+msgstr "Dzieci"
+
+#. Around the House
+msgid "packs.household.label"
+msgstr "W domu"
+
+#. Grown-ups
+msgid "packs.grownUps.label"
+msgstr "Dla dorosłych"
+
+#. Game board
+msgid "playmat.label"
+msgstr "Plansza"
+
+#. Start or advance a round
+msgid "rail.shortcuts.space"
+msgstr "Rozpocznij lub kontynuuj rundę"
+
+#. Re-roll the current letter
+msgid "rail.shortcuts.r"
+msgstr "Wylosuj ponownie bieżącą literę"
+
+#. Pause or resume
+msgid "rail.shortcuts.p"
+msgstr "Wstrzymaj lub wznów"
+
+#. Toggle the categories panel
+msgid "rail.shortcuts.c"
+msgstr "Pokaż lub ukryj panel kategorii"
+
+#. Open this shortcut list
+msgid "rail.shortcuts.help"
+msgstr "Otwórz tę listę skrótów"
+
+#. Categories
+msgid "categories.title"
+msgstr "Kategorie"
+
+#. Add categories to your deck to play.
+msgid "categories.minimumRequired"
+msgstr "Dodaj kategorie do talii, aby zagrać."
+
+#. Selected categories
+msgid "categories.drawnListLabel"
+msgstr "Wybrane kategorie"
+
+#. Category deck
+msgid "categories.deckLabel"
+msgstr "Talia kategorii"
+
+#. {custom} custom · {builtin} built-in
+msgid "categories.deckCount"
+msgstr "{custom} własne · {builtin} standardowe"
+
+#. The deck is empty. Add a pack or a custom category.
+msgid "categories.emptyDeck"
+msgstr "Talia jest pusta. Dodaj zestaw lub własną kategorię."
+
+#. Open categories
+msgid "categories.showDeck"
+msgstr "Otwórz kategorie"
+
+#. Hide categories
+msgid "categories.hideDeck"
+msgstr "Ukryj kategorie"
+
+#. Customize deck
+msgid "categories.customize"
+msgstr "Dostosuj talię"
+
+#. Customize deck
+msgid "categories.customizeTitle"
+msgstr "Dostosuj talię"
+
+#. Add a category pack
+msgid "categories.addPack"
+msgstr "Dodaj zestaw kategorii"
+
+#. Add a pack…
+msgid "categories.addPackPlaceholder"
+msgstr "Dodaj zestaw…"
+
+#. Remove all custom
+msgid "categories.removeAllCustom"
+msgstr "Usuń wszystkie własne"
+
+#. Remove all built-in
+msgid "categories.removeAllBuiltins"
+msgstr "Usuń wszystkie standardowe"
+
+#. Pin {name}
+msgid "categories.pinOne"
+msgstr "Przypnij {name}"
+
+#. Unpin {name}
+msgid "categories.unpinOne"
+msgstr "Odepnij {name}"
+
+#. Pin all
+msgid "categories.pinAll"
+msgstr "Przypnij wszystkie"
+
+#. Unpin all
+msgid "categories.unpinAll"
+msgstr "Odepnij wszystkie"
+
+#. Add categories
+msgid "categories.addSectionTitle"
+msgstr "Dodaj kategorie"
+
+#. Your deck
+msgid "categories.deckSectionTitle"
+msgstr "Twoja talia"
+
+#. cards
+msgid "categories.drawUnit"
+msgstr "kart"
+
+#. How to play
+msgid "modal.title"
+msgstr "Jak grać"
+
+#. Score points by writing words that fit each category and start with the drawn letter.
+msgid "modal.objectiveText"
+msgstr "Zdobywaj punkty, zapisując słowa, które zaczynają się na wylosowaną literę i pasują do wybranych kategorii."
+
+#. A random letter is drawn. Every answer must start with it.
+msgid "modal.gameplayPoints.0"
+msgstr "Losowana jest litera. Każda odpowiedź musi się od niej zaczynać."
+
+#. Write one word for each category before the timer runs out (90 seconds by default).
+msgid "modal.gameplayPoints.1"
+msgstr "Wpisz jedno słowo do każdej kategorii, zanim skończy się czas (domyślnie 90 s)."
+
+#. Use a different word for each category, with no repeats within your own list.
+msgid "modal.gameplayPoints.2"
+msgstr "Użyj innego słowa dla każdej kategorii, bez powtórzeń w swojej liście."
+
+#. Playing with others: answers nobody else wrote score 1 point, matching answers score 0.
+msgid "modal.gameplayPoints.3"
+msgstr "Z innymi graczami: odpowiedzi, których nikt inny nie zapisał, dają 1 punkt, powtórki 0."
+
+#. Categories
+msgid "modal.categories"
+msgstr "Kategorie"
+
+#. The deck comes with a set of built-in categories, and you can add your own.
+msgid "modal.categoriesText"
+msgstr "Talia zawiera wbudowane kategorie, a Ty możesz dodać własne."
+
+#. Customize the deck to add categories and built-in packs, or remove any you'd rather skip.
+msgid "modal.categoriesItems.0"
+msgstr "Dostosuj talię, aby dodać kategorie i zestawy, lub usuń te, które wolisz pominąć."
+
+#. Pin a category to lock it into every round; unpinned ones are drawn at random to fill the rest.
+msgid "modal.categoriesItems.1"
+msgstr "Przypnij kategorię, aby pojawiała się w każdej rundzie; nieprzypięte są losowane na resztę miejsc."
+
+#. Reroll to draw a fresh set of categories for the current letter, without changing the letter.
+msgid "modal.categoriesItems.2"
+msgstr "Losuj ponownie, aby wylosować nowy zestaw kategorii dla bieżącej litery, bez zmiany litery."
+
+#. Letter odds
+msgid "modal.odds"
+msgstr "Szanse liter"
+
+#. Each letter's chance of being drawn, from how often words start with it on Wikipedia in this language ({snapshot} snapshot). A draw never repeats the previous letter, and with “{setting}” on it skips the last {window} letters drawn. That makes rare letters come up a little more often than shown.
+msgid "modal.oddsText"
+msgstr "Szansa na wylosowanie każdej litery, według tego, ile słów zaczyna się od niej w Wikipedii w tym języku (stan: {snapshot}). Losowanie nigdy nie powtarza poprzedniej litery, a z włączoną opcją „{setting}” pomija ostatnie {window} wylosowanych liter. Dlatego rzadkie litery wypadają nieco częściej, niż pokazano."
+
+#. Letter
+msgid "modal.oddsLetter"
+msgstr "Litera"
+
+#. Chance
+msgid "modal.oddsChance"
+msgstr "Szansa"
+
+#. Keyboard shortcuts
+msgid "modal.shortcuts"
+msgstr "Skróty klawiszowe"
+
+#. About
+msgid "modal.about"
+msgstr "O aplikacji"
+
+#. Scattergories is the original party game by Hasbro. This is a free, unofficial companion for playing it around the table. Browse the <0>official game</0> or this app's <1>source code</1>, released under the <2>MIT license</2>.
+msgid "modal.attribution"
+msgstr "Scattergories to oryginalna gra imprezowa firmy Hasbro. To bezpłatny, nieoficjalny dodatek do gry przy stole. Przejrzyj <0>oficjalną grę</0> lub <1>kod źródłowy</1> tej aplikacji, wydany na <2>licencji MIT</2>."
+
+#. This app stores settings and custom categories in your browser only.
+msgid "modal.privacy"
+msgstr "Ta aplikacja zapisuje ustawienia i kategorie wyłącznie w Twojej przeglądarce."
+
+#. Version {version}
+msgid "modal.version"
+msgstr "Wersja {version}"
+
+#. Opening rules…
+msgid "modal.loading"
+msgstr "Otwieranie zasad…"
+
+#. Language
+msgid "language.label"
+msgstr "Język"
+
+#. Appearance
+msgid "theme.label"
+msgstr "Wygląd"
+
+#. Light
+msgid "theme.light"
+msgstr "Jasny"
+
+#. Dark
+msgid "theme.dark"
+msgstr "Ciemny"
+
+#. A fresh app version is ready.
+msgid "errors.chunkTitle"
+msgstr "Nowa wersja aplikacji jest gotowa."
+
+#. One of the interface chunks changed while the app was open. Reload to continue safely.
+msgid "errors.chunkBody"
+msgstr "Część interfejsu zmieniła się, gdy aplikacja była otwarta. Odśwież, aby bezpiecznie kontynuować."
+
+#. Recovery mode
+msgid "errors.boundaryEyebrow"
+msgstr "Tryb odzyskiwania"
+
+#. Something went wrong.
+msgid "errors.boundaryTitle"
+msgstr "Coś poszło nie tak."
+
+#. Reload the app to reset the current round and continue playing.
+msgid "errors.boundaryBody"
+msgstr "Odśwież aplikację, aby zresetować bieżącą rundę i grać dalej."
+
+#. Reload app
+msgid "errors.reload"
+msgstr "Odśwież aplikację"
+
+msgid "category.Animals"
+msgstr "Zwierzęta"
+
+msgid "category.Foods"
+msgstr "Jedzenie"
+
+msgid "category.Countries"
+msgstr "Kraje"
+
+msgid "category.Cities"
+msgstr "Miasta"
+
+msgid "category.Movies"
+msgstr "Filmy"
+
+msgid "category.TV Shows"
+msgstr "Programy TV"
+
+msgid "category.Sports"
+msgstr "Sporty"
+
+msgid "category.Instruments"
+msgstr "Instrumenty"
+
+msgid "category.Types of Cars"
+msgstr "Marki aut"
+
+msgid "category.Kitchen Things"
+msgstr "Rzeczy w kuchni"
+
+msgid "category.Beach Things"
+msgstr "Rzeczy na plaży"
+
+msgid "category.Clothing Items"
+msgstr "Części garderoby"
+
+msgid "category.Famous People"
+msgstr "Sławni ludzie"
+
+msgid "category.Fictional Characters"
+msgstr "Postacie fikcyjne"
+
+msgid "category.Board Games"
+msgstr "Gry planszowe"
+
+msgid "category.Cold Things"
+msgstr "Zimne rzeczy"
+
+msgid "category.Hot Things"
+msgstr "Gorące rzeczy"
+
+msgid "category.Colors"
+msgstr "Kolory"
+
+msgid "category.Fruits"
+msgstr "Owoce"
+
+msgid "category.Vegetables"
+msgstr "Warzywa"
+
+msgid "category.School Subjects"
+msgstr "Przedmioty szkolne"
+
+msgid "category.Bedroom Things"
+msgstr "Rzeczy w sypialni"
+
+msgid "category.Bathroom Things"
+msgstr "Rzeczy w łazience"
+
+msgid "category.Candy / Sweets"
+msgstr "Słodycze"
+
+msgid "category.Beverages"
+msgstr "Napoje"
+
+msgid "category.Morning Habits"
+msgstr "Poranne nawyki"
+
+msgid "category.Outdoor Things"
+msgstr "Rzeczy na dworze"
+
+msgid "category.Card Games"
+msgstr "Gry karciane"
+
+msgid "category.Outdoor Activities"
+msgstr "Zajęcia na dworze"
+
+msgid "category.Indoor Activities"
+msgstr "Zajęcia w domu"
+
+msgid "category.Fast Food Chains"
+msgstr "Sieci fast food"
+
+msgid "category.Superheroes"
+msgstr "Superbohaterowie"
+
+msgid "category.Happy Things"
+msgstr "Radosne rzeczy"
+
+msgid "category.Scary Things"
+msgstr "Straszne rzeczy"
+
+msgid "category.Dance Styles"
+msgstr "Style tańca"
+
+msgid "category.Music Genres"
+msgstr "Gatunki muzyczne"
+
+msgid "category.Hobbies"
+msgstr "Hobby"
+
+msgid "category.Things with Wheels"
+msgstr "Rzeczy z kołami"
+
+msgid "category.Soft Things"
+msgstr "Miękkie rzeczy"
+
+msgid "category.Tools"
+msgstr "Narzędzia"
+
+msgid "category.Plants & Flowers"
+msgstr "Rośliny i kwiaty"
+
+msgid "category.Historical Figures"
+msgstr "Postacie historyczne"
+
+msgid "category.Things in a Bag"
+msgstr "Rzeczy w torbie"
+
+msgid "category.Things in Space"
+msgstr "Rzeczy w kosmosie"
+
+msgid "category.Mythical Beasts"
+msgstr "Stwory mityczne"
+
+msgid "category.Tech Terms"
+msgstr "Terminy techniczne"
+
+msgid "category.Weather Types"
+msgstr "Rodzaje pogody"
+
+msgid "category.Modes of Transport"
+msgstr "Środki transportu"
+
+msgid "category.Office Things"
+msgstr "Rzeczy w biurze"
+
+msgid "category.Pizza Toppings"
+msgstr "Dodatki do pizzy"
+
+msgid "category.Types of Cheese"
+msgstr "Rodzaje serów"
+
+msgid "category.Celebrations"
+msgstr "Święta"
+
+msgid "category.Baby Items"
+msgstr "Rzeczy dla niemowląt"
+
+msgid "category.Rhymes With 'Day'"
+msgstr "Rymy do 'dom'"
+
+msgid "category.Party Things"
+msgstr "Rzeczy na imprezie"
+
+msgid "category.Round Things"
+msgstr "Okrągłe rzeczy"
+
+msgid "category.Fairy Tale Figures"
+msgstr "Postacie z bajek"
+
+msgid "category.A Boy's Name"
+msgstr "Imię męskie"
+
+msgid "category.U.S. Cities"
+msgstr "Polskie miasta"
+
+msgid "category.School Supplies"
+msgstr "Przybory szkolne"
+
+msgid "category.Sports Teams"
+msgstr "Drużyny sportowe"
+
+msgid "category.Insects"
+msgstr "Owady"
+
+msgid "category.Breakfast Foods"
+msgstr "Dania śniadaniowe"
+
+msgid "category.Furniture"
+msgstr "Meble"
+
+msgid "category.Ocean Things"
+msgstr "Rzeczy w oceanie"
+
+msgid "category.Presidents"
+msgstr "Głowy państw"
+
+msgid "category.Product Names"
+msgstr "Nazwy produktów"
+
+msgid "category.Appliances"
+msgstr "Sprzęt AGD"
+
+msgid "category.Personality Traits"
+msgstr "Cechy charakteru"
+
+msgid "category.Desserts"
+msgstr "Desery"
+
+msgid "category.Car Parts"
+msgstr "Części auta"
+
+msgid "category.Map Features"
+msgstr "Elementy mapy"
+
+msgid "category.Athletes"
+msgstr "Sportowcy"
+
+msgid "category.4-Letter Words"
+msgstr "Przekleństwa"
+
+msgid "category.Fridge Items"
+msgstr "Rzeczy w lodówce"
+
+msgid "category.Farm Animals"
+msgstr "Zwierzęta hodowlane"
+
+msgid "category.Street Names"
+msgstr "Nazwy ulic"
+
+msgid "category.A Girl's Name"
+msgstr "Imię żeńskie"
+
+msgid "category.Villains/Monsters"
+msgstr "Złoczyńcy i potwory"
+
+msgid "category.Footwear"
+msgstr "Obuwie"
+
+msgid "category.Fears"
+msgstr "Lęki"
+
+msgid "category.Measurements"
+msgstr "Jednostki miary"
+
+msgid "category.Book Titles"
+msgstr "Tytuły książek"
+
+msgid "category.Heroes"
+msgstr "Bohaterowie"
+
+msgid "category.Gifts/Presents"
+msgstr "Prezenty"
+
+msgid "category.Black Things"
+msgstr "Czarne rzeczy"
+
+msgid "category.Vehicles"
+msgstr "Pojazdy"
+
+msgid "category.Tropical Places"
+msgstr "Miejsca tropikalne"
+
+msgid "category.College Majors"
+msgstr "Kierunki studiów"
+
+msgid "category.Dairy Products"
+msgstr "Nabiał"
+
+msgid "category.Souvenirs"
+msgstr "Pamiątki"
+
+msgid "category.Wallet Items"
+msgstr "Rzeczy z portfela"
+
+msgid "category.Famous Women"
+msgstr "Sławne kobiety"
+
+msgid "category.Medicine/Drugs"
+msgstr "Leki"
+
+msgid "category.Metal Things"
+msgstr "Rzeczy z metalu"
+
+msgid "category.People in Uniform"
+msgstr "Ludzie w mundurach"
+
+msgid "category.Things You Plug In"
+msgstr "Urządzenia na prąd"
+
+msgid "category.Languages"
+msgstr "Języki"
+
+msgid "category.Bible Names"
+msgstr "Imiona biblijne"
+
+msgid "category.Junk Food"
+msgstr "Śmieciowe jedzenie"
+
+msgid "category.Growing Things"
+msgstr "Rzeczy, które rosną"
+
+msgid "category.Companies"
+msgstr "Firmy"
+
+msgid "category.Video Games"
+msgstr "Gry wideo"
+
+msgid "category.Gadgets"
+msgstr "Gadżety"
+
+msgid "category.Things With Remotes"
+msgstr "Rzeczy na pilota"
+
+msgid "category.Internet Lingo"
+msgstr "Slang internetowy"
+
+msgid "category.Offensive Words"
+msgstr "Obelgi"
+
+msgid "category.Wireless Things"
+msgstr "Rzeczy bezprzewodowe"
+
+msgid "category.Computer Parts"
+msgstr "Części komputera"
+
+msgid "category.Software"
+msgstr "Oprogramowanie"
+
+msgid "category.Websites"
+msgstr "Strony WWW"
+
+msgid "category.Game Terms"
+msgstr "Terminy z gier"
+
+msgid "category.Grocery Items"
+msgstr "Artykuły spożywcze"
+
+msgid "category.Reasons to Quit"
+msgstr "Powody odejścia"
+
+msgid "category.Striped Things"
+msgstr "Rzeczy w paski"
+
+msgid "category.Tourist Attractions"
+msgstr "Atrakcje turystyczne"
+
+msgid "category.Diet Foods"
+msgstr "Dania dietetyczne"
+
+msgid "category.Hospital Things"
+msgstr "Rzeczy w szpitalu"
+
+msgid "category.Green Foods"
+msgstr "Zielone jedzenie"
+
+msgid "category.Weekend Activities"
+msgstr "Zajęcia weekendowe"
+
+msgid "category.Acronyms"
+msgstr "Skrótowce"
+
+msgid "category.Seafood"
+msgstr "Owoce morza"
+
+msgid "category.Christmas Songs"
+msgstr "Kolędy"
+
+msgid "category.Words Ending in -N"
+msgstr "Słowa z -n na końcu"
+
+msgid "category.Double-Letter Words"
+msgstr "Z podwójną literą"
+
+msgid "category.Children's Books"
+msgstr "Książki dla dzieci"
+
+msgid "category.Bar Things"
+msgstr "Rzeczy w barze"
+
+msgid "category.Indoor Sports"
+msgstr "Sporty halowe"
+
+msgid "category.Names in Songs"
+msgstr "Imiona z piosenek"
+
+msgid "category.Raw Foods"
+msgstr "Surowe jedzenie"
+
+msgid "category.European Places"
+msgstr "Miejsca w Europie"
+
+msgid "category.Olympic Events"
+msgstr "Sporty olimpijskie"
+
+msgid "category.Things at the Zoo"
+msgstr "Rzeczy w zoo"
+
+msgid "category.Math Terms"
+msgstr "Pojęcia z matematyki"
+
+msgid "category.Famous Animals"
+msgstr "Słynne zwierzęta"
+
+msgid "category.Party Activities"
+msgstr "Zabawy imprezowe"
+
+msgid "category.Sandwiches"
+msgstr "Kanapki"
+
+msgid "category.Catalog Items"
+msgstr "Rzeczy z katalogu"
+
+msgid "category.World Leaders"
+msgstr "Przywódcy świata"
+
+msgid "category.Excuses to Be Late"
+msgstr "Wymówki za spóźnienie"
+
+msgid "category.Ice Cream Flavors"
+msgstr "Smaki lodów"
+
+msgid "category.Bouncy Things"
+msgstr "Skaczące rzeczy"
+
+msgid "category.TV Stars"
+msgstr "Gwiazdy TV"
+
+msgid "category.Park Things"
+msgstr "Rzeczy w parku"
+
+msgid "category.Foreign Cities"
+msgstr "Zagraniczne miasta"
+
+msgid "category.Stones/Gems"
+msgstr "Kamienie szlachetne"
+
+msgid "category.Nicknames"
+msgstr "Przezwiska"
+
+msgid "category.Things in the Sky"
+msgstr "Rzeczy na niebie"
+
+msgid "category.Universities"
+msgstr "Uczelnie"
+
+msgid "category.Fish"
+msgstr "Ryby"
+
+msgid "category.Spotted Things"
+msgstr "Rzeczy w kropki"
+
+msgid "category.Terms of Endearment"
+msgstr "Czułe słówka"
+
+msgid "category.Items in This Room"
+msgstr "Rzeczy w tym pokoju"
+
+msgid "category.Menu Items"
+msgstr "Pozycje z menu"
+
+msgid "category.Magazines"
+msgstr "Czasopisma"
+
+msgid "category.Capitals"
+msgstr "Stolice"
+
+msgid "category.Big Purchases"
+msgstr "Duże zakupy"
+
+msgid "category.Hidden Things"
+msgstr "Ukryte rzeczy"
+
+msgid "category.Suitcase Items"
+msgstr "Rzeczy z walizki"
+
+msgid "category.Things With Tails"
+msgstr "Rzeczy z ogonem"
+
+msgid "category.Sports Gear"
+msgstr "Sprzęt sportowy"
+
+msgid "category.Crimes"
+msgstr "Przestępstwa"
+
+msgid "category.Sticky Things"
+msgstr "Lepkie rzeczy"
+
+msgid "category.Awards"
+msgstr "Nagrody"
+
+msgid "category.Spices/Herbs"
+msgstr "Przyprawy i zioła"
+
+msgid "category.Bad Habits"
+msgstr "Złe nawyki"
+
+msgid "category.Cosmetics"
+msgstr "Kosmetyki"
+
+msgid "category.Celebrities"
+msgstr "Celebryci"
+
+msgid "category.Utensils"
+msgstr "Przybory kuchenne"
+
+msgid "category.Reptiles/Amphibians"
+msgstr "Gady i płazy"
+
+msgid "category.Parks"
+msgstr "Parki"
+
+msgid "category.Allergies"
+msgstr "Alergie"
+
+msgid "category.Restaurants"
+msgstr "Restauracje"
+
+msgid "category.Infamous People"
+msgstr "Osoby złej sławy"
+
+msgid "category.Medicine Cabinet"
+msgstr "Zawartość apteczki"
+
+msgid "category.Toys"
+msgstr "Zabawki"
+
+msgid "category.Chores"
+msgstr "Prace domowe"
+
+msgid "category.Bodies of Water"
+msgstr "Zbiorniki wodne"
+
+msgid "category.Authors"
+msgstr "Autorzy"
+
+msgid "category.Halloween Costumes"
+msgstr "Stroje na Halloween"
+
+msgid "category.Weapons"
+msgstr "Broń"
+
+msgid "category.Exercise Words"
+msgstr "Słowa o ćwiczeniach"
+
+msgid "category.Song Titles"
+msgstr "Tytuły piosenek"
+
+msgid "category.Body Parts"
+msgstr "Części ciała"
+
+msgid "category.Ethnic Foods"
+msgstr "Kuchnie świata"
+
+msgid "category.Things You Shout"
+msgstr "Okrzyki"
+
+msgid "category.Birds"
+msgstr "Ptaki"
+
+msgid "category.Flowers"
+msgstr "Kwiaty"
+
+msgid "category.Things You Replace"
+msgstr "Rzeczy do wymiany"
+
+msgid "category.Duos & Trios"
+msgstr "Duety i tria"
+
+msgid "category.Desk Items"
+msgstr "Rzeczy z biurka"
+
+msgid "category.Vacation Spots"
+msgstr "Miejsca na wakacje"
+
+msgid "category.Diseases"
+msgstr "Choroby"
+
+msgid "category.Money Words"
+msgstr "Słowa o pieniądzach"
+
+msgid "category.Vending Items"
+msgstr "Rzeczy z automatu"
+
+msgid "category.Beers"
+msgstr "Piwa"
+
+msgid "category.Circus Things"
+msgstr "Rzeczy w cyrku"
+
+msgid "category.States"
+msgstr "Województwa"
+
+msgid "category.Throwaway Things"
+msgstr "Rzeczy do wyrzucenia"
+
+msgid "category.Occupations"
+msgstr "Profesje"
+
+msgid "category.Cartoon Characters"
+msgstr "Postacie z kreskówek"
+
+msgid "category.Musical Groups"
+msgstr "Zespoły muzyczne"
+
+msgid "category.Store Names"
+msgstr "Nazwy sklepów"
+
+msgid "category.Stadium Things"
+msgstr "Rzeczy na stadionie"
+
+msgid "category.Trees"
+msgstr "Drzewa"
+
+msgid "category.Kinds of Soup"
+msgstr "Rodzaje zup"
+
+msgid "category.New York Things"
+msgstr "Typowe dla Warszawy"
+
+msgid "category.Reasons for Tickets"
+msgstr "Powody mandatu"
+
+msgid "category.Work Tasks"
+msgstr "Zadania w pracy"
+
+msgid "category.Borrowed Words"
+msgstr "Zapożyczenia"
+
+msgid "category.Untouchable Things"
+msgstr "Czego nie dotykać"
+
+msgid "category.Spicy Foods"
+msgstr "Ostre jedzenie"
+
+msgid "category.Carnival Things"
+msgstr "Rzeczy na festynie"
+
+msgid "category.Things You Make"
+msgstr "Rzeczy, które robisz"
+
+msgid "category.Hangout Spots"
+msgstr "Miejsca spotkań"
+
+msgid "category.Honeymoon Spots"
+msgstr "Na miesiąc miodowy"
+
+msgid "category.Things for Kids"
+msgstr "Rzeczy dla dzieci"
+
+msgid "category.Deadly Things"
+msgstr "Zabójcze rzeczy"
+
+msgid "category.Reasons for a Loan"
+msgstr "Na co kredyt"
+
+msgid "category.Winter Words"
+msgstr "Zimowe słowa"
+
+msgid "category.Date Ideas"
+msgstr "Pomysły na randkę"
+
+msgid "category.Historic Events"
+msgstr "Momenty historyczne"
+
+msgid "category.Containers"
+msgstr "Pojemniki"
+
+msgid "category.Daily Habits"
+msgstr "Codzienne nawyki"
+
+msgid "category.Mail Items"
+msgstr "Rzeczy z poczty"
+
+msgid "category.Things to Sit On"
+msgstr "Rzeczy do siedzenia"
+
+msgid "category.Reasons to Call"
+msgstr "Po co dzwonić"
+
+msgid "category.Titles for People"
+msgstr "Tytuły i stopnie"
+
+msgid "category.Things With Buttons"
+msgstr "Rzeczy z guzikami"
+
+msgid "category.Travel Items"
+msgstr "Rzeczy na podróż"
+
+msgid "category.Reasons to Call 911"
+msgstr "Powody wezwania 112"
+
+msgid "category.Time Killers"
+msgstr "Sposoby na nudę"
+
+msgid "category.Fireable Offenses"
+msgstr "Powody zwolnienia"
+
+msgid "category.Holiday Activities"
+msgstr "Zajęcia świąteczne"

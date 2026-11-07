@@ -1,0 +1,1128 @@
+msgid ""
+msgstr ""
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Scattergories
+msgid "title"
+msgstr "Scattergories"
+
+#. Current letter
+msgid "round.letterLabel"
+msgstr "Huidige letter"
+
+#. Round clock
+msgid "round.timerLabel"
+msgstr "Rondeklok"
+
+#. Round {number}
+msgid "round.number"
+msgstr "Ronde {number}"
+
+#. Round controls
+msgid "controls.roundGroup"
+msgstr "Rondebediening"
+
+#. Roll a letter
+msgid "buttons.startRound"
+msgstr "Loot een letter"
+
+#. Next round
+msgid "buttons.nextRound"
+msgstr "Volgende ronde"
+
+#. Spinning…
+msgid "buttons.spinning"
+msgstr "Draaien…"
+
+#. New letter
+msgid "buttons.newLetter"
+msgstr "Nieuwe letter"
+
+#. Pause
+msgid "buttons.pause"
+msgstr "Pauze"
+
+#. Resume
+msgid "buttons.resume"
+msgstr "Hervatten"
+
+#. Mute
+msgid "buttons.mute"
+msgstr "Dempen"
+
+#. Unmute
+msgid "buttons.unmute"
+msgstr "Geluid aan"
+
+#. Redraw
+msgid "buttons.redraw"
+msgstr "Opnieuw loten"
+
+#. Add
+msgid "buttons.add"
+msgstr "Toevoegen"
+
+#. Remove
+msgid "buttons.remove"
+msgstr "Verwijderen"
+
+#. Add this category to your custom collection
+msgid "buttons.addTooltip"
+msgstr "Voeg deze categorie toe aan je eigen verzameling"
+
+#. Close this window
+msgid "buttons.closeTooltip"
+msgstr "Sluit dit venster"
+
+#. How to play
+msgid "buttons.howToPlay"
+msgstr "Hoe te spelen"
+
+#. Tap again to skip this round
+msgid "buttons.skipConfirm"
+msgstr "Tik nogmaals om deze ronde over te slaan"
+
+#. Tap again to remove
+msgid "buttons.removeAllConfirm"
+msgstr "Tik nogmaals om te verwijderen"
+
+#. Ready
+msgid "timer.ready"
+msgstr "Klaar"
+
+#. Paused
+msgid "timer.paused"
+msgstr "Gepauzeerd"
+
+#. Time's up!
+msgid "timer.timeUp"
+msgstr "Tijd om!"
+
+#. Get ready…
+msgid "timer.getReady"
+msgstr "Maak je klaar…"
+
+#. Go!
+msgid "timer.go"
+msgstr "Start!"
+
+#. Round over!
+msgid "timer.roundOver"
+msgstr "Ronde voorbij!"
+
+#. Start in {seconds}s
+msgid "timer.startIn"
+msgstr "Start over {seconds} s"
+
+#. {seconds}s
+msgid "timer.secondsLeft"
+msgstr "{seconds} s"
+
+#. {seconds} seconds left
+msgid "timer.secondsWarning"
+msgstr "Nog {seconds} seconden"
+
+#. Settings
+msgid "settings.title"
+msgstr "Instellingen"
+
+#. Round length
+msgid "settings.duration"
+msgstr "Rondeduur"
+
+#. Get ready
+msgid "settings.getReady"
+msgstr "Klaarmaken"
+
+#. Avoid letter repeats
+msgid "settings.avoidRepeats"
+msgstr "Herhaalde letters vermijden"
+
+#. Draw
+msgid "settings.categoryDraw"
+msgstr "Loting"
+
+#. Add custom category
+msgid "settings.addCustom"
+msgstr "Eigen categorie"
+
+#. Gameplay
+msgid "settings.gameplay"
+msgstr "Spelregels"
+
+#. How long each round lasts.
+msgid "settings.durationHint"
+msgstr "Hoe lang een ronde duurt."
+
+#. Countdown before the timer starts.
+msgid "settings.getReadyHint"
+msgstr "Aftellen voordat de timer start."
+
+#. Skips the last 8 letters drawn; common letters still come up more often.
+msgid "settings.avoidRepeatsHint"
+msgstr "Slaat de laatste 8 getrokken letters over; veelvoorkomende letters komen nog steeds vaker."
+
+#. Classic
+msgid "packs.classic.label"
+msgstr "Klassiek"
+
+#. Foodie
+msgid "packs.foodie.label"
+msgstr "Eten"
+
+#. Pop Culture
+msgid "packs.popCulture.label"
+msgstr "Popcultuur"
+
+#. Travel
+msgid "packs.travel.label"
+msgstr "Reizen"
+
+#. Kids
+msgid "packs.kids.label"
+msgstr "Kinderen"
+
+#. Around the House
+msgid "packs.household.label"
+msgstr "In huis"
+
+#. Grown-ups
+msgid "packs.grownUps.label"
+msgstr "Voor volwassenen"
+
+#. Game board
+msgid "playmat.label"
+msgstr "Speelbord"
+
+#. Start or advance a round
+msgid "rail.shortcuts.space"
+msgstr "Ronde starten of doorgaan"
+
+#. Re-roll the current letter
+msgid "rail.shortcuts.r"
+msgstr "Huidige letter opnieuw loten"
+
+#. Pause or resume
+msgid "rail.shortcuts.p"
+msgstr "Pauzeren of hervatten"
+
+#. Toggle the categories panel
+msgid "rail.shortcuts.c"
+msgstr "Categorieënpaneel tonen of verbergen"
+
+#. Open this shortcut list
+msgid "rail.shortcuts.help"
+msgstr "Deze lijst met sneltoetsen openen"
+
+#. Categories
+msgid "categories.title"
+msgstr "Categorieën"
+
+#. Add categories to your deck to play.
+msgid "categories.minimumRequired"
+msgstr "Voeg categorieën toe aan je stapel om te spelen."
+
+#. Selected categories
+msgid "categories.drawnListLabel"
+msgstr "Gekozen categorieën"
+
+#. Category deck
+msgid "categories.deckLabel"
+msgstr "Categorieënstapel"
+
+#. {custom} custom · {builtin} built-in
+msgid "categories.deckCount"
+msgstr "{custom} eigen · {builtin} standaard"
+
+#. The deck is empty. Add a pack or a custom category.
+msgid "categories.emptyDeck"
+msgstr "De stapel is leeg. Voeg een pakket of eigen categorie toe."
+
+#. Open categories
+msgid "categories.showDeck"
+msgstr "Categorieën openen"
+
+#. Hide categories
+msgid "categories.hideDeck"
+msgstr "Categorieën verbergen"
+
+#. Customize deck
+msgid "categories.customize"
+msgstr "Stapel aanpassen"
+
+#. Customize deck
+msgid "categories.customizeTitle"
+msgstr "Stapel aanpassen"
+
+#. Add a category pack
+msgid "categories.addPack"
+msgstr "Voeg een categoriepakket toe"
+
+#. Add a pack…
+msgid "categories.addPackPlaceholder"
+msgstr "Voeg een pakket toe…"
+
+#. Remove all custom
+msgid "categories.removeAllCustom"
+msgstr "Alle eigen verwijderen"
+
+#. Remove all built-in
+msgid "categories.removeAllBuiltins"
+msgstr "Alle standaard verwijderen"
+
+#. Pin {name}
+msgid "categories.pinOne"
+msgstr "{name} vastzetten"
+
+#. Unpin {name}
+msgid "categories.unpinOne"
+msgstr "{name} losmaken"
+
+#. Pin all
+msgid "categories.pinAll"
+msgstr "Alles vastzetten"
+
+#. Unpin all
+msgid "categories.unpinAll"
+msgstr "Alles losmaken"
+
+#. Add categories
+msgid "categories.addSectionTitle"
+msgstr "Categorieën toevoegen"
+
+#. Your deck
+msgid "categories.deckSectionTitle"
+msgstr "Jouw stapel"
+
+#. cards
+msgid "categories.drawUnit"
+msgstr "kaarten"
+
+#. How to play
+msgid "modal.title"
+msgstr "Hoe te spelen"
+
+#. Score points by writing words that fit each category and start with the drawn letter.
+msgid "modal.objectiveText"
+msgstr "Verdien punten door woorden op te schrijven die in de categorieën passen en beginnen met de gelote letter."
+
+#. A random letter is drawn. Every answer must start with it.
+msgid "modal.gameplayPoints.0"
+msgstr "Er wordt willekeurig een letter getrokken. Elk antwoord moet daarmee beginnen."
+
+#. Write one word for each category before the timer runs out (90 seconds by default).
+msgid "modal.gameplayPoints.1"
+msgstr "Schrijf een woord voor elke categorie voordat de timer afloopt (standaard 90 seconden)."
+
+#. Use a different word for each category, with no repeats within your own list.
+msgid "modal.gameplayPoints.2"
+msgstr "Gebruik voor elke categorie een ander woord, zonder herhalingen binnen je eigen lijst."
+
+#. Playing with others: answers nobody else wrote score 1 point, matching answers score 0.
+msgid "modal.gameplayPoints.3"
+msgstr "Met anderen: antwoorden die niemand anders had leveren 1 punt op, dubbele antwoorden 0."
+
+#. Categories
+msgid "modal.categories"
+msgstr "Categorieën"
+
+#. The deck comes with a set of built-in categories, and you can add your own.
+msgid "modal.categoriesText"
+msgstr "De stapel bevat ingebouwde categorieën, en je kunt je eigen categorieën toevoegen."
+
+#. Customize the deck to add categories and built-in packs, or remove any you'd rather skip.
+msgid "modal.categoriesItems.0"
+msgstr "Pas de stapel aan om categorieën en pakketten toe te voegen, of verwijder wat je liever overslaat."
+
+#. Pin a category to lock it into every round; unpinned ones are drawn at random to fill the rest.
+msgid "modal.categoriesItems.1"
+msgstr "Zet een categorie vast zodat die elke ronde meedoet; de rest wordt willekeurig aangevuld met niet-vastgezette categorieën."
+
+#. Reroll to draw a fresh set of categories for the current letter, without changing the letter.
+msgid "modal.categoriesItems.2"
+msgstr "Loot opnieuw om een nieuwe set categorieën voor de huidige letter te trekken, zonder de letter te veranderen."
+
+#. Letter odds
+msgid "modal.odds"
+msgstr "Kans per letter"
+
+#. Each letter's chance of being drawn, from how often words start with it on Wikipedia in this language ({snapshot} snapshot). A draw never repeats the previous letter, and with “{setting}” on it skips the last {window} letters drawn. That makes rare letters come up a little more often than shown.
+msgid "modal.oddsText"
+msgstr "De kans dat elke letter getrokken wordt, op basis van hoeveel woorden ermee beginnen op Wikipedia in deze taal (stand van {snapshot}). Een trekking herhaalt nooit de vorige letter, en met ‘{setting}’ aan slaat hij de laatste {window} getrokken letters over. Daardoor komen zeldzame letters iets vaker voor dan hier staat."
+
+#. Letter
+msgid "modal.oddsLetter"
+msgstr "Letter"
+
+#. Chance
+msgid "modal.oddsChance"
+msgstr "Kans"
+
+#. Keyboard shortcuts
+msgid "modal.shortcuts"
+msgstr "Sneltoetsen"
+
+#. About
+msgid "modal.about"
+msgstr "Over"
+
+#. Scattergories is the original party game by Hasbro. This is a free, unofficial companion for playing it around the table. Browse the <0>official game</0> or this app's <1>source code</1>, released under the <2>MIT license</2>.
+msgid "modal.attribution"
+msgstr "Scattergories is het originele partyspel van Hasbro. Dit is een gratis, onofficiële hulp om het aan tafel te spelen. Bekijk het <0>officiële spel</0> of de <1>broncode</1> van deze app, uitgebracht onder de <2>MIT-licentie</2>."
+
+#. This app stores settings and custom categories in your browser only.
+msgid "modal.privacy"
+msgstr "Deze app bewaart instellingen en categorieën alleen in je browser."
+
+#. Version {version}
+msgid "modal.version"
+msgstr "Versie {version}"
+
+#. Opening rules…
+msgid "modal.loading"
+msgstr "Regels openen…"
+
+#. Language
+msgid "language.label"
+msgstr "Taal"
+
+#. Appearance
+msgid "theme.label"
+msgstr "Weergave"
+
+#. Light
+msgid "theme.light"
+msgstr "Licht"
+
+#. Dark
+msgid "theme.dark"
+msgstr "Donker"
+
+#. A fresh app version is ready.
+msgid "errors.chunkTitle"
+msgstr "Er is een nieuwe versie klaar."
+
+#. One of the interface chunks changed while the app was open. Reload to continue safely.
+msgid "errors.chunkBody"
+msgstr "Een deel van de interface is veranderd terwijl de app openstond. Herlaad om veilig door te gaan."
+
+#. Recovery mode
+msgid "errors.boundaryEyebrow"
+msgstr "Herstelmodus"
+
+#. Something went wrong.
+msgid "errors.boundaryTitle"
+msgstr "Er ging iets mis."
+
+#. Reload the app to reset the current round and continue playing.
+msgid "errors.boundaryBody"
+msgstr "Herlaad de app om de huidige ronde te resetten en verder te spelen."
+
+#. Reload app
+msgid "errors.reload"
+msgstr "App herladen"
+
+msgid "category.Animals"
+msgstr "Dieren"
+
+msgid "category.Foods"
+msgstr "Eten"
+
+msgid "category.Countries"
+msgstr "Landen"
+
+msgid "category.Cities"
+msgstr "Steden"
+
+msgid "category.Movies"
+msgstr "Films"
+
+msgid "category.TV Shows"
+msgstr "Tv-series"
+
+msgid "category.Sports"
+msgstr "Sporten"
+
+msgid "category.Instruments"
+msgstr "Instrumenten"
+
+msgid "category.Types of Cars"
+msgstr "Soorten auto's"
+
+msgid "category.Kitchen Things"
+msgstr "Keukenspullen"
+
+msgid "category.Beach Things"
+msgstr "Stranddingen"
+
+msgid "category.Clothing Items"
+msgstr "Kledingstukken"
+
+msgid "category.Famous People"
+msgstr "Beroemde mensen"
+
+msgid "category.Fictional Characters"
+msgstr "Fictieve figuren"
+
+msgid "category.Board Games"
+msgstr "Bordspellen"
+
+msgid "category.Cold Things"
+msgstr "Koude dingen"
+
+msgid "category.Hot Things"
+msgstr "Hete dingen"
+
+msgid "category.Colors"
+msgstr "Kleuren"
+
+msgid "category.Fruits"
+msgstr "Fruit"
+
+msgid "category.Vegetables"
+msgstr "Groenten"
+
+msgid "category.School Subjects"
+msgstr "Schoolvakken"
+
+msgid "category.Bedroom Things"
+msgstr "Slaapkamerspullen"
+
+msgid "category.Bathroom Things"
+msgstr "Badkamerspullen"
+
+msgid "category.Candy / Sweets"
+msgstr "Snoep"
+
+msgid "category.Beverages"
+msgstr "Dranken"
+
+msgid "category.Morning Habits"
+msgstr "Ochtendrituelen"
+
+msgid "category.Outdoor Things"
+msgstr "Dingen buiten"
+
+msgid "category.Card Games"
+msgstr "Kaartspellen"
+
+msgid "category.Outdoor Activities"
+msgstr "Buitenactiviteiten"
+
+msgid "category.Indoor Activities"
+msgstr "Binnenactiviteiten"
+
+msgid "category.Fast Food Chains"
+msgstr "Fastfoodketens"
+
+msgid "category.Superheroes"
+msgstr "Superhelden"
+
+msgid "category.Happy Things"
+msgstr "Vrolijke dingen"
+
+msgid "category.Scary Things"
+msgstr "Enge dingen"
+
+msgid "category.Dance Styles"
+msgstr "Dansstijlen"
+
+msgid "category.Music Genres"
+msgstr "Muziekgenres"
+
+msgid "category.Hobbies"
+msgstr "Hobby's"
+
+msgid "category.Things with Wheels"
+msgstr "Dingen met wielen"
+
+msgid "category.Soft Things"
+msgstr "Zachte dingen"
+
+msgid "category.Tools"
+msgstr "Gereedschap"
+
+msgid "category.Plants & Flowers"
+msgstr "Planten & bloemen"
+
+msgid "category.Historical Figures"
+msgstr "Historische figuren"
+
+msgid "category.Things in a Bag"
+msgstr "Dingen in een tas"
+
+msgid "category.Things in Space"
+msgstr "Dingen in de ruimte"
+
+msgid "category.Mythical Beasts"
+msgstr "Fabeldieren"
+
+msgid "category.Tech Terms"
+msgstr "Computertermen"
+
+msgid "category.Weather Types"
+msgstr "Weertypes"
+
+msgid "category.Modes of Transport"
+msgstr "Vervoermiddelen"
+
+msgid "category.Office Things"
+msgstr "Kantoorspullen"
+
+msgid "category.Pizza Toppings"
+msgstr "Pizzabeleg"
+
+msgid "category.Types of Cheese"
+msgstr "Kaassoorten"
+
+msgid "category.Celebrations"
+msgstr "Feestdagen"
+
+msgid "category.Baby Items"
+msgstr "Babyspullen"
+
+msgid "category.Rhymes With 'Day'"
+msgstr "Rijmt op 'zon'"
+
+msgid "category.Party Things"
+msgstr "Feestspullen"
+
+msgid "category.Round Things"
+msgstr "Ronde dingen"
+
+msgid "category.Fairy Tale Figures"
+msgstr "Sprookjesfiguren"
+
+msgid "category.A Boy's Name"
+msgstr "Jongensnaam"
+
+msgid "category.U.S. Cities"
+msgstr "Nederlandse steden"
+
+msgid "category.School Supplies"
+msgstr "Schoolspullen"
+
+msgid "category.Sports Teams"
+msgstr "Sportploegen"
+
+msgid "category.Insects"
+msgstr "Insecten"
+
+msgid "category.Breakfast Foods"
+msgstr "Ontbijtproducten"
+
+msgid "category.Furniture"
+msgstr "Meubels"
+
+msgid "category.Ocean Things"
+msgstr "Dingen in de oceaan"
+
+msgid "category.Presidents"
+msgstr "Staatshoofden"
+
+msgid "category.Product Names"
+msgstr "Productnamen"
+
+msgid "category.Appliances"
+msgstr "Huishoudapparaten"
+
+msgid "category.Personality Traits"
+msgstr "Karaktertrekken"
+
+msgid "category.Desserts"
+msgstr "Toetjes"
+
+msgid "category.Car Parts"
+msgstr "Auto-onderdelen"
+
+msgid "category.Map Features"
+msgstr "Dingen op de kaart"
+
+msgid "category.Athletes"
+msgstr "Sporters"
+
+msgid "category.4-Letter Words"
+msgstr "Vloeken"
+
+msgid "category.Fridge Items"
+msgstr "Koelkastspullen"
+
+msgid "category.Farm Animals"
+msgstr "Boerderijdieren"
+
+msgid "category.Street Names"
+msgstr "Straatnamen"
+
+msgid "category.A Girl's Name"
+msgstr "Meisjesnaam"
+
+msgid "category.Villains/Monsters"
+msgstr "Schurken/monsters"
+
+msgid "category.Footwear"
+msgstr "Schoeisel"
+
+msgid "category.Fears"
+msgstr "Angsten"
+
+msgid "category.Measurements"
+msgstr "Meeteenheden"
+
+msgid "category.Book Titles"
+msgstr "Boektitels"
+
+msgid "category.Heroes"
+msgstr "Helden"
+
+msgid "category.Gifts/Presents"
+msgstr "Cadeaus"
+
+msgid "category.Black Things"
+msgstr "Zwarte dingen"
+
+msgid "category.Vehicles"
+msgstr "Voertuigen"
+
+msgid "category.Tropical Places"
+msgstr "Tropische plekken"
+
+msgid "category.College Majors"
+msgstr "Studierichtingen"
+
+msgid "category.Dairy Products"
+msgstr "Zuivelproducten"
+
+msgid "category.Souvenirs"
+msgstr "Souvenirs"
+
+msgid "category.Wallet Items"
+msgstr "Portemonneespullen"
+
+msgid "category.Famous Women"
+msgstr "Beroemde vrouwen"
+
+msgid "category.Medicine/Drugs"
+msgstr "Medicijnen"
+
+msgid "category.Metal Things"
+msgstr "Metalen dingen"
+
+msgid "category.People in Uniform"
+msgstr "Mensen in uniform"
+
+msgid "category.Things You Plug In"
+msgstr "Dingen met stekker"
+
+msgid "category.Languages"
+msgstr "Talen"
+
+msgid "category.Bible Names"
+msgstr "Bijbelse namen"
+
+msgid "category.Junk Food"
+msgstr "Junkfood"
+
+msgid "category.Growing Things"
+msgstr "Dingen die groeien"
+
+msgid "category.Companies"
+msgstr "Bedrijven"
+
+msgid "category.Video Games"
+msgstr "Videogames"
+
+msgid "category.Gadgets"
+msgstr "Gadgets"
+
+msgid "category.Things With Remotes"
+msgstr "Op afstand bediend"
+
+msgid "category.Internet Lingo"
+msgstr "Internettaal"
+
+msgid "category.Offensive Words"
+msgstr "Scheldwoorden"
+
+msgid "category.Wireless Things"
+msgstr "Draadloze dingen"
+
+msgid "category.Computer Parts"
+msgstr "Computeronderdelen"
+
+msgid "category.Software"
+msgstr "Software"
+
+msgid "category.Websites"
+msgstr "Websites"
+
+msgid "category.Game Terms"
+msgstr "Speltermen"
+
+msgid "category.Grocery Items"
+msgstr "Boodschappen"
+
+msgid "category.Reasons to Quit"
+msgstr "Reden om te stoppen"
+
+msgid "category.Striped Things"
+msgstr "Gestreepte dingen"
+
+msgid "category.Tourist Attractions"
+msgstr "Bezienswaardigheden"
+
+msgid "category.Diet Foods"
+msgstr "Dieetvoeding"
+
+msgid "category.Hospital Things"
+msgstr "Ziekenhuisspullen"
+
+msgid "category.Green Foods"
+msgstr "Groen eten"
+
+msgid "category.Weekend Activities"
+msgstr "Weekendactiviteiten"
+
+msgid "category.Acronyms"
+msgstr "Afkortingen"
+
+msgid "category.Seafood"
+msgstr "Zeevruchten"
+
+msgid "category.Christmas Songs"
+msgstr "Kerstliedjes"
+
+msgid "category.Words Ending in -N"
+msgstr "Woorden op -n"
+
+msgid "category.Double-Letter Words"
+msgstr "Met dubbele letters"
+
+msgid "category.Children's Books"
+msgstr "Kinderboeken"
+
+msgid "category.Bar Things"
+msgstr "Dingen in een bar"
+
+msgid "category.Indoor Sports"
+msgstr "Binnensporten"
+
+msgid "category.Names in Songs"
+msgstr "Namen in liedjes"
+
+msgid "category.Raw Foods"
+msgstr "Rauw eten"
+
+msgid "category.European Places"
+msgstr "Plaatsen in Europa"
+
+msgid "category.Olympic Events"
+msgstr "Olympische sporten"
+
+msgid "category.Things at the Zoo"
+msgstr "In de dierentuin"
+
+msgid "category.Math Terms"
+msgstr "Wiskundetermen"
+
+msgid "category.Famous Animals"
+msgstr "Beroemde dieren"
+
+msgid "category.Party Activities"
+msgstr "Feestactiviteiten"
+
+msgid "category.Sandwiches"
+msgstr "Broodjes"
+
+msgid "category.Catalog Items"
+msgstr "Uit de catalogus"
+
+msgid "category.World Leaders"
+msgstr "Wereldleiders"
+
+msgid "category.Excuses to Be Late"
+msgstr "Smoesjes voor te laat komen"
+
+msgid "category.Ice Cream Flavors"
+msgstr "IJssmaken"
+
+msgid "category.Bouncy Things"
+msgstr "Stuiterende dingen"
+
+msgid "category.TV Stars"
+msgstr "Tv-sterren"
+
+msgid "category.Park Things"
+msgstr "Dingen in het park"
+
+msgid "category.Foreign Cities"
+msgstr "Buitenlandse steden"
+
+msgid "category.Stones/Gems"
+msgstr "Edelstenen"
+
+msgid "category.Nicknames"
+msgstr "Bijnamen"
+
+msgid "category.Things in the Sky"
+msgstr "Dingen in de lucht"
+
+msgid "category.Universities"
+msgstr "Universiteiten"
+
+msgid "category.Fish"
+msgstr "Vissen"
+
+msgid "category.Spotted Things"
+msgstr "Gevlekte dingen"
+
+msgid "category.Terms of Endearment"
+msgstr "Koosnamen"
+
+msgid "category.Items in This Room"
+msgstr "In deze kamer"
+
+msgid "category.Menu Items"
+msgstr "Op de menukaart"
+
+msgid "category.Magazines"
+msgstr "Tijdschriften"
+
+msgid "category.Capitals"
+msgstr "Hoofdsteden"
+
+msgid "category.Big Purchases"
+msgstr "Grote aankopen"
+
+msgid "category.Hidden Things"
+msgstr "Verborgen dingen"
+
+msgid "category.Suitcase Items"
+msgstr "Kofferspullen"
+
+msgid "category.Things With Tails"
+msgstr "Met een staart"
+
+msgid "category.Sports Gear"
+msgstr "Sportuitrusting"
+
+msgid "category.Crimes"
+msgstr "Misdaden"
+
+msgid "category.Sticky Things"
+msgstr "Plakkerige dingen"
+
+msgid "category.Awards"
+msgstr "Prijzen"
+
+msgid "category.Spices/Herbs"
+msgstr "Kruiden & specerijen"
+
+msgid "category.Bad Habits"
+msgstr "Slechte gewoontes"
+
+msgid "category.Cosmetics"
+msgstr "Cosmetica"
+
+msgid "category.Celebrities"
+msgstr "Beroemdheden"
+
+msgid "category.Utensils"
+msgstr "Keukengerei"
+
+msgid "category.Reptiles/Amphibians"
+msgstr "Reptielen/amfibieën"
+
+msgid "category.Parks"
+msgstr "Parken"
+
+msgid "category.Allergies"
+msgstr "Allergieën"
+
+msgid "category.Restaurants"
+msgstr "Restaurants"
+
+msgid "category.Infamous People"
+msgstr "Beruchte mensen"
+
+msgid "category.Medicine Cabinet"
+msgstr "Medicijnkastje"
+
+msgid "category.Toys"
+msgstr "Speelgoed"
+
+msgid "category.Chores"
+msgstr "Huishoudklusjes"
+
+msgid "category.Bodies of Water"
+msgstr "Wateren"
+
+msgid "category.Authors"
+msgstr "Auteurs"
+
+msgid "category.Halloween Costumes"
+msgstr "Halloweenkostuums"
+
+msgid "category.Weapons"
+msgstr "Wapens"
+
+msgid "category.Exercise Words"
+msgstr "Woorden over sport"
+
+msgid "category.Song Titles"
+msgstr "Songtitels"
+
+msgid "category.Body Parts"
+msgstr "Lichaamsdelen"
+
+msgid "category.Ethnic Foods"
+msgstr "Wereldkeuken"
+
+msgid "category.Things You Shout"
+msgstr "Dingen die je roept"
+
+msgid "category.Birds"
+msgstr "Vogels"
+
+msgid "category.Flowers"
+msgstr "Bloemen"
+
+msgid "category.Things You Replace"
+msgstr "Vervangbare dingen"
+
+msgid "category.Duos & Trios"
+msgstr "Duo's & trio's"
+
+msgid "category.Desk Items"
+msgstr "Bureauspullen"
+
+msgid "category.Vacation Spots"
+msgstr "Vakantieplekken"
+
+msgid "category.Diseases"
+msgstr "Ziektes"
+
+msgid "category.Money Words"
+msgstr "Woorden over geld"
+
+msgid "category.Vending Items"
+msgstr "Uit de automaat"
+
+msgid "category.Beers"
+msgstr "Biersoorten"
+
+msgid "category.Circus Things"
+msgstr "Circusdingen"
+
+msgid "category.States"
+msgstr "Nederlandse provincies"
+
+msgid "category.Throwaway Things"
+msgstr "Afval"
+
+msgid "category.Occupations"
+msgstr "Banen"
+
+msgid "category.Cartoon Characters"
+msgstr "Tekenfilmfiguren"
+
+msgid "category.Musical Groups"
+msgstr "Bands"
+
+msgid "category.Store Names"
+msgstr "Winkelnamen"
+
+msgid "category.Stadium Things"
+msgstr "In het stadion"
+
+msgid "category.Trees"
+msgstr "Bomen"
+
+msgid "category.Kinds of Soup"
+msgstr "Soorten soep"
+
+msgid "category.New York Things"
+msgstr "Typisch Amsterdams"
+
+msgid "category.Reasons for Tickets"
+msgstr "Redenen voor een bon"
+
+msgid "category.Work Tasks"
+msgstr "Taken op het werk"
+
+msgid "category.Borrowed Words"
+msgstr "Leenwoorden"
+
+msgid "category.Untouchable Things"
+msgstr "Niet aanraken"
+
+msgid "category.Spicy Foods"
+msgstr "Pittig eten"
+
+msgid "category.Carnival Things"
+msgstr "Op de kermis"
+
+msgid "category.Things You Make"
+msgstr "Dingen die je maakt"
+
+msgid "category.Hangout Spots"
+msgstr "Hangplekken"
+
+msgid "category.Honeymoon Spots"
+msgstr "Huwelijksreisplekken"
+
+msgid "category.Things for Kids"
+msgstr "Kinderspullen"
+
+msgid "category.Deadly Things"
+msgstr "Dodelijke dingen"
+
+msgid "category.Reasons for a Loan"
+msgstr "Waarvoor je leent"
+
+msgid "category.Winter Words"
+msgstr "Winterwoorden"
+
+msgid "category.Date Ideas"
+msgstr "Date-ideeën"
+
+msgid "category.Historic Events"
+msgstr "Historische momenten"
+
+msgid "category.Containers"
+msgstr "Opbergspullen"
+
+msgid "category.Daily Habits"
+msgstr "Dagelijkse routines"
+
+msgid "category.Mail Items"
+msgstr "Post"
+
+msgid "category.Things to Sit On"
+msgstr "Om op te zitten"
+
+msgid "category.Reasons to Call"
+msgstr "Redenen om te bellen"
+
+msgid "category.Titles for People"
+msgstr "Titels"
+
+msgid "category.Things With Buttons"
+msgstr "Dingen met knoppen"
+
+msgid "category.Travel Items"
+msgstr "Reisspullen"
+
+msgid "category.Reasons to Call 911"
+msgstr "Redenen om 112 te bellen"
+
+msgid "category.Time Killers"
+msgstr "Tijdverdrijf"
+
+msgid "category.Fireable Offenses"
+msgstr "Redenen voor ontslag"
+
+msgid "category.Holiday Activities"
+msgstr "Vakantieactiviteiten"

@@ -47,3 +47,7 @@ target/
 *.swp
 .ty_cache/
 .cspellcache
+
+# Lingui compile output; Vite compiles the PO sources directly.
+src/i18n/locales/*.js
+src/i18n/locales/*.mjs

@@ -1,5 +1,5 @@
+import { I18nProvider, useLingui } from "@lingui/react";
 import { useEffect, useState } from "react";
-import { I18nextProvider, useTranslation } from "react-i18next";
 import { SettingsProvider } from "@/features/settings/SettingsProvider";
 import { getPreferredTheme } from "@/features/settings/schema";
 import { bootLanguage, i18n, initI18n } from "@/i18n/config";
@@ -43,7 +43,7 @@ function BootstrapErrorFallback() {
 }
 
 function AppErrorFallback() {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
 
   return (
     <ErrorView
@@ -65,13 +65,13 @@ function AppContent() {
 // above the settings and game state, so a throw while building them is caught too.
 function AppProviders() {
   return (
-    <I18nextProvider i18n={i18n}>
+    <I18nProvider i18n={i18n}>
       <ErrorBoundary fallback={<AppErrorFallback />}>
         <SettingsProvider>
           <AppContent />
         </SettingsProvider>
       </ErrorBoundary>
-    </I18nextProvider>
+    </I18nProvider>
   );
 }
 

@@ -1,5 +1,6 @@
 // biome-ignore-all lint/style/noDefaultExport: Vite config must use the default export shape.
 
+import { lingui } from "@lingui/vite-plugin";
 import babel from "@rolldown/plugin-babel";
 import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import { marked } from "marked";
@@ -30,6 +31,7 @@ export default defineConfig({
   plugins: [
     react(),
     markdown(),
+    lingui(),
     babel({
       presets: [reactCompilerPreset()],
     }),
@@ -47,7 +49,7 @@ export default defineConfig({
             return "react";
           }
 
-          if (id.includes("/node_modules/i18next") || id.includes("/node_modules/react-i18next")) {
+          if (id.includes("/@lingui/")) {
             return "i18n";
           }
         },

@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { useLingui } from "@lingui/react";
 import { cx } from "@/shared/ui/cx";
 
 interface LetterHeroProps {
@@ -8,7 +8,7 @@ interface LetterHeroProps {
 }
 
 export function LetterHero({ letter, visible, landing }: LetterHeroProps) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
   // The glyph flips through a dozen letters before it lands; a live region would
   // read every one. Screen readers get the drawn letter once, when it lands.
   const announced = visible && landing ? `${t("round.letterLabel")} ${letter}` : "";

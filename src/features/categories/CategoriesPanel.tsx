@@ -1,7 +1,7 @@
+import { useLingui } from "@lingui/react";
 import { ChevronDown, Pin, Plus, RefreshCw, SlidersHorizontal, Tags, Trash2 } from "lucide-react";
 import type { RefObject } from "react";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { PACKS } from "@/domain/deck";
 import { catCountDefault, catCountMax, catCountMin } from "@/domain/game/constants";
 import { Button } from "@/shared/ui/Button";
@@ -56,7 +56,7 @@ function DeckSettings({
 }: Pick<CategoriesState, "catCountInput"> & {
   actions: CategoriesActions;
 }) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
   return (
     <div className="deck-settings">
       <DebouncedNumberField
@@ -80,7 +80,7 @@ function AddCustomRow({
   inputRef: RefObject<HTMLInputElement | null>;
   onAddCustom: (name: string) => void;
 }) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
   // Local state keeps keystrokes from re-rendering the (large) deck list.
   const [value, setValue] = useState("");
   const submit = () => {
@@ -123,7 +123,7 @@ function AddCategories({
   actions: CategoriesActions;
   inputRef: RefObject<HTMLInputElement | null>;
 }) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
   return (
     <section className="deck-section">
       <h3 className="deck-section__title">{t("categories.addSectionTitle")}</h3>
@@ -136,13 +136,13 @@ function AddCategories({
 }
 
 function AddPackField({ actions }: { actions: CategoriesActions }) {
-  const { t, i18n } = useTranslation();
+  const { _: t, i18n } = useLingui();
   const packs = [...PACKS]
     .map((pack) => ({
       id: pack.id,
       label: t(pack.labelKey),
     }))
-    .sort((a, b) => a.label.localeCompare(b.label, i18n.language));
+    .sort((a, b) => a.label.localeCompare(b.label, i18n.locale));
   return (
     <label className="settings-select deck-list__pack" htmlFor="addPack">
       <span className="sr-only">{t("categories.addPack")}</span>
@@ -173,7 +173,7 @@ interface DeckRow {
 }
 
 function DeckListItem({ row, isPinned, actions }: { row: DeckRow; isPinned: boolean; actions: CategoriesActions }) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
   return (
     <li className={cx("deck-list__item", row.isCustom && "deck-list__item--custom")}>
       <span className="deck-list__label" title={row.label}>
@@ -205,7 +205,7 @@ function DeckBulkActions({
   hasBuiltins: boolean;
   actions: CategoriesActions;
 }) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
   if (!(hasCustom || hasBuiltins)) {
     return null;
   }
@@ -223,7 +223,7 @@ function DeckBulkActions({
 
 /** Bulk removal is two taps: the first arms the button, the second (within 3s) fires. */
 function BulkRemoveButton({ label, onRemove }: { label: string; onRemove: () => void }) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
   const confirm = useConfirmTap(onRemove);
   return (
     <Button
@@ -246,7 +246,7 @@ function DeckList({
 }: Pick<CategoriesState, "customCategories" | "deckBuiltins" | "pinned"> & {
   actions: CategoriesActions;
 }) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
   const pinnedSet = new Set(pinned);
   // Within each group: pinned first, then alphabetical.
   const byPinThenLabel = (a: DeckRow, b: DeckRow) => {
@@ -259,7 +259,7 @@ function DeckList({
   };
   const customs = customCategories.map((name) => ({ name, label: name, isCustom: true })).sort(byPinThenLabel);
   const builtins = deckBuiltins
-    .map((name) => ({ name, label: t(name, { ns: "categories" }), isCustom: false }))
+    .map((name) => ({ name, label: t(`category.${name}`), isCustom: false }))
     .sort(byPinThenLabel);
   const rows: DeckRow[] = [...customs, ...builtins];
 
@@ -305,7 +305,7 @@ function CustomizeSheetBlock({
   actions: CategoriesActions;
   inputRef: RefObject<HTMLInputElement | null>;
 }) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
   const [isOpen, setIsOpen] = useState(false);
 
   // Editing the deck mid-round auto-pauses the clock; the edits themselves only
@@ -358,7 +358,7 @@ function CategoriesCardHeader({
   actions: CategoriesActions;
   inputRef: RefObject<HTMLInputElement | null>;
 }) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
   const { canEdit, drawnCategories } = categories;
   return (
     <div className="categories-card__header">
@@ -398,7 +398,7 @@ function CategoriesCardHeader({
 }
 
 function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
   const { isPromptDeckOpen, drawnCategories } = categories;
   const pinnedSet = new Set(categories.pinned);
   // Decoration uses the frozen draw-time snapshot, not the live deck, so editing

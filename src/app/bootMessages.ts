@@ -1,5 +1,5 @@
 import { bootLanguage } from "@/i18n/config";
-import type { LocaleCode } from "@/i18n/locales/resources";
+import type { LocaleCode } from "@/i18n/localeRegistry";
 
 interface BootMessages {
   loadingTitle: string;
