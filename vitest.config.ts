@@ -9,6 +9,8 @@ export default mergeConfig(
     test: {
       environment: "jsdom",
       globals: true,
+      // Bound concurrent catalog compilation and full-app jsdom mounts.
+      maxWorkers: 2,
       // The customize-deck sheet renders the full built-in category list, which is
       // slow to mount in jsdom under parallel load; give integration tests headroom.
       testTimeout: 20_000,

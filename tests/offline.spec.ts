@@ -17,7 +17,7 @@ async function firstVisit(page: Page) {
 }
 
 for (const path of ["/?source=homescreen", "/privacy", "/accessibility"]) {
-  test(`${path} opens offline after the first load without an online reload`, async ({ context, page }) => {
+  test(`@smoke ${path} opens offline after the first load without an online reload`, async ({ context, page }) => {
     await firstVisit(page);
     await context.setOffline(true);
     await page.goto(path);
@@ -25,7 +25,7 @@ for (const path of ["/?source=homescreen", "/privacy", "/accessibility"]) {
   });
 }
 
-test("an unused language is available offline after the first load", async ({ context, page }) => {
+test("@smoke an unused language is available offline after the first load", async ({ context, page }) => {
   await firstVisit(page);
   await context.setOffline(true);
   await page.getByRole("button", { name: "Settings", exact: true }).click();

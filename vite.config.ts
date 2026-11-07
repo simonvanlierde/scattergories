@@ -13,6 +13,13 @@ import { marked } from "marked";
 import { defineConfig, type Plugin } from "vite";
 import pkg from "./package.json" with { type: "json" };
 
+const previewPolicy = (await readFile(new URL("./public/_headers", import.meta.url), "utf8")).match(
+  /^\s+Content-Security-Policy:\s*(.+)$/m,
+)?.[1];
+if (!previewPolicy) {
+  throw new Error("public/_headers must define Content-Security-Policy");
+}
+
 // Convert trusted repository documents at build time so Markdown stays out of the browser.
 const markdown = (): Plugin => ({
   name: "markdown-html",
@@ -50,6 +57,8 @@ const offline = (): Plugin => ({
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Cached worker responses must carry the same policy as network responses.
+  preview: { headers: { "Content-Security-Policy": previewPolicy } },
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
   },
