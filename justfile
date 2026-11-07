@@ -29,7 +29,7 @@ fmt:
 hooks:
     prek run -a
 
-# Release X.Y.Z. First run: cut CHANGELOG's [Unreleased] into [X.Y.Z] and commit it; merge that to main. Second run, on up-to-date main: sign and push tag vX.Y.Z.
+# Release X.Y.Z. First run: set package.json's version, cut CHANGELOG's [Unreleased] into [X.Y.Z], and commit both; merge that to main. Second run, on up-to-date main: sign and push tag vX.Y.Z.
 release version:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -55,9 +55,10 @@ release version:
         END { if (!h) exit 1; if (!l) { print ""; print "[Unreleased]: " repo "/compare/v" v "...HEAD"; print "[" v "]: " link } }
     ' CHANGELOG.md >"$tmp" || { echo "CHANGELOG.md has no [Unreleased] section" >&2; exit 1; }
     .github/scripts/release-notes.sh "$tag" "$tmp" >/dev/null || { echo "[Unreleased] has no entries to release" >&2; exit 1; }
+    node -e 'const fs = require("node:fs"); const pkg = JSON.parse(fs.readFileSync("package.json", "utf8")); pkg.version = process.argv[1]; fs.writeFileSync("package.json", JSON.stringify(pkg, null, 2) + "\n");' "$version"
     cp "$tmp" CHANGELOG.md
-    git add CHANGELOG.md
-    git commit -s -m "chore: release $version" -- CHANGELOG.md
+    git add CHANGELOG.md package.json
+    git commit -s -m "chore: release $version" -- CHANGELOG.md package.json
     echo "Merge this commit to main, then run: just release $version"
 
 # Protect the default branch (no deletion, no force-push, linear history, PRs squash-merged after the always-on checks pass and one approval) and the v* tags. Turn on private vulnerability reporting, CodeQL default setup and Dependabot alerts. Create the `preview` environment for pull request previews and the `production` environment, deployed from `main` only. Safe to rerun.

@@ -24,9 +24,15 @@ git show "$sha:CHANGELOG.md" | grep "^## \[$version\] - " >/dev/null || {
   echo "HEAD is not origin/main: check out and pull main first" >&2
   exit 1
 }
-# The manifest version checks read the working tree, not the commit being tagged.
+# The manifest check below reads the working tree, which must match the commit.
 git diff --quiet HEAD || {
   echo "uncommitted changes to tracked files: commit or stash them first" >&2
+  exit 1
+}
+
+manifest_version=$(node -p "require('./package.json').version")
+[[ $manifest_version == "$version" ]] || {
+  echo "package.json version $manifest_version does not match $version" >&2
   exit 1
 }
 

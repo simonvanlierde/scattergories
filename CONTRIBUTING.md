@@ -75,6 +75,7 @@ The maintainer can run `just repo-settings` to apply the repository rulesets and
 GitHub deployment environments. It also configures security features; review the recipe before running it.
 [Deployment](docs/architecture.md#deployment) lists the Cloudflare secrets and migration checks.
 
-Prepare a release with `just release X.Y.Z`. The first run prepares and commits the dated changelog section.
-Review and merge that commit through a pull request. On an up-to-date `main`, the second run signs and
-pushes the version tag. The release workflow publishes that version's changelog section after it verifies the tag signature.
+Run `just release X.Y.Z` to prepare a release. The first run updates the version in `package.json`
+and prepares the dated changelog section. It commits both files. Review and merge that commit through a pull request.
+On an up-to-date `main`, run the same command again. It checks the manifest version, then signs and pushes the version tag.
+The release workflow verifies the tag signature and publishes that version's changelog section.
