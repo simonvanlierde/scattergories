@@ -43,6 +43,7 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - The complete category deck and all valid pins now survive a reload.
 - Offline play works after the first visit, including the privacy and accessibility pages.
+- Online play continues when the browser cannot write to its offline file cache.
 - French now addresses you with the informal "tu" throughout.
 - More translation fixes after a second review in all eight languages: how-to-play text, timer labels with a space before the unit ("10 s"), and category names that read naturally.
 - Translation fixes after a review in Dutch, Greek, Italian, Polish and

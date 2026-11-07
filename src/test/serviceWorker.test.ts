@@ -39,6 +39,29 @@ describe("service worker asset caching", () => {
   });
 });
 
+describe("service worker runtime storage failures", () => {
+  it.each(["open", "put"])("keeps healthy network responses when cache %s fails", async (failure) => {
+    const shell = new Response("new shell");
+    const script = new Response("export {};", { headers: { "content-type": "text/javascript" } });
+    const fail = () => Promise.reject(new Error("QuotaExceededError"));
+    const worker = runInNewContext(`${workerSource}\n({ networkFirst, staleWhileRevalidate })`, {
+      URL,
+      self: { addEventListener: vi.fn() },
+      fetch: async (request: Request) => (request.url.endsWith(".js") ? script : shell),
+      caches: {
+        match: async (request: Request | string) => (request === "/" ? new Response("old shell") : undefined),
+        open: failure === "open" ? fail : async () => ({ put: fail }),
+      },
+    }) as {
+      networkFirst: (request: Request) => Promise<Response>;
+      staleWhileRevalidate: (request: Request) => Promise<Response>;
+    };
+
+    expect(await (await worker.networkFirst(new Request("https://example.test/"))).text()).toBe("new shell");
+    expect(await worker.staleWhileRevalidate(new Request("https://example.test/assets/new.js"))).toBe(script);
+  });
+});
+
 function workerInstall(response: Response) {
   const listeners = new Map<string, (event: { waitUntil: (promise: Promise<void>) => void }) => void>();
   const put = vi.fn().mockResolvedValue(undefined);

@@ -44,8 +44,12 @@ async function store(request, response) {
   if (!isCacheable(new URL(request.url).pathname, response)) {
     return (await caches.match(request, { ignoreVary: true })) ?? response;
   }
-  const cache = await caches.open(CACHE);
-  await cache.put(request, response.clone());
+  try {
+    const cache = await caches.open(CACHE);
+    await cache.put(request, response.clone());
+  } catch {
+    // Runtime caching must not discard a healthy network response when storage is full.
+  }
   return response;
 }
 
