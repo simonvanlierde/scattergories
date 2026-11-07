@@ -78,22 +78,22 @@ function getDefaultSettings(): Settings {
 const MAX_STRING_LENGTH = 50;
 export const MAX_STRING_COUNT = 200;
 
-function sanitizeStrings(value: unknown): string[] {
+function sanitizeStrings(value: unknown, known?: ReadonlySet<string>): string[] {
   if (!Array.isArray(value)) {
     return [];
   }
 
   const sanitized = value
     .map((entry) => String(entry).trim().slice(0, MAX_STRING_LENGTH))
-    .filter((entry) => entry.length > 0);
+    .filter((entry) => entry.length > 0 && (!known || known.has(entry)));
 
-  return Array.from(new Set(sanitized)).slice(0, MAX_STRING_COUNT);
+  // Known names are bounded by the deck itself; only customs need the separate cap.
+  return Array.from(new Set(sanitized)).slice(0, known?.size ?? MAX_STRING_COUNT);
 }
 
 /** Keep only built-in keys that actually exist in the current category set. */
 function sanitizeBuiltins(value: unknown): string[] {
-  const known = new Set(categories);
-  return sanitizeStrings(value).filter((name) => known.has(name));
+  return sanitizeStrings(value, new Set(categories));
 }
 
 interface LegacySettings {
@@ -128,9 +128,7 @@ function sanitizeSettings(raw: unknown): Settings {
   const deckBuiltins = migrateDeckBuiltins(parsed);
   const inDeck = new Set<string>([...customCategories, ...deckBuiltins]);
   // Old model pinned customs implicitly; new model persists an explicit pin list.
-  const pinned = (Array.isArray(parsed.pinned) ? sanitizeStrings(parsed.pinned) : customCategories).filter((name) =>
-    inDeck.has(name),
-  );
+  const pinned = Array.isArray(parsed.pinned) ? sanitizeStrings(parsed.pinned, inDeck) : customCategories;
 
   return {
     durationInput: sanitizeNumericInput(parsed.durationInput, durationMin, durationMax, durationDefault),

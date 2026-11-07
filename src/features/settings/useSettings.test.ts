@@ -2,7 +2,7 @@ import { act, renderHook, waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { ADULT_KEYS } from "@/domain/deck";
+import { ADULT_KEYS, getDefaultDeckBuiltins } from "@/domain/deck";
 import { durationMax } from "@/domain/game/constants";
 import { SettingsProvider, useSettings } from "./SettingsProvider";
 import { MAX_STRING_COUNT, SETTINGS_STORAGE_KEY } from "./schema";
@@ -74,6 +74,36 @@ describe("useSettings", () => {
       });
       const stored = JSON.parse(window.localStorage.getItem(SETTINGS_STORAGE_KEY) ?? "{}");
       expect(stored.isMuted).toBe(true);
+    });
+
+    it("keeps the complete Classic deck after saving and remounting", () => {
+      const first = renderHook(() => useSettings(), { wrapper });
+      const expected = getDefaultDeckBuiltins();
+      expect(expected.length).toBeGreaterThan(MAX_STRING_COUNT);
+      expect(first.result.current.settings.deckBuiltins).toEqual(expected);
+      first.unmount();
+
+      const { result } = renderHook(() => useSettings(), { wrapper });
+      expect(result.current.settings.deckBuiltins).toEqual(expected);
+      expect(JSON.parse(window.localStorage.getItem(SETTINGS_STORAGE_KEY) ?? "{}").deckBuiltins).toEqual(expected);
+    });
+
+    it("keeps every valid pin after saving and remounting a deck with 200 customs", () => {
+      const customs = Array.from({ length: MAX_STRING_COUNT }, (_, index) => `Custom ${index}`);
+      const builtins = getDefaultDeckBuiltins();
+      const pinned = [...customs, ...builtins];
+      window.localStorage.setItem(
+        SETTINGS_STORAGE_KEY,
+        JSON.stringify({ customCategories: customs, deckBuiltins: builtins, pinned }),
+      );
+      const first = renderHook(() => useSettings(), { wrapper });
+      expect(first.result.current.settings.pinned).toEqual(pinned);
+      first.unmount();
+
+      const { result } = renderHook(() => useSettings(), { wrapper });
+      expect(result.current.settings.customCategories).toEqual(customs);
+      expect(result.current.settings.pinned).toEqual(pinned);
+      expect(JSON.parse(window.localStorage.getItem(SETTINGS_STORAGE_KEY) ?? "{}").pinned).toEqual(pinned);
     });
 
     it("hydrates from existing localStorage on mount", () => {
