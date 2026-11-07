@@ -45,6 +45,13 @@ stateDiagram-v2
 
 The reasons for the key choices live in [`adr/`](adr/).
 
+## Offline play
+
+The production build gives the service worker a list of the shell and static assets. It caches
+them before activation, including the documents and every language. Failed downloads or invalid
+script and stylesheet responses prevent installation. Old content-hashed files remain available
+to already-open tabs.
+
 ## Translations
 
 Translations live in `src/i18n/locales/*.po`. Each catalog contains UI messages and

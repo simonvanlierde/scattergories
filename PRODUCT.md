@@ -26,8 +26,7 @@ from their seat.
   that language, so playable letters come up more often.
 - 9 fully translated languages (English, Spanish, French, German, Italian, Dutch, Polish,
   Portuguese, Greek), and the built-in categories are translated too.
-- No account, no server, no network while it runs. After one visit it works offline, and nothing
-  leaves the device.
+- No account or backend. After one visit it works offline. Settings and categories stay on the device.
 
 ## Operating Context
 
@@ -73,7 +72,7 @@ from their seat.
 1. Readable from across the table beats dense. The letter, clock and categories come first.
 2. A companion, not a platform. Remove state and steps before adding features.
 3. One tap starts a round. Settings stay out of the way of play.
-4. Local-first, and private because nothing leaves the device.
+4. Local-first: settings and categories stay on the device.
 5. Every language gets the same care, from the letter odds to the category names.
 
 ## Accessibility & Inclusion

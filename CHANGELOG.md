@@ -7,8 +7,11 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-07
+
 ### Added
 
+- Privacy and accessibility statements, linked from How to play in every language.
 - A "Letter odds" section in How to play shows each letter's chance of being drawn in your
   language, with where the numbers come from.
 - Polish rounds can now land on Ł, Ś and Ż. Rarer Polish initials such as Ć and Ź still
@@ -38,6 +41,8 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- The complete category deck and all valid pins now survive a reload.
+- Offline play works after the first visit, including the privacy and accessibility pages.
 - French now addresses you with the informal "tu" throughout.
 - More translation fixes after a second review in all eight languages: how-to-play text, timer labels with a space before the unit ("10 s"), and category names that read naturally.
 - Translation fixes after a review in Dutch, Greek, Italian, Polish and
@@ -107,7 +112,8 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   Greek.
 - Install it as an app and play offline. No account or server needed.
 
-[Unreleased]: https://github.com/simonvanlierde/scattergories/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/simonvanlierde/scattergories/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/simonvanlierde/scattergories/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/simonvanlierde/scattergories/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/simonvanlierde/scattergories/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/simonvanlierde/scattergories/releases/tag/v0.1.0
