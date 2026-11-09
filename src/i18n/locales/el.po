@@ -115,7 +115,7 @@ msgstr "Ο γύρος τελείωσε!"
 
 #. Start in {seconds}s
 msgid "timer.startIn"
-msgstr "Έναρξη σε {seconds} δευτ."
+msgstr "Έναρξη σε {seconds} s"
 
 #. {seconds}s
 msgid "timer.secondsLeft"
