@@ -37,6 +37,8 @@
       "suspicious": "on"
     }
   },
+  "markdown": { "formatter": { "enabled": false } },
+  "yaml": { "formatter": { "enabled": false } },
   "overrides": [
     {
       "includes": ["src/domain/**"],
