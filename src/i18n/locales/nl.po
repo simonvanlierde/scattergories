@@ -15,7 +15,7 @@ msgstr "Huidige letter"
 
 #. Round clock
 msgid "round.timerLabel"
-msgstr "Rondeklok"
+msgstr "Rondetimer"
 
 #. Round {number}
 msgid "round.number"
@@ -135,7 +135,7 @@ msgstr "Rondeduur"
 
 #. Get ready
 msgid "settings.getReady"
-msgstr "Klaarmaken"
+msgstr "Aftellen"
 
 #. Avoid letter repeats
 msgid "settings.avoidRepeats"
@@ -339,7 +339,7 @@ msgstr "Pas de stapel aan om categorieën en pakketten toe te voegen, of verwijd
 
 #. Pin a category to lock it into every round; unpinned ones are drawn at random to fill the rest.
 msgid "modal.categoriesItems.1"
-msgstr "Zet een categorie vast zodat die elke ronde meedoet; de rest wordt willekeurig aangevuld met niet-vastgezette categorieën."
+msgstr "Zet een categorie vast zodat die elke ronde meedoet; niet-vastgezette categorieën vullen de rest willekeurig aan."
 
 #. Reroll to draw a fresh set of categories for the current letter, without changing the letter.
 msgid "modal.categoriesItems.2"

@@ -15,7 +15,7 @@ msgstr "Lettre actuelle"
 
 #. Round clock
 msgid "round.timerLabel"
-msgstr "Chrono de manche"
+msgstr "Minuteur de la manche"
 
 #. Round {number}
 msgid "round.number"
@@ -99,23 +99,23 @@ msgstr "En pause"
 
 #. Time's up!
 msgid "timer.timeUp"
-msgstr "Temps écoulé !"
+msgstr "Temps écoulé !"
 
 #. Get ready…
 msgid "timer.getReady"
-msgstr "Préparez-vous…"
+msgstr "Prépare-toi…"
 
 #. Go!
 msgid "timer.go"
-msgstr "C'est parti !"
+msgstr "C'est parti !"
 
 #. Round over!
 msgid "timer.roundOver"
-msgstr "Manche terminée !"
+msgstr "Manche terminée !"
 
 #. Start in {seconds}s
 msgid "timer.startIn"
-msgstr "Départ dans {seconds} s"
+msgstr "Départ dans {seconds} s"
 
 #. {seconds}s
 msgid "timer.secondsLeft"
@@ -163,7 +163,7 @@ msgstr "Décompte avant le départ du chrono."
 
 #. Skips the last 8 letters drawn; common letters still come up more often.
 msgid "settings.avoidRepeatsHint"
-msgstr "Écarte les 8 dernières lettres tirées ; les lettres courantes sortent toujours plus souvent."
+msgstr "Écarte les 8 dernières lettres tirées ; les lettres courantes sortent toujours plus souvent."
 
 #. Classic
 msgid "packs.classic.label"
@@ -311,19 +311,19 @@ msgstr "Marque des points en écrivant des mots qui correspondent aux catégorie
 
 #. A random letter is drawn. Every answer must start with it.
 msgid "modal.gameplayPoints.0"
-msgstr "Une lettre est tirée au hasard : toutes les réponses doivent commencer par elle."
+msgstr "Une lettre est tirée au hasard : toutes les réponses doivent commencer par elle."
 
 #. Write one word for each category before the timer runs out (90 seconds by default).
 msgid "modal.gameplayPoints.1"
-msgstr "Écris un mot pour chaque catégorie avant la fin du minuteur (90 s par défaut)."
+msgstr "Écris un mot pour chaque catégorie avant la fin du minuteur (90 s par défaut)."
 
 #. Use a different word for each category, with no repeats within your own list.
 msgid "modal.gameplayPoints.2"
-msgstr "Utilise un mot différent pour chaque catégorie : aucune répétition dans ta propre liste."
+msgstr "Utilise un mot différent pour chaque catégorie : aucune répétition dans ta propre liste."
 
 #. Playing with others: answers nobody else wrote score 1 point, matching answers score 0.
 msgid "modal.gameplayPoints.3"
-msgstr "À plusieurs : les réponses que personne d'autre n'a écrites valent 1 point, les doublons 0."
+msgstr "À plusieurs : les réponses que personne d'autre n'a écrites valent 1 point, les doublons 0."
 
 #. Categories
 msgid "modal.categories"
@@ -339,7 +339,7 @@ msgstr "Modifie le paquet pour ajouter des catégories et des lots, ou retire ce
 
 #. Pin a category to lock it into every round; unpinned ones are drawn at random to fill the rest.
 msgid "modal.categoriesItems.1"
-msgstr "Épingle une catégorie pour la garantir à chaque manche ; les catégories non épinglées sont tirées au hasard pour compléter."
+msgstr "Épingle une catégorie pour la garantir à chaque manche ; les catégories non épinglées sont tirées au hasard pour compléter."
 
 #. Reroll to draw a fresh set of categories for the current letter, without changing the letter.
 msgid "modal.categoriesItems.2"
@@ -351,7 +351,7 @@ msgstr "Chances des lettres"
 
 #. Each letter's chance of being drawn, from how often words start with it on Wikipedia in this language ({snapshot} snapshot). A draw never repeats the previous letter, and with “{setting}” on it skips the last {window} letters drawn. That makes rare letters come up a little more often than shown.
 msgid "modal.oddsText"
-msgstr "La probabilité de tirer chaque lettre, d’après le nombre de mots qui commencent par elle sur Wikipédia dans cette langue (version de {snapshot}). Un tirage ne répète jamais la lettre précédente et, avec « {setting} » activé, il écarte les {window} dernières lettres tirées. Les lettres rares sortent donc un peu plus souvent qu’indiqué."
+msgstr "La probabilité de tirer chaque lettre, d'après le nombre de mots qui commencent par elle sur Wikipédia dans cette langue (version de {snapshot}). Un tirage ne répète jamais la lettre précédente et, avec « {setting} » activé, il écarte les {window} dernières lettres tirées. Les lettres rares sortent donc un peu plus souvent qu'indiqué."
 
 #. Letter
 msgid "modal.oddsLetter"
@@ -371,7 +371,7 @@ msgstr "À propos"
 
 #. Scattergories is the original party game by Hasbro. This is a free, unofficial companion for playing it around the table. Browse the <0>official game</0> or this app's <1>source code</1>, released under the <2>MIT license</2>.
 msgid "modal.attribution"
-msgstr "Scattergories est le jeu de société original de Hasbro. Ceci est un compagnon gratuit et non officiel pour y jouer autour de la table. Parcours le <0>jeu officiel</0> ou le <1>code source</1> de cette application, publié sous la <2>licence MIT</2>."
+msgstr "Scattergories est le jeu de société original de Hasbro. Ceci est un compagnon gratuit et non officiel pour y jouer autour de la table. Découvre le <0>jeu officiel</0> ou le <1>code source</1> de cette application, publié sous la <2>licence MIT</2>."
 
 #. This app stores settings and custom categories in your browser only.
 msgid "modal.privacy"

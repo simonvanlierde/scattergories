@@ -35,7 +35,7 @@ msgstr "Następna runda"
 
 #. Spinning…
 msgid "buttons.spinning"
-msgstr "Losowanie..."
+msgstr "Losowanie…"
 
 #. New letter
 msgid "buttons.newLetter"
@@ -71,7 +71,7 @@ msgstr "Usuń"
 
 #. Add this category to your custom collection
 msgid "buttons.addTooltip"
-msgstr "Dodaj tę kategorię do swojej własnej kolekcji"
+msgstr "Dodaj tę kategorię do własnej kolekcji"
 
 #. Close this window
 msgid "buttons.closeTooltip"
@@ -103,7 +103,7 @@ msgstr "Czas minął!"
 
 #. Get ready…
 msgid "timer.getReady"
-msgstr "Przygotuj się..."
+msgstr "Przygotuj się…"
 
 #. Go!
 msgid "timer.go"
@@ -159,7 +159,7 @@ msgstr "Jak długo trwa runda."
 
 #. Countdown before the timer starts.
 msgid "settings.getReadyHint"
-msgstr "Odliczanie przed startem stopera."
+msgstr "Odliczanie przed startem timera."
 
 #. Skips the last 8 letters drawn; common letters still come up more often.
 msgid "settings.avoidRepeatsHint"
@@ -299,7 +299,7 @@ msgstr "Twoja talia"
 
 #. cards
 msgid "categories.drawUnit"
-msgstr "kart"
+msgstr "szt."
 
 #. How to play
 msgid "modal.title"
@@ -331,7 +331,7 @@ msgstr "Kategorie"
 
 #. The deck comes with a set of built-in categories, and you can add your own.
 msgid "modal.categoriesText"
-msgstr "Talia zawiera wbudowane kategorie, a Ty możesz dodać własne."
+msgstr "Talia zawiera wbudowane kategorie, a ty możesz dodać własne."
 
 #. Customize the deck to add categories and built-in packs, or remove any you'd rather skip.
 msgid "modal.categoriesItems.0"
@@ -371,7 +371,7 @@ msgstr "O aplikacji"
 
 #. Scattergories is the original party game by Hasbro. This is a free, unofficial companion for playing it around the table. Browse the <0>official game</0> or this app's <1>source code</1>, released under the <2>MIT license</2>.
 msgid "modal.attribution"
-msgstr "Scattergories to oryginalna gra imprezowa firmy Hasbro. To bezpłatny, nieoficjalny dodatek do gry przy stole. Przejrzyj <0>oficjalną grę</0> lub <1>kod źródłowy</1> tej aplikacji, wydany na <2>licencji MIT</2>."
+msgstr "Scattergories to oryginalna gra imprezowa firmy Hasbro. To bezpłatny, nieoficjalny dodatek do gry przy stole. Zobacz <0>oficjalną grę</0> lub <1>kod źródłowy</1> tej aplikacji, wydany na <2>licencji MIT</2>."
 
 #. This app stores settings and custom categories in your browser only.
 msgid "modal.privacy"

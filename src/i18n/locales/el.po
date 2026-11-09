@@ -31,7 +31,7 @@ msgstr "Κλήρωση γράμματος"
 
 #. Next round
 msgid "buttons.nextRound"
-msgstr "Επόμενος Γύρος"
+msgstr "Επόμενος γύρος"
 
 #. Spinning…
 msgid "buttons.spinning"
@@ -71,7 +71,7 @@ msgstr "Αφαίρεση"
 
 #. Add this category to your custom collection
 msgid "buttons.addTooltip"
-msgstr "Προσθήκη αυτής της κατηγορίας στην προσωπική σας συλλογή"
+msgstr "Προσθήκη αυτής της κατηγορίας στη δική σου συλλογή"
 
 #. Close this window
 msgid "buttons.closeTooltip"
@@ -151,7 +151,7 @@ msgstr "Προσθήκη κατηγορίας"
 
 #. Gameplay
 msgid "settings.gameplay"
-msgstr "Τρόπος Παιχνιδιού"
+msgstr "Τρόπος παιχνιδιού"
 
 #. How long each round lasts.
 msgid "settings.durationHint"
@@ -163,7 +163,7 @@ msgstr "Αντίστροφη μέτρηση πριν ξεκινήσει ο χρ�
 
 #. Skips the last 8 letters drawn; common letters still come up more often.
 msgid "settings.avoidRepeatsHint"
-msgstr "Παραλείπει τα 8 τελευταία γράμματα που βγήκαν· τα συχνά γράμματα βγαίνουν ακόμη πιο συχνά."
+msgstr "Παραλείπει τα 8 τελευταία γράμματα που βγήκαν· τα συχνά γράμματα εξακολουθούν να βγαίνουν πιο συχνά."
 
 #. Classic
 msgid "packs.classic.label"
@@ -271,7 +271,7 @@ msgstr "Αφαίρεση όλων των προσαρμοσμένων"
 
 #. Remove all built-in
 msgid "categories.removeAllBuiltins"
-msgstr "Αφαίρεση όλων των προεπιλεγμένων"
+msgstr "Αφαίρεση προεπιλεγμένων"
 
 #. Pin {name}
 msgid "categories.pinOne"
@@ -375,7 +375,7 @@ msgstr "Το Scattergories είναι το πρωτότυπο επιτραπέζ
 
 #. This app stores settings and custom categories in your browser only.
 msgid "modal.privacy"
-msgstr "Αυτή η εφαρμογή αποθηκεύει ρυθμίσεις και κατηγορίες μόνο στον περιηγητή σας."
+msgstr "Αυτή η εφαρμογή αποθηκεύει ρυθμίσεις και κατηγορίες μόνο στον περιηγητή σου."
 
 #. Version {version}
 msgid "modal.version"
@@ -1017,7 +1017,7 @@ msgid "category.Circus Things"
 msgstr "Στο τσίρκο"
 
 msgid "category.States"
-msgstr "Νομοί της Ελλάδας"
+msgstr "Περιφέρειες της Ελλάδας"
 
 msgid "category.Throwaway Things"
 msgstr "Ό,τι πετάς"
@@ -1128,7 +1128,7 @@ msgid "category.Holiday Activities"
 msgstr "Ασχολίες διακοπών"
 
 msgid "modal.privacyLink"
-msgstr "Απόρρητο (Αγγλικά)"
+msgstr "Απόρρητο (αγγλικά)"
 
 msgid "modal.accessibilityLink"
-msgstr "Προσβασιμότητα (Αγγλικά)"
+msgstr "Προσβασιμότητα (αγγλικά)"

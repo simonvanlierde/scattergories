@@ -95,7 +95,7 @@ msgstr "Pronto"
 
 #. Paused
 msgid "timer.paused"
-msgstr "Em pausa"
+msgstr "Pausado"
 
 #. Time's up!
 msgid "timer.timeUp"
@@ -163,7 +163,7 @@ msgstr "Contagem regressiva antes de o cronômetro começar."
 
 #. Skips the last 8 letters drawn; common letters still come up more often.
 msgid "settings.avoidRepeatsHint"
-msgstr "Ignora as últimas 8 letras sorteadas; as letras comuns continuam a sair mais vezes."
+msgstr "Ignora as últimas 8 letras sorteadas; as letras comuns continuam saindo com mais frequência."
 
 #. Classic
 msgid "packs.classic.label"
@@ -351,7 +351,7 @@ msgstr "Probabilidade das letras"
 
 #. Each letter's chance of being drawn, from how often words start with it on Wikipedia in this language ({snapshot} snapshot). A draw never repeats the previous letter, and with “{setting}” on it skips the last {window} letters drawn. That makes rare letters come up a little more often than shown.
 msgid "modal.oddsText"
-msgstr "A probabilidade de sair cada letra, com base em quantas palavras começam por ela na Wikipédia neste idioma (versão de {snapshot}). Um sorteio nunca repete a letra anterior e, com «{setting}» ativado, ignora as últimas {window} letras sorteadas. Por isso, as letras raras saem um pouco mais vezes do que o indicado."
+msgstr "A probabilidade de sair cada letra, com base em quantas palavras começam com ela na Wikipédia neste idioma (versão de {snapshot}). Um sorteio nunca repete a letra anterior e, com “{setting}” ativado, ignora as últimas {window} letras sorteadas. Por isso, as letras raras saem um pouco mais do que o indicado."
 
 #. Letter
 msgid "modal.oddsLetter"
