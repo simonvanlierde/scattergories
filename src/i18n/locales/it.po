@@ -59,7 +59,7 @@ msgstr "Riattiva audio"
 
 #. Redraw
 msgid "buttons.redraw"
-msgstr "Rilancia"
+msgstr "Estrai di nuovo"
 
 #. Add
 msgid "buttons.add"
@@ -83,7 +83,7 @@ msgstr "Come giocare"
 
 #. Tap again to skip this round
 msgid "buttons.skipConfirm"
-msgstr "Tocca di nuovo per saltare questo turno"
+msgstr "Tocca di nuovo per saltare questo round"
 
 #. Tap again to remove
 msgid "buttons.removeAllConfirm"
@@ -195,7 +195,7 @@ msgstr "Per adulti"
 
 #. Game board
 msgid "playmat.label"
-msgstr "Tavolo da gioco"
+msgstr "Piano di gioco"
 
 #. Start or advance a round
 msgid "rail.shortcuts.space"
@@ -203,7 +203,7 @@ msgstr "Avvia o prosegui un round"
 
 #. Re-roll the current letter
 msgid "rail.shortcuts.r"
-msgstr "Rilancia la lettera attuale"
+msgstr "Estrai di nuovo la lettera attuale"
 
 #. Pause or resume
 msgid "rail.shortcuts.p"
@@ -343,7 +343,7 @@ msgstr "Fissa una categoria per garantirla a ogni round; quelle non fissate veng
 
 #. Reroll to draw a fresh set of categories for the current letter, without changing the letter.
 msgid "modal.categoriesItems.2"
-msgstr "Rilancia per estrarre un nuovo set di categorie per la lettera attuale, senza cambiare la lettera."
+msgstr "Estrai di nuovo per ottenere un nuovo set di categorie per la lettera attuale, senza cambiare la lettera."
 
 #. Letter odds
 msgid "modal.odds"
@@ -351,7 +351,7 @@ msgstr "Probabilità delle lettere"
 
 #. Each letter's chance of being drawn, from how often words start with it on Wikipedia in this language ({snapshot} snapshot). A draw never repeats the previous letter, and with “{setting}” on it skips the last {window} letters drawn. That makes rare letters come up a little more often than shown.
 msgid "modal.oddsText"
-msgstr "La probabilità di estrarre ogni lettera, in base a quante parole iniziano con essa su Wikipedia in questa lingua (versione di {snapshot}). Un’estrazione non ripete mai la lettera precedente e, con «{setting}» attivo, salta le ultime {window} lettere estratte. Per questo le lettere rare escono un po’ più spesso di quanto indicato."
+msgstr "La probabilità di estrarre ogni lettera, in base a quante parole iniziano con essa su Wikipedia in questa lingua (versione di {snapshot}). Un'estrazione non ripete mai la lettera precedente e, con «{setting}» attivo, salta le ultime {window} lettere estratte. Per questo le lettere rare escono un po' più spesso di quanto indicato."
 
 #. Letter
 msgid "modal.oddsLetter"
@@ -371,7 +371,7 @@ msgstr "Informazioni"
 
 #. Scattergories is the original party game by Hasbro. This is a free, unofficial companion for playing it around the table. Browse the <0>official game</0> or this app's <1>source code</1>, released under the <2>MIT license</2>.
 msgid "modal.attribution"
-msgstr "Scattergories è il gioco di società originale di Hasbro. Questo è un supporto gratuito e non ufficiale per giocarci al tavolo. Sfoglia il <0>gioco ufficiale</0> o il <1>codice sorgente</1> di questa app, rilasciata sotto la <2>licenza MIT</2>."
+msgstr "Scattergories è il gioco di società originale di Hasbro. Questo è un supporto gratuito e non ufficiale per giocarci al tavolo. Dai un'occhiata al <0>gioco ufficiale</0> o il <1>codice sorgente</1> di questa app, rilasciata sotto la <2>licenza MIT</2>."
 
 #. This app stores settings and custom categories in your browser only.
 msgid "modal.privacy"

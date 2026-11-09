@@ -151,7 +151,7 @@ msgstr "Añadir categoría propia"
 
 #. Gameplay
 msgid "settings.gameplay"
-msgstr "Reglas de juego"
+msgstr "Partida"
 
 #. How long each round lasts.
 msgid "settings.durationHint"
@@ -279,7 +279,7 @@ msgstr "Fijar {name}"
 
 #. Unpin {name}
 msgid "categories.unpinOne"
-msgstr "Desfijar {name}"
+msgstr "Desanclar {name}"
 
 #. Pin all
 msgid "categories.pinAll"
@@ -287,7 +287,7 @@ msgstr "Fijar todas"
 
 #. Unpin all
 msgid "categories.unpinAll"
-msgstr "Desfijar todas"
+msgstr "Desanclar todas"
 
 #. Add categories
 msgid "categories.addSectionTitle"
@@ -331,7 +331,7 @@ msgstr "Categorías"
 
 #. The deck comes with a set of built-in categories, and you can add your own.
 msgid "modal.categoriesText"
-msgstr "La baraja incluye categorías integradas, y puedes añadir las tuyas."
+msgstr "La baraja incluye categorías estándar, y puedes añadir las tuyas."
 
 #. Customize the deck to add categories and built-in packs, or remove any you'd rather skip.
 msgid "modal.categoriesItems.0"

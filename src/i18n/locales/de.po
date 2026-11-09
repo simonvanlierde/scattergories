@@ -271,7 +271,7 @@ msgstr "Alle eigenen entfernen"
 
 #. Remove all built-in
 msgid "categories.removeAllBuiltins"
-msgstr "Alle Standard entfernen"
+msgstr "Alle Standardkategorien entfernen"
 
 #. Pin {name}
 msgid "categories.pinOne"
@@ -331,7 +331,7 @@ msgstr "Kategorien"
 
 #. The deck comes with a set of built-in categories, and you can add your own.
 msgid "modal.categoriesText"
-msgstr "Das Deck enthält integrierte Kategorien, und du kannst eigene hinzufügen."
+msgstr "Das Deck enthält Standardkategorien, und du kannst eigene hinzufügen."
 
 #. Customize the deck to add categories and built-in packs, or remove any you'd rather skip.
 msgid "modal.categoriesItems.0"
@@ -343,7 +343,7 @@ msgstr "Fixiere eine Kategorie, damit sie in jeder Runde vorkommt; nicht fixiert
 
 #. Reroll to draw a fresh set of categories for the current letter, without changing the letter.
 msgid "modal.categoriesItems.2"
-msgstr "Ziehe neu, um für den aktuellen Buchstaben ein frisches Set an Kategorien zu ziehen, ohne den Buchstaben zu ändern."
+msgstr "Zieh neu, um für den aktuellen Buchstaben neue Kategorien zu bekommen, ohne den Buchstaben zu ändern."
 
 #. Letter odds
 msgid "modal.odds"
@@ -367,7 +367,7 @@ msgstr "Tastenkürzel"
 
 #. About
 msgid "modal.about"
-msgstr "Über"
+msgstr "Über die App"
 
 #. Scattergories is the original party game by Hasbro. This is a free, unofficial companion for playing it around the table. Browse the <0>official game</0> or this app's <1>source code</1>, released under the <2>MIT license</2>.
 msgid "modal.attribution"

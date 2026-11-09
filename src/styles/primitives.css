@@ -391,6 +391,18 @@
     content: none;
   }
 
+  /* A long single word (German compounds) would otherwise set the
+     row's min width and push the control past a 320px sheet. */
+  .settings-rows .ds-field__text {
+    min-width: 0;
+  }
+
+  .settings-rows .ds-field__label {
+    white-space: normal;
+    hyphens: auto;
+    overflow-wrap: break-word;
+  }
+
   .settings-rows .ds-field__inline {
     grid-template-columns: auto auto;
   }
