@@ -1,7 +1,7 @@
+import { useLingui } from "@lingui/react";
 import { Moon, Settings, Sun, Volume2, VolumeX } from "lucide-react";
 import type { ReactNode } from "react";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import {
   bufferSecondsDefault,
   bufferSecondsMax,
@@ -53,7 +53,7 @@ function LanguageSelect({
 }: Pick<SettingsClusterProps, "language" | "isLanguagePending"> & {
   onSelect: (code: string) => void;
 }) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
 
   return (
     <select
@@ -74,7 +74,7 @@ function LanguageSelect({
 
 /** Light/dark as a segmented choice — a settings panel should show the state, not just flip it. */
 function ThemeChoice({ theme, onToggleTheme }: Pick<SettingsClusterProps, "theme" | "onToggleTheme">) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
   const isDark = theme === "dark";
 
   return (
@@ -106,7 +106,7 @@ function GameplaySettings({
   SettingsClusterProps,
   "avoidRepeats" | "durationInput" | "bufferSecondsInput" | "onToggleAvoidRepeats" | "onUpdateTimingField"
 >) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
 
   return (
     <div className="settings-rows">
@@ -164,7 +164,7 @@ export function SettingsCluster({
   onToggleAvoidRepeats,
   onUpdateTimingField,
 }: SettingsClusterProps) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
   const [isOpen, setIsOpen] = useState(false);
 
   return (

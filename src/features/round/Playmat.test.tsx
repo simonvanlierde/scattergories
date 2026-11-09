@@ -1,5 +1,5 @@
+import { I18nProvider } from "@lingui/react";
 import { render, screen } from "@testing-library/react";
-import { I18nextProvider } from "react-i18next";
 import { beforeAll, expect, it } from "vitest";
 import type { Phase, StatusKey } from "@/domain/game/roundReducer";
 import { i18n, initI18n } from "@/i18n/config";
@@ -20,7 +20,7 @@ function renderAt(
 ) {
   const noop = () => undefined;
   render(
-    <I18nextProvider i18n={i18n}>
+    <I18nProvider i18n={i18n}>
       <Playmat
         phase={phase}
         isPaused={false}
@@ -35,7 +35,7 @@ function renderAt(
         onNewLetter={noop}
         onNextRound={noop}
       />
-    </I18nextProvider>,
+    </I18nProvider>,
   );
   const status = screen.getByTestId("round-status");
   const region = (politeness: string) => status.querySelector(`[aria-live="${politeness}"]`)?.textContent ?? null;

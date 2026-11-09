@@ -27,3 +27,9 @@ ts-test *args:
 # Install the browser once per machine: `pnpm exec playwright install chromium`.
 ts-e2e *args:
     pnpm run test:e2e {{ args }}
+
+# Screenshot every route at 390 and 1440 px, light and dark, into the gitignored
+# shots/ (`<route>-<width>-<scheme>.png`). Builds and serves the app like ts-e2e.
+ts-shots:
+    rm -rf ./shots
+    SHOTS=1 pnpm exec playwright test --project shots

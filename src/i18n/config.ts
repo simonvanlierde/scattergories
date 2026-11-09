@@ -1,8 +1,7 @@
-import i18nInstance from "i18next";
-import { initReactI18next } from "react-i18next";
+import { setupI18n } from "@lingui/core";
 import { safeStorage } from "@/shared/lib/safeStorage";
 import { FALLBACK_LOCALE, resolveLocale } from "./localeRegistry";
-import { loadLocaleNamespaces } from "./locales/resources";
+import { loadLocaleMessages } from "./locales/resources";
 
 const LANGUAGE_STORAGE_KEY = "scattergories.language";
 
@@ -11,68 +10,45 @@ function getSavedLanguage(): string {
   if (stored) {
     return stored;
   }
-  // Nothing chosen yet: start from the browser's language when it is one we ship.
   return typeof navigator === "undefined" ? FALLBACK_LOCALE : resolveLocale(navigator.language);
 }
 
 const savedLanguage = getSavedLanguage();
 const resolvedLanguage = resolveLocale(savedLanguage);
-const i18n = i18nInstance;
+const i18n = setupI18n();
+const loadedLanguages = new Set<string>();
 let initPromise: Promise<typeof i18n> | null = null;
+
+i18n.on("change", () => {
+  document.documentElement.lang = i18n.locale;
+});
 
 function initI18n(): Promise<typeof i18n> {
   if (!initPromise) {
     initPromise = (async () => {
-      if (!i18n.isInitialized) {
-        // Keep <html lang> in sync so screen readers pronounce category words
-        // in the active locale, not always English. Fires on init and on every
-        // changeLanguage, so all callers are covered from one place.
-        i18n.on("languageChanged", (lng) => {
-          document.documentElement.lang = lng;
-        });
-        await i18n.use(initReactI18next).init({
-          resources: {},
-          lng: resolvedLanguage,
-          fallbackLng: FALLBACK_LOCALE,
-          ns: ["translation", "categories"],
-          defaultNS: "translation",
-          interpolation: {
-            escapeValue: false,
-          },
-        });
-      }
-
       try {
         await ensureLanguageLoaded(resolvedLanguage);
+        i18n.activate(resolvedLanguage);
         if (resolvedLanguage !== savedLanguage) {
-          safeStorage.setItem(LANGUAGE_STORAGE_KEY, resolvedLanguage);
+          persistLanguage(resolvedLanguage);
         }
       } catch {
-        // A locale chunk that fails to load (offline, a deploy mid-session) must
-        // not boot into a blank UI. English is bundled, so use it for this session
-        // and keep the stored choice for the next launch.
+        // Keep the saved choice after a failed locale download so the next launch retries it.
         await ensureLanguageLoaded(FALLBACK_LOCALE);
-        await i18n.changeLanguage(FALLBACK_LOCALE);
+        i18n.activate(FALLBACK_LOCALE);
       }
-
       return i18n;
     })();
   }
-
   return initPromise;
 }
 
 async function ensureLanguageLoaded(language: string): Promise<string> {
   const resolved = resolveLocale(language);
-
-  if (i18n.hasResourceBundle(resolved, "translation") && i18n.hasResourceBundle(resolved, "categories")) {
-    return resolved;
+  if (!loadedLanguages.has(resolved)) {
+    i18n.load(resolved, await loadLocaleMessages(resolved));
+    loadedLanguages.add(resolved);
   }
-
-  const namespaces = await loadLocaleNamespaces(resolved);
-  i18n.addResourceBundle(resolved, "translation", namespaces.translation, true, true);
-  i18n.addResourceBundle(resolved, "categories", namespaces.categories, true, true);
-
   return resolved;
 }
 

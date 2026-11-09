@@ -14,8 +14,7 @@ class RepoPaths:
     registry_path: Path
     generated_weights_path: Path
     locale_dir: Path
-    categories_source_path: Path
-    locale_payload_source_path: Path
+    catalog_source_path: Path
 
 
 def default_repo_paths() -> RepoPaths:
@@ -31,6 +30,5 @@ def default_repo_paths() -> RepoPaths:
         registry_path=locale_dir / "registry.json",
         generated_weights_path=repo_root / "src" / "i18n" / "__generated__" / "letterWeights.json",
         locale_dir=locale_dir,
-        categories_source_path=locale_dir / "categories.en.json",
-        locale_payload_source_path=locale_dir / "en.json",
+        catalog_source_path=locale_dir / "en.po",
     )

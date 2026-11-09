@@ -1,0 +1,2 @@
+# Vite serves root-relative static assets from public/.
+root_dir = "public"

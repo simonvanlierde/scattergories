@@ -21,6 +21,7 @@ dist/
 *.egg-info/
 .pytest_cache/
 .ruff_cache/
+.rumdl_cache/
 .ipynb_checkpoints/
 htmlcov/
 .coverage
@@ -32,6 +33,7 @@ node_modules/
 *.tsbuildinfo
 coverage/
 playwright-report/
+/shots/
 test-results/
 blob-report/
 .wrangler/
@@ -46,3 +48,7 @@ target/
 *.swp
 .ty_cache/
 .cspellcache
+
+# Lingui compile output; Vite compiles the PO sources directly.
+src/i18n/locales/*.js
+src/i18n/locales/*.mjs

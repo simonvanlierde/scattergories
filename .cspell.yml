@@ -25,6 +25,7 @@ enableGlobDot: true
 useGitignore: true
 ignorePaths:
   - ".git"
+  - "LICENSES/**"
   - "*-lock.*"
   - ".vscode/**"
   # SVG markup is a sea of attribute names, not prose.
@@ -32,27 +33,39 @@ ignorePaths:
 
 # Check locale and translation files in their respective languages.
 overrides:
-  - filename: "**/{de,*.de}.json"
+  - filename: "**/{de,*.de}.{json,po}"
     language: en,de
-  - filename: "**/{es,*.es}.json"
+  - filename: "**/{es,*.es}.{json,po}"
     language: en,es
-  - filename: "**/{fr,*.fr}.json"
+  - filename: "**/{fr,*.fr}.{json,po}"
     language: en,fr
-  - filename: "**/{it,*.it}.json"
+  - filename: "**/{it,*.it}.{json,po}"
     language: en,it
-  - filename: "**/{nl,*.nl}.json"
+  - filename: "**/{nl,*.nl}.{json,po}"
     language: en,nl
-  - filename: "**/{pl,*.pl}.json"
+  - filename: "**/{pl,*.pl}.{json,po}"
     language: en,pl
-  - filename: "**/{pt,*.pt}.json"
+  - filename: "**/{pt,*.pt}.{json,po}"
     language: en,pt
-  - filename: "**/{el,*.el}.json"
+  - filename: "**/{el,*.el}.{json,po}"
     language: en,el
   # Boot screen strings for every locale, bundled before the locale files load.
   - filename: "src/app/{bootMessages.ts,App.boot.test.tsx}"
     language: en,de,es,fr,it,nl,pl,pt,el
 
 words:
+  - codspeed
+  - customise
+  - esac
+  - lycheeverse
+  - overclaims
+  - ossf
+  - SARIF
+  - workerd
+  - Lingui
+  - Autoriteit
+  - Persoonsgegevens
+  - Προσβασιμότητα
   - Lierde
   - scattergories
   - duinlab
@@ -70,6 +83,7 @@ words:
   - geolocation
   - precaching
   - undecomposed
+  - openssf
   - oklch
   - htmlcov
   - nosniff
@@ -99,6 +113,7 @@ words:
   - dejavu
   - golangci
   - HSTS
+  - jsonvet
   - jactionlint
   - nbstripout
   - prek

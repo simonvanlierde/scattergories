@@ -1,4 +1,4 @@
-import type { ParseKeys } from "i18next";
+import { Trans, useLingui } from "@lingui/react";
 import {
   ChevronDown,
   Info,
@@ -11,7 +11,6 @@ import {
   Tags,
 } from "lucide-react";
 import type { ReactNode } from "react";
-import { Trans, useTranslation } from "react-i18next";
 import { RECENT_LETTER_WINDOW } from "@/domain/deck";
 import { getLetterOdds } from "@/domain/game/localeWeights";
 import letterWeightsMeta from "@/i18n/__generated__/letterWeights.meta.json";
@@ -35,7 +34,7 @@ interface HowToPlayModalProps {
 
 interface ShortcutDefinition {
   keys: string;
-  labelKey: ParseKeys;
+  labelKey: string;
 }
 
 const SHORTCUTS: readonly ShortcutDefinition[] = [
@@ -49,14 +48,6 @@ const SHORTCUTS: readonly ShortcutDefinition[] = [
 // One icon per mechanic, matching the order of `modal.categoriesItems`
 // (customize deck, pin, reroll) and the controls in the categories panel.
 const CATEGORY_ICONS: readonly LucideIcon[] = [SlidersHorizontal, Pin, RefreshCw];
-
-function toStringArray(value: unknown): string[] {
-  if (!Array.isArray(value)) {
-    return [];
-  }
-
-  return value.filter((item): item is string => typeof item === "string");
-}
 
 interface SectionProps {
   icon: LucideIcon;
@@ -78,12 +69,12 @@ function Attribution() {
   return (
     <p className="modal-attribution">
       <Trans
-        i18nKey="modal.attribution"
-        components={{
-          official: <ExternalAnchor href={OFFICIAL_GAME_URL} />,
-          repo: <ExternalAnchor href={SOURCE_CODE_URL} />,
-          license: <ExternalAnchor href={LICENSE_URL} />,
-        }}
+        id="modal.attribution"
+        components={[
+          <ExternalAnchor key="official" href={OFFICIAL_GAME_URL} />,
+          <ExternalAnchor key="repo" href={SOURCE_CODE_URL} />,
+          <ExternalAnchor key="license" href={LICENSE_URL} />,
+        ]}
       />
     </p>
   );
@@ -101,8 +92,8 @@ function formatSnapshot(locale: string): string {
 }
 
 function LetterOdds() {
-  const { t, i18n } = useTranslation();
-  const locale = i18n.resolvedLanguage ?? i18n.language;
+  const { _: t, i18n } = useLingui();
+  const locale = i18n.locale;
   const odds = getLetterOdds(locale);
   const top = Math.max(...odds.map(({ chance }) => chance));
   const percent = new Intl.NumberFormat(locale, {
@@ -169,9 +160,9 @@ function Section({ icon, title, defaultOpen = false, children }: SectionProps) {
 }
 
 export function HowToPlayModal({ onClose, onStart }: HowToPlayModalProps) {
-  const { t } = useTranslation();
-  const gameplayPoints = toStringArray(t("modal.gameplayPoints", { returnObjects: true }));
-  const categoriesItems = toStringArray(t("modal.categoriesItems", { returnObjects: true }));
+  const { _: t } = useLingui();
+  const gameplayPoints = [0, 1, 2, 3].map((index) => t(`modal.gameplayPoints.${index}`));
+  const categoriesItems = [0, 1, 2].map((index) => t(`modal.categoriesItems.${index}`));
 
   return (
     <Sheet open={true} onClose={onClose} title={t("modal.title")} closeLabel={t("buttons.closeTooltip")}>
@@ -234,6 +225,10 @@ export function HowToPlayModal({ onClose, onStart }: HowToPlayModalProps) {
         <Section icon={Info} title={t("modal.about")}>
           <Attribution />
           <p className="modal-privacy">{t("modal.privacy")}</p>
+          <p className="modal-legal-links">
+            <a href="/privacy">{t("modal.privacyLink")}</a>
+            <a href="/accessibility">{t("modal.accessibilityLink")}</a>
+          </p>
           <p className="modal-version">{t("modal.version", { version: __APP_VERSION__ })}</p>
         </Section>
       </div>

@@ -1,5 +1,5 @@
+import { useLingui } from "@lingui/react";
 import { lazy } from "react";
-import { useTranslation } from "react-i18next";
 import { useRound } from "@/features/round/useRound";
 import { useSettings } from "@/features/settings/SettingsProvider";
 import { useAppControls } from "./useAppControls";
@@ -24,14 +24,14 @@ const HowToPlayDialog = lazy(async () => ({
  */
 function useGameController() {
   const { settings, update, ...deckEdits } = useSettings();
-  const { i18n } = useTranslation();
+  const { i18n } = useLingui();
   const promptDeck = usePromptDeckState(settings.promptDeckPreference, update);
   const roundSetup = useRoundSetup(settings);
   const round = useRound({
     gameSeconds: roundSetup.gameSeconds,
     bufferSeconds: roundSetup.bufferSeconds,
     isMuted: settings.isMuted,
-    locale: i18n.resolvedLanguage ?? i18n.language,
+    locale: i18n.locale,
     avoidRepeats: settings.avoidRepeats,
     // Only called from a spin, after this render has defined `board`.
     onLetterPicked: () => board.redrawCategories(true),

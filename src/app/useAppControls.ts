@@ -1,4 +1,4 @@
-import type { i18n as I18nInstance } from "i18next";
+import type { I18n as I18nInstance } from "@lingui/core";
 import { useEffect, useRef, useState } from "react";
 import { ensureLanguageLoaded, persistLanguage } from "@/i18n/config";
 
@@ -35,7 +35,7 @@ function useLanguageSwitcher(
         // Persist only once the switch actually succeeded — a failed load must not
         // leave a language stored that the next launch can't render.
         const resolved = await ensureLanguageLoaded(language);
-        await i18n.changeLanguage(resolved);
+        await i18n.activate(resolved);
         persistLanguage(resolved);
       } catch {
         setHasChunkError(true);

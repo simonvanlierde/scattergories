@@ -1,5 +1,5 @@
+import { I18nProvider } from "@lingui/react";
 import { render } from "@testing-library/react";
-import { I18nextProvider } from "react-i18next";
 import { beforeAll, expect, it } from "vitest";
 import { i18n, initI18n } from "@/i18n/config";
 import { LetterHero } from "./LetterHero";
@@ -10,9 +10,9 @@ beforeAll(async () => {
 
 function liveRegion(letter: string, visible: boolean, landing: boolean) {
   const { container } = render(
-    <I18nextProvider i18n={i18n}>
+    <I18nProvider i18n={i18n}>
       <LetterHero letter={letter} visible={visible} landing={landing} />
-    </I18nextProvider>,
+    </I18nProvider>,
   );
   const region = container.querySelector('[aria-live="polite"]');
   if (!region) {

@@ -90,17 +90,7 @@ def repo_context(
         json.dumps(registry_payload(), ensure_ascii=False),
         encoding="utf-8",
     )
-    (locale_dir / "categories.en.json").write_text(
-        json.dumps({"Animals": "Animals", "Foods": "Foods"}, ensure_ascii=False),
-        encoding="utf-8",
-    )
-    (locale_dir / "en.json").write_text(
-        json.dumps(
-            {"title": "Play", "roundCounter": "Round {{current}} of {{total}}"},
-            ensure_ascii=False,
-        ),
-        encoding="utf-8",
-    )
+    (locale_dir / "en.po").write_text('msgid "title"\nmsgstr "Play"\n', encoding="utf-8")
 
     paths = RepoPaths(
         repo_root=repo_root,
@@ -109,8 +99,7 @@ def repo_context(
         registry_path=registry_path,
         generated_weights_path=generated_dir / "letterWeights.json",
         locale_dir=locale_dir,
-        categories_source_path=locale_dir / "categories.en.json",
-        locale_payload_source_path=locale_dir / "en.json",
+        catalog_source_path=locale_dir / "en.po",
     )
     return paths, load_locale_registry(registry_path)
 

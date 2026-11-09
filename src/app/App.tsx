@@ -1,5 +1,5 @@
+import { I18nProvider, useLingui } from "@lingui/react";
 import { useEffect, useState } from "react";
-import { I18nextProvider, useTranslation } from "react-i18next";
 import { SettingsProvider } from "@/features/settings/SettingsProvider";
 import { getPreferredTheme } from "@/features/settings/schema";
 import { bootLanguage, i18n, initI18n } from "@/i18n/config";
@@ -7,6 +7,7 @@ import { AppLoading } from "./AppLoading";
 import { bootMessages } from "./bootMessages";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { GameShell } from "./GameShell";
+import { LegalPage } from "./LegalPages";
 import { useGameController } from "./useGameController";
 
 interface ErrorViewProps {
@@ -43,7 +44,7 @@ function BootstrapErrorFallback() {
 }
 
 function AppErrorFallback() {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
 
   return (
     <ErrorView
@@ -64,14 +65,15 @@ function AppContent() {
 // The boundary sits inside the i18n provider, so its fallback is translated, and
 // above the settings and game state, so a throw while building them is caught too.
 function AppProviders() {
+  const path = window.location.pathname;
   return (
-    <I18nextProvider i18n={i18n}>
+    <I18nProvider i18n={i18n}>
       <ErrorBoundary fallback={<AppErrorFallback />}>
         <SettingsProvider>
-          <AppContent />
+          {path === "/privacy" || path === "/accessibility" ? <LegalPage path={path} /> : <AppContent />}
         </SettingsProvider>
       </ErrorBoundary>
-    </I18nextProvider>
+    </I18nProvider>
   );
 }
 

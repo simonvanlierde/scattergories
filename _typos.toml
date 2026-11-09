@@ -1,0 +1,11 @@
+# Words typos must leave alone. Add your own below.
+[default.extend-words]
+# NumPy's API spells it this way (`array.flags.writeable`).
+writeable = "writeable"
+WRITEABLE = "WRITEABLE"
+certifi = "certifi"
+finde = "finde"
+
+[files]
+# CSpell checks these catalogs with each locale's dictionary.
+extend-exclude = ["src/i18n/locales/*.po", "src/app/bootMessages.ts", "src/app/App.boot.test.tsx"]

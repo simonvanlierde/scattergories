@@ -1,6 +1,6 @@
+import { useLingui } from "@lingui/react";
 import { Dices, Pause, Play, SkipForward } from "lucide-react";
 import type { ReactNode } from "react";
-import { useTranslation } from "react-i18next";
 import type { Phase } from "@/domain/game/roundReducer";
 import { Button } from "@/shared/ui/Button";
 import { Icon } from "@/shared/ui/Icon";
@@ -24,7 +24,7 @@ function ControlGroup({ label, children }: { label: string; children: ReactNode 
   );
 }
 
-type Translate = ReturnType<typeof useTranslation>["t"];
+type Translate = ReturnType<typeof useLingui>["_"];
 
 function resolvePrimary(phase: Phase, isPaused: boolean, t: Translate) {
   if (phase === "spinning") {
@@ -40,7 +40,7 @@ function resolvePrimary(phase: Phase, isPaused: boolean, t: Translate) {
 }
 
 export function ActionBar({ phase, isPaused, onPrimary, onNewLetter, onNextRound }: ActionBarProps) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
   const isPausedRound = (phase === "buffer" || phase === "running") && isPaused;
   const roundControlsLabel = t("controls.roundGroup");
 

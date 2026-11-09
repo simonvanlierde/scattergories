@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { useLingui } from "@lingui/react";
 import type { Phase, StatusKey } from "@/domain/game/roundReducer";
 import { ActionBar } from "./ActionBar";
 import { LetterHero } from "./LetterHero";
@@ -43,7 +43,7 @@ function passedThreshold(phase: Phase, secondsLeft: number, gameSeconds: number)
 // The last 5 seconds and the end of the round interrupt whatever is being read;
 // everything else waits its turn. Only one region holds text at a time.
 function PlaymatStatus({ statusKey, phase, secondsLeft, gameSeconds }: PlaymatStatusProps) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
   const threshold = passedThreshold(phase, secondsLeft, gameSeconds);
   let text = statusKey ? t(statusKey) : "";
   if (threshold !== null) {
@@ -77,7 +77,7 @@ export function Playmat({
   onNewLetter,
   onNextRound,
 }: PlaymatProps) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
 
   return (
     <section className="playmat" aria-label={t("playmat.label")} data-phase={phase}>

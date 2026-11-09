@@ -299,3 +299,10 @@ the readout. Panels and the playmat have no corners at all. Rules separate them.
 - **Don't** add a second accent color, gradients or decorative color.
 - **Don't** set controls or lists in Fraunces, or the letter in Geist.
 - **Don't** dim the categories during a round. They must stay fully readable.
+
+### Documents
+
+Privacy and accessibility pages use the Printed Game Card as a reading surface: a die and
+wordmark linking home, a visible back link, Fraunces headings, Geist body text and hairline
+rules. The article is at most 68ch wide. The whole document scrolls; the game stays one screen.
+Links live in How to play > About, with translated labels marking these pages as English.

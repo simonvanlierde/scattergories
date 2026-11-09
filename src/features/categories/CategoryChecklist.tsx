@@ -1,6 +1,6 @@
+import { useLingui } from "@lingui/react";
 import { Pin } from "lucide-react";
 import type { CSSProperties } from "react";
-import { useTranslation } from "react-i18next";
 import { cx } from "@/shared/ui/cx";
 import { Icon } from "@/shared/ui/Icon";
 
@@ -23,7 +23,7 @@ export function CategoryChecklist({
   disabled,
   onTogglePin,
 }: CategoryChecklistProps) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
 
   // Only show the "not enough categories" notice when nothing is drawn — a round
   // already in progress keeps showing its drawn cards even if the deck is emptied.
@@ -43,7 +43,7 @@ export function CategoryChecklist({
           // Only unpinned slots roll and land; pinned slots hold still.
           const isFillSlot = !isPinned;
           const isCustom = customSet.has(category);
-          const label = isCustom ? category : t(category, { ns: "categories" });
+          const label = isCustom ? category : t(`category.${category}`);
           const labelClass =
             landing && isFillSlot
               ? "category-checklist__label category-checklist__label--landing"

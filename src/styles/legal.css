@@ -1,0 +1,88 @@
+@layer components {
+  .legal-page {
+    font-family: var(--font-ui);
+  }
+  .legal-page main:focus {
+    outline: none;
+  }
+  .legal-page__sheet {
+    width: min(100% - 2rem, 68ch);
+    margin-inline: auto;
+    padding-block: max(var(--space-5), env(safe-area-inset-top)) max(var(--space-8), env(safe-area-inset-bottom));
+  }
+  .legal-page__masthead {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: var(--space-5);
+  }
+  .legal-page__masthead a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    text-decoration: none;
+  }
+  .legal-page__masthead span {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+  }
+  .legal-page__back {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    margin-block: var(--space-4) var(--space-6);
+  }
+  .legal-page article {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    overflow-wrap: anywhere;
+  }
+  .legal-page h1,
+  .legal-page h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
+  }
+  .legal-page h1 {
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-6);
+  }
+  .legal-page h2 {
+    font-size: var(--text-xl);
+    margin-block: var(--space-8) var(--space-3);
+  }
+  .legal-page article p + p,
+  .legal-page article p + ul,
+  .legal-page article ul + p {
+    margin-top: var(--space-4);
+  }
+  .legal-page li + li {
+    margin-top: var(--space-2);
+  }
+  .legal-page a {
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+  }
+  .legal-page a:hover {
+    color: var(--accent-primary);
+  }
+  .legal-page__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    border-top: 1px solid var(--rule);
+    margin-top: var(--space-8);
+    padding-top: var(--space-4);
+  }
+  .legal-page__nav a,
+  .modal-legal-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+  .modal-legal-links {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--space-5);
+  }
+}

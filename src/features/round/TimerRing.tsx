@@ -1,5 +1,5 @@
+import { useLingui } from "@lingui/react";
 import { useEffect, useRef } from "react";
-import { useTranslation } from "react-i18next";
 import type { Phase } from "@/domain/game/roundReducer";
 import { formatSeconds } from "@/domain/game/utils";
 import { vibrate } from "@/shared/lib/haptics";
@@ -65,7 +65,7 @@ function useStageHaptics(stage: Stage) {
 }
 
 function getLabel(
-  t: ReturnType<typeof useTranslation>["t"],
+  t: ReturnType<typeof useLingui>["_"],
   o: { phase: Phase; isRunning: boolean; isPaused: boolean; secondsLeft: number },
 ): string {
   if (o.phase === "done") {
@@ -90,7 +90,7 @@ function getLabel(
 }
 
 function TimerRing({ phase, isPaused, secondsLeft, gameSeconds }: TimerRingProps) {
-  const { t } = useTranslation();
+  const { _: t } = useLingui();
   const stage = getTimerStage(phase, secondsLeft);
   const isRunning = phase === "buffer" || phase === "running";
 

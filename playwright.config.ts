@@ -21,7 +21,9 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   projects: [
+    ...(process.env.SHOTS ? [{ name: "shots", testDir: "tests/shots", use: { ...devices["Desktop Chrome"] } }] : []),
     {
+      testIgnore: "**/shots/**",
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
@@ -47,10 +49,10 @@ export default defineConfig({
     },
   ],
   webServer: {
-    // The tests run against the production build, which is what Cloudflare Pages serves.
+    // The tests run against the production build, which is what Cloudflare Worker serves.
     command: `pnpm build && pnpm preview --host ${HOST} --port ${PORT} --strictPort`,
     url: BASE_URL,
-    reuseExistingServer: !isCi,
+    reuseExistingServer: false,
     timeout: 120_000,
   },
 });
