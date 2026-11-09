@@ -44,7 +44,7 @@ const offline = (): Plugin => ({
     const publicFiles = (await readdir(publicDir, { recursive: true, withFileTypes: true }))
       .filter((entry) => entry.isFile())
       .map((entry) => relative(fileURLToPath(publicDir), `${entry.parentPath}/${entry.name}`))
-      .filter((path) => path !== "sw.js" && !path.startsWith("_") && !path.startsWith("."));
+      .filter((path) => path !== "sw.js" && path !== "og.png" && !path.startsWith("_") && !path.startsWith("."));
     const paths = ["/", ...new Set([...Object.keys(bundle), ...publicFiles].map((path) => `/${path}`))].sort();
     const worker = await readFile(new URL("sw.js", publicDir), "utf8");
     this.emitFile({
