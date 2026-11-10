@@ -17,12 +17,16 @@ export function LetterHero({ letter, visible, landing }: LetterHeroProps) {
       <span className="sr-only" aria-live="polite" aria-atomic="true">
         {announced}
       </span>
+      {/* A new key per flip remounts the glyph, so each letter drops in like a
+          reel stopping; repeated letters stay put, as a real reel would. */}
       <span
+        key={landing ? "landed" : letter}
         data-testid="current-letter"
         aria-hidden="true"
         className={cx(
           "letter-hero__glyph",
           !visible && "letter-hero__glyph--hidden",
+          visible && !landing && "letter-hero__glyph--rolling",
           landing && "letter-hero__glyph--landing",
         )}
         style={{ viewTransitionName: "letter-hero" }}

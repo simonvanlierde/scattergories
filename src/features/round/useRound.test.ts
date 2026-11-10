@@ -143,9 +143,9 @@ it("plays tick sounds during the final 10 running seconds", () => {
   driver.start();
   driver.landLetter();
   driver.advanceBuffer();
+  mockPlayTick.mockClear();
 
   expect(driver.current.secondsLeft).toBe(LONG_ROUND_SECONDS);
-  expect(mockPlayTick).not.toHaveBeenCalled();
 
   driver.advanceSeconds(10);
   expect(driver.current.secondsLeft).toBe(10);
@@ -153,6 +153,19 @@ it("plays tick sounds during the final 10 running seconds", () => {
 
   driver.advanceSeconds(1);
   expect(mockPlayTick).toHaveBeenCalledTimes(2);
+});
+
+it("ticks the get-ready seconds after the landing chime, then waits for the final 10", () => {
+  const driver = createRoundDriver({ gameSeconds: LONG_ROUND_SECONDS });
+
+  driver.start();
+  driver.landLetter();
+  // The letter's landing chime marks the first get-ready second.
+  expect(mockPlayTick).not.toHaveBeenCalled();
+
+  driver.advanceBuffer();
+  expect(driver.current.phase).toBe("running");
+  expect(mockPlayTick).toHaveBeenCalledTimes(BUFFER_SECONDS - 1);
 });
 
 it("pauses and resumes without losing countdown time", () => {

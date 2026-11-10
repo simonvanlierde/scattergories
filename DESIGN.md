@@ -259,10 +259,16 @@ the readout. Panels and the playmat have no corners at all. Rules separate them.
 
 - The letter sits inside the ring as a drop cap. Before the first roll, a "?" at 12% opacity
   stands in for it.
+- **The roll is a reel.** Each flipped letter drops in from above (140ms) and the drops slow down
+  with the flips, so every seat reads "rolling" whatever its angle to the phone. The drawn letter
+  then lands with a spring (640ms).
+- **Get-ready winds up.** The navy ring fills one even segment a second, from empty during the roll
+  to full on the last second, and the readout beats with each second. The round starts on a full
+  ring.
 - The ring drains while the round runs: secondary ink, then amber at 15 s, then brick at 5 s. The
-  stroke gets thicker at each step (3, 4, 6), and from 5 s the readout also beats once a second.
-  When paused, the track is dashed.
-- The letter lands with a spring (640ms).
+  stroke gets thicker at each step (3, 4, 6). From 5 s the readout beats on each second, a little
+  harder each time (1.08× to 1.24×). Every beat lands on the clock's own tick.
+  When paused, the track is dashed and the beat stops.
 - From the first roll, a quiet "Round 4" label (uppercase Geist, muted ink) sits in the ring's top
   gap, mirroring the readout below. It counts the rounds started this session: a skip starts a
   round, a new letter does not, and a reload starts again at 1. It is not saved.

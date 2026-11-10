@@ -77,6 +77,7 @@ function useGameController() {
     settings: {
       ...settings,
       gameSeconds: roundSetup.gameSeconds,
+      bufferSeconds: roundSetup.bufferSeconds,
       update,
       toggle: (key: "isMuted" | "avoidRepeats") => update(key, !settings[key]),
       toggleTheme: () => update("theme", settings.theme === "light" ? "dark" : "light"),

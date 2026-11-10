@@ -34,8 +34,8 @@ from their seat.
   default), then "Time's up".
 - Players write their answers on paper. They score at the table, by the house rules in the How to
   play sheet. The app doesn't score.
-- Players can follow and run a round without looking at the screen. A tick sounds in the last 10 s
-  and an alarm at the end. The phone vibrates at 15 s and 5 s left and at the end. Keyboard
+- Players can follow and run a round without looking at the screen. A tick sounds on each get-ready
+  second after the first, and in the last 10 s, and an alarm at the end. The phone vibrates at 15 s and 5 s left and at the end. Keyboard
   shortcuts (Space, R, P, C, ?) cover the controls.
 - It runs installed as a PWA or in a browser tab. Light and dark themes follow the system unless
   you set one.
