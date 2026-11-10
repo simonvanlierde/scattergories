@@ -240,10 +240,11 @@ the readout. Panels and the playmat have no corners at all. Rules separate them.
 ### Buttons
 
 - **Primary:** holds the round's next step: Roll a letter, Pause or Resume, Next round.
+- **Round controls:** New letter and Next round pair their icons with visible labels.
 - **Ghost and icon buttons:** transparent, in ink or secondary ink, with a 6% ink wash on hover.
   Icon buttons are at least 44px square. Ghost buttons are 44px tall at both sizes. Pressing scales
   them to 0.97 (0.92 for icons).
-- **Armed confirm:** a destructive icon button turns brick with a brick wash and needs a second tap.
+- **Armed confirm:** a destructive button turns brick with a brick wash and needs a second tap.
 - **Focus:** a 2px navy outline, offset 2–3px.
 
 ### Category chips

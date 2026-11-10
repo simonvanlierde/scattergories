@@ -4,7 +4,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 // vite preview's default port; E2E_PORT moves it when another run holds 4173.
 const PORT = Number(process.env.E2E_PORT ?? 4173);
-const HOST = "localhost";
+const HOST = "127.0.0.1";
 const BASE_URL = `http://${HOST}:${PORT}`;
 const smokeTag = /@smoke/;
 const isCi = Boolean(process.env.CI);

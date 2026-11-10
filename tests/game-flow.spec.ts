@@ -18,7 +18,7 @@ test("runs a full single-round game to completion", async ({ app, page }) => {
   await expect(app.roundStatus).toHaveText(ROUND_OVER, { timeout: ROUND_MESSAGE_TIMEOUT_MS });
   // The done phase keeps the hero showing the played letter; the primary button advances.
   await expect(app.currentLetter).toBeVisible();
-  // Scope to the primary CTA; the secondary "Next round" icon button shares the name.
+  // Scope to the primary CTA; the secondary "Next round" button shares the name.
   const nextRound = page.getByRole("button", { name: "Next round" }).and(page.locator(".action-bar__primary"));
   await expect(nextRound).toBeVisible();
   // The board stays up for checking answers, and the table can see which round it was.

@@ -19,11 +19,11 @@ function renderAt(
   }: { phase?: Phase; statusKey?: StatusKey; roundNumber?: number } = {},
 ) {
   const noop = () => undefined;
-  render(
+  const view = (isPaused: boolean) => (
     <I18nProvider i18n={i18n}>
       <Playmat
         phase={phase}
-        isPaused={false}
+        isPaused={isPaused}
         secondsLeft={secondsLeft}
         gameSeconds={gameSeconds}
         bufferSeconds={3}
@@ -36,11 +36,18 @@ function renderAt(
         onNewLetter={noop}
         onNextRound={noop}
       />
-    </I18nProvider>,
+    </I18nProvider>
   );
+  const { rerender } = render(view(false));
   const status = screen.getByTestId("round-status");
   const region = (politeness: string) => status.querySelector(`[aria-live="${politeness}"]`)?.textContent ?? null;
-  return { status, polite: region("polite"), assertive: region("assertive") };
+  return {
+    status,
+    region,
+    setPaused: (paused: boolean) => rerender(view(paused)),
+    polite: region("polite"),
+    assertive: region("assertive"),
+  };
 }
 
 it.each([
@@ -80,4 +87,14 @@ it("shows which round the table is on once one has started", () => {
 it("shows no round count before the first roll", () => {
   renderAt(0, 60, { phase: "idle", statusKey: null, roundNumber: 0 });
   expect(screen.queryByText(/Round \d/)).not.toBeInTheDocument();
+});
+
+it.each([30, 15, 5])("announces pause and resume at %ss", (secondsLeft) => {
+  const view = renderAt(secondsLeft);
+  const runningText = view.status.textContent;
+  view.setPaused(true);
+  expect(view.region("polite")).toBe("Paused");
+  expect(view.region("assertive")).toBe("");
+  view.setPaused(false);
+  expect(view.status.textContent).toBe(runningText);
 });

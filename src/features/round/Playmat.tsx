@@ -21,6 +21,7 @@ interface PlaymatProps {
 }
 
 interface PlaymatStatusProps {
+  isPaused: boolean;
   statusKey: StatusKey;
   phase: Phase;
   secondsLeft: number;
@@ -43,14 +44,14 @@ function passedThreshold(phase: Phase, secondsLeft: number, gameSeconds: number)
 // text changes, so a threshold is announced once, as the ring changes colour.
 // The last 5 seconds and the end of the round interrupt whatever is being read;
 // everything else waits its turn. Only one region holds text at a time.
-function PlaymatStatus({ statusKey, phase, secondsLeft, gameSeconds }: PlaymatStatusProps) {
+function PlaymatStatus({ isPaused, statusKey, phase, secondsLeft, gameSeconds }: PlaymatStatusProps) {
   const { _: t } = useLingui();
-  const threshold = passedThreshold(phase, secondsLeft, gameSeconds);
-  let text = statusKey ? t(statusKey) : "";
+  const threshold = isPaused ? null : passedThreshold(phase, secondsLeft, gameSeconds);
+  let text = isPaused ? t("timer.paused") : statusKey ? t(statusKey) : "";
   if (threshold !== null) {
     text = t("timer.secondsWarning", { seconds: threshold });
   }
-  const isUrgent = threshold === CRITICAL_THRESHOLD_SECONDS || statusKey === "timer.roundOver";
+  const isUrgent = !isPaused && (threshold === CRITICAL_THRESHOLD_SECONDS || statusKey === "timer.roundOver");
 
   return (
     <div data-testid="round-status" className="sr-only">
@@ -95,7 +96,13 @@ export function Playmat({
         {roundNumber > 0 && <p className="playmat__round">{t("round.number", { number: roundNumber })}</p>}
       </div>
 
-      <PlaymatStatus statusKey={statusKey} phase={phase} secondsLeft={secondsLeft} gameSeconds={gameSeconds} />
+      <PlaymatStatus
+        isPaused={isPaused}
+        statusKey={statusKey}
+        phase={phase}
+        secondsLeft={secondsLeft}
+        gameSeconds={gameSeconds}
+      />
 
       <ActionBar
         phase={phase}
