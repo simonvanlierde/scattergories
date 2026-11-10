@@ -38,6 +38,9 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - "Time's up!" now lands as one clear beat you can catch from across the table: the ring
   closes thick and "Time's up!" stamps down while the letter settles. With reduced motion
   turned on, it simply appears.
+- The letter roll and the get-ready countdown read from every seat: each letter drops in
+  like a reel stopping, the ring fills once per get-ready second with a tick, and the last
+  five seconds beat a little harder each second.
 
 ### Fixed
 

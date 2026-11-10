@@ -2,7 +2,7 @@ import { type RefObject, useCallback, useEffect, useRef } from "react";
 
 type WindowWithWebkit = Window & { webkitAudioContext?: typeof AudioContext };
 
-// Tick sound (last 10 seconds)
+// Tick sound (get-ready seconds and the last 10 seconds)
 const TICK_FREQ_HZ = 1200;
 const TICK_GAIN = 0.03;
 const TICK_DECAY_GAIN = 0.001;
