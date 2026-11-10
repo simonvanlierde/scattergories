@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getTimerStage } from "./TimerRing";
+import { computeFraction, getBeatScale, getTimerStage } from "./TimerRing";
 
 describe("getTimerStage", () => {
   it("is calm well before the deadline", () => {
@@ -18,5 +18,33 @@ describe("getTimerStage", () => {
   });
   it("is idle before the round starts", () => {
     expect(getTimerStage("idle", 90)).toBe("idle");
+  });
+});
+
+describe("computeFraction", () => {
+  it("winds the ring up over the get-ready seconds, full on the last one", () => {
+    expect(computeFraction("buffer", 3, 90, 3)).toBeCloseTo(1 / 3);
+    expect(computeFraction("buffer", 2, 90, 3)).toBeCloseTo(2 / 3);
+    expect(computeFraction("buffer", 1, 90, 3)).toBe(1);
+  });
+  it("starts the wind-up from empty while the letter rolls", () => {
+    expect(computeFraction("spinning", 0, 90, 3)).toBe(0);
+  });
+  it("drains the ring while the round runs", () => {
+    expect(computeFraction("running", 45, 90, 3)).toBe(0.5);
+  });
+  it("closes the ring when time is up", () => {
+    expect(computeFraction("done", 0, 90, 3)).toBe(1);
+  });
+});
+
+describe("getBeatScale", () => {
+  it("beats harder with each of the final seconds", () => {
+    const beats = [5, 4, 3, 2, 1].map((s) => getBeatScale("critical", s));
+    expect(beats).toEqual([...beats].sort((a, b) => a - b));
+    expect(getBeatScale("critical", 1)).toBeGreaterThan(getBeatScale("critical", 5));
+  });
+  it("beats evenly during get-ready", () => {
+    expect(getBeatScale("getready", 3)).toBe(getBeatScale("getready", 1));
   });
 });

@@ -98,6 +98,7 @@ function PlayGrid({ game }: PlayGridProps) {
         isPaused={game.round.isPaused}
         secondsLeft={game.round.secondsLeft}
         gameSeconds={game.settings.gameSeconds}
+        bufferSeconds={game.settings.bufferSeconds}
         letter={game.round.letter}
         letterVisible={game.round.letterVisible}
         letterLanding={game.round.letterLanding}

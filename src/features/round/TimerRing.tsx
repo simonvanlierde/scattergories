@@ -1,5 +1,5 @@
 import { useLingui } from "@lingui/react";
-import { useEffect, useRef } from "react";
+import { type CSSProperties, useEffect, useRef } from "react";
 import type { Phase } from "@/domain/game/roundReducer";
 import { formatSeconds } from "@/domain/game/utils";
 import { vibrate } from "@/shared/lib/haptics";
@@ -17,6 +17,7 @@ interface TimerRingProps {
   isPaused: boolean;
   secondsLeft: number;
   gameSeconds: number;
+  bufferSeconds: number;
 }
 
 function getTimerStage(phase: Phase, secondsLeft: number): Stage {
@@ -37,13 +38,30 @@ function getTimerStage(phase: Phase, secondsLeft: number): Stage {
   return "idle";
 }
 
-function computeFraction(phase: Phase, secondsLeft: number, gameSeconds: number): number {
-  // Only the live round drains the ring; get-ready and done both show a full
-  // ring (done in the accent color — a completed round, not a drained clock).
+function computeFraction(phase: Phase, secondsLeft: number, gameSeconds: number, bufferSeconds: number): number {
   if (phase === "running" && gameSeconds > 0) {
     return Math.max(0, Math.min(1, secondsLeft / gameSeconds));
   }
+  // Get-ready winds the ring up one segment per second, from empty while the
+  // letter rolls to full on the last second, so the round starts on a full ring.
+  if (phase === "buffer" && bufferSeconds > 0) {
+    return Math.max(0, Math.min(1, (bufferSeconds - secondsLeft + 1) / bufferSeconds));
+  }
+  if (phase === "spinning" || phase === "idle") {
+    return 0;
+  }
   return 1;
+}
+
+const BEAT_SCALE = 1.08;
+const BEAT_SCALE_STEP = 0.04;
+
+/** How far the readout swells on its once-a-second beat: harder with each of the last seconds. */
+function getBeatScale(stage: Stage, secondsLeft: number): number {
+  if (stage === "critical") {
+    return BEAT_SCALE + (CRITICAL_THRESHOLD_SECONDS - Math.max(1, secondsLeft)) * BEAT_SCALE_STEP;
+  }
+  return BEAT_SCALE;
 }
 
 function useStageHaptics(stage: Stage) {
@@ -89,14 +107,16 @@ function getLabel(
   return t("timer.ready");
 }
 
-function TimerRing({ phase, isPaused, secondsLeft, gameSeconds }: TimerRingProps) {
+function TimerRing({ phase, isPaused, secondsLeft, gameSeconds, bufferSeconds }: TimerRingProps) {
   const { _: t } = useLingui();
   const stage = getTimerStage(phase, secondsLeft);
   const isRunning = phase === "buffer" || phase === "running";
 
   useStageHaptics(stage);
 
-  const fraction = computeFraction(phase, secondsLeft, gameSeconds);
+  const fraction = computeFraction(phase, secondsLeft, gameSeconds, bufferSeconds);
+  // Re-keying the readout each second restarts its beat on the clock's own tick.
+  const beats = stage === "getready" || stage === "critical";
   const dashOffset = RING_CIRCUMFERENCE * (1 - fraction);
   const label = getLabel(t, { phase, isRunning, isPaused, secondsLeft });
 
@@ -106,6 +126,7 @@ function TimerRing({ phase, isPaused, secondsLeft, gameSeconds }: TimerRingProps
       data-testid="round-clock"
       role="timer"
       aria-label={t("round.timerLabel")}
+      style={{ "--beat-scale": getBeatScale(stage, secondsLeft) } as CSSProperties}
     >
       <svg className="timer-ring__svg" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
         <circle className="timer-ring__track" cx="100" cy="100" r={RING_RADIUS} />
@@ -119,11 +140,11 @@ function TimerRing({ phase, isPaused, secondsLeft, gameSeconds }: TimerRingProps
           transform="rotate(-90 100 100)"
         />
       </svg>
-      <span className="timer-ring__readout" aria-live="off">
+      <span key={beats ? secondsLeft : stage} className="timer-ring__readout" aria-live="off">
         {label}
       </span>
     </div>
   );
 }
 
-export { getTimerStage, TimerRing };
+export { computeFraction, getBeatScale, getTimerStage, TimerRing };

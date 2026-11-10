@@ -26,6 +26,7 @@ function renderAt(
         isPaused={false}
         secondsLeft={secondsLeft}
         gameSeconds={gameSeconds}
+        bufferSeconds={3}
         letter="A"
         letterVisible
         letterLanding={false}

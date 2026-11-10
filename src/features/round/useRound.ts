@@ -125,14 +125,14 @@ export function useRound({
     }, ALARM_DURATION_MS);
   }, [state.alarmOn, clearAlarmTimeout, playAlarm]);
 
-  // Tick sound during the final seconds of the running phase, once per second.
+  // One tick per second through get-ready (after the landing chime marks its
+  // first second) and the final seconds of the round.
   useEffect(() => {
-    if (
-      state.phase !== "running" ||
-      state.isPaused ||
-      state.secondsLeft > LAST_TICK_THRESHOLD ||
-      state.secondsLeft <= 0
-    ) {
+    const isTickingSecond =
+      state.phase === "buffer"
+        ? state.secondsLeft < state.bufferSeconds
+        : state.phase === "running" && state.secondsLeft <= LAST_TICK_THRESHOLD;
+    if (!isTickingSecond || state.isPaused || state.secondsLeft <= 0) {
       return;
     }
 
@@ -142,10 +142,10 @@ export function useRound({
 
     tickedSecondRef.current = state.secondsLeft;
     playTick();
-  }, [state.isPaused, state.phase, state.secondsLeft, playTick]);
+  }, [state.isPaused, state.phase, state.secondsLeft, state.bufferSeconds, playTick]);
 
   useEffect(() => {
-    if (state.phase !== "running") {
+    if (state.phase !== "running" && state.phase !== "buffer") {
       tickedSecondRef.current = null;
     }
   }, [state.phase]);

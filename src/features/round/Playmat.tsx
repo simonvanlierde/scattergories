@@ -9,6 +9,7 @@ interface PlaymatProps {
   isPaused: boolean;
   secondsLeft: number;
   gameSeconds: number;
+  bufferSeconds: number;
   letter: string;
   letterVisible: boolean;
   letterLanding: boolean;
@@ -68,6 +69,7 @@ export function Playmat({
   isPaused,
   secondsLeft,
   gameSeconds,
+  bufferSeconds,
   letter,
   letterVisible,
   letterLanding,
@@ -82,7 +84,13 @@ export function Playmat({
   return (
     <section className="playmat" aria-label={t("playmat.label")} data-phase={phase}>
       <div className="playmat__hero">
-        <TimerRing phase={phase} isPaused={isPaused} secondsLeft={secondsLeft} gameSeconds={gameSeconds} />
+        <TimerRing
+          phase={phase}
+          isPaused={isPaused}
+          secondsLeft={secondsLeft}
+          gameSeconds={gameSeconds}
+          bufferSeconds={bufferSeconds}
+        />
         <LetterHero letter={letter} visible={letterVisible} landing={letterLanding} />
         {roundNumber > 0 && <p className="playmat__round">{t("round.number", { number: roundNumber })}</p>}
       </div>

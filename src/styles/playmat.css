@@ -102,10 +102,14 @@
     }
   }
 
-  /* Get-ready: a full, calm accent ring — visibly not the live/urgent countdown. */
+  /* Get-ready winds the accent ring up, one even segment a second, so the whole
+     table sees the round coming; the round then starts on a full ring. */
   .timer-ring--getready .timer-ring__progress {
     stroke: var(--accent-primary);
     stroke-width: 3;
+    transition:
+      stroke-dashoffset 1s linear,
+      stroke var(--duration-normal) var(--ease-out);
   }
 
   .timer-ring__readout {
@@ -138,12 +142,14 @@
   .timer-ring--critical .timer-ring__readout {
     color: var(--danger);
     font-weight: 700;
-    animation: readout-beat 1s var(--ease-out) infinite;
+    animation: readout-beat 1s var(--ease-out);
   }
 
+  /* The readout is re-keyed every second, so each beat lands on the clock's
+     tick; --beat-scale grows with each of the last five seconds. */
   @keyframes readout-beat {
     0% {
-      transform: scale(1.08);
+      transform: scale(var(--beat-scale, 1.08));
     }
     40%,
     100% {
@@ -180,6 +186,7 @@
      other readouts (Ready / the live clock) so the hero doesn't jump. */
   .timer-ring--getready .timer-ring__readout {
     color: var(--accent-primary);
+    animation: readout-beat 1s var(--ease-out);
   }
 
   /* ─── Paused — a held clock: dashed track, muted arc, secondary readout.
@@ -237,6 +244,23 @@
 
   .letter-hero__glyph--hidden {
     opacity: 0.12;
+  }
+
+  /* The roll reads as a reel from any seat: each flip drops in from above and
+     the drops slow down with the flips. */
+  .letter-hero__glyph--rolling {
+    animation: letter-reel var(--duration-fast) var(--ease-out) both;
+  }
+
+  @keyframes letter-reel {
+    0% {
+      transform: translateY(-28%);
+      opacity: 0.25;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
 
   .letter-hero__glyph--landing {
