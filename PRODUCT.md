@@ -46,7 +46,7 @@ from their seat.
 - You can pin categories to keep them across rounds and redraw the rest. You can add your own
   categories and built-in packs. Settings and custom categories are saved in `localStorage` only.
 - Categories are read-only during a round, and there is no answer entry or scoring (see the
-  product contract in `CONTRIBUTING.md`).
+  product contract in `.github/CONTRIBUTING.md`).
 - We decided on no backend ([ADR 0001](docs/adr/0001-local-first-no-backend.md)), so there's no
   sync between devices and no online multiplayer.
 - Every string a user sees ships in all 9 locales in the same change.

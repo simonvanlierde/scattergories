@@ -24,7 +24,7 @@ your browser.
 ## Quick start
 
 Install [Node and pnpm](https://nodejs.org/en/download) (pinned versions:
-[Prerequisites](CONTRIBUTING.md#prerequisites)), then:
+[Prerequisites](.github/CONTRIBUTING.md#prerequisites)), then:
 
 ```bash
 pnpm install
@@ -44,7 +44,7 @@ Open **How to play** to find links to both pages. Their source is in
 
 - [Architecture and deployment](docs/architecture.md), [decision records](docs/adr/)
 - [Quality checks](docs/quality.md)
-- [Contributing](CONTRIBUTING.md)
+- [Contributing](.github/CONTRIBUTING.md)
 - [Locale tools](tools/README.md)
 
 ## License

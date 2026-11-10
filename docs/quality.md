@@ -2,7 +2,7 @@
 
 ## Reproducible builds
 
-Every dependency is locked ([`pnpm-lock.yaml`](../pnpm-lock.yaml), [`tools/uv.lock`](../tools/uv.lock)) and every tool version is pinned ([`.node-version`](../.node-version), the `packageManager` field in [`package.json`](../package.json), and [`tools/.python-version`](../tools/.python-version)). The same checks run locally (`just check`) and in CI: [`ts.yml`](../.github/workflows/ts.yml) for the app, [`python.yml`](../.github/workflows/python.yml) for `tools/`, and [`checks.yml`](../.github/workflows/checks.yml) for the git hooks and dependency review. Both stacks audit their dependencies: `pnpm audit --prod` and `uv audit`. The commands are in [CONTRIBUTING](../CONTRIBUTING.md#before-you-open-a-pr).
+Every dependency is locked ([`pnpm-lock.yaml`](../pnpm-lock.yaml), [`tools/uv.lock`](../tools/uv.lock)) and every tool version is pinned ([`.node-version`](../.node-version), the `packageManager` field in [`package.json`](../package.json), and [`tools/.python-version`](../tools/.python-version)). The same checks run locally (`just check`) and in CI: [`ts.yml`](../.github/workflows/ts.yml) for the app, [`python.yml`](../.github/workflows/python.yml) for `tools/`, and [`checks.yml`](../.github/workflows/checks.yml) for the git hooks and dependency review. Both stacks audit their dependencies: `pnpm audit --prod` and `uv audit`. The commands are in [CONTRIBUTING](../.github/CONTRIBUTING.md#before-you-open-a-pr).
 
 ## Enforced gates
 
