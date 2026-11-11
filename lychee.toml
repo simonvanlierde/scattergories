@@ -1,2 +1,5 @@
 # Vite serves root-relative static assets from public/.
 root_dir = "public"
+
+# docs/og-card.html loads fonts from node_modules, which the hooks job does not install.
+exclude = ["/node_modules/"]

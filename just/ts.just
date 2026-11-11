@@ -33,3 +33,11 @@ ts-e2e *args:
 ts-shots:
     rm -rf ./shots
     SHOTS=1 pnpm exec playwright test --project shots
+
+# Capture the social card's dial from the app, at 3x, light and dark, into docs/og-card/.
+og-card-capture:
+    SHOTS=1 pnpm exec playwright test --project=shots og-card
+
+# Render docs/og-card.html to public/og.png; `just og-card --option dark --out file` draws the dark one.
+og-card *args:
+    node scripts/og-card.mjs {{ args }}

@@ -44,16 +44,17 @@ Open **How to play** to find links to both pages. Their source is in
 
 ## Social card
 
-`public/og.png` is the 1200x630 card shown when the link is shared. It is made with the generator in
-[my site repo](https://github.com/simonvanlierde/simonvanlierde.github.io/tree/main/scripts/social-card)
-(needs Docker). The mark above the name is the app icon; the visual is the round's whole dial, letter, ring and timer, captured at 3x by `tests/shots/readme.spec.ts` (`just ts-shots` rewrites `docs/screenshots/og-dial.png`). From a checkout of that repo, with this repo next to it:
+`public/og.png` is the 1200x630 card shown when the link is shared: the app icon and name, a live round's
+dial (letter, ring and timer, captured from the app at 3x) beside three drawn categories, and the
+README line. The source is [docs/og-card.html](docs/og-card.html), which uses the app's tokens and fonts.
 
 ```sh
-pnpm gen:card --mark ../scattergories/public/icons/icon-512.png \
-  --visual ../scattergories/docs/screenshots/og-dial.png --name "Scattergories" \
-  --line "An unofficial Scattergories companion: roll a letter, draw the categories and time the round." \
-  --domain scattergories.duinlab.nl --out ../scattergories/public/og.png --fit contain
+just og-card-capture   # capture the dial from the app, light and dark
+just og-card           # render docs/og-card.html to public/og.png
 ```
+
+`just og-card --option dark --out file.png` draws the dark version. The build adds the PNG's hash to the
+`og:image` URL, so a changed card gets a new URL.
 
 ## Links
 

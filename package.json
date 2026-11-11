@@ -63,7 +63,8 @@
       ]
     },
     "entry": [
-      "lingui.config.ts"
+      "lingui.config.ts",
+      "scripts/og-card.mjs"
     ]
   },
   "dependencies": {
