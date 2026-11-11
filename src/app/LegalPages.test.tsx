@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import { SETTINGS_STORAGE_KEY } from "@/features/settings/schema";
 import { App } from "./App";
@@ -23,10 +23,13 @@ it.each([
   render(<App />);
 
   expect(await screen.findByRole("heading", { level: 1, name: title })).toBeVisible();
-  expect(document.title).toBe(`${title} — Scattergories`);
-  expect(document.documentElement.lang).toBe("en");
   const main = screen.getByRole("main");
-  expect(main).toHaveFocus();
+  // Metadata and focus are applied by an effect after the heading is rendered.
+  await waitFor(() => {
+    expect(document.title).toBe(`${title} — Scattergories`);
+    expect(document.documentElement.lang).toBe("en");
+    expect(main).toHaveFocus();
+  });
   expect(main.closest(".app-shell")).toHaveAttribute("data-theme", "dark");
   expect(screen.getByRole("link", { name: title })).toHaveAttribute("aria-current", "page");
   expect(screen.getByRole("link", { name: "Back to the game" })).toHaveAttribute("href", "/");
