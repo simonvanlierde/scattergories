@@ -38,7 +38,7 @@
     "spellcheck-changed": "cspell lint --config=.cspell.yml --no-config-search --cache --cache-strategy content --no-progress --no-must-find-files",
     "test": "vitest run",
     "coverage": "vitest run --coverage",
-    "budget": "node scripts/checkBundleBudget.mjs && node scripts/check-bundle-budgets.mjs",
+    "budget": "node scripts/check-bundle-budgets.mjs",
     "verify": "pnpm run check && pnpm run typecheck && pnpm run coverage && pnpm run build && pnpm run budget",
     "icons": "node scripts/generate-icons.mjs",
     "test:e2e": "playwright test",

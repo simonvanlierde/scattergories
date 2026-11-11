@@ -144,7 +144,10 @@ function sanitizeSettings(raw: unknown): Settings {
     pinned,
     isMuted: typeof parsed.isMuted === "boolean" ? parsed.isMuted : fallback.isMuted,
     avoidRepeats: typeof parsed.avoidRepeats === "boolean" ? parsed.avoidRepeats : fallback.avoidRepeats,
-    theme: parsed.theme === "light" || parsed.theme === "dark" ? parsed.theme : fallback.theme,
+    theme:
+      parsed.themeSource === "user" && (parsed.theme === "light" || parsed.theme === "dark")
+        ? parsed.theme
+        : fallback.theme,
     themeSource: parsed.themeSource === "user" ? "user" : "system",
     promptDeckPreference:
       parsed.promptDeckPreference === "open" ||

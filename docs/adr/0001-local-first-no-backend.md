@@ -14,9 +14,9 @@ keep data across devices and give a base for online or multiplayer play later.
 
 ## Decision
 
-We ship a single-page app with **no backend**. All state lives in the browser and is saved to
-`localStorage`. The app is deployed as static files behind an SPA fallback, and you can install it
-as a PWA.
+We ship a single-page app with **no backend**. All state lives in the browser.
+Settings and deck configuration persist in `localStorage`; active round progress and the session round count stay in memory.
+The app is deployed as static files behind an SPA fallback, and you can install it as a PWA.
 
 ## Consequences
 

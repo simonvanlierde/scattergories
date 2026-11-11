@@ -46,6 +46,8 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- Reopening the app follows the current system theme unless you chose a theme yourself.
+- Cache read failures no longer block online assets, and an interrupted update keeps the last complete offline build.
 - Pausing a round now announces "Paused" to screen readers.
 - Deck actions stay inside the sheet when a translated heading or button wraps.
 - Changing languages during a letter roll no longer leaves the game stuck spinning.

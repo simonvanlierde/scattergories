@@ -16,11 +16,27 @@ test("plays with categories folded and reopens the saved board @smoke", async ({
   await app.startRound();
   await page.clock.runFor(2000);
   await app.expectRunning();
+  await page.clock.pauseAt(new Date((await page.evaluate(() => Date.now())) + 1000));
+  const remaining = await app.roundClock.textContent();
   const letter = await app.currentLetter.textContent();
   await page.keyboard.press("c");
   await expect(page.locator(".category-checklist__chip")).toHaveCount(12);
+  await expect(app.roundClock).toHaveText(remaining ?? "");
+  const board = await page.locator(".category-checklist__label").allTextContents();
   await expect(app.currentLetter).toHaveText(letter ?? "");
   await expect(page.getByRole("button", { name: "Pause", exact: true })).toBeVisible();
+  for (const input of ["chevron", "keyboard"] as const) {
+    if (input === "chevron") {
+      await app.collapseCategories();
+      await app.promptToggle.click();
+    } else {
+      await page.keyboard.press("c");
+      await page.keyboard.press("c");
+    }
+    await expect(page.locator(".category-checklist__label")).toHaveText(board);
+    await expect(app.roundClock).toHaveText(remaining ?? "");
+    await expect(app.currentLetter).toHaveText(letter ?? "");
+  }
   await app.collapseCategories();
   await page.clock.runFor(5000);
   await expect(app.roundClock).toHaveClass(/timer-ring--critical/);

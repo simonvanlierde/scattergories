@@ -7,6 +7,8 @@ import { durationMax } from "@/domain/game/constants";
 import { SettingsProvider, useSettings } from "./SettingsProvider";
 import { MAX_STRING_COUNT, SETTINGS_STORAGE_KEY } from "./schema";
 
+const defaultMatchMedia = window.matchMedia;
+
 function wrapper({ children }: { children: ReactNode }) {
   return React.createElement(SettingsProvider, null, children);
 }
@@ -17,6 +19,7 @@ beforeEach(() => {
 
 afterEach(() => {
   vi.restoreAllMocks();
+  vi.stubGlobal("matchMedia", defaultMatchMedia);
 });
 
 describe("useSettings", () => {
@@ -219,7 +222,10 @@ describe("useSettings", () => {
       const { result } = renderHook(() => useSettings(), { wrapper });
 
       act(() => {
-        window.localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify({ durationInput: "45", theme: "dark" }));
+        window.localStorage.setItem(
+          SETTINGS_STORAGE_KEY,
+          JSON.stringify({ durationInput: "45", theme: "dark", themeSource: "user" }),
+        );
         window.dispatchEvent(
           new StorageEvent("storage", {
             key: SETTINGS_STORAGE_KEY,
@@ -256,6 +262,13 @@ describe("useSettings", () => {
         },
       };
     }
+
+    it.each(["system", "user"] as const)("restores a saved %s theme after the OS changes", (themeSource) => {
+      stubMatchMedia(true);
+      window.localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify({ theme: "light", themeSource }));
+      const { result } = renderHook(() => useSettings(), { wrapper });
+      expect(result.current.settings.theme).toBe(themeSource === "system" ? "dark" : "light");
+    });
 
     it("follows OS theme changes while no explicit choice is made", () => {
       const media = stubMatchMedia(false);

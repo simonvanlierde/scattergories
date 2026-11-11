@@ -6,7 +6,7 @@ Every dependency is locked ([`pnpm-lock.yaml`](../pnpm-lock.yaml), [`tools/uv.lo
 
 ## Enforced gates
 
-The core game logic in `src/domain/` must keep 95%+ line coverage and 100% function coverage, and the rest of `src/` 60% line coverage (see [`vitest.config.ts`](../vitest.config.ts)). Each chunk loaded at startup has its own gzip budget: 80 KiB for the main entry, 80 KiB for the React vendor chunk and 28 KiB for the i18n vendor chunk. No image asset may be over 80 KiB ([`scripts/check-bundle-budgets.mjs`](../scripts/check-bundle-budgets.mjs)). On top of those, no JavaScript file, lazy chunks included, may be over 80 KiB gzipped ([`scripts/checkBundleBudget.mjs`](../scripts/checkBundleBudget.mjs)).
+The core game logic in `src/domain/` must keep 95%+ line coverage and 100% function coverage, and the rest of `src/` 60% line coverage (see [`vitest.config.ts`](../vitest.config.ts)). No JavaScript file, lazy chunks included, may be over 80 KiB gzipped. The i18n vendor chunk has a tighter 28 KiB gzip budget. The main entry, React and i18n chunks must all exist. No image asset may be over 80 KiB ([`scripts/check-bundle-budgets.mjs`](../scripts/check-bundle-budgets.mjs)).
 
 ## Accessibility
 
