@@ -40,6 +40,88 @@ describe("service worker asset caching", () => {
 });
 
 describe("service worker runtime storage failures", () => {
+  it.each([500, 503])("uses the installed shell when navigation returns %s", async (status) => {
+    const cached = new Response("installed shell");
+    const response = new Response("temporarily unavailable", { status });
+    const match = vi.fn().mockResolvedValue(cached);
+    const networkFirst = runInNewContext(`${workerSource}\nnetworkFirst`, {
+      URL,
+      self: { addEventListener: vi.fn() },
+      fetch: vi.fn().mockResolvedValue(response),
+      caches: { match },
+    }) as (request: Request) => Promise<Response>;
+    expect(await networkFirst(new Request("https://example.test/"))).toBe(cached);
+    match.mockResolvedValue(undefined);
+    expect(await networkFirst(new Request("https://example.test/"))).toBe(response);
+  });
+
+  it("fetches assets when cache reads fail", async () => {
+    const script = new Response("export {};", { headers: { "content-type": "text/javascript" } });
+    const fetch = vi.fn().mockResolvedValue(script);
+    const worker = runInNewContext(`${workerSource}\nstaleWhileRevalidate`, {
+      URL,
+      self: { addEventListener: vi.fn() },
+      fetch,
+      caches: {
+        match: vi.fn().mockRejectedValue(new Error("CacheStorage read failed")),
+        open: vi.fn().mockResolvedValue({ put: vi.fn() }),
+      },
+    }) as (request: Request) => Promise<Response>;
+    expect(await worker(new Request("https://example.test/assets/new.js"))).toBe(script);
+    expect(fetch).toHaveBeenCalledOnce();
+  });
+
+  it("keeps the installed shell when a new build cannot be cached", async () => {
+    const saved = new Map([
+      ["https://example.test/", "old shell"],
+      ["https://example.test/assets/old.js", "old script"],
+    ]);
+    let online = true;
+    const worker = runInNewContext(`${workerSource}\n({ networkFirst, staleWhileRevalidate })`, {
+      URL,
+      self: { addEventListener: vi.fn() },
+      fetch: (request: Request) => {
+        if (!online) {
+          return Promise.reject(new Error("offline"));
+        }
+        return Promise.resolve(
+          request.url.endsWith(".js")
+            ? new Response("new script", { headers: { "content-type": "text/javascript" } })
+            : new Response("new shell"),
+        );
+      },
+      caches: {
+        match: (request: Request | string) => {
+          const body = saved.get(
+            typeof request === "string" ? new URL(request, "https://example.test").href : request.url,
+          );
+          return Promise.resolve(body === undefined ? undefined : new Response(body));
+        },
+        open: async () => ({
+          put: async (request: Request, response: Response) => {
+            if (request.url.endsWith(".js")) {
+              throw new Error("quota exceeded");
+            }
+            saved.set(request.url, await response.text());
+          },
+        }),
+      },
+    }) as {
+      networkFirst: (request: Request) => Promise<Response>;
+      staleWhileRevalidate: (request: Request) => Promise<Response>;
+    };
+    const navigation = new Request("https://example.test/");
+    expect(await (await worker.networkFirst(navigation)).text()).toBe("new shell");
+    expect(await (await worker.staleWhileRevalidate(new Request("https://example.test/assets/new.js"))).text()).toBe(
+      "new script",
+    );
+    online = false;
+    expect(await (await worker.networkFirst(navigation)).text()).toBe("old shell");
+    expect(await (await worker.staleWhileRevalidate(new Request("https://example.test/assets/old.js"))).text()).toBe(
+      "old script",
+    );
+  });
+
   it.each(["open", "put"])("keeps healthy network responses when cache %s fails", async (failure) => {
     const shell = new Response("new shell");
     const script = new Response("export {};", { headers: { "content-type": "text/javascript" } });

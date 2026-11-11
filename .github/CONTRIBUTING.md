@@ -33,6 +33,9 @@ and remove it a week later ([how](https://github.com/simonvanlierde/project-temp
 
 Install [Node and pnpm](https://nodejs.org/en/download), then run `pnpm install`.
 
+Before running browser tests, install their browsers with `pnpm exec playwright install chromium firefox webkit`.
+On Linux, use `pnpm exec playwright install --with-deps chromium firefox webkit` if browser system libraries are missing.
+
 Node is pinned in [`.node-version`](../.node-version), which version managers such as fnm, mise and nvm read. pnpm is pinned in the `packageManager` field of [`package.json`](../package.json). Node 25 and later no longer bundle Corepack, so install pnpm yourself. pnpm then switches to the pinned version on its own.
 
 [uv](https://docs.astral.sh/uv/) manages the Python tooling in [`tools/`](../tools/README.md). On `uv sync` it installs the Python version pinned in [`tools/.python-version`](../tools/.python-version). [just](https://just.systems) runs the checks, and [prek](https://github.com/j178/prek) runs the git hooks (`pnpm install` brings prek; then run `pnpm exec prek install` once per clone).

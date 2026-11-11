@@ -1,6 +1,8 @@
 # Architecture
 
-Scattergories is a single-page React app with no backend. Everything runs in the browser and is saved to `localStorage`. The only build-time input from outside the app is the locale asset bundle, which the Python `tools/` package regenerates.
+Scattergories is a single-page React app with no backend. Everything runs in the browser.
+Settings and deck configuration persist in `localStorage`; active round progress and the session round count stay in memory.
+The only build-time input from outside the app is the locale asset bundle, which the Python `tools/` package regenerates.
 
 ## Layers
 

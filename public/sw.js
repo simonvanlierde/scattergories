@@ -56,22 +56,27 @@ async function store(request, response) {
 // Serve the app shell network-first so a deploy is never masked by a stale
 // cached index; content-hashed assets fall back to cache-first with a
 // background refresh (stale-while-revalidate).
+async function cachedShell(request) {
+  // Every app URL renders the shell installed under the start URL.
+  return (
+    (await caches.match(request, { ignoreSearch: true, ignoreVary: true }).catch(() => undefined)) ??
+    (await caches.match("/", { ignoreVary: true }).catch(() => undefined))
+  );
+}
+
 async function networkFirst(request) {
   try {
-    return await store(request, await fetch(request));
+    // Only installation can replace the offline shell after all its assets are stored.
+    const response = await fetch(request);
+    return response.ok ? response : ((await cachedShell(request)) ?? response);
   } catch {
-    // Any URL of this single-page app renders the same shell. It is cached under
-    // "/" (the start URL): the host redirects /index.html there, so that key never fills.
-    return (
-      (await caches.match(request, { ignoreSearch: true, ignoreVary: true })) ??
-      (await caches.match("/", { ignoreVary: true }))
-    );
+    return cachedShell(request);
   }
 }
 
 // Install fetches omit Origin, while module requests can include it for these same public files.
 async function staleWhileRevalidate(request) {
-  const cached = await caches.match(request, { ignoreVary: true });
+  const cached = await caches.match(request, { ignoreVary: true }).catch(() => undefined);
   const network = fetch(request)
     .then((response) => store(request, response))
     .catch(() => cached);

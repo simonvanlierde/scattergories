@@ -232,8 +232,8 @@ scrim (warm in the light theme, black in the dark one).
 ## Shapes
 
 Small, paper-like corners: 0.25rem on buttons, chips and fields, 0.5rem on sheets and banners. The
-timer is a thin circle (stroke 3, up to 6 when critical) with a butt cap and a gap at the bottom for
-the readout. Panels and the playmat have no corners at all. Rules separate them.
+timer is a circle with a butt cap and a gap at the bottom for the readout; see [Timer ring](#timer-ring-and-letter-signature)
+for its urgency states. Panels and the playmat have no corners at all. Rules separate them.
 
 ## Components
 

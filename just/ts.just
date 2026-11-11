@@ -24,7 +24,7 @@ ts-test *args:
     pnpm exec vitest run {{ args }}
 
 # Playwright against the production build: the accessibility and CSP specs.
-# Install the browser once per machine: `pnpm exec playwright install chromium`.
+# Install browsers once: `pnpm exec playwright install chromium firefox webkit`.
 ts-e2e *args:
     pnpm run test:e2e {{ args }}
 
