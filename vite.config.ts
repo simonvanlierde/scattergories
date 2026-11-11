@@ -1,6 +1,10 @@
 // biome-ignore-all lint/style/noDefaultExport: Vite config must use the default export shape.
 
 // biome-ignore lint/correctness/noNodejsModules: Vite plugins run in Node at build time.
+import { createHash } from "node:crypto";
+// biome-ignore lint/correctness/noNodejsModules: Vite plugins run in Node at build time.
+import { readFileSync } from "node:fs";
+// biome-ignore lint/correctness/noNodejsModules: Vite plugins run in Node at build time.
 import { readdir, readFile } from "node:fs/promises";
 // biome-ignore lint/correctness/noNodejsModules: Vite plugins run in Node at build time.
 import { relative } from "node:path";
@@ -36,6 +40,13 @@ const markdown = (): Plugin => ({
   },
 });
 
+// Platforms cache a preview by image URL, so the card URL carries the PNG's hash.
+const ogVersion = createHash("sha256").update(readFileSync("public/og.png")).digest("hex").slice(0, 8);
+const ogCardVersion: Plugin = {
+  name: "og-card-version",
+  transformIndexHtml: (html: string) => html.replace('/og.png"', `/og.png?v=${ogVersion}"`),
+};
+
 // Cache the complete build before the worker takes control, including unused locale chunks.
 const offline = (): Plugin => ({
   name: "offline-precache",
@@ -65,6 +76,7 @@ export default defineConfig({
   plugins: [
     react(),
     markdown(),
+    ogCardVersion,
     lingui(),
     offline(),
     babel({
