@@ -26,8 +26,8 @@ colors:
 typography:
   display:
     fontFamily: "Fraunces Variable, Fraunces, Iowan Old Style, Georgia, serif"
-    fontSize: "clamp(6rem, 32cqi, 11rem)"
-    fontWeight: 500
+    fontSize: "clamp(6rem, 40cqi, 14rem)"
+    fontWeight: 650
     lineHeight: 0.85
     letterSpacing: "-0.02em"
     fontVariation: "\"opsz\" 144"
@@ -99,7 +99,7 @@ components:
     textColor: "{colors.ink}"
     typography: "{typography.body}"
     rounded: "{rounded.sm}"
-    height: "2.75rem"
+    height: "3.25rem on phones, at least 2.75rem elsewhere"
   category-chip-pinned:
     backgroundColor: "{colors.navy-wash}"
     textColor: "{colors.ink}"
@@ -124,8 +124,9 @@ the CSS wins and this file needs an update.
 
 **Creative North Star: "The Printed Game Card"**
 
-The app should read like a printed page on the table: warm cream paper, deep ink, hairline rules,
-and one large serif letter as a drop cap. Everything is flat and quiet except the letter. The dark
+The app should read like a printed page on the table: warm cream paper, deep ink, ruled category rows,
+and one large, weighty serif letter as a drop cap. A strong top rule anchors the play-style switch.
+Reveals are expressive; the active board stays steady. The dark
 theme is designed, not inverted: warm dark paper, off-white ink and a lighter periwinkle accent.
 
 Players read the screen from across a table, so the order is: the letter, the clock, the
@@ -249,7 +250,7 @@ the readout. Panels and the playmat have no corners at all. Rules separate them.
 
 ### Category chips
 
-- **Style:** a row with a hairline border, a muted Geist numeral, the name and a pin icon. On
+- **Style:** a ruled row with a bold navy Geist numeral, a semibold name and a pin icon. On
   phones the numeral becomes a superscript and the pin is hidden.
 - **State:** pinned chips get a 2px navy edge (drawn inside the border) and navy wash; the wash
   alone is too close to the page to carry the state. Custom categories are semibold with a
@@ -267,15 +268,14 @@ the readout. Panels and the playmat have no corners at all. Rules separate them.
   to full on the last second, and the readout beats with each second. The round starts on a full
   ring.
 - The ring drains while the round runs: secondary ink, then amber at 15 s, then brick at 5 s. The
-  stroke gets thicker at each step (3, 4, 6). From 5 s the readout beats on each second, a little
-  harder each time (1.08× to 1.24×). Every beat lands on the clock's own tick.
-  When paused, the track is dashed and the beat stops.
+  arc changes weight with urgency (5, 6, 8), and the last five seconds use heavier type.
+  The readout stays still during play. When paused, the track is dashed.
 - From the first roll, a quiet "Round 4" label (uppercase Geist, muted ink) sits in the ring's top
   gap, mirroring the readout below. It counts the rounds started this session: a skip starts a
   round, a new letter does not, and a reload starts again at 1. It is not saved.
 - **Time's up is one beat.** The ring closes thick (stroke 12) and eases back to 4, "Time's up!"
   stamps down from 1.6× while it fades in, and the letter settles once, all within 640ms, under the
-  alarm flash. Then everything is still: the letter, the board and "Next round" stay up while the
+  single brief alarm flash. Then everything is still: the letter, the board and "Next round" stay up while the
   table checks answers.
 
 ### Sheets
@@ -313,3 +313,14 @@ Privacy and accessibility pages use the Printed Game Card as a reading surface: 
 wordmark linking home, a visible back link, Fraunces headings, Geist body text and hairline
 rules. The article is at most 68ch wide. The whole document scrolls; the game stays one screen.
 Links live in How to play > About, with translated labels marking these pages as English.
+
+## Play styles
+
+The top row uses two native radio choices, Category board and Letter + timer, with a solid navy
+selected state and a strong ink rule beneath. It stays visible and locks during a round, including
+a pause. Letter + timer hides category controls and centers the letter and timer without clearing
+the saved deck. It includes the short instruction to bring your own categories.
+
+Phone category rows reserve 3.25rem for two-line names and have no extra margin between rows,
+so changing the draw does not trade letter size for wrapped labels. Short landscape screens
+reserve room for the style switch as well as the footer.

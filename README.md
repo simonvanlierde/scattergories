@@ -7,7 +7,9 @@
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fscattergories.duinlab.nl)](https://scattergories.duinlab.nl)
 
 An unofficial companion for playing Scattergories at the table, in your browser. It rolls the
-letter, draws the categories and runs the timer. It's a single-page React app with no backend.
+letter, draws the categories and runs the timer. Choose **Category board**, or **Letter + timer**
+if your group brings its own categories. It remembers your choice and keeps your saved deck.
+It's a single-page React app with no backend.
 
 Scattergories is a party game by Hasbro. This project is not affiliated with or endorsed by
 Hasbro.

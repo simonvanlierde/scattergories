@@ -22,6 +22,26 @@ it("renders the core app shell and primary controls", async () => {
   expect(screen.getByRole("button", { name: "How to play" })).toBeInTheDocument();
 });
 
+it("remembers letter and timer mode without losing the category deck", async () => {
+  const { user, view } = await renderApp();
+  const original = JSON.parse(localStorage.getItem("scattergories.settings.v1") ?? "{}");
+  expect(screen.getByRole("radio", { name: "Category board" })).toBeChecked();
+  await user.click(screen.getByRole("radio", { name: "Letter + timer" }));
+  expect(screen.queryByRole("region", { name: "Categories" })).not.toBeInTheDocument();
+  expect(screen.getByText("Bring your own categories.")).toBeInTheDocument();
+  await user.keyboard("c");
+  view.unmount();
+
+  const next = await renderApp();
+  expect(screen.getByRole("radio", { name: "Letter + timer" })).toBeChecked();
+  await next.user.click(screen.getByRole("radio", { name: "Category board" }));
+  expect(screen.getByRole("list", { name: SELECTED_CATEGORIES })).toBeInTheDocument();
+  const saved = JSON.parse(localStorage.getItem("scattergories.settings.v1") ?? "{}");
+  expect(saved.deckBuiltins).toEqual(original.deckBuiltins);
+  expect(saved.pinned).toEqual(original.pinned);
+  expect(saved.promptDeckPreference).toBe(original.promptDeckPreference);
+});
+
 it("keeps the main surface lean and categories outside the playmat", async () => {
   await renderApp();
 

@@ -1132,3 +1132,19 @@ msgstr "Prywatność (angielski)"
 
 msgid "modal.accessibilityLink"
 msgstr "Dostępność (angielski)"
+
+#. Play style
+msgid "playStyle.label"
+msgstr "Tryb gry"
+
+#. Category board
+msgid "playStyle.board"
+msgstr "Kategorie"
+
+#. Letter + timer
+msgid "playStyle.simple"
+msgstr "Litera + minutnik"
+
+#. Bring your own categories.
+msgid "playStyle.simpleHint"
+msgstr "Wymyślcie własne kategorie."

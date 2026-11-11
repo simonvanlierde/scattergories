@@ -56,13 +56,13 @@
   .timer-ring__track {
     fill: none;
     stroke: var(--rule);
-    stroke-width: 3;
+    stroke-width: 5;
   }
 
   .timer-ring__progress {
     fill: none;
     stroke: var(--text-secondary);
-    stroke-width: 3;
+    stroke-width: 5;
     stroke-linecap: butt;
     transition:
       stroke-dashoffset var(--duration-slow) var(--ease-out),
@@ -76,12 +76,12 @@
 
   .timer-ring--urgent .timer-ring__progress {
     stroke: var(--warning);
-    stroke-width: 4;
+    stroke-width: 6;
   }
 
   .timer-ring--critical .timer-ring__progress {
     stroke: var(--danger);
-    stroke-width: 6;
+    stroke-width: 8;
   }
 
   .timer-ring--done .timer-ring__progress {
@@ -106,7 +106,7 @@
      table sees the round coming; the round then starts on a full ring. */
   .timer-ring--getready .timer-ring__progress {
     stroke: var(--accent-primary);
-    stroke-width: 3;
+    stroke-width: 5;
     transition:
       stroke-dashoffset 1s linear,
       stroke var(--duration-normal) var(--ease-out);
@@ -137,19 +137,16 @@
     color: var(--warning);
   }
 
-  /* The last five seconds beat once per second — a shape cue, not only a hue
-     change, so it still reads for colour-blind players and from across a table. */
+  /* Urgency uses heavier type and a thicker arc while the board stays still. */
   .timer-ring--critical .timer-ring__readout {
     color: var(--danger);
     font-weight: 700;
-    animation: readout-beat 1s var(--ease-out);
   }
 
-  /* The readout is re-keyed every second, so each beat lands on the clock's
-     tick; --beat-scale grows with each of the last five seconds. */
+  /* The get-ready readout is re-keyed on each countdown tick. */
   @keyframes readout-beat {
     0% {
-      transform: scale(var(--beat-scale, 1.08));
+      transform: scale(1.08);
     }
     40%,
     100% {
@@ -214,8 +211,8 @@
 
   .letter-hero__glyph {
     font-family: var(--font-display);
-    font-weight: 500;
-    font-size: clamp(6rem, 32cqi, 11rem);
+    font-weight: 650;
+    font-size: clamp(6rem, 40cqi, 14rem);
     line-height: 0.85;
     letter-spacing: var(--tracking-tight);
     color: var(--text-primary);
@@ -359,8 +356,9 @@
     gap: var(--space-1);
     min-height: 2.75rem;
     padding: var(--space-1) var(--space-2) var(--space-1) var(--space-1-5);
-    border: 1px solid var(--rule);
-    border-radius: var(--radius-sm);
+    border: 0;
+    border-bottom: 1px solid var(--rule);
+    border-radius: 0;
     background: transparent;
     color: var(--text-primary);
     font-family: inherit;
@@ -398,10 +396,10 @@
     display: grid;
     place-items: center;
     min-width: 1.25rem;
-    color: var(--text-muted);
+    color: var(--accent-primary);
     font-family: var(--font-numeric);
-    font-weight: 500;
-    font-size: var(--text-sm);
+    font-weight: 700;
+    font-size: var(--text-md);
     font-variant-numeric: tabular-nums;
   }
 
@@ -417,7 +415,7 @@
     overflow-wrap: break-word;
     hyphens: auto;
     text-wrap: balance;
-    font-weight: 400;
+    font-weight: 550;
     letter-spacing: var(--tracking-normal);
     line-height: var(--leading-snug);
   }
@@ -521,9 +519,13 @@
     .category-checklist__chip {
       display: block;
       align-content: center;
-      min-height: 2.75rem;
+      min-height: 3.25rem;
       padding-inline: var(--space-1-5);
       font-size: var(--text-md);
+    }
+
+    .category-checklist__item {
+      margin-bottom: 0;
     }
 
     /* A superscript figure, set like a footnote marker: it gives up the gutter a
@@ -550,13 +552,13 @@
      these height queries never match the full-size layouts.
 
      Short row: ring left, controls beside it. The ring takes the row's height
-     but always leaves 12rem beside it for its margin, the gap and the controls.
+     but always leaves 11rem beside it for its margin, the gap and the controls.
      It never drops below --ring-min, the row's minimum (layout.css), which
      is the size it gets on a phone whose categories fill the screen. The
      letter is half the ring, as large as it goes without touching it. */
   @container (max-height: 18.99rem) {
     .playmat__hero {
-      --hero: max(var(--ring-min), min(100cqb, 100cqi - 12rem));
+      --hero: max(var(--ring-min), min(100cqb, 100cqi - 11rem));
       width: var(--hero);
       margin: 0 0 0 var(--space-2);
     }
@@ -607,7 +609,7 @@
     }
 
     .playmat .letter-hero__glyph {
-      font-size: min(clamp(6rem, 32cqi, 11rem), var(--hero) * 0.55);
+      font-size: min(clamp(6rem, 40cqi, 14rem), var(--hero) * 0.55);
     }
 
     /* The readout shrinks with the ring, so it never crowds a small one. */
@@ -713,7 +715,7 @@
     }
 
     .playmat__hero {
-      --hero: min(20rem, 100dvh - 11rem, 100cqi - 12rem);
+      --hero: min(20rem, 100dvh - 15rem, 100cqi - 12rem);
       width: var(--hero);
     }
 

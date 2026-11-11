@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { computeFraction, getBeatScale, getTimerStage } from "./TimerRing";
+import { computeFraction, getTimerStage } from "./TimerRing";
 
 describe("getTimerStage", () => {
   it("is calm well before the deadline", () => {
@@ -35,16 +35,5 @@ describe("computeFraction", () => {
   });
   it("closes the ring when time is up", () => {
     expect(computeFraction("done", 0, 90, 3)).toBe(1);
-  });
-});
-
-describe("getBeatScale", () => {
-  it("beats harder with each of the final seconds", () => {
-    const beats = [5, 4, 3, 2, 1].map((s) => getBeatScale("critical", s));
-    expect(beats).toEqual([...beats].sort((a, b) => a - b));
-    expect(getBeatScale("critical", 1)).toBeGreaterThan(getBeatScale("critical", 5));
-  });
-  it("beats evenly during get-ready", () => {
-    expect(getBeatScale("getready", 3)).toBe(getBeatScale("getready", 1));
   });
 });
