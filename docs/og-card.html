@@ -1,0 +1,54 @@
+<!doctype html>
+<!-- spell-checker: ignore wght opsz -->
+<!-- Source of public/og.png (1200x630). `just og-card` renders it; the dial in docs/og-card/ comes from
+     `just og-card-capture`. The body class picks the theme: light (default) or dark. Colours are the app's tokens
+     (src/styles/tokens.css); the category rows are drawn here in the app's checklist style from its default deck. -->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Scattergories social card</title>
+<style>
+  @font-face { font-family: "Fraunces"; font-weight: 100 900;
+    src: url("../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2") format("woff2"); }
+  @font-face { font-family: "Geist"; font-weight: 100 900;
+    src: url("../node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2") format("woff2"); }
+  body { --bg: oklch(98.5% 0.008 85); --ink: oklch(18% 0.015 255); --ink2: oklch(35% 0.02 255); --rule: oklch(85% 0.012 85);
+    --accent: oklch(34% 0.11 260); --accent-soft: oklch(94% 0.035 260); }
+  body.dark { --bg: oklch(14% 0.015 70); --ink: oklch(93% 0.011 85); --ink2: oklch(80% 0.013 85); --rule: oklch(32% 0.015 70);
+    --accent: oklch(76% 0.11 258); --accent-soft: oklch(33% 0.09 258 / 0.6); }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body { position: relative; background: var(--bg); color: var(--ink); font-family: "Geist", sans-serif; }
+  .brand { position: absolute; top: 32px; left: 0; right: 0; display: flex; align-items: center; justify-content: center; gap: 22px; }
+  .brand img { width: 76px; height: 76px; border-radius: 17px; }
+  .brand b { font-family: "Fraunces", serif; font-variation-settings: "opsz" 144; font-size: 80px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; }
+  .board { position: absolute; top: 134px; left: 90px; right: 90px; height: 288px; display: flex; align-items: center; justify-content: center; gap: 56px; }
+  .dark .board { flex-direction: row-reverse; }
+  .dial { height: 288px; display: block; }
+  .dial-dark { display: none; }
+  .dark .dial-light { display: none; }
+  .dark .dial-dark { display: block; }
+  ol { list-style: none; padding: 0; width: 560px; }
+  li { display: grid; grid-template-columns: 54px 1fr; align-items: center; height: 96px; border-bottom: 1px solid var(--rule); font-size: 38px; font-weight: 550; }
+  li:last-child { border-bottom: 0; }
+  li span { color: var(--accent); font-weight: 700; font-variant-numeric: tabular-nums; }
+  li.pinned { background: var(--accent-soft); box-shadow: inset 0 0 0 2px var(--accent); padding-left: 10px; }
+  .line { position: absolute; top: 438px; left: 60px; right: 60px; text-align: center; font-size: 36px; font-weight: 500; line-height: 1.25; color: var(--ink2); text-wrap: balance; }
+  .addr { position: absolute; top: 536px; left: 0; right: 0; text-align: center; font-size: 30px; font-weight: 600; letter-spacing: 0.01em; color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="brand"><img src="../public/icons/icon-512.png" alt="" /><b>Scattergories</b></div>
+<div class="board">
+  <img class="dial dial-light" src="og-card/dial-light.png" alt="" />
+  <img class="dial dial-dark" src="og-card/dial-dark.png" alt="" />
+  <ol>
+    <li class="pinned"><span>1</span>Websites</li>
+    <li><span>2</span>Halloween Costumes</li>
+    <li><span>3</span>Bodies of Water</li>
+  </ol>
+</div>
+<p class="line">An unofficial Scattergories companion: roll a letter, draw the categories and time the round.</p>
+<span class="addr">scattergories.duinlab.nl</span>
+</body>
+</html>
