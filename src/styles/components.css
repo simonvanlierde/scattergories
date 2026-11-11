@@ -512,7 +512,7 @@
     inset: 0;
     pointer-events: none;
     background: color-mix(in srgb, var(--danger) 22%, transparent);
-    animation: alarm-flash 520ms ease-in-out 4;
+    animation: alarm-flash 520ms ease-in-out;
   }
 
   /* Shortcuts list inside the Sheet */

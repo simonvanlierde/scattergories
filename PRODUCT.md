@@ -1,5 +1,11 @@
 # Product
 
+## Mission and Vision
+
+Make category games easy to start and enjoyable to play together. Become the best companion for
+mixed-age groups playing at one table, then extend that experience to people playing remotely.
+Online rooms are a future milestone; the current app runs locally on one device.
+
 ## Platform
 
 web
@@ -34,6 +40,9 @@ from their seat.
   default), then "Time's up".
 - Players write their answers on paper. They score at the table, by the house rules in the How to
   play sheet. The app doesn't score.
+- Keep the categories open for supplied prompts, or fold them using the panel chevron or C
+  shortcut when the group brings its own categories. The panel starts open on the first visit
+  and remembers the last choice. Folding preserves the saved deck and works during a round.
 - Players can follow and run a round without looking at the screen. A tick sounds on each get-ready
   second after the first, and in the last 10 s, and an alarm at the end. The phone vibrates at 15 s and 5 s left and at the end. Keyboard
   shortcuts (Space, R, P, C, ?) cover the controls.
@@ -78,9 +87,15 @@ from their seat.
 ## Accessibility & Inclusion
 
 - CI runs Biome's a11y lint and axe-core scans (see `docs/quality.md`).
-- Timer urgency changes shape as well as color (a beat in the last 5 s). That helps color-blind
+- Timer urgency changes shape as well as color (a thicker arc and heavier type in the last 5 s). That helps color-blind
   players and anyone reading from a distance. `prefers-reduced-motion` turns animation off.
 - Touch targets are at least 44 px. `tests/layout.spec.ts` fails on any shorter control in the
   settings and deck sheets. axe-core checks text contrast in the light theme.
   `tests/contrast.spec.ts` checks the dark-theme categories heading, and the pin icon's 3:1
   non-text contrast in both themes.
+
+## Design Success
+
+A first-time player can start a round without explanation. Everyone can read the letter, time and
+categories from their seat without passing the device around. These are targets for mixed-age
+testing on physical phones and tablets, not established usability findings.

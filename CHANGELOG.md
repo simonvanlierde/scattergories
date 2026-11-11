@@ -7,6 +7,11 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- Bolder letters, stronger category text and numbered ruled rows make the board easier to scan.
+  The final seconds use a steady, thicker timer arc; time's up gives one brief screen cue.
+
 ## [0.4.0] - 2026-11-07
 
 ### Added

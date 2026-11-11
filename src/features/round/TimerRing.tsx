@@ -1,5 +1,5 @@
 import { useLingui } from "@lingui/react";
-import { type CSSProperties, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import type { Phase } from "@/domain/game/roundReducer";
 import { formatSeconds } from "@/domain/game/utils";
 import { vibrate } from "@/shared/lib/haptics";
@@ -51,17 +51,6 @@ function computeFraction(phase: Phase, secondsLeft: number, gameSeconds: number,
     return 0;
   }
   return 1;
-}
-
-const BEAT_SCALE = 1.08;
-const BEAT_SCALE_STEP = 0.04;
-
-/** How far the readout swells on its once-a-second beat: harder with each of the last seconds. */
-function getBeatScale(stage: Stage, secondsLeft: number): number {
-  if (stage === "critical") {
-    return BEAT_SCALE + (CRITICAL_THRESHOLD_SECONDS - Math.max(1, secondsLeft)) * BEAT_SCALE_STEP;
-  }
-  return BEAT_SCALE;
 }
 
 function useStageHaptics(stage: Stage) {
@@ -116,7 +105,7 @@ function TimerRing({ phase, isPaused, secondsLeft, gameSeconds, bufferSeconds }:
 
   const fraction = computeFraction(phase, secondsLeft, gameSeconds, bufferSeconds);
   // Re-keying the readout each second restarts its beat on the clock's own tick.
-  const beats = stage === "getready" || stage === "critical";
+  const beats = stage === "getready";
   const dashOffset = RING_CIRCUMFERENCE * (1 - fraction);
   const label = getLabel(t, { phase, isRunning, isPaused, secondsLeft });
 
@@ -126,7 +115,6 @@ function TimerRing({ phase, isPaused, secondsLeft, gameSeconds, bufferSeconds }:
       data-testid="round-clock"
       role="timer"
       aria-label={t("round.timerLabel")}
-      style={{ "--beat-scale": getBeatScale(stage, secondsLeft) } as CSSProperties}
     >
       <svg className="timer-ring__svg" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
         <circle className="timer-ring__track" cx="100" cy="100" r={RING_RADIUS} />
@@ -147,4 +135,4 @@ function TimerRing({ phase, isPaused, secondsLeft, gameSeconds, bufferSeconds }:
   );
 }
 
-export { computeFraction, getBeatScale, getTimerStage, TimerRing };
+export { computeFraction, getTimerStage, TimerRing };
