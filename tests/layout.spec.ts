@@ -118,3 +118,85 @@ test.describe("touch targets", () => {
     expect(await shortControls(deck)).toEqual([]);
   });
 });
+
+for (const viewport of [
+  { width: 1024, height: 768 },
+  { width: 1133, height: 744 },
+]) {
+  test.describe(`${viewport.width}x${viewport.height} tablet landscape`, () => {
+    test.use({ viewport });
+
+    test("shows all twelve categories without scrolling", async ({ app: _app, page }) => {
+      await page.evaluate(() => document.fonts.ready);
+      const layout = await measureLayout(page);
+      expect(layout.horizontalOverflow).toBe(0);
+      expect(layout.listFits).toBe(true);
+      await expect(page.locator(".category-checklist__chip")).toHaveCount(12);
+    });
+  });
+}
+
+test("names the secondary round actions visibly", async ({ app: _app, page }) => {
+  const controls = page.getByRole("group", { name: "Round controls" });
+  await expect(controls.getByRole("button", { name: "New letter", exact: true })).toHaveText("New letter");
+  await expect(controls.getByRole("button", { name: "Next round", exact: true })).toHaveText("Next round");
+});
+
+for (const locale of ["de", "el", "fr"]) {
+  test.describe(`320px ${locale} controls`, () => {
+    test.use({ viewport: { width: 320, height: 640 } });
+
+    test("keeps round controls and deck actions inside their panels", async ({ app: _app, page }) => {
+      await page.evaluate((language) => localStorage.setItem("scattergories.language", language), locale);
+      await page.reload();
+      await expect(page.locator("html")).toHaveAttribute("lang", locale);
+      await page.evaluate(() => document.fonts.ready);
+      const overflow = (root: Locator) =>
+        root.evaluate((element) => {
+          const bounds = element.getBoundingClientRect();
+          return [...element.querySelectorAll("button")]
+            .filter((button) => {
+              const rect = button.getBoundingClientRect();
+              return (
+                rect.width > 0 &&
+                (rect.left < bounds.left - 1 ||
+                  rect.right > bounds.right + 1 ||
+                  button.scrollWidth > button.clientWidth + 1)
+              );
+            })
+            .map((button) => button.textContent?.trim());
+        });
+      expect(await overflow(page.locator(".action-bar"))).toEqual([]);
+      await page.locator(".categories-card__header-actions > button").last().click();
+      const body = page.getByRole("dialog").locator(".ds-sheet__body");
+      await expect(body).toBeVisible();
+      await body.evaluate((element) =>
+        Promise.all(
+          element
+            .closest("dialog")
+            ?.getAnimations()
+            .map((animation) => animation.finished) ?? [],
+        ),
+      );
+      expect(await body.evaluate((element) => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1);
+      expect(await overflow(body)).toEqual([]);
+    });
+  });
+}
+
+test.describe("wrapped sheet heading", () => {
+  test.use({ viewport: { width: 320, height: 640 } });
+
+  test("can scroll the final deck action fully into view", async ({ app: _app, page }) => {
+    await page.getByRole("button", { name: "Customize deck", exact: true }).click();
+    const dialog = page.getByRole("dialog", { name: "Customize deck" });
+    await dialog.evaluate((element) => Promise.all(element.getAnimations().map((animation) => animation.finished)));
+    const bottom = await dialog.evaluate((element) => {
+      const body = element.querySelector(".ds-sheet__body") as HTMLElement;
+      body.scrollTop = body.scrollHeight;
+      const action = body.querySelector(".deck-bulk-action:last-child") as HTMLElement;
+      return { action: action.getBoundingClientRect().bottom, dialog: element.getBoundingClientRect().bottom };
+    });
+    expect(bottom.action).toBeLessThanOrEqual(bottom.dialog);
+  });
+});

@@ -45,6 +45,9 @@ pnpm test         # unit / component tests (vitest, watchless)
 pnpm test:e2e     # end-to-end tests (playwright)
 ```
 
+Run `just ts-shots` to refresh route captures in `shots/` and the README images in
+`docs/screenshots/`. The README captures use the same draw and running clock in both themes.
+
 ## Before you open a PR
 
 ```bash

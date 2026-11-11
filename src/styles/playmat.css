@@ -323,20 +323,13 @@
     font-style: italic;
   }
 
-  /* Multi-column flow fills each column top-to-bottom, then moves right — so
-     1–6 land in the left column and 7–12 in the right (not row-major).
-
-     The column width is set by the content, not by how many columns look tidy:
-     every built-in name is authored to at most 20 characters, which measures
-     ~13rem at the chip's size, and the chip spends ~4rem more on the numeral,
-     the pin and its padding. At 18rem a drawn name always holds one line — and
-     a wide screen forms two roomy columns instead of three cramped ones.
-     `column-width` is a minimum, so columns only ever stretch past it. */
+  /* Read down each column before moving right. Two 15rem columns fit a
+     landscape tablet; longer names wrap within their chip. */
   .category-checklist__list {
     list-style: none;
     padding: 0;
     margin: 0;
-    column-width: 18rem;
+    column-width: 15rem;
     column-gap: var(--space-1);
   }
 
@@ -664,6 +657,7 @@
   }
 
   .action-bar__group {
+    min-width: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -754,6 +748,16 @@
    live in the primitives layer, which comes after components, so this override
    has to sit in that layer too. */
 @layer primitives {
+  .action-bar .action-bar__secondary {
+    flex: 1 1 0;
+    min-width: 0;
+    padding-inline: var(--space-1);
+    gap: var(--space-1);
+    font-size: var(--text-xs);
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
   @container (max-height: 18.99rem) {
     .playmat .action-bar__primary {
       min-height: 2.75rem;

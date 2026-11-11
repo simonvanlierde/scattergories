@@ -65,9 +65,9 @@ export function useRound({
   // just never match.
   // biome-ignore lint/correctness/useExhaustiveDependencies: locale is the trigger; a switch must clear the old alphabet's letter from the roller.
   useEffect(() => {
-    // Mid-round the drawn letter is the round, so a language switch during play
-    // doesn't blank the letter everyone is playing on.
-    if (phaseRef.current !== "buffer" && phaseRef.current !== "running") {
+    // Keep in-flight rolls and rounds intact: resetting cancels the landing
+    // callback that starts the countdown.
+    if (phaseRef.current === "idle" || phaseRef.current === "done") {
       resetRoller();
     }
   }, [locale, resetRoller]);

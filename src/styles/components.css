@@ -165,6 +165,7 @@
   /* ─── Customize deck sheet ───────────────────────────────────── */
   /* The sheet reads top-to-bottom as three tasks: configure, add, manage. */
   .deck-section {
+    min-width: 0;
     display: grid;
     gap: var(--space-3);
   }

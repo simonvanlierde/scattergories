@@ -63,7 +63,7 @@ function createAppFixture(page: Page): AppFixture {
   const roundStatus = page.getByTestId("round-status");
 
   // The primary action button is the only `.action-bar__primary`; scoping to it
-  // disambiguates from the always-rendered "Next round" secondary icon button,
+  // disambiguates from the always-rendered "Next round" secondary button,
   // which shares the accessible name in the done phase.
   const primaryRoundButton = (label: RoundButtonLabel = START_OR_NEXT_ROUND_BUTTON_LABEL) =>
     page.getByRole("button", { name: label }).and(page.locator(".action-bar__primary"));

@@ -32,6 +32,7 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   they skip the last 8 letters drawn. Before, every letter came up exactly once per
   cycle, so rare letters such as Q, X and Z bunched up at the end.
 - On a phone, the letter and its ring grow to fill the space the categories leave.
+- New letter and Next round now have visible labels as well as icons.
 - Every control in the settings and deck sheets is at least 44 px tall, so it is easier
   to tap.
 - The timer uses the app's own font with even-width digits.
@@ -44,6 +45,10 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- Pausing a round now announces "Paused" to screen readers.
+- Deck actions stay inside the sheet when a translated heading or button wraps.
+- Changing languages during a letter roll no longer leaves the game stuck spinning.
+- Twelve categories fit without scrolling on a landscape tablet.
 - The complete category deck and all valid pins now survive a reload.
 - Offline play works after the first visit, including the privacy and accessibility pages.
 - Online play continues when the browser cannot write to its offline file cache.

@@ -32,11 +32,13 @@ A round runs on a `useReducer` in [`roundReducer.ts`](../src/domain/game/roundRe
 stateDiagram-v2
     [*] --> idle
     idle --> spinning: start (roll a letter)
-    spinning --> buffer: letter chosen
+    spinning --> buffer: letter lands with get-ready time
+    spinning --> running: letter lands without get-ready time
     buffer --> running: get-ready countdown ends
-    running --> done: timer ends / end round
-    done --> idle: next round
-    running --> idle: reset
+    running --> done: timer ends
+    done --> spinning: next round
+    running --> spinning: skip / paused reroll
+    buffer --> spinning: reroll
 ```
 
 ## Data flow

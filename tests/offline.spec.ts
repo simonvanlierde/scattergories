@@ -16,12 +16,19 @@ async function firstVisit(page: Page) {
   });
 }
 
-for (const path of ["/?source=homescreen", "/privacy", "/accessibility"]) {
+for (const [path, heading] of [
+  ["/?source=homescreen", "Scattergories"],
+  ["/privacy", "Privacy statement"],
+  ["/accessibility", "Accessibility statement"],
+]) {
   test(`@smoke ${path} opens offline after the first load without an online reload`, async ({ context, page }) => {
     await firstVisit(page);
     await context.setOffline(true);
     await page.goto(path);
-    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: heading, exact: true })).toBeVisible();
+    if (path.startsWith("/?")) {
+      await expect(page.getByRole("button", { name: "Roll a letter", exact: true })).toBeEnabled();
+    }
   });
 }
 

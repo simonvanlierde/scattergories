@@ -4,7 +4,6 @@ import type { ReactNode } from "react";
 import type { Phase } from "@/domain/game/roundReducer";
 import { Button } from "@/shared/ui/Button";
 import { Icon } from "@/shared/ui/Icon";
-import { IconButton } from "@/shared/ui/IconButton";
 import { useConfirmTap } from "@/shared/ui/useConfirmTap";
 
 interface ActionBarProps {
@@ -72,24 +71,28 @@ export function ActionBar({ phase, isPaused, onPrimary, onNewLetter, onNextRound
       {/* Always rendered so the layout never shifts — disabled (greyed) when the
           action isn't available in the current phase. */}
       <ControlGroup label={roundControlsLabel}>
-        <IconButton
-          label={t("buttons.newLetter")}
-          icon={<Icon icon={Dices} size={20} />}
+        <Button
+          variant="ghost"
+          size="sm"
+          className="action-bar__secondary"
+          leadingIcon={<Icon icon={Dices} size={18} />}
           disabled={!showNewLetter}
           onClick={onNewLetter}
-        />
-        <IconButton
-          label={skip.armed ? t("buttons.skipConfirm") : t("buttons.nextRound")}
-          icon={<Icon icon={SkipForward} size={20} />}
-          className={skip.armed ? "ds-icon-button--armed" : undefined}
+        >
+          {t("buttons.newLetter")}
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          leadingIcon={<Icon icon={SkipForward} size={18} />}
+          className={skip.armed ? "action-bar__secondary ds-icon-button--armed" : "action-bar__secondary"}
           disabled={!showNextRound}
           onClick={mustConfirmSkip ? skip.onClick : onNextRound}
-        />
+        >
+          {t("buttons.nextRound")}
+        </Button>
       </ControlGroup>
-      {/* Touch has no hover title, so the armed state says it in plain text too.
-          Always rendered and live: screen readers rarely read out a new label on
-          the button that already has focus, and only announce a region that
-          existed before its text changed. */}
+      {/* Keep the live region mounted so arming is announced without moving focus. */}
       <p className="action-bar__confirm" aria-live="polite">
         {skip.armed ? t("buttons.skipConfirm") : null}
       </p>
