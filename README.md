@@ -46,12 +46,12 @@ Open **How to play** to find links to both pages. Their source is in
 
 `public/og.png` is the 1200x630 card shown when the link is shared. It is made with the generator in
 [my site repo](https://github.com/simonvanlierde/simonvanlierde.github.io/tree/main/scripts/social-card)
-(needs Docker). From a checkout of that repo, with this repo next to it:
+(needs Docker). The visual is the round's letter and timer, captured at 3x and cropped tight. From a checkout of that repo, with this repo next to it:
 
 ```sh
-pnpm gen:card --visual ../scattergories/docs/screenshots/phone-light.png --name "Scattergories" \
+pnpm gen:card --visual ../scattergories/docs/screenshots/og-dial.png --name "Scattergories" \
   --line "An unofficial Scattergories companion: roll a letter, draw the categories and time the round." \
-  --domain scattergories.duinlab.nl --out ../scattergories/public/og.png
+  --domain scattergories.duinlab.nl --out ../scattergories/public/og.png --fit contain
 ```
 
 ## Links
