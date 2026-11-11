@@ -519,7 +519,7 @@
     .category-checklist__chip {
       display: block;
       align-content: center;
-      min-height: 3.25rem;
+      min-height: 3.5rem;
       padding-inline: var(--space-1-5);
       font-size: var(--text-md);
     }
@@ -528,8 +528,7 @@
       margin-bottom: 0;
     }
 
-    /* A superscript figure, set like a footnote marker: it gives up the gutter a
-       full-size numeral would need. It still keeps a fixed two-digit slot, so
+    /* A superscript numeral leaves room for the name. Keep a fixed slot so
        "1" and "12" push their names to the same edge and the names line up. */
     .category-checklist__mark {
       display: inline-block;

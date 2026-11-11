@@ -99,7 +99,7 @@ components:
     textColor: "{colors.ink}"
     typography: "{typography.body}"
     rounded: "{rounded.sm}"
-    height: "3.25rem on phones, at least 2.75rem elsewhere"
+    height: "3.5rem on phones, at least 2.75rem elsewhere"
   category-chip-pinned:
     backgroundColor: "{colors.navy-wash}"
     textColor: "{colors.ink}"
@@ -320,5 +320,5 @@ shortcut does the same thing. The saved panel preference remembers the choice; r
 panel restores the category board without clearing the deck. There is no separate mode picker.
 Folding remains available during play and does not reset the letter or clock.
 
-Phone category rows reserve 3.25rem for two-line names and have no extra margin between rows,
+Phone category rows reserve 3.5rem for two-line names and have no extra margin between rows,
 so changing the draw does not trade letter size for wrapped labels.
