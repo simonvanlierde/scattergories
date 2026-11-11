@@ -7,12 +7,7 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-### Changed
-
-- Bolder letters, stronger category text and numbered ruled rows make the board easier to scan.
-  The final seconds use a steady, thicker timer arc; time's up gives one brief screen cue.
-
-## [0.4.0] - 2026-11-07
+## [0.4.0] - 2026-11-11
 
 ### Added
 
@@ -30,6 +25,8 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
+- Bolder letters, stronger category text and numbered ruled rows make the board easier to scan.
+  The final seconds use a steady, thicker timer arc; time's up gives one brief screen cue.
 - The adult categories listed above are no longer in the Classic pack or the default
   deck. A deck you already saved keeps them. The pack that was labelled "All" is now
   called "Classic".
@@ -45,8 +42,7 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   closes thick and "Time's up!" stamps down while the letter settles. With reduced motion
   turned on, it simply appears.
 - The letter roll and the get-ready countdown read from every seat: each letter drops in
-  like a reel stopping, the ring fills once per get-ready second with a tick, and the last
-  five seconds beat a little harder each second.
+  like a reel stopping, and the ring fills once per get-ready second with a tick.
 
 ### Fixed
 
