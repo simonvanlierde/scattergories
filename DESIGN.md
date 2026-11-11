@@ -125,8 +125,7 @@ the CSS wins and this file needs an update.
 **Creative North Star: "The Printed Game Card"**
 
 The app should read like a printed page on the table: warm cream paper, deep ink, ruled category rows,
-and one large, weighty serif letter as a drop cap. A strong top rule anchors the play-style switch.
-Reveals are expressive; the active board stays steady. The dark
+and one large, weighty serif letter as a drop cap. Reveals are expressive; the active board stays steady. The dark
 theme is designed, not inverted: warm dark paper, off-white ink and a lighter periwinkle accent.
 
 Players read the screen from across a table, so the order is: the letter, the clock, the
@@ -314,13 +313,12 @@ wordmark linking home, a visible back link, Fraunces headings, Geist body text a
 rules. The article is at most 68ch wide. The whole document scrolls; the game stays one screen.
 Links live in How to play > About, with translated labels marking these pages as English.
 
-## Play styles
+## Letter-and-timer play
 
-The top row uses two native radio choices, Category board and Letter + timer, with a solid navy
-selected state and a strong ink rule beneath. It stays visible and locks during a round, including
-a pause. Letter + timer hides category controls and centers the letter and timer without clearing
-the saved deck. It includes the short instruction to bring your own categories.
+The existing category chevron folds the panel so the letter and timer get the space. The C
+shortcut does the same thing. The saved panel preference remembers the choice; reopening the
+panel restores the category board without clearing the deck. There is no separate mode picker.
+Folding remains available during play and does not reset the letter or clock.
 
 Phone category rows reserve 3.25rem for two-line names and have no extra margin between rows,
-so changing the draw does not trade letter size for wrapped labels. Short landscape screens
-reserve room for the style switch as well as the footer.
+so changing the draw does not trade letter size for wrapped labels.

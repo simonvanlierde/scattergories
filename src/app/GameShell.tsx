@@ -10,7 +10,6 @@ import { Button } from "@/shared/ui/Button";
 import { cx } from "@/shared/ui/cx";
 import { Icon } from "@/shared/ui/Icon";
 import { IconButton } from "@/shared/ui/IconButton";
-import { PlayStyleChoice } from "./PlayStyleChoice";
 import type { GameController } from "./useGameController";
 import { useOnboarding } from "./useOnboarding";
 
@@ -91,16 +90,9 @@ interface PlayGridProps {
 
 function PlayGrid({ game }: PlayGridProps) {
   const canEdit = canEditDeck(game.round.phase, game.round.isPaused);
-  const isSimple = game.settings.playStyle === "simple";
 
   return (
-    <section
-      className={cx(
-        "play-grid",
-        isSimple && "play-grid--simple",
-        !(isSimple || game.deck.isPromptDeckOpen) && "play-grid--deck-collapsed",
-      )}
-    >
+    <section className={cx("play-grid", !game.deck.isPromptDeckOpen && "play-grid--deck-collapsed")}>
       <Playmat
         phase={game.round.phase}
         isPaused={game.round.isPaused}
@@ -117,38 +109,36 @@ function PlayGrid({ game }: PlayGridProps) {
         onNextRound={game.round.nextRound}
       />
 
-      {isSimple ? null : (
-        <CategoriesPanel
-          categories={{
-            availableCount: game.deck.availableCount,
-            catCountInput: game.settings.catCountInput,
-            customCategories: game.settings.customCategories,
-            deckBuiltins: game.settings.deckBuiltins,
-            pinned: game.settings.pinned,
-            drawnCategories: game.deck.drawnCategories,
-            drawnCustomCategories: game.deck.drawnCustom,
-            isLanding: game.deck.landing,
-            isRerolling: game.deck.spinning,
-            isPromptDeckOpen: game.deck.isPromptDeckOpen,
-            canEdit,
-          }}
-          inputRef={game.deck.inputRef}
-          actions={{
-            onAddCustom: game.deck.addCustom,
-            onRemoveCustom: game.deck.removeCustom,
-            onRemoveBuiltin: game.deck.removeBuiltin,
-            onTogglePin: game.deck.togglePin,
-            onAddPack: game.deck.addPack,
-            onRemoveAllCustom: game.deck.removeAllCustom,
-            onRemoveAllBuiltins: game.deck.removeAllBuiltins,
-            onCatCountChange: (value) => game.settings.update("catCountInput", value),
-            onRedraw: game.deck.redraw,
-            onTogglePinAll: game.deck.togglePinAll,
-            onTogglePromptDeck: game.deck.togglePromptDeck,
-            onTogglePause: game.round.togglePause,
-          }}
-        />
-      )}
+      <CategoriesPanel
+        categories={{
+          availableCount: game.deck.availableCount,
+          catCountInput: game.settings.catCountInput,
+          customCategories: game.settings.customCategories,
+          deckBuiltins: game.settings.deckBuiltins,
+          pinned: game.settings.pinned,
+          drawnCategories: game.deck.drawnCategories,
+          drawnCustomCategories: game.deck.drawnCustom,
+          isLanding: game.deck.landing,
+          isRerolling: game.deck.spinning,
+          isPromptDeckOpen: game.deck.isPromptDeckOpen,
+          canEdit,
+        }}
+        inputRef={game.deck.inputRef}
+        actions={{
+          onAddCustom: game.deck.addCustom,
+          onRemoveCustom: game.deck.removeCustom,
+          onRemoveBuiltin: game.deck.removeBuiltin,
+          onTogglePin: game.deck.togglePin,
+          onAddPack: game.deck.addPack,
+          onRemoveAllCustom: game.deck.removeAllCustom,
+          onRemoveAllBuiltins: game.deck.removeAllBuiltins,
+          onCatCountChange: (value) => game.settings.update("catCountInput", value),
+          onRedraw: game.deck.redraw,
+          onTogglePinAll: game.deck.togglePinAll,
+          onTogglePromptDeck: game.deck.togglePromptDeck,
+          onTogglePause: game.round.togglePause,
+        }}
+      />
     </section>
   );
 }
@@ -168,12 +158,6 @@ function GameShell({ game }: GameShellProps) {
     <main className={cx("app-shell", game.round.alarmOn && "alarm")} data-theme={game.settings.theme}>
       <div className="app">
         {game.app.hasChunkError ? <ChunkErrorBanner onReload={game.app.reload} /> : null}
-
-        <PlayStyleChoice
-          value={game.settings.playStyle}
-          disabled={game.round.phase !== "idle" && game.round.phase !== "done"}
-          onChange={(value) => game.settings.update("playStyle", value)}
-        />
 
         <PlayGrid game={game} />
 

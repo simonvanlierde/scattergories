@@ -31,7 +31,6 @@ describe("useSettings", () => {
       expect(settings.pinned).toEqual([]);
       expect(settings.customCategories).toEqual([]);
       expect(settings.isMuted).toBe(false);
-      expect(settings.playStyle).toBe("board");
     });
 
     it("keeps adult categories out of the default deck until grown-ups is added", () => {
@@ -138,7 +137,6 @@ describe("useSettings", () => {
         theme: "dark",
         themeSource: "user",
         promptDeckPreference: "collapsed",
-        playStyle: "simple",
       };
       window.localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(saved));
       const { result } = renderHook(() => useSettings(), { wrapper });

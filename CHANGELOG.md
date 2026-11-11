@@ -7,11 +7,6 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-### Added
-
-- A [Letter + timer play style](README.md) for groups using their own categories. The app remembers
-  the selected style and preserves the category deck when switching back.
-
 ### Changed
 
 - Bolder letters, stronger category text and numbered ruled rows make the board easier to scan.

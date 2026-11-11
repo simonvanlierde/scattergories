@@ -1,5 +1,5 @@
 import { useLingui } from "@lingui/react";
-import { lazy, useState } from "react";
+import { lazy } from "react";
 import { useRound } from "@/features/round/useRound";
 import { useSettings } from "@/features/settings/SettingsProvider";
 import { useAppControls } from "./useAppControls";
@@ -22,10 +22,8 @@ const HowToPlayDialog = lazy(async () => ({
  * `round` (letter and clock), `deck` (drawn categories and deck edits),
  * `settings` (saved values and their setters) and `app` (dialogs, language, errors).
  */
-// biome-ignore lint/complexity/noExcessiveLinesPerFunction: wires the round, board, saved settings and app controls at their shared boundary.
 function useGameController() {
   const { settings, update, ...deckEdits } = useSettings();
-  const [roundPlayStyle, setRoundPlayStyle] = useState(settings.playStyle);
   const { i18n } = useLingui();
   const promptDeck = usePromptDeckState(settings.promptDeckPreference, update);
   const roundSetup = useRoundSetup(settings);
@@ -36,13 +34,8 @@ function useGameController() {
     locale: i18n.locale,
     avoidRepeats: settings.avoidRepeats,
     // Only called from a spin, after this render has defined `board`.
-    onLetterPicked: () => {
-      setRoundPlayStyle(settings.playStyle);
-      if (settings.playStyle === "board") board.redrawCategories(true);
-    },
+    onLetterPicked: () => board.redrawCategories(true),
   });
-  // Another tab may save a new preference while this table is still playing.
-  const playStyle = round.phase === "idle" || round.phase === "done" ? settings.playStyle : roundPlayStyle;
   const board = useCategoryBoard({
     customCategories: roundSetup.customCategories,
     deckBuiltins: roundSetup.deckBuiltins,
@@ -67,7 +60,7 @@ function useGameController() {
       }
     },
     onP: round.togglePause,
-    onC: playStyle === "board" ? promptDeck.togglePromptDeck : undefined,
+    onC: promptDeck.togglePromptDeck,
     onHelp: openHowToPlay,
   });
 
@@ -83,7 +76,6 @@ function useGameController() {
     },
     settings: {
       ...settings,
-      playStyle,
       gameSeconds: roundSetup.gameSeconds,
       bufferSeconds: roundSetup.bufferSeconds,
       update,

@@ -40,9 +40,9 @@ from their seat.
   default), then "Time's up".
 - Players write their answers on paper. They score at the table, by the house rules in the How to
   play sheet. The app doesn't score.
-- Choose Category board for supplied prompts, or Letter + timer when the group brings its own
-  categories. The app opens in the last-used style; the first visit defaults to Category board.
-  Switch styles between rounds. Switching preserves the saved deck and category-panel preference.
+- Keep the categories open for supplied prompts, or fold them using the panel chevron or C
+  shortcut when the group brings its own categories. The panel starts open on the first visit
+  and remembers the last choice. Folding preserves the saved deck and works during a round.
 - Players can follow and run a round without looking at the screen. A tick sounds on each get-ready
   second after the first, and in the last 10 s, and an alarm at the end. The phone vibrates at 15 s and 5 s left and at the end. Keyboard
   shortcuts (Space, R, P, C, ?) cover the controls.

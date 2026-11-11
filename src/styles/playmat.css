@@ -715,7 +715,7 @@
     }
 
     .playmat__hero {
-      --hero: min(20rem, 100dvh - 15rem, 100cqi - 12rem);
+      --hero: min(20rem, 100dvh - 11rem, 100cqi - 12rem);
       width: var(--hero);
     }
 

@@ -16,7 +16,6 @@ import { safeStorage } from "@/shared/lib/safeStorage";
 
 type PromptDeckPreference = "auto" | "open" | "collapsed";
 type Theme = "light" | "dark";
-type PlayStyle = "board" | "simple";
 /** Whether the current theme follows the OS ('system') or was picked explicitly ('user'). */
 type ThemeSource = "system" | "user";
 
@@ -36,7 +35,6 @@ interface Settings {
   theme: Theme;
   themeSource: ThemeSource;
   promptDeckPreference: PromptDeckPreference;
-  playStyle: PlayStyle;
 }
 
 const SETTINGS_STORAGE_KEY = "scattergories.settings.v1";
@@ -73,7 +71,6 @@ function getDefaultSettings(): Settings {
     theme: getPreferredTheme(),
     themeSource: "system",
     promptDeckPreference: "auto",
-    playStyle: "board",
   };
 }
 
@@ -149,7 +146,6 @@ function sanitizeSettings(raw: unknown): Settings {
     avoidRepeats: typeof parsed.avoidRepeats === "boolean" ? parsed.avoidRepeats : fallback.avoidRepeats,
     theme: parsed.theme === "light" || parsed.theme === "dark" ? parsed.theme : fallback.theme,
     themeSource: parsed.themeSource === "user" ? "user" : "system",
-    playStyle: parsed.playStyle === "simple" ? "simple" : "board",
     promptDeckPreference:
       parsed.promptDeckPreference === "open" ||
       parsed.promptDeckPreference === "collapsed" ||
@@ -175,5 +171,5 @@ function readStoredSettings(): Settings {
   return parseStoredSettings(safeStorage.getItem(SETTINGS_STORAGE_KEY));
 }
 
-export type { PlayStyle, PromptDeckPreference, Settings, Theme };
+export type { PromptDeckPreference, Settings, Theme };
 export { DARK_SCHEME_QUERY, getPreferredTheme, readStoredSettings, SETTINGS_STORAGE_KEY, sanitizeStrings };

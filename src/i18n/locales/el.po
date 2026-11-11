@@ -1132,19 +1132,3 @@ msgstr "Απόρρητο (αγγλικά)"
 
 msgid "modal.accessibilityLink"
 msgstr "Προσβασιμότητα (αγγλικά)"
-
-#. Play style
-msgid "playStyle.label"
-msgstr "Τρόπος παιχνιδιού"
-
-#. Category board
-msgid "playStyle.board"
-msgstr "Κατηγορίες"
-
-#. Letter + timer
-msgid "playStyle.simple"
-msgstr "Γράμμα + χρονόμετρο"
-
-#. Bring your own categories.
-msgid "playStyle.simpleHint"
-msgstr "Διαλέξτε τις δικές σας κατηγορίες."

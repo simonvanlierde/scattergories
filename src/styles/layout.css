@@ -43,71 +43,6 @@
     flex: none;
   }
 
-  .play-style {
-    flex: none;
-    border-bottom: 2px solid var(--text-primary);
-    padding-bottom: var(--space-2);
-  }
-
-  .play-style__choices {
-    display: flex;
-    gap: var(--space-2);
-    min-width: 0;
-    margin: 0;
-    padding: 0;
-    border: 0;
-  }
-
-  .play-style__option {
-    position: relative;
-    display: grid;
-    place-items: center;
-    min-width: 0;
-    min-height: 2.75rem;
-    padding: var(--space-2) var(--space-4);
-    color: var(--text-secondary);
-    font-size: var(--text-sm);
-    font-weight: 600;
-    text-align: center;
-    cursor: pointer;
-  }
-
-  .play-style__option input {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-  }
-
-  .play-style__option:has(:checked) {
-    background: var(--accent-primary);
-    color: var(--text-on-accent);
-  }
-
-  .play-style__option:has(:focus-visible) {
-    outline: 2px solid var(--accent-primary);
-    outline-offset: 3px;
-  }
-
-  .play-style__option:has(:enabled):hover {
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-  }
-
-  .play-style__option:has(:disabled) {
-    cursor: default;
-  }
-
-  .play-style__choices:disabled .play-style__option:not(:has(:checked)) {
-    color: var(--text-muted);
-  }
-
-  .play-style__hint {
-    margin: var(--space-2) 0 0;
-    color: var(--text-secondary);
-    font-size: var(--text-sm);
-  }
-
   .categories-card {
     border: 0;
     border-radius: 0;
@@ -384,16 +319,5 @@
        drawn list, so the list gets the whole screen width and its cards read
        larger. The base .categories-card grid (auto / 1fr rows) already stacks
        them; nothing to override here. */
-  }
-
-  .play-grid--simple {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(0, 1fr);
-    min-height: 0;
-  }
-
-  .play-grid--simple .playmat {
-    align-content: center;
-    justify-items: center;
   }
 }
