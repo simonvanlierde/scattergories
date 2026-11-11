@@ -42,6 +42,18 @@ The app serves English privacy and accessibility statements at `/privacy` and `/
 Open **How to play** to find links to both pages. Their source is in
 [`docs/privacy.md`](docs/privacy.md) and [`docs/accessibility.md`](docs/accessibility.md).
 
+## Social card
+
+`public/og.png` is the 1200x630 card shown when the link is shared. It is made with the generator in
+[my site repo](https://github.com/simonvanlierde/simonvanlierde.github.io/tree/main/scripts/social-card)
+(needs Docker). The visual is the round's whole dial, letter, ring and timer, captured at 3x by `tests/shots/readme.spec.ts` (`just ts-shots` rewrites `docs/screenshots/og-dial.png`). From a checkout of that repo, with this repo next to it:
+
+```sh
+pnpm gen:card --visual ../scattergories/docs/screenshots/og-dial.png --name "Scattergories" \
+  --line "An unofficial Scattergories companion: roll a letter, draw the categories and time the round." \
+  --domain scattergories.duinlab.nl --out ../scattergories/public/og.png --fit contain
+```
+
 ## Links
 
 - [Architecture and deployment](docs/architecture.md), [decision records](docs/adr/)
