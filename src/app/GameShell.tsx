@@ -17,12 +17,11 @@ interface GameShellProps {
   game: GameController;
 }
 
-// Must match the two <meta name="theme-color"> tags in index.html — those cover
-// the pre-JS/OS-default paint, this effect corrects them once the user's actual
-// theme (which can diverge from the OS, e.g. after an in-app override) is known.
-// The manifest's static theme_color can't be made conditional at all (no media
-// support in that spec), so this is the only place installed/standalone chrome
-// color can track the real theme.
+// Must match the two <meta name="theme-color"> tags in index.html. Those follow the
+// OS theme until the script runs; this effect then switches them to the app's theme,
+// which differs from the OS after the player picks one. The manifest's theme_color
+// has no media support, so this is the only place an installed app's chrome color
+// can follow the theme.
 const THEME_COLORS = { light: "#fcfaf4", dark: "#0d0804" } as const;
 
 function ControlBar({ game }: { game: GameController }) {

@@ -1,8 +1,8 @@
 import type { MutableRefObject } from "react";
 
 /**
- * Shared "rolling" animation core used by both the letter spinner and the
- * category deck roll, so they share an identical speed and duration.
+ * The roll animation behind both the letter spinner and the category deck, so
+ * both run at the same speed and for the same time.
  *
  * The roll flips fast at the start and decelerates (quadratically) toward a
  * 1.2s landing. Each flip calls `onFlip` (the caller decides what to show);

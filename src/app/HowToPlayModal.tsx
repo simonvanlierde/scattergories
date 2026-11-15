@@ -47,7 +47,7 @@ const SHORTCUTS: readonly ShortcutDefinition[] = [
 ];
 
 // One icon per mechanic, matching the order of `modal.categoriesItems`
-// (customize deck, pin, reroll) and the controls in the categories panel.
+// (customize deck, pin, redraw) and the controls in the categories panel.
 const CATEGORY_ICONS: readonly LucideIcon[] = [SlidersHorizontal, Pin, RefreshCw];
 
 interface SectionProps {
