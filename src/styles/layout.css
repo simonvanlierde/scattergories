@@ -139,7 +139,6 @@
   }
 
   .categories-card__content,
-  .custom-categories,
   .drawn-categories {
     min-height: 0;
     display: grid;
@@ -165,14 +164,6 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-1);
-  }
-
-  .custom-list {
-    min-height: 0;
-  }
-
-  .custom-list {
-    overflow: auto;
   }
 
   .app-shell--boot .app-loading img {

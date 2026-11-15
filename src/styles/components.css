@@ -80,7 +80,6 @@
     }
   }
 
-  .controlbar__copy p,
   .app-loading p,
   .app-error p,
   .banner p {
@@ -106,22 +105,6 @@
   .banner--danger {
     background: color-mix(in srgb, var(--danger-soft) 88%, transparent);
     color: var(--text-primary);
-  }
-
-  .btn-secondary {
-    min-height: 2.75rem;
-    padding: 0.8rem 1rem;
-    font-weight: 700;
-  }
-
-  .btn-secondary {
-    border-color: var(--border-soft);
-    background: transparent;
-    color: var(--text-primary);
-  }
-
-  .btn-secondary:hover {
-    background: var(--accent-soft);
   }
 
   /* Wraps the tools onto a second row at large text sizes, instead of widening
@@ -606,13 +589,6 @@
     from,
     to {
       opacity: 0.45;
-    }
-  }
-
-  @media (max-width: 51.99rem) {
-    .btn-secondary {
-      min-height: 2.6rem;
-      padding-block: 0.7rem;
     }
   }
 
