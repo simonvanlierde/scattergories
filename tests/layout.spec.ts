@@ -109,9 +109,10 @@ test.describe("touch targets", () => {
   test("keeps every control in the settings and deck sheets at least 44px tall", async ({ app, page }) => {
     await app.openSettings();
     expect(await shortControls(app.settingsSheet)).toEqual([]);
-    // The checkbox row is the target for "Avoid letter repeats", not the box.
-    const toggle = await app.settingsSheet.locator(".settings-toggle").boundingBox();
-    expect(toggle?.height).toBeGreaterThanOrEqual(44);
+    // The checkbox row is the target for each checkbox setting, not the box.
+    for (const row of await app.settingsSheet.locator(".settings-toggle").all()) {
+      expect((await row.boundingBox())?.height).toBeGreaterThanOrEqual(44);
+    }
     await app.closeSettings();
 
     const deck = page.getByRole("dialog", { name: "Customize deck" });
