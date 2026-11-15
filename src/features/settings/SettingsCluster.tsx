@@ -66,7 +66,7 @@ function LanguageSelect({
       onChange={(event) => onSelect(event.target.value)}
     >
       {SUPPORTED_LOCALES.map((code) => (
-        <option key={code} value={code}>
+        <option key={code} value={code} lang={code}>
           {getNativeName(code)}
         </option>
       ))}
