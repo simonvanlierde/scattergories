@@ -5,7 +5,6 @@ import { useRound } from "@/features/round/useRound";
 import { useSettings } from "@/features/settings/SettingsProvider";
 import { useAppControls } from "./useAppControls";
 import { useKeyboardShortcuts } from "./useKeyboardShortcuts";
-import { usePromptDeckState } from "./usePromptDeckState";
 import { useRoundSetup } from "./useRoundSetup";
 
 // NOTE: fetch starts at module load (app boot), not at first Suspense — first-run
@@ -25,7 +24,10 @@ const HowToPlayDialog = lazy(async () => ({
 function useGameController() {
   const { settings, update } = useSettings();
   const { i18n } = useLingui();
-  const promptDeck = usePromptDeckState(settings.promptDeckPreference, update);
+  // The drawn categories are what every player reads, so they show by default on
+  // every layout; only an explicit collapse hides them.
+  const isPromptDeckOpen = settings.promptDeckPreference !== "collapsed";
+  const togglePromptDeck = () => update("promptDeckPreference", isPromptDeckOpen ? "collapsed" : "open");
   const roundSetup = useRoundSetup(settings);
   const round = useRound({
     gameSeconds: roundSetup.gameSeconds,
@@ -61,7 +63,7 @@ function useGameController() {
       }
     },
     onP: round.togglePause,
-    onC: promptDeck.togglePromptDeck,
+    onC: togglePromptDeck,
     onHelp: openHowToPlay,
   });
 
@@ -69,7 +71,8 @@ function useGameController() {
     round,
     deck: {
       board,
-      ...promptDeck,
+      isPromptDeckOpen,
+      togglePromptDeck,
       availableCount: roundSetup.availableCount,
     },
     settings: {
