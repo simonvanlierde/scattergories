@@ -48,15 +48,19 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
       return;
     }
 
-    // Letters match the physical key (event.code) so they work on non-Latin layouts
-    // such as Greek; "?" has no fixed key across layouts, so it matches the character.
-    switch (event.code) {
+    // A Latin letter matches what was typed, so Dvorak keeps the labelled keys.
+    // Any other letter (Greek, say) falls back to its physical key; "?" matches the character.
+    const typed = /^[a-z]$/i.test(event.key) ? event.key.toLowerCase() : undefined;
+    switch (typed ?? event.code) {
+      case "r":
       case "KeyR":
         handlers.onR?.();
         return;
+      case "p":
       case "KeyP":
         handlers.onP?.();
         return;
+      case "c":
       case "KeyC":
         handlers.onC?.();
         return;
