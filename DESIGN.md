@@ -20,7 +20,7 @@ colors:
   night-card: "oklch(18% 0.015 70)"
   night-rule: "oklch(32% 0.015 70)"
   night-ink: "oklch(93% 0.011 85)"
-  night-ink-muted: "oklch(58% 0.015 85)"
+  night-ink-muted: "oklch(62% 0.015 85)"
   periwinkle: "oklch(76% 0.11 258)"
   periwinkle-strong: "oklch(84% 0.13 258)"
 typography:
@@ -156,7 +156,7 @@ muted (low chroma).
 
 - **Cream Paper** (`paper`): the page. **Card Paper** (`paper-card`) for sheets, **Sunken Paper**
   (`paper-sunken`) for recessed areas.
-- **Hairline Rule** (`rule`): every border and divider.
+- **Hairline Rule** (`rule`): every border and divider, except the edge of a field (Meta Ink).
 - **Ink** (`ink`): main text and the letter. **Secondary Ink**, **Muted Ink** and **Meta Ink** step
   down for secondary text, hints and quiet icons. Meta Ink is the lightest allowed for non-text UI
   (3:1).
@@ -289,7 +289,8 @@ for its urgency states. Panels and the playmat have no corners at all. Rules sep
 
 ### Fields
 
-- Transparent with a hairline border. On focus the border turns navy with a soft navy halo. Labels
+- Transparent with a Meta Ink border (`--border-control`): the border is a field's only edge, so it
+  needs 3:1 like other non-text UI. On focus the border turns navy with a soft navy halo. Labels
   are small uppercase Geist, with a muted hint below.
 
 ## Do's and Don'ts

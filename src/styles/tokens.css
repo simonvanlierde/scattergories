@@ -152,6 +152,8 @@
     --border-subtle: var(--surface-4);
     --border-default: var(--surface-4);
     --border-strong: var(--surface-5);
+    /* The edge of a field: the only thing that marks it, so 3:1 like other non-text UI. */
+    --border-control: var(--surface-6);
     --border-accent: color-mix(in oklch, var(--accent-primary) 65%, transparent);
 
     /* Background */
@@ -212,7 +214,8 @@
     --surface-5: oklch(42% 0.014 70); /* ghost hover */
 
     /* Ink (warm off-white, hue 85) */
-    --surface-6: oklch(58% 0.015 85); /* muted */
+    /* 62% keeps muted text at 4.5:1 on the sheet (surface-1) and sunken (surface-2) paper. */
+    --surface-6: oklch(62% 0.015 85); /* muted */
     --surface-7: oklch(70% 0.014 85); /* tertiary */
     --surface-8: oklch(80% 0.013 85); /* secondary */
     --surface-9: oklch(87% 0.012 85); /* near-primary */

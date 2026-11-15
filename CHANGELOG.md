@@ -22,6 +22,9 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   fill the free space instead of stopping at 20rem. The folded categories bar sits at the bottom.
 - At 200% text size on a phone, the category tools wrap onto their own row instead of going off
   screen, and the round controls stack so the main button stays in view.
+- Text fields and menus have a darker edge (3:1), and hints and labels in the dark theme's
+  sheets are lighter, so both meet WCAG AA contrast.
+- The add-a-pack menu in the deck sheet has one border instead of a box inside a box.
 
 ## [0.4.0] - 2026-11-11
 
