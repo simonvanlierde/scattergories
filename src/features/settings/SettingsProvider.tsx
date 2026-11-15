@@ -13,6 +13,25 @@ import {
   type Theme,
 } from "./schema";
 
+export type CustomCategoryProblem = "full" | "duplicate";
+
+/** Why a trimmed, non-empty custom name can't be added, or undefined when it can. */
+function customCategoryProblem(
+  existing: string[],
+  trimmed: string,
+  locale: string | undefined,
+): CustomCategoryProblem | undefined {
+  // sanitizeStrings drops a name past the cap, so pinning it would leave a ghost pin.
+  if (existing.length >= MAX_STRING_COUNT) {
+    return "full";
+  }
+  // A custom name can't repeat another custom or shadow a built-in key, in any case.
+  const lower = trimmed.toLocaleLowerCase(locale);
+  return [...existing, ...categories].some((entry) => entry.toLocaleLowerCase(locale) === lower)
+    ? "duplicate"
+    : undefined;
+}
+
 type SettingsAction =
   | { type: "hydrate"; settings: Settings }
   | { type: "update"; key: keyof Settings; value: Settings[keyof Settings] }
@@ -29,7 +48,8 @@ type SettingsAction =
 interface SettingsContextValue {
   settings: Settings;
   update: <K extends keyof Settings>(key: K, value: Settings[K]) => void;
-  addCustom: (raw: string, locale?: string) => void;
+  /** Returns why the name was refused; the reducer re-checks, so this only feeds the form. */
+  addCustom: (raw: string, locale?: string) => CustomCategoryProblem | undefined;
   removeCustom: (category: string) => void;
   togglePin: (name: string) => void;
   togglePinAll: (names: string[]) => void;
@@ -73,15 +93,7 @@ function settingsReducer(state: Settings, action: SettingsAction): Settings {
 
     case "addCustom": {
       const trimmed = action.value.trim();
-      // sanitizeStrings drops a name past the cap, so pinning it would leave a ghost pin.
-      if (!trimmed || state.customCategories.length >= MAX_STRING_COUNT) {
-        return state;
-      }
-      // A custom name can't repeat another custom or shadow a built-in key, in any case.
-      const lower = trimmed.toLocaleLowerCase(action.locale);
-      if (
-        [...state.customCategories, ...categories].some((entry) => entry.toLocaleLowerCase(action.locale) === lower)
-      ) {
+      if (!trimmed || customCategoryProblem(state.customCategories, trimmed, action.locale)) {
         return state;
       }
       return {
@@ -186,8 +198,13 @@ function SettingsProvider({ children }: PropsWithChildren) {
       dispatch({ type: "update", key, value: actionValue });
     },
     // An inactive catalog reports "", which is no valid language tag.
-    addCustom: (raw, locale) =>
-      dispatch({ type: "addCustom", value: raw, locale: locale ?? (i18n.locale || undefined) }),
+    addCustom: (raw, locale) => {
+      const resolved = locale ?? (i18n.locale || undefined);
+      const trimmed = raw.trim();
+      const problem = trimmed ? customCategoryProblem(settings.customCategories, trimmed, resolved) : undefined;
+      dispatch({ type: "addCustom", value: raw, locale: resolved });
+      return problem;
+    },
     removeCustom: (category) => dispatch({ type: "removeCustom", value: category }),
     togglePin: (name) => dispatch({ type: "togglePin", name }),
     togglePinAll: (names) => dispatch({ type: "togglePinAll", names }),

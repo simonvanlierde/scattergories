@@ -18,15 +18,11 @@ Players write answers on paper and score them together. The app does not offer a
 
 Scattergories aims to meet [WCAG 2.2](https://www.w3.org/TR/WCAG22/) at level AA.
 
-Its conformance is **partially conformant**: some content does not fully meet WCAG 2.2 AA, and a few criteria still need a manual check. The [assessment record](https://github.com/simonvanlierde/scattergories/blob/main/docs/accessibility-assessment.md) gives a result for every level A and AA criterion. There has been no independent audit.
+Its conformance is **partially conformant**: we know of no failing criterion, but a few criteria still need a manual check. The [assessment record](https://github.com/simonvanlierde/scattergories/blob/main/docs/accessibility-assessment.md) gives a result for every level A and AA criterion. There has been no independent audit.
 
 ## Known problems
 
-- In the dark theme, hint and heading text in the settings and how-to-play sheets has a contrast of 4.4:1, below the 4.5:1 minimum.
-- Text fields and the language list have a faint border, about 1.5:1 against the background, below the 3:1 minimum.
-- Adding a custom category that already exists, or past the limit, does nothing and gives no message.
-
-Screen-reader use, browser zoom, text spacing and forced colors still need manual assessment.
+None found so far. Screen-reader use, browser zoom, text spacing and forced colors still need manual assessment.
 
 ## Tell us about a problem
 

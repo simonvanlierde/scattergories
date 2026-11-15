@@ -310,6 +310,14 @@ msgstr "Καρφίτσωμα όλων"
 msgid "categories.addSectionTitle"
 msgstr "Προσθήκη κατηγοριών"
 
+#. Custom category already in the deck
+msgid "categories.customDuplicate"
+msgstr "Αυτή η κατηγορία υπάρχει ήδη στην τράπουλα."
+
+#. Custom category list is at its cap
+msgid "categories.customFull"
+msgstr "Η τράπουλα είναι γεμάτη. Αφαίρεσε μια κατηγορία για να προσθέσεις άλλη."
+
 #. Your deck
 msgid "categories.deckSectionTitle"
 msgstr "Η τράπουλα"

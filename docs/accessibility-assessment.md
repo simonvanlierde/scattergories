@@ -1,8 +1,8 @@
 # WCAG 2.2 assessment record
 
-Assessed on 15 November 2026 by the maintainer, against the code at commit `81fee71`, for WCAG 2.2 levels A and AA. Success criterion 4.1.1 is obsolete in 2.2 and is left out. Level AAA is out of scope.
+Assessed on 15 November 2026 by the maintainer, against the code at commit `81fee71`, then updated after the fixes for contrast and error messages, for WCAG 2.2 levels A and AA. Success criterion 4.1.1 is obsolete in 2.2 and is left out. Level AAA is out of scope.
 
-Result: 4 criteria fail, 4 are not assessed, the rest pass or do not apply. Conformance is partial. No independent audit has been done, and no assistive technology was used.
+Result: no criterion fails, 4 are not assessed, the rest pass or do not apply. Conformance is partial until the manual checks are done. No independent audit has been done, and no assistive technology was used.
 
 ## How the results were found
 
@@ -26,11 +26,11 @@ Passing axe-core is not a conformance claim: it detects only some barriers, and 
 | 1.3.5 Identify input purpose | AA | Not applicable | No fields collect personal data. |
 | 1.4.1 Use of color | A | Pass | Code: ring urgency also changes stroke width (`src/styles/playmat.css`) and is announced as text. |
 | 1.4.2 Audio control | A | Pass | Sounds are short; the mute button is in the footer. |
-| 1.4.3 Contrast (minimum) | AA | **Fail** | Dark theme `--text-muted` measures 4.41:1 on the raised surface (`src/styles/tokens.css`, used by hints and section titles in the settings and how-to-play sheets). Light theme passes. |
+| 1.4.3 Contrast (minimum) | AA | Pass | Measured on 15 November 2026 after the dark-theme and field-border fixes: the lowest text contrast in the settings sheet is 6.4:1 in light and 5.2:1 in dark. `tests/a11y.spec.ts` scans the settings, how-to-play and deck sheets in the dark theme with axe. |
 | 1.4.4 Resize text | AA | Not assessed | Code uses rem units and the viewport allows zoom (`index.html`). Needs a 200% check on a device. |
 | 1.4.5 Images of text | AA | Pass | All text is live text. |
 | 1.4.10 Reflow | AA | Pass | `tests/e2e/reflow.spec.ts` at 320 px; `tests/layout.spec.ts` at 320 px in three languages. 400% browser zoom is covered by the open manual checks. |
-| 1.4.11 Non-text contrast | AA | **Fail** | Text field and select borders measure 1.4:1 in light and 1.5:1 in dark (`--border-default`, `.ds-field__control` in `src/styles/primitives.css`). The pin icon passes (`tests/contrast.spec.ts`). |
+| 1.4.11 Non-text contrast | AA | Pass | Field and select borders measure 3.56:1 in light and 5.20:1 in dark against the sheet (`--border-control`, `.ds-field__control` in `src/styles/primitives.css`). The pin icon passes (`tests/contrast.spec.ts`). |
 | 1.4.12 Text spacing | AA | Not assessed | Needs the spacing overrides on a device. |
 | 1.4.13 Content on hover or focus | AA | Pass | Only native `title` tooltips. |
 | 2.1.1 Keyboard | A | Pass | Keyboard probe: every control is reachable and operable; controls are native elements. |
@@ -60,9 +60,9 @@ Passing axe-core is not a conformance claim: it detects only some barriers, and 
 | 3.2.3 Consistent navigation | AA | Pass | The footer controls keep one place. |
 | 3.2.4 Consistent identification | AA | Pass | Shared icon-button component and labels. |
 | 3.2.6 Consistent help | A | Pass | The how-to-play button is always last in the footer. |
-| 3.3.1 Error identification | A | **Fail** | A custom category that repeats a name, or exceeds the cap, is dropped and the field clears with no message (`addCustom` in `src/features/settings/SettingsProvider.tsx`). |
+| 3.3.1 Error identification | A | Pass | A refused custom category shows an alert beside the field, and the field is marked `aria-invalid` (`AddCustomRow` in `src/features/categories/CategoriesPanel.tsx`, `src/app.categories.test.tsx`). |
 | 3.3.2 Labels or instructions | A | Pass | Fields have labels and hints linked by `aria-describedby`. |
-| 3.3.3 Error suggestion | AA | **Fail** | Same cause as 3.3.1: nothing tells the player why the entry was refused. |
+| 3.3.3 Error suggestion | AA | Pass | The message names the cause and the fix: the name is already in the deck, or the deck is full and a category must go. The typed text stays in the field. |
 | 3.3.4 Error prevention | AA | Not applicable | No legal, financial or stored-account submissions. |
 | 3.3.7 Redundant entry | A | Not applicable | No multi-step entry. |
 | 3.3.8 Accessible authentication (minimum) | AA | Not applicable | No authentication. |

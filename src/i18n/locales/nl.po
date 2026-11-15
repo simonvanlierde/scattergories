@@ -310,6 +310,14 @@ msgstr "Alles vastzetten"
 msgid "categories.addSectionTitle"
 msgstr "Categorieën toevoegen"
 
+#. Custom category already in the deck
+msgid "categories.customDuplicate"
+msgstr "Die categorie zit al in je stapel."
+
+#. Custom category list is at its cap
+msgid "categories.customFull"
+msgstr "De stapel is vol. Verwijder een categorie om een nieuwe toe te voegen."
+
 #. Your deck
 msgid "categories.deckSectionTitle"
 msgstr "Jouw stapel"
