@@ -37,7 +37,7 @@ export function LegalPage({ path }: { path: "/privacy" | "/accessibility" }) {
             <a href={SOURCE_CODE_URL}>{t("about.source")}</a> · <a href={LICENSE_URL}>{t("about.license")}</a>
           </p>
         </main>
-        <nav className="legal-page__nav" aria-label="Documents">
+        <nav className="legal-page__nav" aria-label={t("legal.documents")}>
           <a href="/privacy" aria-current={isPrivacy ? "page" : undefined}>
             {t("modal.privacyLink")}
           </a>

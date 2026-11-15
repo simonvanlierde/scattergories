@@ -1182,6 +1182,9 @@ msgstr "Ferienaktivitäten"
 msgid "legal.back"
 msgstr "Zurück zum Spiel"
 
+msgid "legal.documents"
+msgstr "Dokumente"
+
 msgid "legal.home"
 msgstr "Scattergories Startseite"
 

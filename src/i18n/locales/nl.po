@@ -1182,6 +1182,9 @@ msgstr "Vakantieactiviteiten"
 msgid "legal.back"
 msgstr "Terug naar het spel"
 
+msgid "legal.documents"
+msgstr "Documenten"
+
 msgid "legal.home"
 msgstr "Scattergories startpagina"
 

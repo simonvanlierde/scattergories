@@ -1182,6 +1182,9 @@ msgstr "Planes de vacaciones"
 msgid "legal.back"
 msgstr "Volver al juego"
 
+msgid "legal.documents"
+msgstr "Documentos"
+
 msgid "legal.home"
 msgstr "Inicio de Scattergories"
 
