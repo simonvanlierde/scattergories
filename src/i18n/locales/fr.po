@@ -33,6 +33,10 @@ msgstr "Tirer une lettre"
 msgid "buttons.nextRound"
 msgstr "Manche suivante"
 
+#. Skip round
+msgid "buttons.skipRound"
+msgstr "Passer la manche"
+
 #. Spinning…
 msgid "buttons.spinning"
 msgstr "Tirage…"

@@ -47,7 +47,7 @@ it("keeps the playmat lean: mute lives in the top bar, round controls always ren
   // layout never shifts as the phase changes.
   const roundControls = within(playmat).getByRole("group", { name: "Round controls" });
   expect(within(roundControls).getByRole("button", { name: "New letter" })).toBeInTheDocument();
-  expect(within(roundControls).getByRole("button", { name: "Next round" })).toBeInTheDocument();
+  expect(within(roundControls).getByRole("button", { name: "Skip round" })).toBeInTheDocument();
   // Mute is a borderless toggle in the top settings cluster, not on the playmat.
   expect(screen.getByRole("button", { name: "Mute" })).toBeInTheDocument();
   expect(within(playmat).queryByRole("button", { name: "Mute" })).not.toBeInTheDocument();

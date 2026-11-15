@@ -11,6 +11,8 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Greek text uses Noto Serif Display for the letter and titles and Inter for the rest, instead
   of whatever fonts the device has. Only the Greek parts of these fonts are downloaded.
+- The second round control is now called "Skip round", so the end of a round no longer shows
+  two "Next round" buttons, one of them greyed out.
 
 ### Fixed
 

@@ -33,6 +33,10 @@ msgstr "Buchstabe ziehen"
 msgid "buttons.nextRound"
 msgstr "Nächste Runde"
 
+#. Skip round
+msgid "buttons.skipRound"
+msgstr "Runde überspringen"
+
 #. Spinning…
 msgid "buttons.spinning"
 msgstr "Wird gedreht…"

@@ -33,6 +33,10 @@ msgstr "Wylosuj literę"
 msgid "buttons.nextRound"
 msgstr "Następna runda"
 
+#. Skip round
+msgid "buttons.skipRound"
+msgstr "Pomiń rundę"
+
 #. Spinning…
 msgid "buttons.spinning"
 msgstr "Losowanie…"

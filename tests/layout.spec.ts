@@ -140,7 +140,7 @@ for (const viewport of [
 test("names the secondary round actions visibly", async ({ app: _app, page }) => {
   const controls = page.getByRole("group", { name: "Round controls" });
   await expect(controls.getByRole("button", { name: "New letter", exact: true })).toHaveText("New letter");
-  await expect(controls.getByRole("button", { name: "Next round", exact: true })).toHaveText("Next round");
+  await expect(controls.getByRole("button", { name: "Skip round", exact: true })).toHaveText("Skip round");
 });
 
 for (const locale of ["de", "el", "fr"]) {

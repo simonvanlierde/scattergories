@@ -134,7 +134,7 @@ it("shows the skip confirmation as visible text while armed", async () => {
   const live = document.querySelector('.action-bar [aria-live="polite"]');
   expect(live).toBeEmptyDOMElement();
 
-  await user.click(screen.getByRole("button", { name: "Next round" }));
+  await user.click(screen.getByRole("button", { name: "Skip round" }));
 
   const prompt = screen.getByText("Tap again to skip this round");
   expect(prompt).toBeVisible();

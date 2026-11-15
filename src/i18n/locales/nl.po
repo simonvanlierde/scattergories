@@ -33,6 +33,10 @@ msgstr "Loot een letter"
 msgid "buttons.nextRound"
 msgstr "Volgende ronde"
 
+#. Skip round
+msgid "buttons.skipRound"
+msgstr "Ronde overslaan"
+
 #. Spinning…
 msgid "buttons.spinning"
 msgstr "Draaien…"

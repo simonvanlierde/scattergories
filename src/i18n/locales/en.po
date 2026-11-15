@@ -33,6 +33,10 @@ msgstr "Roll a letter"
 msgid "buttons.nextRound"
 msgstr "Next round"
 
+#. Skip round
+msgid "buttons.skipRound"
+msgstr "Skip round"
+
 #. Spinning…
 msgid "buttons.spinning"
 msgstr "Spinning…"
