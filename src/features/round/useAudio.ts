@@ -1,4 +1,4 @@
-import { type RefObject, useCallback, useEffect, useRef } from "react";
+import { type RefObject, useCallback, useEffect, useLayoutEffect, useRef } from "react";
 
 type WindowWithWebkit = Window & { webkitAudioContext?: typeof AudioContext };
 
@@ -154,7 +154,9 @@ function useAudioContext() {
 export function useAudio(isMuted: boolean) {
   const getContext = useAudioContext();
   const mutedRef = useRef(isMuted);
-  mutedRef.current = isMuted;
+  useLayoutEffect(() => {
+    mutedRef.current = isMuted;
+  });
   const playTick = useSoundPlayer(mutedRef, getContext, playTickSound);
   const playAlarm = useSoundPlayer(mutedRef, getContext, playAlarmSound);
   const playLetterLand = useSoundPlayer(mutedRef, getContext, playLetterLandSound);

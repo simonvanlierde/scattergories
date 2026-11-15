@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { clampInt } from "@/domain/game/utils";
 import { useDebouncedCommit } from "@/shared/lib/useDebouncedCommit";
 import { Field } from "./Field";
@@ -72,9 +72,13 @@ export function DebouncedNumberField({
 
   // Refs keep the unmount cleanup (empty deps) pointed at the latest values.
   const draftRef = useRef(draft);
-  draftRef.current = draft;
+  useLayoutEffect(() => {
+    draftRef.current = draft;
+  });
   const commitClampedRef = useRef(commitClamped);
-  commitClampedRef.current = commitClamped;
+  useLayoutEffect(() => {
+    commitClampedRef.current = commitClamped;
+  });
   useEffect(
     () => () => {
       commitClampedRef.current(draftRef.current);
