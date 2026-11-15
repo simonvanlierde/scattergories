@@ -6,11 +6,11 @@ The only build-time input from outside the app is the locale asset bundle, which
 
 ## Layers
 
-The source is layered so the game rules never depend on React, and the UI never reaches past the `useGameController` boundary into feature internals.
+The source is layered so the game rules never depend on React. The game screen calls the feature hooks only through `useGameController`, and renders each feature through its public component (`Playmat`, `CategoriesPanel`, `SettingsCluster`). The legal pages and the boot screen read the saved theme from `features/settings/` directly.
 
 ```mermaid
 flowchart TD
-    App["src/app/: shell + useGameController (the boundary)"]
+    App["src/app/: shell + useGameController"]
     Features["src/features/: round · categories · settings"]
     Domain["src/domain/: deck rules + game/ (roundReducer)"]
     Shared["src/shared/: ui + lib"]
@@ -45,7 +45,7 @@ stateDiagram-v2
 
 ## Data flow
 
-`useGameController` combines the feature hooks and gives the shell a single typed interface. The deck rules live in one pure module, [`domain/deck.ts`](../src/domain/deck.ts): the category packs, the default deck, how a round's categories are drawn, and how its letter is drawn. Letters are rolled with locale-aware weights from `i18n/__generated__/letterWeights.json`, which `tools/` produces offline. Settings and custom category packs are the only saved state. They are written to `localStorage` from `features/settings/`, through the `safeStorage` wrapper in `shared/lib`. Game settings and custom category packs stay in the browser. The browser requests app files from the host; the app does not upload game inputs.
+`useGameController` combines the feature hooks (`useRound`, `useCategoryBoard`, `useSettings`) and gives the shell a single typed interface. The categories feature owns the drawn board: `features/categories/useCategoryBoard.ts` composes and rolls the drawn categories, and `CategoriesPanel` edits the saved deck through `useSettings` itself. The deck rules live in one pure module, [`domain/deck.ts`](../src/domain/deck.ts): the category packs, the default deck, how a round's categories are drawn, and how its letter is drawn. Letters are rolled with locale-aware weights from `i18n/__generated__/letterWeights.json`, which `tools/` produces offline. Settings and custom category packs are the only saved state. They are written to `localStorage` from `features/settings/`, through the `safeStorage` wrapper in `shared/lib`. Game settings and custom category packs stay in the browser. The browser requests app files from the host; the app does not upload game inputs.
 
 The reasons for the key choices live in [`adr/`](adr/).
 

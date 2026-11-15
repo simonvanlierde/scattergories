@@ -17,7 +17,7 @@ const HowToPlayDialog = lazy(async () => ({
 }));
 
 /**
- * The one boundary between src/app/ and the feature hooks, grouped by concern:
+ * The one place the game screen calls the feature hooks, grouped by concern:
  * `round` (letter and clock), `deck` (drawn categories; the panel edits the deck itself),
  * `settings` (saved values and their setters) and `app` (dialogs, language, errors).
  */
