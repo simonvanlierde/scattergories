@@ -50,12 +50,14 @@ function ControlBar({ game }: { game: GameController }) {
           theme={game.settings.theme}
           isMuted={game.settings.isMuted}
           avoidRepeats={game.settings.avoidRepeats}
+          keyboardShortcuts={game.settings.keyboardShortcuts}
           durationInput={game.settings.durationInput}
           bufferSecondsInput={game.settings.bufferSecondsInput}
           onLanguageChange={game.app.changeLanguage}
           onToggleTheme={game.settings.toggleTheme}
           onToggleMute={() => game.settings.toggle("isMuted")}
           onToggleAvoidRepeats={() => game.settings.toggle("avoidRepeats")}
+          onToggleKeyboardShortcuts={() => game.settings.toggle("keyboardShortcuts")}
           onUpdateTimingField={game.settings.update}
         />
         <IconButton

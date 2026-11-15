@@ -137,6 +137,7 @@ describe("useSettings", () => {
         pinned: ["Foo"],
         isMuted: true,
         avoidRepeats: false,
+        keyboardShortcuts: false,
         theme: "dark",
         themeSource: "user",
         promptDeckPreference: "collapsed",

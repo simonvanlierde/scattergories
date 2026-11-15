@@ -7,10 +7,16 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- A "Keyboard shortcuts" switch in Settings turns off the single-key shortcuts (Space, R, P, C
+  and ?). It is on by default and remembered.
+
 ### Fixed
 
 - The screen stays awake for the whole round after you switch to another app and back.
 - Editing the deck while the categories roll no longer cancels the roll.
+- The R, P and C shortcuts now work on non-Latin keyboard layouts such as Greek.
 
 ## [0.4.0] - 2026-11-11
 
