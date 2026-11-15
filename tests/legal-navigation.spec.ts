@@ -22,7 +22,7 @@ for (const viewport of [
       await page.getByRole("link", { name: "Privacy (English)", exact: true }).click();
       await expect(page.getByRole("heading", { level: 1 })).toHaveText("Privacy statement");
       await expect(page.getByRole("main")).toBeFocused();
-      await page.getByRole("link", { name: "Accessibility statement", exact: true }).click();
+      await page.getByRole("link", { name: "Accessibility (English)", exact: true }).click();
       await expect(page.getByRole("heading", { level: 1 })).toHaveText("Accessibility statement");
       await page.getByRole("link", { name: "Back to the game", exact: true }).click();
       await app.waitUntilReady();

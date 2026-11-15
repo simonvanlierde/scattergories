@@ -7,8 +7,8 @@ import { LEGAL_LINKED_FROM } from "./routes";
  */
 
 const PAGES = [
-  ["/accessibility", "Accessibility statement"],
-  ["/privacy", "Privacy statement"],
+  ["/accessibility", "Accessibility statement", "Accessibility (English)"],
+  ["/privacy", "Privacy statement", "Privacy (English)"],
 ] as const;
 
 for (const [href, name] of PAGES) {
@@ -28,8 +28,8 @@ test("some route links the legal pages", () => {
 for (const path of LEGAL_LINKED_FROM) {
   test(`${path} links every page`, async ({ page }) => {
     await page.goto(path);
-    for (const [href, name] of PAGES) {
-      const link = page.getByRole("link", { name, exact: true });
+    for (const [href, , linkName] of PAGES) {
+      const link = page.getByRole("link", { name: linkName, exact: true });
       await expect(link).toHaveAttribute("href", href);
       if (href === path) await expect(link).toHaveAttribute("aria-current", "page");
       else await expect(link).not.toHaveAttribute("aria-current");

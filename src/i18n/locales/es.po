@@ -1179,6 +1179,12 @@ msgstr "Causas de despido"
 msgid "category.Holiday Activities"
 msgstr "Planes de vacaciones"
 
+msgid "legal.back"
+msgstr "Volver al juego"
+
+msgid "legal.home"
+msgstr "Inicio de Scattergories"
+
 msgid "modal.privacyLink"
 msgstr "Privacidad (inglés)"
 
