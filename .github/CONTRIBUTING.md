@@ -1,14 +1,14 @@
 # Contributing
 
-Thank you for your interest in scattergories. Bug reports, feature requests and pull
-requests are welcome. Please read the [Code of Conduct](CODE_OF_CONDUCT.md) first, and
-report vulnerabilities as [SECURITY.md](SECURITY.md) describes, not in a public issue.
+Bug reports, feature requests and pull requests are welcome. Read the
+[Code of Conduct](CODE_OF_CONDUCT.md) first, and report vulnerabilities as
+[SECURITY.md](SECURITY.md) describes, not in a public issue.
 
 ## Report a bug or ask for a feature
 
 Open an [issue](https://github.com/simonvanlierde/scattergories/issues) with the bug or
-feature form. For a bug, say what you did, what you expected and what happened, with the
-version you used. A question the README and docs don't answer is a gap in the docs: open
+feature form. For a bug, say what you did, what you expected and what happened, and
+which browser you used. A question the README and docs don't answer is a gap in the docs: open
 a feature request for it.
 
 ## Suggest a category
@@ -17,16 +17,16 @@ Use the [category form](https://github.com/simonvanlierde/scattergories/issues/n
 also linked from How to play in the app. Give the wording, its language, the audience and
 difficulty, example answers for at least three letters, and where the idea comes from.
 
-A suggestion is a proposal. The maintainer reviews it for wording, fit with the pack's
-audience, answers for most letters, and the right to share it. Only reviewed categories enter
-a built-in pack, and the app never adds one on its own. To save a round trip you can open a
-pull request that adds the category to every locale in `src/i18n/locales/` and to a pack in
-[`src/domain/deck.ts`](../src/domain/deck.ts), after the issue is agreed.
+I review each suggestion: the wording, whether it suits the pack's audience, whether most
+letters have answers, and whether we may share it. Only reviewed categories go into a built-in
+pack; the app never adds a suggestion by itself. Once we agree on the issue, you can open a pull
+request that adds the category to every locale in `src/i18n/locales/` and to a pack in
+[`src/domain/deck.ts`](../src/domain/deck.ts).
 
 ## Scope and response
 
-One person maintains scattergories, in their own time. Expect a reply to an issue or
-pull request within about two weeks.
+I maintain scattergories in my own time. Expect a reply to an issue or pull request
+within about two weeks.
 
 Before a large pull request, such as a new feature or a change to how something works,
 open an issue and agree on the change there first. A small fix needs no issue. A pull
@@ -34,8 +34,8 @@ request outside what the project sets out to do is closed with a link to this se
 
 ## Set up and check
 
-[Prerequisites](#prerequisites) installs the tools, the dependencies and the git hooks. `just check` runs the checks CI runs, and `just fmt` fixes and
-formats.
+[Prerequisites](#prerequisites) installs the tools, the dependencies and the git hooks.
+`just check` runs the checks CI runs, and `just fmt` fixes and formats.
 
 uv and pnpm lock only releases at least a week old. If `just check` fails on
 a security fix newer than that, add the package to `exclude-newer-package` under `[tool.uv]` in `tools/pyproject.toml` or `minimumReleaseAgeExclude` in `pnpm-workspace.yaml`,
@@ -85,7 +85,7 @@ Record a design decision that isn't obvious as an ADR under [`docs/adr/`](../doc
 
 ## Product contract
 
-I keep the app lean on purpose. It runs a round with a letter, a timer and prompts, and it doesn't keep score. Categories are read-only during play. Don't bring back strike-through, per-round scoring, completion counting or similar mechanics unless someone explicitly asks for them. Prefer removing state and indirection over adding nice-to-haves. Avoid new abstractions unless they remove duplication across call sites.
+The app runs a round with a letter, a timer and categories, and it doesn't keep score. Categories are read-only during play. Don't bring back strike-through, per-round scoring, completion counting or similar mechanics unless someone asks for them. Remove state and indirection before you add extras. Add an abstraction only when it removes duplication across call sites.
 
 ## Conventions
 
@@ -122,18 +122,22 @@ I keep the app lean on purpose. It runs a round with a letter, a timer and promp
 
 ## Make a release
 
-The maintainer runs `just release X.Y.Z`. [Publishing](https://github.com/simonvanlierde/project-templates/blob/main/docs/usage.md#publishing) has the steps and the one-time setup.
+The maintainer runs `just release X.Y.Z` twice:
 
-### Repository setup and app releases
+1. The first run sets the version in `package.json`, adds the dated changelog section and commits
+   both files. Merge that commit through a pull request.
+2. On an up-to-date `main`, the second run checks the version in `package.json`, then signs and
+   pushes the version tag.
 
-The maintainer can run `just repo-settings` to apply the repository rulesets and create the
-GitHub deployment environments. It also configures security features; review the recipe before running it.
-[Deployment](../docs/architecture.md#deployment) lists the Cloudflare secrets and migration checks.
-
-Run `just release X.Y.Z` to prepare a release. The first run updates the version in `package.json`
-and prepares the dated changelog section. It commits both files. Review and merge that commit through a pull request.
-On an up-to-date `main`, run the same command again. It checks the manifest version, then signs and pushes the version tag.
 The release workflow verifies the tag signature and publishes that version's changelog section.
+[Publishing](https://github.com/simonvanlierde/project-templates/blob/main/docs/usage.md#publishing)
+has the one-time setup.
+
+### Repository setup
+
+`just repo-settings` applies the repository rulesets, creates the GitHub deployment environments
+and turns on security features. Read the recipe before you run it.
+[Deployment](../docs/architecture.md#deployment) lists the Cloudflare secrets and migration checks.
 
 ## Sign off your commits
 
@@ -155,6 +159,6 @@ The `dco` workflow checks every pull request from a fork and fails on a commit w
 
 Simon van Lierde maintains scattergories: reviews pull requests, merges them and
 makes releases. The repository belongs to [simonvanlierde](https://github.com/simonvanlierde)
-on GitHub. Only maintainers can merge to `main`. A new maintainer is added by an existing one, by name in this section.
+on GitHub. Only maintainers can merge to `main`. An existing maintainer adds a new one by name in this section.
 If no maintainer can continue, the repository is archived with a note in the README,
 and anyone may fork it under its license.
