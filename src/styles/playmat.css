@@ -489,10 +489,8 @@
        itself from it in the @container rules below. The categories don't
        change size between phases, so neither does the ring. */
     .play-grid:not(.play-grid--deck-collapsed) .playmat {
-      container-type: size;
       grid-template-columns: auto minmax(0, 1fr);
       align-items: center;
-      align-content: center;
       gap: var(--space-4);
       padding-block: var(--space-1);
     }
@@ -504,6 +502,13 @@
        under 60px. */
     .category-checklist__list {
       column-width: 10rem;
+    }
+
+    /* Folded or not, the playmat measures the height it is given so the ring
+       can grow into it (the @container rules below). */
+    .playmat {
+      container-type: size;
+      align-content: center;
     }
 
     /* Two columns leave each label ~10rem, so the chip drops its three-column
@@ -588,9 +593,10 @@
   }
 
   /* Tall row: once a stacked ring beats a side-by-side one, the ring goes on
-     top with the controls below it, as in the full layout, and grows up to its
-     full 20rem. 7.5rem is the controls (3.25rem + 2.75rem rows) and the gaps. The
-     letter follows the full layout's size until the ring gets too small for it. */
+     top with the controls below it, as in the full layout, and grows into the
+     free height, up to 40rem on a portrait tablet. 7.5rem is the controls
+     (3.25rem + 2.75rem rows) and the gaps. The letter, readout and "Time's up!"
+     keep the full layout's proportions to the ring. */
   @container (min-height: 19rem) {
     .playmat__hero,
     .playmat .action-bar {
@@ -598,7 +604,7 @@
     }
 
     .playmat__hero {
-      --hero: min(20rem, 100cqi, 100cqb - 7.5rem);
+      --hero: min(40rem, 100cqi, 100cqb - 7.5rem);
       width: var(--hero);
     }
 
@@ -608,16 +614,17 @@
     }
 
     .playmat .letter-hero__glyph {
-      font-size: min(clamp(6rem, 40cqi, 14rem), var(--hero) * 0.55);
+      font-size: calc(var(--hero) * 0.55);
     }
 
     /* The readout shrinks with the ring, so it never crowds a small one. */
     .playmat .timer-ring__readout {
-      font-size: min(var(--text-3xl), var(--hero) * 0.12);
+      font-size: calc(var(--hero) * 0.12);
     }
 
+    /* Capped, so the italic stays inside the ring's gap on a large ring. */
     .playmat .timer-ring--done .timer-ring__readout {
-      font-size: min(var(--text-2xl), var(--hero) * 0.1);
+      font-size: min(var(--text-3xl), var(--hero) * 0.1);
     }
   }
 

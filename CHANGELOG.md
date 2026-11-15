@@ -11,6 +11,8 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - The pink alarm wash at "Time's up!" is one brief flash again, instead of staying on for
   about 3 seconds. With reduced motion it shows as a still half-second tint.
+- On a portrait tablet, and with the categories folded on a phone, the ring and letter grow to
+  fill the free space instead of stopping at 20rem. The folded categories bar sits at the bottom.
 
 ## [0.4.0] - 2026-11-11
 

@@ -38,7 +38,8 @@ const viewports = [
   // min(36vw, 9rem), and the letter is half the ring.
   { width: 360, height: 740, minGlyphPx: 64 },
   { width: 390, height: 844, minGlyphPx: 96 },
-  { width: 820, height: 1180, minGlyphPx: 160 },
+  // A tablet flat on the table: the ring grows past the phone's 20rem into the free height.
+  { width: 820, height: 1180, minGlyphPx: 300 },
 ];
 
 for (const { width, height, minGlyphPx } of viewports) {

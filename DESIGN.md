@@ -207,8 +207,9 @@ Geist.
 - Below 52rem, the playmat (ring, letter, controls) sits above the categories. With the categories
   open, they take the height their list needs and the ring gets the rest. While that row is under
   19rem tall, the ring sits next to the controls and never gets smaller than `min(36vw, 9rem)`.
-  From 19rem up, it sits above them and grows to 20rem. With the categories collapsed, the ring is
-  full size (20rem) with the controls below. Categories flow in columns at least 10rem wide, so a
+  From 19rem up, it sits above them and grows into the free height, up to 40rem on a portrait
+  tablet, with the letter at 55% of the ring. With the categories collapsed, the ring takes the
+  same rule with the whole height, and the folded categories bar sits on the footer rule. Categories flow in columns at least 10rem wide, so a
   360px phone still gets two. The letter is half the ring in the side-by-side row, and on that
   smallest ring "Time's up!" shrinks with it (13% of the ring) so long translations stay inside.
   Under 21rem wide the categories heading drops its icon, so the title, the chevron and the three
