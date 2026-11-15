@@ -19,14 +19,11 @@ import { BrandMark } from "@/shared/ui/BrandMark";
 import { Button } from "@/shared/ui/Button";
 import { Icon } from "@/shared/ui/Icon";
 import { Sheet } from "@/shared/ui/Sheet";
+import { AUTHOR_NAME, AUTHOR_URL, LICENSE_URL, SOURCE_CODE_URL } from "./links";
 
 const OFFICIAL_GAME_URL = "https://hasbrogames.com/scattergories";
-const SOURCE_CODE_URL = "https://github.com/simonvanlierde/scattergories";
 const CATEGORY_FORM_URL = "https://github.com/simonvanlierde/scattergories/issues/new?template=category.yml";
-const LICENSE_URL = "https://github.com/simonvanlierde/scattergories/blob/main/LICENSE";
 const ISSUES_URL = "https://github.com/simonvanlierde/scattergories/issues/new";
-const AUTHOR_NAME = "Simon van Lierde";
-const AUTHOR_URL = "https://simonvanlierde.com";
 
 interface HowToPlayModalProps {
   onClose: () => void;
