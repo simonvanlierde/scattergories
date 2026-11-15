@@ -101,7 +101,10 @@ describe("useLetterRoller", () => {
     });
 
     it("sets letter and visible immediately when motion is not reduced", () => {
-      // matchMedia returns matches: false by default (from setupTests).
+      stubMotionPreference(false);
+      // Frames never fire: the file-level synchronous stub would recurse forever
+      // when this test ran before one that replaces it (shuffled order).
+      vi.stubGlobal("requestAnimationFrame", () => 0);
       const { result } = renderHook(() => useLetterRoller("en"));
 
       act(() => {

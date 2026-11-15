@@ -6,9 +6,6 @@ import { ROUTES } from "./routes";
 // Origins a page may request besides its own. A visitor counter on another origin
 // goes here by name, with a line in docs/privacy.md and its origin in public/_headers.
 const OTHER_ORIGINS: string[] = [];
-// How long a page may sit idle before the checks. Storage or a request made later
-// than this, or only after the user acts, is not seen.
-const SETTLE_MS = 3_000;
 
 for (const path of ROUTES) {
   test(`${path} sets no cookies, keeps only app data and loads only its own files`, async ({ page, context }) => {
@@ -19,7 +16,13 @@ for (const path of ROUTES) {
     });
     await page.goto(path, { waitUntil: "networkidle" });
     await expect(page.getByRole("main")).toBeVisible();
-    await page.waitForTimeout(SETTLE_MS);
+    // The service worker's install and precache are the last startup work; wait for
+    // them to finish instead of sleeping. Storage or requests made only after the
+    // user acts are not seen.
+    await page.evaluate(async () => {
+      await navigator.serviceWorker.ready;
+    });
+    await page.waitForLoadState("networkidle");
 
     expect(await context.cookies()).toEqual([]);
     const stored = await page.evaluate(async () => ({
