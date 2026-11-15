@@ -6,10 +6,11 @@
 [![PWA](https://img.shields.io/badge/PWA-installable-5A0FC8?)](https://scattergories.duinlab.nl)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fscattergories.duinlab.nl)](https://scattergories.duinlab.nl)
 
-An unofficial companion for playing Scattergories at the table, in your browser. It rolls the
-letter, draws the categories and runs the timer. For letter-and-timer play with your own
-categories, fold the category panel using its chevron or press **C**. The app remembers whether
-the panel is folded and keeps your saved deck. It's a single-page React app with no backend.
+An unofficial Scattergories web app for playing at the table. It rolls the letter, draws the
+categories and runs the timer. Players write their answers on paper.
+
+To play with your own categories, fold the category panel with its chevron or press **C**. The app
+remembers that choice and keeps your saved deck.
 
 Scattergories is a party game by Hasbro. This project is not affiliated with or endorsed by
 Hasbro.
@@ -19,9 +20,9 @@ Hasbro.
 <picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/phone-dark.png"><img alt="A round on a phone: the letter, the clock and twelve categories" src="docs/screenshots/phone-light.png" width="200"></picture>
 <picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/desktop-dark.png"><img alt="A round on a laptop, with the categories beside the letter" src="docs/screenshots/desktop-light.png" width="540"></picture>
 
-Letters come from each language's own alphabet, weighted by how often each letter starts a word, in
-9 fully translated languages. No account, no server: settings and custom category packs stay in
-your browser.
+The app is translated into 9 languages. Each language rolls letters from its own alphabet, and a
+letter that starts more words comes up more often. It's a single-page React app with no accounts
+and no server, so your settings and custom categories stay in your browser.
 
 ## Quick start
 
@@ -34,19 +35,20 @@ pnpm dev          # http://localhost:5173
 pnpm build        # static build to dist/
 ```
 
-The repository configures Cloudflare Workers for production and pull request previews.
-[Deployment setup](docs/architecture.md#deployment) describes the required GitHub environments and secrets.
-You can also serve `dist/` on a static host with a fallback to `index.html`.
+Production and pull request previews run on Cloudflare Workers.
+[Deployment setup](docs/architecture.md#deployment) lists the GitHub environments and secrets they need.
+Any static host can serve `dist/` too, as long as it falls back to `index.html`.
 
-The app serves English privacy and accessibility statements at `/privacy` and `/accessibility`.
-Open **How to play** to find links to both pages. Their source is in
+The privacy and accessibility statements are at `/privacy` and `/accessibility`, in English only,
+and **How to play** links to both. The app renders them from
 [`docs/privacy.md`](docs/privacy.md) and [`docs/accessibility.md`](docs/accessibility.md).
 
 ## Social card
 
-`public/og.png` is the 1200x630 card shown when the link is shared: the app icon and name, a live round's
-dial (letter, ring and timer, captured from the app at 3x) beside three drawn categories, and the
-README line. The source is [docs/og-card.html](docs/og-card.html), which uses the app's tokens and fonts.
+`public/og.png` is the 1200x630 image that shows when someone shares the link. It has the app icon
+and name, a round's letter, ring and timer captured from the app at 3x, three categories and the
+app's one-line description. Its source is [docs/og-card.html](docs/og-card.html), which uses the
+app's tokens and fonts.
 
 ```sh
 just og-card-capture   # capture the dial from the app, light and dark
