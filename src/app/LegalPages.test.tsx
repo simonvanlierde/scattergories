@@ -33,5 +33,11 @@ it.each([
   expect(main.closest(".app-shell")).toHaveAttribute("data-theme", "dark");
   expect(screen.getByRole("link", { name: title })).toHaveAttribute("aria-current", "page");
   expect(screen.getByRole("link", { name: "Back to the game" })).toHaveAttribute("href", "/");
+  expect(screen.getByRole("link", { name: "Simon van Lierde" })).toHaveAttribute("href", "https://simonvanlierde.com");
+  expect(screen.getByRole("link", { name: "Source" })).toHaveAttribute(
+    "href",
+    "https://github.com/simonvanlierde/scattergories",
+  );
+  expect(document.querySelector('.legal-page__credit a[href$="/LICENSE"]')).toBeInTheDocument();
   expect(screen.queryByRole("alert")).not.toBeInTheDocument();
 });

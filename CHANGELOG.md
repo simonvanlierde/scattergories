@@ -19,6 +19,9 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
+- The About section in How to play is a list of links: who made the app, the source code, the
+  license, where to report a problem and the official game. The privacy and accessibility pages end
+  with the same credit line.
 - The offline cache keeps the last two builds instead of growing with every release, and a first
   visit stores only the shell, English, your browser's language and the fonts for Latin text,
   plus the Polish or Greek font subset when your browser asks for one of those. Other languages

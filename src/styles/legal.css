@@ -74,6 +74,15 @@
     margin-top: var(--space-8);
     padding-top: var(--space-4);
   }
+  .legal-page__credit {
+    margin-top: var(--space-4);
+    font-size: var(--text-sm);
+  }
+  .legal-page__credit a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
   .legal-page__nav a,
   .modal-legal-links a {
     display: inline-flex;

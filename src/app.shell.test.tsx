@@ -86,6 +86,20 @@ it("links the category suggestion form from How to play", async () => {
   expect(link).toHaveAttribute("href", expect.stringContaining("/issues/new?template=category.yml"));
 });
 
+it("credits the author and links the source, the licence and problem reports in About", async () => {
+  const { user } = await renderApp();
+
+  await user.click(screen.getByRole("button", { name: "How to play" }));
+  const dialog = await screen.findByRole("dialog", { name: /How to play/i });
+  const link = (name: RegExp) => within(dialog).getByRole("link", { name });
+
+  expect(link(/Made by Simon van Lierde/)).toHaveAttribute("href", "https://simonvanlierde.com");
+  expect(link(/Source code/)).toHaveAttribute("href", "https://github.com/simonvanlierde/scattergories");
+  expect(link(/License/)).toHaveAttribute("href", expect.stringMatching(/\/blob\/main\/LICENSE$/));
+  expect(link(/Report a problem/)).toHaveAttribute("href", expect.stringContaining("/issues/new"));
+  expect(link(/Privacy/)).toHaveAttribute("href", "/privacy");
+});
+
 it("puts the page's only h1 first and tags each language option with its own lang", async () => {
   const { user } = await renderApp();
 
