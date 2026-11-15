@@ -1,6 +1,6 @@
 // biome-ignore-all lint/correctness/noNodejsModules: this Node script intentionally uses built-in modules.
 // Regenerates every icon in public/ from assets/brand/mark.svg.
-// Renders with the Chromium that Playwright already installs — no image dependency.
+// Renders with the Chromium that Playwright already installs, so it needs no image library.
 //
 //   pnpm icons
 
@@ -13,7 +13,7 @@ import { chromium } from "@playwright/test";
 const FIELD = "oklch(34% 0.11 260)"; // --accent-primary (ink navy)
 const ROOT = new URL("..", import.meta.url);
 
-/** Wraps a PNG in a single-image ICO container — the format allows a raw PNG payload per entry. */
+/** Wraps a PNG in a single-image ICO container; the format allows a raw PNG payload per entry. */
 function pngToIco(png, size) {
   const header = Buffer.alloc(6);
   header.writeUInt16LE(1, 2); // type: icon

@@ -149,7 +149,7 @@ jobs:
           path: playwright-report/
           retention-days: 7
 
-  # The README's "Pull request previews" has the lifecycle. Fork pull requests never get
+  # docs/architecture.md#deployment has the preview lifecycle. Fork pull requests never get
   # the token, so they skip with a notice, as does a repo without the secret.
   preview:
     name: preview

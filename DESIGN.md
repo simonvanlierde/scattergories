@@ -124,9 +124,10 @@ the CSS wins and this file needs an update.
 
 **Creative North Star: "The Printed Game Card"**
 
-The app should read like a printed page on the table: warm cream paper, deep ink, ruled category rows,
-and one large, weighty serif letter as a drop cap. Reveals are expressive; the active board stays steady. The dark
-theme is designed, not inverted: warm dark paper, off-white ink and a lighter periwinkle accent.
+The app looks like a printed page on the table: warm cream paper, deep ink, ruled category rows,
+and one large serif letter as a drop cap. The roll and the end of a round move; the board stays
+still during play. The dark theme has its own palette, not inverted colors: warm dark paper,
+off-white ink and a lighter periwinkle accent.
 
 Players read the screen from across a table, so the order is: the letter, the clock, the
 categories, and the controls last.
@@ -141,8 +142,8 @@ categories, and the controls last.
 
 ## Colors
 
-Warm cream paper with cool blue-gray ink. The warm/cool contrast does the work, so colors stay
-muted (low chroma).
+Warm cream paper with cool blue-gray ink. The contrast between warm and cool is enough, so the
+colors stay muted (low chroma).
 
 ### Primary
 
@@ -192,13 +193,11 @@ danger, never decoration.
 
 The type scale is fluid (minor third, `--text-xs` to `--text-hero`). Every number that counts or
 times something (the clock, category numerals, the How to play steps) is Geist with tabular
-figures, because Fraunces has none. Fraunces ships with its optical-size axis, so the letter is set
-at the display size (`opsz` 144) and headings pick their own size; the italic file loads only for
-"Time's up!".
+figures, because Fraunces has none. The letter is set at the display optical size (`opsz` 144) and
+headings pick their own. The italic file loads only for "Time's up!".
 
 Fraunces and Geist have no Greek glyphs. Greek falls through to Noto Serif Display and Inter, loaded
-as their Greek subsets only (`src/index.css`), so the Greek letter and titles keep a high-contrast
-display serif and the UI a neutral sans. They are close matches, not the house faces.
+as their Greek subsets only (`src/index.css`). They are close matches, not the house faces.
 
 **The Serif Is a Moment Rule.** Fraunces marks a moment or a heading: the letter, the end of a
 round, titles and the How to play lead. Anything you tap, every name in a list and every number is
@@ -213,11 +212,11 @@ Geist.
   19rem tall, the ring sits next to the controls and never gets smaller than `min(36vw, 9rem)`.
   From 19rem up, it sits above them and grows into the free height, up to 40rem on a portrait
   tablet, with the letter at 55% of the ring. With the categories collapsed, the ring takes the
-  same rule with the whole height, and the folded categories bar sits on the footer rule. Categories flow in columns at least 10rem wide, so a
-  360px phone still gets two. The letter is half the ring in the side-by-side row, and on that
-  smallest ring "Time's up!" shrinks with it (13% of the ring) so long translations stay inside.
-  Under 21rem wide the categories heading drops its icon, so the title, the chevron and the three
-  tools fit on one row.
+  same rule with the whole height, and the folded categories bar sits on the footer rule.
+  Categories flow in columns at least 10rem wide, so a 360px phone still gets two. The letter is
+  half the ring in the side-by-side row. On that smallest ring "Time's up!" shrinks to 13% of the
+  ring, so long translations stay inside. Under 21rem wide the categories heading drops its icon,
+  so the title, the chevron and the three tools fit on one row.
 - From 52rem, there are two columns: playmat on the left, categories on the right, with a hairline
   between them. Collapsing the categories centers the playmat. From 64rem the ring grows to 26rem.
   Under 32rem tall (a phone on its side), the ring sits next to the controls and takes the height
@@ -228,8 +227,8 @@ Geist.
 
 ## Elevation & Depth
 
-Flat by default. Depth comes from hairline rules (`--elevation-1` is a 1px rule) and from slightly
-darker paper, not from shadows. The only real shadow is `--elevation-4` under modal sheets, over a
+Flat by default. Depth comes from hairline rules (`--elevation-1` is a 1px rule) and slightly
+darker paper. The only real shadow is `--elevation-4` under modal sheets, over a
 scrim (warm in the light theme, black in the dark one).
 
 **The Paper Rule.** If it sits on the page, it gets a hairline, not a shadow.
@@ -265,10 +264,9 @@ for its urgency states. Panels and the playmat have no corners at all. Rules sep
 
 - The letter sits inside the ring as a drop cap. Before the first roll, a "?" at 12% opacity
   stands in for it.
-- **The roll is a reel.** Each flipped letter drops in from above (140ms) and the drops slow down
-  with the flips, so every seat reads "rolling" whatever its angle to the phone. The drawn letter
-  then lands with a spring (640ms).
-- **Get-ready winds up.** The navy ring fills one even segment a second, from empty during the roll
+- **The roll.** Each flipped letter drops in from above (140ms), and the drops slow down with the
+  flips. Players see it as a roll from any seat. The drawn letter then lands with a spring (640ms).
+- **Get-ready.** The navy ring fills one even segment a second, from empty during the roll
   to full on the last second, and the readout beats with each second. The round starts on a full
   ring.
 - The ring drains while the round runs: secondary ink, then amber at 15 s, then brick at 5 s. The
@@ -277,15 +275,15 @@ for its urgency states. Panels and the playmat have no corners at all. Rules sep
 - From the first roll, a quiet "Round 4" label (uppercase Geist, muted ink) sits in the ring's top
   gap, mirroring the readout below. It counts the rounds started this session: a skip starts a
   round, a new letter does not, and a reload starts again at 1. It is not saved.
-- **Time's up is one beat.** The ring closes thick (stroke 12) and eases back to 4, "Time's up!"
-  stamps down from 1.6× while it fades in, and the letter settles once, all within 640ms, under the
-  single brief alarm flash. Then everything is still: the letter, the board and "Next round" stay up while the
-  table checks answers.
+- **Time's up.** Within 640ms, under the single alarm flash, the ring closes thick (stroke 12) and
+  eases back to 4, "Time's up!" stamps down from 1.6× while it fades in, and the letter settles
+  once. Then nothing moves: the letter, the board and "Next round" stay up while the table checks
+  answers.
 
 ### Sheets
 
 - Centred modal dialogs on card paper, with 0.5rem corners and a serif title over a hairline. They
-  carry the only shadow in the system. They spring in and leave fast.
+  carry the only shadow in the system. They open with a spring and close quickly.
 
 ### Fields
 
@@ -315,17 +313,16 @@ for its urgency states. Panels and the playmat have no corners at all. Rules sep
 
 ### Documents
 
-Privacy and accessibility pages use the Printed Game Card as a reading surface: a die and
-wordmark linking home, a visible back link, Fraunces headings, Geist body text and hairline
-rules. The article is at most 68ch wide. The whole document scrolls; the game stays one screen.
-Links live in How to play > About, with translated labels marking these pages as English.
+The privacy and accessibility pages use the same printed-page look: a die and wordmark linking
+home, a visible back link, Fraunces headings, Geist body text and hairline rules. The article is at
+most 68ch wide. The whole document scrolls. The links are in How to play > About, with translated
+labels that say the pages are in English.
 
 ## Letter-and-timer play
 
-The existing category chevron folds the panel so the letter and timer get the space. The C
-shortcut does the same thing. The saved panel preference remembers the choice; reopening the
-panel restores the category board without clearing the deck. There is no separate mode picker.
-Folding remains available during play and does not reset the letter or clock.
+The category chevron, or the C shortcut, folds the panel so the letter and timer get the space.
+The app saves the choice. Reopening the panel brings back the category board, and the deck is not
+cleared. Folding works during play and does not reset the letter or clock.
 
-Phone category rows reserve 3.5rem for two-line names (`--text-lg` at line-height 1.15) and have
-no extra margin between rows, so changing the draw does not trade letter size for wrapped labels.
+Phone category rows are 3.5rem tall, enough for a two-line name (`--text-lg` at line-height 1.15),
+with no margin between rows. A draw with longer names does not make the letter smaller.

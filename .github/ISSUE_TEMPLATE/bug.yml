@@ -17,7 +17,7 @@ body:
     id: url
     attributes:
       label: Page URL
-      description: The page where it happens, for example https://example.org/settings.
+      description: The page where it happens, for example https://scattergories.duinlab.nl/privacy.
     validations:
       required: true
   - type: textarea

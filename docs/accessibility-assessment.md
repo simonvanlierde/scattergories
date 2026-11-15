@@ -1,6 +1,6 @@
 # WCAG 2.2 assessment record
 
-Assessed on 15 November 2026 by the maintainer, against the code at commit `81fee71`, then updated after the fixes for contrast and error messages, for WCAG 2.2 levels A and AA. Success criterion 4.1.1 is obsolete in 2.2 and is left out. Level AAA is out of scope.
+The maintainer assessed the app against WCAG 2.2 levels A and AA on 15 November 2026, at commit `81fee71`, and updated this record after the contrast and error-message fixes. Success criterion 4.1.1 is obsolete in 2.2 and is left out. Level AAA is out of scope.
 
 Result: no criterion fails, 4 are not assessed, the rest pass or do not apply. Conformance is partial until the manual checks are done. No independent audit has been done, and no assistive technology was used.
 
@@ -11,7 +11,7 @@ Result: no criterion fails, 4 are not assessed, the rest pass or do not apply. C
 - **Keyboard probe**, same day: a throwaway Playwright script tabbed through the idle screen, opened and closed the settings sheet by keyboard and started a round with Space. It is not in the repository.
 - **Code reading** for everything else. A code reading is the only evidence for a Pass marked "code".
 
-Passing axe-core is not a conformance claim: it detects only some barriers, and the existing axe specs scan the dark theme only on the three document routes.
+Passing axe-core is not a conformance claim: it detects only some barriers, and the axe specs scan the home screen and the two statements in both themes, and the settings, how-to-play and deck sheets in the dark theme only.
 
 ## Results
 
