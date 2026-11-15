@@ -51,10 +51,19 @@ The reasons for the key choices live in [`adr/`](adr/).
 
 ## Offline play
 
-The production build gives the service worker a list of the shell and static assets. It caches
-them before activation, including the documents and every language. Failed downloads or invalid
-script and stylesheet responses prevent installation. Old content-hashed files remain available
-to already-open tabs.
+The production build gives the service worker two lists: the shell, English, the Latin fonts and
+static files it caches before activation, and the files it caches on first use (other languages,
+other font subsets, store screenshots). Install also fetches the language chunk that matches the
+browser's language, so the first visit works offline in that language. The privacy and
+accessibility pages are served from the cached shell. A failed download, or a script, stylesheet or
+font response with the wrong content type (such as the host's HTML fallback), prevents installation
+or is not stored. The worker only caches paths in the build's own lists.
+
+Each build has its own cache, named by build time. The worker keeps the current build and the one
+before it, so tabs that still run the old build find their hashed files, and deletes older ones. A
+failed install deletes its partial cache, so the last complete build stays. Hashed files under
+`/assets/` are served from the cache without a network refresh. A page load waits 3.5 seconds for the
+network before using the cached shell.
 
 ## Translations
 

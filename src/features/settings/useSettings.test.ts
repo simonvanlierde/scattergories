@@ -1,3 +1,4 @@
+// spell-checker: ignore ışık IŞIK
 import { act, renderHook, waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
 import React from "react";
@@ -137,6 +138,7 @@ describe("useSettings", () => {
         pinned: ["Foo"],
         isMuted: true,
         avoidRepeats: false,
+        keyboardShortcuts: false,
         theme: "dark",
         themeSource: "user",
         promptDeckPreference: "collapsed",
@@ -337,6 +339,17 @@ describe("useSettings", () => {
     });
   });
 
+  describe("addCustom locale", () => {
+    it("folds case with the given locale: Turkish dotless i equals its capital", () => {
+      const { result } = renderHook(() => useSettings(), { wrapper });
+      act(() => {
+        result.current.addCustom("ışık", "tr");
+        result.current.addCustom("IŞIK", "tr");
+      });
+      expect(result.current.settings.customCategories).toEqual(["ışık"]);
+    });
+  });
+
   describe("addCustom cap", () => {
     it("ignores a new name once 200 customs exist, and does not pin it", () => {
       const { result } = renderHook(() => useSettings(), { wrapper });
@@ -362,6 +375,48 @@ describe("useSettings", () => {
       });
       expect(result.current.settings.customCategories).toEqual(["Art"]);
       expect(result.current.settings.pinned).not.toContain("Science");
+    });
+  });
+
+  describe("deck removal", () => {
+    const withDeck = () => {
+      const hook = renderHook(() => useSettings(), { wrapper });
+      act(() => {
+        hook.result.current.addCustom("Science");
+        hook.result.current.addCustom("Art");
+      });
+      return hook;
+    };
+
+    it("removeBuiltin drops the name from the deck and unpins it", () => {
+      const { result } = withDeck();
+      act(() => result.current.togglePin("Animals"));
+      expect(result.current.settings.pinned).toContain("Animals");
+
+      act(() => result.current.removeBuiltin("Animals"));
+      expect(result.current.settings.deckBuiltins).not.toContain("Animals");
+      expect(result.current.settings.pinned).not.toContain("Animals");
+      expect(result.current.settings.pinned).toEqual(["Science", "Art"]);
+    });
+
+    it("removeAllBuiltins empties the built-ins, keeps customs and their pins", () => {
+      const { result } = withDeck();
+      act(() => result.current.togglePin("Animals"));
+
+      act(() => result.current.removeAllBuiltins());
+      expect(result.current.settings.deckBuiltins).toEqual([]);
+      expect(result.current.settings.customCategories).toEqual(["Science", "Art"]);
+      expect(result.current.settings.pinned).toEqual(["Science", "Art"]);
+    });
+
+    it("removeAllCustom empties the customs, keeps built-ins and their pins", () => {
+      const { result } = withDeck();
+      act(() => result.current.togglePin("Animals"));
+
+      act(() => result.current.removeAllCustom());
+      expect(result.current.settings.customCategories).toEqual([]);
+      expect(result.current.settings.pinned).toEqual(["Animals"]);
+      expect(result.current.settings.deckBuiltins).toContain("Animals");
     });
   });
 });

@@ -169,6 +169,14 @@ msgstr "Aftellen voordat de timer start."
 msgid "settings.avoidRepeatsHint"
 msgstr "Slaat de laatste 8 getrokken letters over; veelvoorkomende letters komen nog steeds vaker."
 
+#. Keyboard shortcuts
+msgid "settings.keyboardShortcuts"
+msgstr "Sneltoetsen"
+
+#. Space, R, P, C and ? control the round from the keyboard.
+msgid "settings.keyboardShortcutsHint"
+msgstr "Spatie, R, P, C en ? bedienen de ronde met het toetsenbord."
+
 #. Classic
 msgid "packs.classic.label"
 msgstr "Klassiek"
@@ -245,14 +253,6 @@ msgstr "{custom} eigen · {builtin} standaard"
 msgid "categories.emptyDeck"
 msgstr "De stapel is leeg. Voeg een pakket of eigen categorie toe."
 
-#. Open categories
-msgid "categories.showDeck"
-msgstr "Categorieën openen"
-
-#. Hide categories
-msgid "categories.hideDeck"
-msgstr "Categorieën verbergen"
-
 #. Customize deck
 msgid "categories.customize"
 msgstr "Stapel aanpassen"
@@ -281,17 +281,9 @@ msgstr "Alle standaard verwijderen"
 msgid "categories.pinOne"
 msgstr "{name} vastzetten"
 
-#. Unpin {name}
-msgid "categories.unpinOne"
-msgstr "{name} losmaken"
-
 #. Pin all
 msgid "categories.pinAll"
 msgstr "Alles vastzetten"
-
-#. Unpin all
-msgid "categories.unpinAll"
-msgstr "Alles losmaken"
 
 #. Add categories
 msgid "categories.addSectionTitle"

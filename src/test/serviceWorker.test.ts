@@ -5,15 +5,24 @@ import { runInNewContext } from "node:vm";
 import { describe, expect, it, vi } from "vitest";
 import workerSource from "../../public/sw.js?raw";
 
+type Lookup = (request: Request | string) => Promise<Response | undefined>;
+
+// The worker reads from named build caches, so every fake exposes one.
+function fakeCaches(match: Lookup, put: (...args: never[]) => unknown = vi.fn(), open?: () => Promise<unknown>) {
+  return {
+    keys: async () => ["scattergories-0"],
+    delete: vi.fn(),
+    open: open ?? (async () => ({ match, put })),
+  };
+}
+
 function workerStore(cached?: Response) {
   const put = vi.fn();
   const store = runInNewContext(`${workerSource}\nstore`, {
     URL,
+    AbortSignal,
     self: { addEventListener: vi.fn() },
-    caches: {
-      match: vi.fn().mockResolvedValue(cached),
-      open: vi.fn().mockResolvedValue({ put }),
-    },
+    caches: fakeCaches(vi.fn().mockResolvedValue(cached), put),
   }) as (request: Request, response: Response) => Promise<Response>;
   return { store, put };
 }
@@ -46,9 +55,10 @@ describe("service worker runtime storage failures", () => {
     const match = vi.fn().mockResolvedValue(cached);
     const networkFirst = runInNewContext(`${workerSource}\nnetworkFirst`, {
       URL,
+      AbortSignal,
       self: { addEventListener: vi.fn() },
       fetch: vi.fn().mockResolvedValue(response),
-      caches: { match },
+      caches: fakeCaches(match),
     }) as (request: Request) => Promise<Response>;
     expect(await networkFirst(new Request("https://example.test/"))).toBe(cached);
     match.mockResolvedValue(undefined);
@@ -58,14 +68,12 @@ describe("service worker runtime storage failures", () => {
   it("fetches assets when cache reads fail", async () => {
     const script = new Response("export {};", { headers: { "content-type": "text/javascript" } });
     const fetch = vi.fn().mockResolvedValue(script);
-    const worker = runInNewContext(`${workerSource}\nstaleWhileRevalidate`, {
+    const worker = runInNewContext(`${workerSource}\nassetResponse`, {
       URL,
+      AbortSignal,
       self: { addEventListener: vi.fn() },
       fetch,
-      caches: {
-        match: vi.fn().mockRejectedValue(new Error("CacheStorage read failed")),
-        open: vi.fn().mockResolvedValue({ put: vi.fn() }),
-      },
+      caches: fakeCaches(vi.fn().mockRejectedValue(new Error("CacheStorage read failed"))),
     }) as (request: Request) => Promise<Response>;
     expect(await worker(new Request("https://example.test/assets/new.js"))).toBe(script);
     expect(fetch).toHaveBeenCalledOnce();
@@ -77,8 +85,9 @@ describe("service worker runtime storage failures", () => {
       ["https://example.test/assets/old.js", "old script"],
     ]);
     let online = true;
-    const worker = runInNewContext(`${workerSource}\n({ networkFirst, staleWhileRevalidate })`, {
+    const worker = runInNewContext(`${workerSource}\n({ networkFirst, assetResponse })`, {
       URL,
+      AbortSignal,
       self: { addEventListener: vi.fn() },
       fetch: (request: Request) => {
         if (!online) {
@@ -90,34 +99,32 @@ describe("service worker runtime storage failures", () => {
             : new Response("new shell"),
         );
       },
-      caches: {
-        match: (request: Request | string) => {
+      caches: fakeCaches(
+        (request) => {
           const body = saved.get(
             typeof request === "string" ? new URL(request, "https://example.test").href : request.url,
           );
           return Promise.resolve(body === undefined ? undefined : new Response(body));
         },
-        open: async () => ({
-          put: async (request: Request, response: Response) => {
-            if (request.url.endsWith(".js")) {
-              throw new Error("quota exceeded");
-            }
-            saved.set(request.url, await response.text());
-          },
-        }),
-      },
+        async (request: Request, response: Response) => {
+          if (request.url.endsWith(".js")) {
+            throw new Error("quota exceeded");
+          }
+          saved.set(request.url, await response.text());
+        },
+      ),
     }) as {
       networkFirst: (request: Request) => Promise<Response>;
-      staleWhileRevalidate: (request: Request) => Promise<Response>;
+      assetResponse: (request: Request) => Promise<Response>;
     };
     const navigation = new Request("https://example.test/");
     expect(await (await worker.networkFirst(navigation)).text()).toBe("new shell");
-    expect(await (await worker.staleWhileRevalidate(new Request("https://example.test/assets/new.js"))).text()).toBe(
+    expect(await (await worker.assetResponse(new Request("https://example.test/assets/new.js"))).text()).toBe(
       "new script",
     );
     online = false;
     expect(await (await worker.networkFirst(navigation)).text()).toBe("old shell");
-    expect(await (await worker.staleWhileRevalidate(new Request("https://example.test/assets/old.js"))).text()).toBe(
+    expect(await (await worker.assetResponse(new Request("https://example.test/assets/old.js"))).text()).toBe(
       "old script",
     );
   });
@@ -126,43 +133,44 @@ describe("service worker runtime storage failures", () => {
     const shell = new Response("new shell");
     const script = new Response("export {};", { headers: { "content-type": "text/javascript" } });
     const fail = () => Promise.reject(new Error("QuotaExceededError"));
-    const worker = runInNewContext(`${workerSource}\n({ networkFirst, staleWhileRevalidate })`, {
+    const worker = runInNewContext(`${workerSource}\n({ networkFirst, assetResponse })`, {
       URL,
+      AbortSignal,
       self: { addEventListener: vi.fn() },
       fetch: async (request: Request) => (request.url.endsWith(".js") ? script : shell),
-      caches: {
-        match: async (request: Request | string) => (request === "/" ? new Response("old shell") : undefined),
-        open: failure === "open" ? fail : async () => ({ put: fail }),
-      },
+      caches: fakeCaches(
+        async (request) => (request === "/" ? new Response("old shell") : undefined),
+        fail,
+        failure === "open" ? fail : undefined,
+      ),
     }) as {
       networkFirst: (request: Request) => Promise<Response>;
-      staleWhileRevalidate: (request: Request) => Promise<Response>;
+      assetResponse: (request: Request) => Promise<Response>;
     };
 
     expect(await (await worker.networkFirst(new Request("https://example.test/"))).text()).toBe("new shell");
-    expect(await worker.staleWhileRevalidate(new Request("https://example.test/assets/new.js"))).toBe(script);
+    expect(await worker.assetResponse(new Request("https://example.test/assets/new.js"))).toBe(script);
   });
 });
 
 function workerInstall(response: Response) {
   const listeners = new Map<string, (event: { waitUntil: (promise: Promise<void>) => void }) => void>();
   const put = vi.fn().mockResolvedValue(undefined);
-  const fetch = vi.fn(async (path: string) => (path === "/" ? new Response("new shell") : response));
+  const fetch = vi.fn(async (path: string) =>
+    path === "/" ? new Response("new shell", { headers: { "content-type": "text/html" } }) : response,
+  );
   const skipWaiting = vi.fn();
+  const deleteCache = vi.fn();
   runInNewContext(workerSource.replace("/* PRECACHE */ []", JSON.stringify(["/", "/assets/previous.js"])), {
     URL,
+    AbortSignal,
     fetch,
     self: {
       addEventListener: (name: string, listener: (event: { waitUntil: (promise: Promise<void>) => void }) => void) =>
         listeners.set(name, listener),
       skipWaiting,
     },
-    caches: {
-      open: vi.fn().mockResolvedValue({
-        put,
-        addAll: vi.fn(() => (response.ok ? Promise.resolve() : Promise.reject(new Error("Invalid response")))),
-      }),
-    },
+    caches: { ...fakeCaches(async () => undefined, put), delete: deleteCache },
   });
   const install = () =>
     new Promise<void>((resolve, reject) =>
@@ -172,7 +180,7 @@ function workerInstall(response: Response) {
         },
       }),
     );
-  return { install, put, skipWaiting };
+  return { install, put, skipWaiting, deleteCache };
 }
 
 describe("service worker installation", () => {
@@ -196,11 +204,12 @@ describe("service worker installation", () => {
   });
 
   it("leaves the old shell active if an asset write fails", async () => {
-    const { install, put, skipWaiting } = workerInstall(
+    const { install, put, skipWaiting, deleteCache } = workerInstall(
       new Response("export {};", { headers: { "content-type": "text/javascript" } }),
     );
     put.mockRejectedValueOnce(new Error("quota exceeded"));
     await expect(install()).rejects.toThrow("quota exceeded");
+    expect(deleteCache).toHaveBeenCalledWith("scattergories-0");
     expect(put.mock.calls.map(([path]) => path)).toEqual(["/assets/previous.js"]);
     expect(skipWaiting).not.toHaveBeenCalled();
   });

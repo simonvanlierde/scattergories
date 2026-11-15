@@ -77,3 +77,15 @@ it("opens and dismisses the How To Play dialog", async () => {
   await user.keyboard("{Escape}");
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 });
+
+it("puts the page's only h1 first and tags each language option with its own lang", async () => {
+  const { user } = await renderApp();
+
+  const [heading] = screen.getAllByRole("heading");
+  expect(heading).toHaveProperty("tagName", "H1");
+  expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+
+  await user.click(screen.getByRole("button", { name: "Settings" }));
+  const option = await screen.findByRole("option", { name: "Nederlands" });
+  expect(option).toHaveAttribute("lang", "nl");
+});

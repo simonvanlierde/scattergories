@@ -169,6 +169,14 @@ msgstr "Cuenta atrás antes de iniciar el temporizador."
 msgid "settings.avoidRepeatsHint"
 msgstr "Omite las últimas 8 letras sacadas; las letras comunes siguen saliendo más a menudo."
 
+#. Keyboard shortcuts
+msgid "settings.keyboardShortcuts"
+msgstr "Atajos de teclado"
+
+#. Space, R, P, C and ? control the round from the keyboard.
+msgid "settings.keyboardShortcutsHint"
+msgstr "Espacio, R, P, C y ? controlan la ronda desde el teclado."
+
 #. Classic
 msgid "packs.classic.label"
 msgstr "Clásico"
@@ -245,14 +253,6 @@ msgstr "{custom} propias · {builtin} estándar"
 msgid "categories.emptyDeck"
 msgstr "La baraja está vacía. Añade un paquete o una categoría propia."
 
-#. Open categories
-msgid "categories.showDeck"
-msgstr "Abrir categorías"
-
-#. Hide categories
-msgid "categories.hideDeck"
-msgstr "Ocultar categorías"
-
 #. Customize deck
 msgid "categories.customize"
 msgstr "Personalizar baraja"
@@ -281,17 +281,9 @@ msgstr "Quitar todas las estándar"
 msgid "categories.pinOne"
 msgstr "Fijar {name}"
 
-#. Unpin {name}
-msgid "categories.unpinOne"
-msgstr "Desanclar {name}"
-
 #. Pin all
 msgid "categories.pinAll"
 msgstr "Fijar todas"
-
-#. Unpin all
-msgid "categories.unpinAll"
-msgstr "Desanclar todas"
 
 #. Add categories
 msgid "categories.addSectionTitle"

@@ -40,7 +40,9 @@ function ControlBar({ game }: { game: GameController }) {
       >
         {/* Big enough to carry all three glyphs — they are what visibly roll. */}
         <BrandMark size={32} />
-        <h1>{t("title")}</h1>
+        {/* The page's real <h1> is the first thing in <main>; this wordmark is
+            footer chrome, so it drops its heading role (styles still key on h1). */}
+        <h1 role="presentation">{t("title")}</h1>
       </div>
 
       <div className="controlbar__actions">
@@ -50,12 +52,14 @@ function ControlBar({ game }: { game: GameController }) {
           theme={game.settings.theme}
           isMuted={game.settings.isMuted}
           avoidRepeats={game.settings.avoidRepeats}
+          keyboardShortcuts={game.settings.keyboardShortcuts}
           durationInput={game.settings.durationInput}
           bufferSecondsInput={game.settings.bufferSecondsInput}
           onLanguageChange={game.app.changeLanguage}
           onToggleTheme={game.settings.toggleTheme}
           onToggleMute={() => game.settings.toggle("isMuted")}
           onToggleAvoidRepeats={() => game.settings.toggle("avoidRepeats")}
+          onToggleKeyboardShortcuts={() => game.settings.toggle("keyboardShortcuts")}
           onUpdateTimingField={game.settings.update}
         />
         <IconButton
@@ -154,8 +158,15 @@ function GameShell({ game }: GameShellProps) {
     }
   }, [game.settings.theme]);
 
+  // Closing the first-run rules leaves focus on <body>; park it on the main control.
+  const finishOnboarding = () => {
+    onboarding.complete();
+    document.querySelector<HTMLElement>(".action-bar__primary")?.focus();
+  };
+
   return (
     <main className={cx("app-shell", game.round.alarmOn && "alarm")} data-theme={game.settings.theme}>
+      <h1 className="sr-only">{t("title")}</h1>
       <div className="app">
         {game.app.hasChunkError ? <ChunkErrorBanner onReload={game.app.reload} /> : null}
 
@@ -175,11 +186,11 @@ function GameShell({ game }: GameShellProps) {
           }
         >
           <game.app.HowToPlayDialog
-            onClose={onboarding.needsOnboarding ? onboarding.complete : game.app.closeHowToPlay}
+            onClose={onboarding.needsOnboarding ? finishOnboarding : game.app.closeHowToPlay}
             onStart={
               onboarding.needsOnboarding
                 ? () => {
-                    onboarding.complete();
+                    finishOnboarding();
                     game.round.primaryAction();
                   }
                 : undefined

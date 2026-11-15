@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { composeDeck } from "@/domain/deck";
 import { pickRandom } from "@/domain/game/utils";
 import { prefersReducedMotion } from "@/shared/lib/prefersReducedMotion";
@@ -33,13 +33,19 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
   // doesn't recompose (and thus reorder) the drawn list, and so redraws can keep
   // pinned categories in the slots they currently occupy.
   const pinnedRef = useRef(pinned);
-  pinnedRef.current = pinned;
+  useLayoutEffect(() => {
+    pinnedRef.current = pinned;
+  });
   const displayRef = useRef(displayCategories);
-  displayRef.current = displayCategories;
+  useLayoutEffect(() => {
+    displayRef.current = displayCategories;
+  });
   // Read through a ref too, so a round ending doesn't recompose on its own: the
   // deferred edits wait for the next explicit redraw.
   const deferComposeRef = useRef(deferCompose);
-  deferComposeRef.current = deferCompose;
+  useLayoutEffect(() => {
+    deferComposeRef.current = deferCompose;
+  });
 
   // Kept memoized: it's read in the useEffect dependency array below, where a
   // render-body function would trip biome's useExhaustiveDependencies lint.

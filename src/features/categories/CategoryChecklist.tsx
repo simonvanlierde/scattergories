@@ -71,15 +71,9 @@ export function CategoryChecklist({
                 disabled={disabled}
                 onClick={() => onTogglePin(category)}
               >
-                <span className="category-checklist__mark" aria-hidden="true">
-                  {index + 1}
-                </span>
-                {/* The name comes from this hidden span, not aria-label: axe counts the
-                   aria-hidden numeral as visible text, so "1 Birds" would not match "Pin Birds". */}
-                <span className="sr-only">
-                  {isPinned ? t("categories.unpinOne", { name: label }) : t("categories.pinOne", { name: label })}
-                </span>
-                <span className={labelClass} style={{ "--i": index } as CSSProperties} aria-hidden="true">
+                {/* No aria-label: the name is the visible "1 Birds" (WCAG 2.5.3); aria-pressed carries the pin state. */}
+                <span className="category-checklist__mark">{index + 1}</span>{" "}
+                <span className={labelClass} style={{ "--i": index } as CSSProperties}>
                   {label}
                 </span>
                 <Icon icon={Pin} size={16} className="category-checklist__pin" />

@@ -5,7 +5,7 @@ import { useKeyboardShortcuts } from "./useKeyboardShortcuts";
 function fireKey(key: string, code?: string, target?: Partial<HTMLElement>) {
   const event = new KeyboardEvent("keydown", {
     key,
-    code: code ?? key,
+    code: code ?? (/^[a-z]$/i.test(key) ? `Key${key.toUpperCase()}` : key),
     bubbles: true,
   });
   if (target) {
@@ -41,6 +41,38 @@ describe("useKeyboardShortcuts", () => {
     renderHook(() => useKeyboardShortcuts({ onC }));
     fireKey("c");
     expect(onC).toHaveBeenCalledOnce();
+  });
+
+  it("matches letter shortcuts by physical key on a Greek layout", () => {
+    const onR = vi.fn();
+    const onP = vi.fn();
+    const onC = vi.fn();
+    renderHook(() => useKeyboardShortcuts({ onR, onP, onC }));
+    fireKey("ρ", "KeyR");
+    fireKey("π", "KeyP");
+    fireKey("ψ", "KeyC");
+    expect(onR).toHaveBeenCalledOnce();
+    expect(onP).toHaveBeenCalledOnce();
+    expect(onC).toHaveBeenCalledOnce();
+  });
+
+  it("calls onHelp for ? and ignores every key when disabled", () => {
+    const onHelp = vi.fn();
+    const onSpace = vi.fn();
+    const onR = vi.fn();
+    const { rerender } = renderHook(({ isEnabled }) => useKeyboardShortcuts({ isEnabled, onHelp, onSpace, onR }), {
+      initialProps: { isEnabled: true },
+    });
+    fireKey("?", "Slash");
+    expect(onHelp).toHaveBeenCalledOnce();
+
+    rerender({ isEnabled: false });
+    fireKey("?", "Slash");
+    fireKey(" ", "Space");
+    fireKey("r");
+    expect(onHelp).toHaveBeenCalledOnce();
+    expect(onSpace).not.toHaveBeenCalled();
+    expect(onR).not.toHaveBeenCalled();
   });
 
   it("ignores browser chords with a modifier held", () => {

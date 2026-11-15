@@ -24,12 +24,14 @@ interface SettingsClusterProps {
   theme: "light" | "dark";
   isMuted: boolean;
   avoidRepeats: boolean;
+  keyboardShortcuts: boolean;
   durationInput: string;
   bufferSecondsInput: string;
   onLanguageChange: (value: string) => void;
   onToggleTheme: () => void;
   onToggleMute: () => void;
   onToggleAvoidRepeats: () => void;
+  onToggleKeyboardShortcuts: () => void;
   onUpdateTimingField: (field: TimingField, value: string) => void;
 }
 
@@ -64,7 +66,7 @@ function LanguageSelect({
       onChange={(event) => onSelect(event.target.value)}
     >
       {SUPPORTED_LOCALES.map((code) => (
-        <option key={code} value={code}>
+        <option key={code} value={code} lang={code}>
           {getNativeName(code)}
         </option>
       ))}
@@ -98,13 +100,21 @@ function ThemeChoice({ theme, onToggleTheme }: Pick<SettingsClusterProps, "theme
 
 function GameplaySettings({
   avoidRepeats,
+  keyboardShortcuts,
   durationInput,
   bufferSecondsInput,
   onToggleAvoidRepeats,
+  onToggleKeyboardShortcuts,
   onUpdateTimingField,
 }: Pick<
   SettingsClusterProps,
-  "avoidRepeats" | "durationInput" | "bufferSecondsInput" | "onToggleAvoidRepeats" | "onUpdateTimingField"
+  | "avoidRepeats"
+  | "keyboardShortcuts"
+  | "durationInput"
+  | "bufferSecondsInput"
+  | "onToggleAvoidRepeats"
+  | "onToggleKeyboardShortcuts"
+  | "onUpdateTimingField"
 >) {
   const { _: t } = useLingui();
 
@@ -146,6 +156,20 @@ function GameplaySettings({
           aria-describedby="avoid-repeats-hint"
         />
       </label>
+      <label className="settings-toggle ds-field--inline">
+        <span className="ds-field__text">
+          <span className="ds-field__label">{t("settings.keyboardShortcuts")}</span>
+          <span className="ds-field__hint" id="keyboard-shortcuts-hint">
+            {t("settings.keyboardShortcutsHint")}
+          </span>
+        </span>
+        <input
+          type="checkbox"
+          checked={keyboardShortcuts}
+          onChange={onToggleKeyboardShortcuts}
+          aria-describedby="keyboard-shortcuts-hint"
+        />
+      </label>
     </div>
   );
 }
@@ -156,12 +180,14 @@ export function SettingsCluster({
   theme,
   isMuted,
   avoidRepeats,
+  keyboardShortcuts,
   durationInput,
   bufferSecondsInput,
   onLanguageChange,
   onToggleTheme,
   onToggleMute,
   onToggleAvoidRepeats,
+  onToggleKeyboardShortcuts,
   onUpdateTimingField,
 }: SettingsClusterProps) {
   const { _: t } = useLingui();
@@ -174,7 +200,6 @@ export function SettingsCluster({
       <IconButton
         label={isMuted ? t("buttons.unmute") : t("buttons.mute")}
         icon={<Icon icon={isMuted ? VolumeX : Volume2} size={20} />}
-        aria-pressed={isMuted}
         onClick={onToggleMute}
       />
 
@@ -195,9 +220,11 @@ export function SettingsCluster({
           <SettingsSection title={t("settings.gameplay")}>
             <GameplaySettings
               avoidRepeats={avoidRepeats}
+              keyboardShortcuts={keyboardShortcuts}
               durationInput={durationInput}
               bufferSecondsInput={bufferSecondsInput}
               onToggleAvoidRepeats={onToggleAvoidRepeats}
+              onToggleKeyboardShortcuts={onToggleKeyboardShortcuts}
               onUpdateTimingField={onUpdateTimingField}
             />
           </SettingsSection>

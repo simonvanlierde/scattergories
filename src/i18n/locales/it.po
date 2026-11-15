@@ -169,6 +169,14 @@ msgstr "Conto alla rovescia prima dell'avvio del timer."
 msgid "settings.avoidRepeatsHint"
 msgstr "Salta le ultime 8 lettere estratte; le lettere comuni escono comunque più spesso."
 
+#. Keyboard shortcuts
+msgid "settings.keyboardShortcuts"
+msgstr "Scorciatoie da tastiera"
+
+#. Space, R, P, C and ? control the round from the keyboard.
+msgid "settings.keyboardShortcutsHint"
+msgstr "Spazio, R, P, C e ? controllano il round dalla tastiera."
+
 #. Classic
 msgid "packs.classic.label"
 msgstr "Classico"
@@ -245,14 +253,6 @@ msgstr "{custom} personali · {builtin} standard"
 msgid "categories.emptyDeck"
 msgstr "Il mazzo è vuoto. Aggiungi un pacchetto o una categoria personalizzata."
 
-#. Open categories
-msgid "categories.showDeck"
-msgstr "Apri categorie"
-
-#. Hide categories
-msgid "categories.hideDeck"
-msgstr "Nascondi categorie"
-
 #. Customize deck
 msgid "categories.customize"
 msgstr "Personalizza mazzo"
@@ -281,17 +281,9 @@ msgstr "Rimuovi tutte le standard"
 msgid "categories.pinOne"
 msgstr "Fissa {name}"
 
-#. Unpin {name}
-msgid "categories.unpinOne"
-msgstr "Sblocca {name}"
-
 #. Pin all
 msgid "categories.pinAll"
 msgstr "Fissa tutte"
-
-#. Unpin all
-msgid "categories.unpinAll"
-msgstr "Sblocca tutte"
 
 #. Add categories
 msgid "categories.addSectionTitle"

@@ -7,8 +7,18 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- A "Keyboard shortcuts" switch in Settings turns off the single-key shortcuts (Space, R, P, C
+  and ?). It is on by default and remembered.
+
 ### Changed
 
+- The offline cache keeps the last two builds instead of growing with every release, and a first
+  visit stores only the shell, English, your language and the Latin fonts. Other languages are
+  stored when you first use them.
+- Hashed files are served from the cache without a refresh, and a slow connection falls back to
+  the installed app after 3.5 seconds.
 - Category names on a phone are a size larger, for reading from across the table. A name that
   wraps to two lines still fits its row, so twelve categories still fit on screen.
 - Greek text uses Noto Serif Display for the letter and titles and Inter for the rest, instead
@@ -18,6 +28,18 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- The screen stays awake for the whole round after you switch to another app and back.
+- Editing the deck while the categories roll no longer cancels the roll.
+- Screen readers no longer announce toggles as contradictions such as "Unmute, pressed". The
+  mute button keeps its changing name, and the pin and category toggles keep a fixed name with
+  their state. Pin chips are named by their visible text, for example "1 Birds".
+- After the first-run rules close, focus lands on the main button instead of the page top.
+  The language list marks each language for screen readers, and the page heading now comes
+  first.
+- The deck list sorts by your language's alphabet, and a custom category is checked for
+  duplicates with that language's capitalization rules.
+- The R, P and C shortcuts now work on non-Latin keyboard layouts such as Greek.
+- The service worker no longer stores an HTML error page returned for a font or unknown file.
 - The pink alarm wash at "Time's up!" is one brief flash again, instead of staying on for
   about 3 seconds. With reduced motion it shows as a still half-second tint.
 - On a portrait tablet, and with the categories folded on a phone, the ring and letter grow to

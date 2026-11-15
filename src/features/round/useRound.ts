@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useReducer, useRef, useState } from "react";
 import { drawRoundLetter } from "@/domain/deck";
 import { initialRoundState, roundReducer } from "@/domain/game/roundReducer";
 import { useAudio } from "./useAudio";
@@ -28,7 +28,7 @@ export function useRound({
   isMuted,
   locale,
   avoidRepeats = true,
-  onLetterPicked = () => undefined,
+  onLetterPicked,
 }: UseRoundOptions) {
   const [state, dispatch] = useReducer(roundReducer, initialRoundState);
   // Rounds played this session, so the table knows where it is. Not saved: a
@@ -44,14 +44,22 @@ export function useRound({
   const tickRemainderRef = useRef<number | null>(null);
   // Latest pause flag, read in the countdown cleanup to tell pause from a phase change.
   const isPausedRef = useRef(state.isPaused);
-  isPausedRef.current = state.isPaused;
+  useLayoutEffect(() => {
+    isPausedRef.current = state.isPaused;
+  });
   // Latest phase / remaining seconds, read inside effects that must not re-run on them.
   const phaseRef = useRef(state.phase);
-  phaseRef.current = state.phase;
+  useLayoutEffect(() => {
+    phaseRef.current = state.phase;
+  });
   const secondsLeftRef = useRef(state.secondsLeft);
-  secondsLeftRef.current = state.secondsLeft;
+  useLayoutEffect(() => {
+    secondsLeftRef.current = state.secondsLeft;
+  });
   const gameSecondsRef = useRef(gameSeconds);
-  gameSecondsRef.current = gameSeconds;
+  useLayoutEffect(() => {
+    gameSecondsRef.current = gameSeconds;
+  });
   // Kept memoized: it's read in useEffect dependency arrays below, where a
   // render-body function would trip biome's useExhaustiveDependencies lint.
   const clearAlarmTimeout = useCallback(() => {
@@ -162,8 +170,10 @@ export function useRound({
 
     let sentinel: WakeLockSentinel | null = null;
     let isReleased = false;
+    let isRequesting = false;
 
     async function acquireWakeLock() {
+      isRequesting = true;
       try {
         const lock = await navigator.wakeLock.request("screen");
         sentinel = lock;
@@ -173,10 +183,20 @@ export function useRound({
       } catch {
         // Denied, unsupported, or the tab lost focus mid-request — nothing to do.
       }
+      isRequesting = false;
     }
     acquireWakeLock();
 
+    // The browser drops the lock whenever the page is hidden; take it back on return.
+    const reacquire = () => {
+      if (document.visibilityState === "visible" && !isRequesting && (!sentinel || sentinel.released)) {
+        acquireWakeLock();
+      }
+    };
+    document.addEventListener("visibilitychange", reacquire);
+
     return () => {
+      document.removeEventListener("visibilitychange", reacquire);
       isReleased = true;
       if (sentinel) {
         releaseWakeLock(sentinel);
@@ -201,7 +221,7 @@ export function useRound({
     tickRemainderRef.current = null;
     const { letter: chosen, recentLetters } = drawRoundLetter(locale, state.recentLetters, avoidRepeats);
     if (opts.redrawCategories) {
-      onLetterPicked();
+      onLetterPicked?.();
     }
 
     dispatch({

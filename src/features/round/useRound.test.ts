@@ -430,3 +430,64 @@ it("counts rounds started, not letters rerolled", () => {
   act(() => driver.current.nextRound());
   expect(driver.current.roundNumber).toBe(2);
 });
+
+function installFakeWakeLock() {
+  const sentinels: { released: boolean; release: ReturnType<typeof vi.fn> }[] = [];
+  const request = vi.fn(async () => {
+    const sentinel = {
+      released: false,
+      release: vi.fn(async () => {
+        sentinel.released = true;
+      }),
+    };
+    sentinels.push(sentinel);
+    return sentinel;
+  });
+  Object.defineProperty(navigator, "wakeLock", { value: { request }, configurable: true });
+  return { request, sentinels };
+}
+
+async function settle() {
+  await act(async () => {
+    await Promise.resolve();
+  });
+}
+
+it("re-acquires the wake lock when the tab returns while the clock runs", async () => {
+  const { request, sentinels } = installFakeWakeLock();
+  try {
+    const driver = createRoundDriver();
+    driver.start();
+    driver.landLetter();
+    await settle();
+    expect(request).toHaveBeenCalledTimes(1);
+
+    // The browser releases the lock on hide, with no event the hook listens to.
+    const [first] = sentinels;
+    if (first) {
+      first.released = true;
+    }
+    document.dispatchEvent(new Event("visibilitychange"));
+    await settle();
+
+    expect(request).toHaveBeenCalledTimes(2);
+
+    // A still-held lock is not requested again.
+    document.dispatchEvent(new Event("visibilitychange"));
+    await settle();
+    expect(request).toHaveBeenCalledTimes(2);
+
+    // Paused: the effect is torn down, so a visibility change requests nothing.
+    act(() => driver.current.togglePause());
+    await settle();
+    const [, second] = sentinels;
+    if (second) {
+      second.released = true;
+    }
+    document.dispatchEvent(new Event("visibilitychange"));
+    await settle();
+    expect(request).toHaveBeenCalledTimes(2);
+  } finally {
+    Reflect.deleteProperty(navigator, "wakeLock");
+  }
+});
