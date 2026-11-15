@@ -14,6 +14,12 @@ for (const colorScheme of ["light", "dark"] as const) {
       test(`${path} has no WCAG A or AA or best-practice violations`, async ({ page }) => {
         await page.goto(path);
         await expect(page.getByRole("main")).toBeVisible();
+        if (path === "/") {
+          // The first-run rules open on their own, a moment after the page is ready.
+          await expect(page.getByRole("dialog")).toBeVisible();
+        }
+        // Fades in flight change the sampled colours, so let them land before axe reads contrast.
+        await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished)));
 
         const { violations } = await new AxeBuilder({ page }).withTags(TAGS).analyze();
 
