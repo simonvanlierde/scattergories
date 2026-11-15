@@ -203,7 +203,7 @@ export function HowToPlayModal({ onClose, onStart }: HowToPlayModalProps) {
           </Button>
         ) : null}
 
-        <Section icon={Tags} title={t("modal.categories")}>
+        <Section icon={Tags} title={t("modal.categories")} defaultOpen>
           <p>{t("modal.categoriesText")}</p>
           <ul className="howto__settings">
             {categoriesItems.map((item, index) => (
@@ -235,7 +235,7 @@ export function HowToPlayModal({ onClose, onStart }: HowToPlayModalProps) {
           </dl>
         </Section>
 
-        <Section icon={Info} title={t("modal.about")}>
+        <Section icon={Info} title={t("modal.about")} defaultOpen>
           <p>{t("about.intro")}</p>
           <ul className="about-links">
             <AboutLink

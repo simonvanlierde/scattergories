@@ -19,6 +19,7 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
+- Categories and About start open in How to play, so the category rules and the links show without a tap.
 - The About section in How to play is a list of links: who made the app, the source code, the
   license, where to report a problem and the official game. The privacy and accessibility pages end
   with the same credit line.

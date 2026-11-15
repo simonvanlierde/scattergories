@@ -48,9 +48,9 @@ test.describe("on a tablet", () => {
   test("scrolls the open rules to their last line", async ({ app: _app, page }) => {
     const welcome = page.getByRole("dialog", { name: /How to play/i });
     await expect(welcome).toBeVisible();
-    for (const summary of await welcome.locator("summary").all()) {
-      await summary.click();
-    }
+    await welcome.locator("details").evaluateAll((sections) => {
+      for (const section of sections) (section as HTMLDetailsElement).open = true;
+    });
     await welcome.locator(".ds-sheet__body").evaluate((el) => {
       el.scrollTop = el.scrollHeight;
     });
