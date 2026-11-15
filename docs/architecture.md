@@ -6,7 +6,7 @@ The only build input from outside the app code is the letter-weight table, which
 
 ## Layers
 
-The game rules never depend on React. The game screen calls the feature hooks only through `useGameController`, and renders each feature through its public component (`Playmat`, `CategoriesPanel`, `SettingsCluster`). The legal pages and the boot screen read the saved theme from `features/settings/` directly.
+The game rules never depend on React. The game screen calls the feature hooks only through `useGameController`. It renders each feature through its public component (`Playmat`, `CategoriesPanel`, `SettingsCluster`). The legal pages and the boot screen read the saved theme from `features/settings/` directly.
 
 ```mermaid
 flowchart TD
@@ -61,15 +61,15 @@ first use: other languages, other font subsets and store screenshots. Install al
 language chunk for the browser's language, so the first visit works offline in that language. The
 privacy and accessibility pages are served from the cached shell.
 
-The worker only caches paths in those two lists. A failed download stops the install, and so does a
+The worker only caches paths in those two lists. A failed download stops the install. So does a
 script, stylesheet or font with the wrong content type (such as the host's HTML fallback). On first
 use, such a response is not stored.
 
 Each build has its own cache, named by build time. The worker keeps the current build and the one
-before it, so tabs that still run the old build find their hashed files. It deletes older caches. A
-failed install deletes its partial cache, so the last complete build stays. Hashed files under
-`/assets/` are served from the cache without a network refresh. A page load waits 3.5 seconds for the
-network before using the cached shell.
+before it, so tabs on the old build find their hashed files. It deletes older caches. A failed
+install deletes its partial cache, so the last complete build stays. Hashed files under `/assets/`
+come from the cache without a network refresh. A page load waits 3.5 seconds for the network before
+using the cached shell.
 
 ## Translations
 

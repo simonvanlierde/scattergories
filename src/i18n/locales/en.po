@@ -367,7 +367,7 @@ msgstr "The deck starts with built-in categories, and you can add your own."
 
 #. Customize the deck to add categories or built-in packs, or to remove ones you don't want.
 msgid "modal.categoriesItems.0"
-msgstr "Customize the deck to add categories or built-in packs, or to remove ones you don't want."
+msgstr "Add categories or built-in packs to the deck, or remove ones you don't want."
 
 #. Pin a category to keep it in every round. The rest are drawn at random from the unpinned ones.
 msgid "modal.categoriesItems.1"

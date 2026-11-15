@@ -42,24 +42,21 @@ Production and pull request previews run on Cloudflare Workers.
 [Deployment setup](docs/architecture.md#deployment) lists the GitHub environments and secrets they need.
 Any static host can serve `dist/` too, as long as it falls back to `index.html`.
 
-The privacy and accessibility statements are at `/privacy` and `/accessibility`, in English only,
-and **How to play** links to both. The app renders them from
-[`docs/privacy.md`](docs/privacy.md) and [`docs/accessibility.md`](docs/accessibility.md).
+The privacy and accessibility statements are at `/privacy` and `/accessibility`, in English only.
+The app renders them from [`docs/privacy.md`](docs/privacy.md) and
+[`docs/accessibility.md`](docs/accessibility.md).
 
 ## Social card
 
-`public/og.png` is the 1200x630 image that shows when someone shares the link. It has the app icon
-and name, a round's letter, ring and timer captured from the app at 3x, three categories and the
-app's one-line description. Its source is [docs/og-card.html](docs/og-card.html), which uses the
-app's tokens and fonts.
+`public/og.png` is the 1200x630 image that shows when someone shares the link. Its source is
+[docs/og-card.html](docs/og-card.html), which uses the app's tokens and fonts.
 
 ```sh
 just og-card-capture   # capture the dial from the app, light and dark
 just og-card           # render docs/og-card.html to public/og.png
 ```
 
-`just og-card --option dark --out file.png` draws the dark version. The build adds the PNG's hash to the
-`og:image` URL, so a changed card gets a new URL.
+`just og-card --option dark --out file.png` draws the dark version.
 
 ## Links
 

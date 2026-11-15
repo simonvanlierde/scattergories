@@ -3,8 +3,8 @@
 ## Mission and Vision
 
 Let a mixed-age group at one table start a round of a category game in one tap and follow it
-from their seats. Online rooms for people playing apart may come later, which would mean revisiting
-[ADR 0001](docs/adr/0001-local-first-no-backend.md). Today the app runs on one device.
+from their seats. Today the app runs on one device. Online rooms would mean revisiting
+[ADR 0001](docs/adr/0001-local-first-no-backend.md).
 
 ## Platform
 
@@ -13,10 +13,10 @@ web
 ## Users
 
 Families and friends playing Scattergories in person, around one table. One player's phone or
-tablet runs the app and lies flat in the middle, and everyone reads it from across the table, at an
-angle, mid-game. Landscape and laptops work, but the layout is designed for a phone or tablet.
-The person holding it rolls the letter, starts and pauses the round, and edits the deck between
-rounds. Everyone else only reads the letter, the clock and the categories.
+tablet runs the app and lies flat in the middle. Everyone reads it from across the table, at an
+angle. Landscape and laptops work, but the layout is designed for a phone or tablet.
+The person holding it rolls the letter, runs the round and edits the deck between rounds.
+Everyone else only reads the letter, the clock and the categories.
 
 The default deck should suit a family table. Categories meant for adults, such as "Offensive
 Words", live in the Grown-ups pack, which players add to the deck themselves.
@@ -40,12 +40,11 @@ bring pen and paper.
   default), then "Time's up".
 - Players write their answers on paper. They score at the table, by the house rules in the How to
   play sheet. The app doesn't score.
-- A group that brings its own categories folds the panel with its chevron or C. The panel starts
-  open on the first visit and remembers the last choice. Folding keeps the saved deck and works
-  during a round.
+- A group with its own categories folds the panel with its chevron or C. The panel starts open
+  and remembers the last choice. Folding keeps the saved deck and works during a round.
 - Players can follow a round without looking at the screen. A tick sounds on each get-ready second
   after the first and in the last 10 s, and an alarm at the end. The phone vibrates at 15 s and
-  5 s left and at the end. Keyboard shortcuts (Space, R, P, C, ?) cover the controls and can be turned off in Settings.
+  5 s left and at the end. Keyboard shortcuts (Space, R, P, C, ?) cover the controls. Settings can turn them off.
 - It runs installed as a PWA or in a browser tab. Light and dark themes follow the system unless
   you set one.
 
@@ -88,8 +87,8 @@ bring pen and paper.
 
 - CI runs Biome's a11y lint and axe-core scans (see `docs/quality.md`).
 - Timer urgency changes shape as well as color: a thicker arc and heavier type in the last 5 s.
-  Color-blind players and anyone reading from a distance can still see it. `prefers-reduced-motion`
-  turns animation off.
+  Color-blind players and distant readers can still see it. `prefers-reduced-motion` turns
+  animation off.
 - Touch targets are at least 44 px. `tests/layout.spec.ts` fails on any shorter control in the
   settings and deck sheets. axe-core checks text contrast on the screens and the sheets, in both themes.
   `tests/contrast.spec.ts` checks the dark-theme categories heading, and the pin icon's 3:1
@@ -98,5 +97,4 @@ bring pen and paper.
 ## Design Success
 
 A first-time player can start a round without explanation. Everyone can read the letter, time and
-categories from their seat without passing the device around. These are targets for testing with
-mixed-age groups on real phones and tablets. No usability test backs them yet.
+categories from their seat. These are targets: no usability test backs them yet.

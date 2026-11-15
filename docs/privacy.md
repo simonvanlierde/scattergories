@@ -13,7 +13,7 @@ Your browser keeps:
 - your category deck, custom categories, pinned categories and whether the category panel is open;
 - whether you have finished the welcome screen.
 
-The app saves settings automatically, including the defaults on your first visit. It also stores its own files so it works offline. Fonts ship with the app.
+The app saves settings automatically, including the defaults on your first visit. It also stores its own files so it works offline.
 
 Players write answers on paper. The app does not record answers, scores or player names.
 
@@ -25,7 +25,7 @@ Clear this site's data in your browser's settings. This removes saved preference
 
 [Cloudflare](https://www.cloudflare.com/privacypolicy/) hosts the site. When you load it online, Cloudflare receives your IP address and browser details to serve the files. Its privacy policy explains how it handles that information.
 
-The app has no application server and keeps no logs of your play. All app files load from this site's address. Links to the source code, official game and other websites open those sites only when you follow them.
+The app has no application server and keeps no logs of your play. All app files, fonts included, load from this site's address. Links to other websites open those sites only when you follow them.
 
 ## Cookies
 
