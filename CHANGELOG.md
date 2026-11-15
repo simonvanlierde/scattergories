@@ -7,6 +7,16 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- A "Suggest a category" link in How to play opens a form for proposing a category. The
+  contributor guide explains how suggestions are reviewed.
+
+### Changed
+
+- The pack picker names each pack's audience or difficulty, such as "Kids · young players",
+  in every language.
+
 ## [0.4.0] - 2026-11-11
 
 ### Added

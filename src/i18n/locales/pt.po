@@ -169,29 +169,50 @@ msgstr "Ignora as últimas 8 letras sorteadas; as letras comuns continuam saindo
 msgid "packs.classic.label"
 msgstr "Clássico"
 
+msgid "packs.classic.hint"
+msgstr "para todos"
+
 #. Foodie
 msgid "packs.foodie.label"
 msgstr "Comida"
+
+msgid "packs.foodie.hint"
+msgstr "fácil"
 
 #. Pop Culture
 msgid "packs.popCulture.label"
 msgstr "Cultura pop"
 
+msgid "packs.popCulture.hint"
+msgstr "mais difícil"
+
 #. Travel
 msgid "packs.travel.label"
 msgstr "Viagens"
+
+msgid "packs.travel.hint"
+msgstr "médio"
 
 #. Kids
 msgid "packs.kids.label"
 msgstr "Crianças"
 
+msgid "packs.kids.hint"
+msgstr "jogadores jovens"
+
 #. Around the House
 msgid "packs.household.label"
 msgstr "Em casa"
 
+msgid "packs.household.hint"
+msgstr "fácil"
+
 #. Grown-ups
 msgid "packs.grownUps.label"
 msgstr "Para adultos"
+
+msgid "packs.grownUps.hint"
+msgstr "só adultos"
 
 #. Game board
 msgid "playmat.label"
@@ -1132,3 +1153,6 @@ msgstr "Privacidade (inglês)"
 
 msgid "modal.accessibilityLink"
 msgstr "Acessibilidade (inglês)"
+
+msgid "modal.suggestCategoryLink"
+msgstr "Sugerir uma categoria (inglês)"

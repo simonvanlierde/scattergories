@@ -77,3 +77,11 @@ it("opens and dismisses the How To Play dialog", async () => {
   await user.keyboard("{Escape}");
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 });
+
+it("links the category suggestion form from How to play", async () => {
+  const { user } = await renderApp();
+
+  await user.click(screen.getByRole("button", { name: "How to play" }));
+  const link = await screen.findByRole("link", { name: "Suggest a category (English)" });
+  expect(link).toHaveAttribute("href", expect.stringContaining("/issues/new?template=category.yml"));
+});
