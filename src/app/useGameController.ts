@@ -39,9 +39,9 @@ function useGameController() {
     onLetterPicked: () => board.redrawCategories(true),
   });
   const board = useCategoryBoard({
-    customCategories: roundSetup.customCategories,
-    deckBuiltins: roundSetup.deckBuiltins,
-    pinned: roundSetup.pinned,
+    customCategories: settings.customCategories,
+    deckBuiltins: settings.deckBuiltins,
+    pinned: settings.pinned,
     count: roundSetup.normalizedCategoryCount,
     // Deck edits made mid-round wait for the next redraw.
     deferCompose: round.phase !== "idle" && round.phase !== "done",
