@@ -1179,6 +1179,12 @@ msgstr "Fireable Offenses"
 msgid "category.Holiday Activities"
 msgstr "Holiday Activities"
 
+msgid "legal.back"
+msgstr "Back to the game"
+
+msgid "legal.home"
+msgstr "Scattergories home"
+
 msgid "modal.privacyLink"
 msgstr "Privacy (English)"
 

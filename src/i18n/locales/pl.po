@@ -1179,6 +1179,12 @@ msgstr "Powody zwolnienia"
 msgid "category.Holiday Activities"
 msgstr "Zajęcia świąteczne"
 
+msgid "legal.back"
+msgstr "Wróć do gry"
+
+msgid "legal.home"
+msgstr "Strona główna Scattergories"
+
 msgid "modal.privacyLink"
 msgstr "Prywatność (angielski)"
 

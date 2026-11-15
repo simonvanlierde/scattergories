@@ -1179,6 +1179,12 @@ msgstr "Λόγοι απόλυσης"
 msgid "category.Holiday Activities"
 msgstr "Ασχολίες διακοπών"
 
+msgid "legal.back"
+msgstr "Πίσω στο παιχνίδι"
+
+msgid "legal.home"
+msgstr "Αρχική σελίδα Scattergories"
+
 msgid "modal.privacyLink"
 msgstr "Απόρρητο (αγγλικά)"
 

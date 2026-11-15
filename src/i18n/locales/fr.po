@@ -1179,6 +1179,12 @@ msgstr "Motifs de renvoi"
 msgid "category.Holiday Activities"
 msgstr "Loisirs de vacances"
 
+msgid "legal.back"
+msgstr "Retour au jeu"
+
+msgid "legal.home"
+msgstr "Accueil de Scattergories"
+
 msgid "modal.privacyLink"
 msgstr "Confidentialité (anglais)"
 
