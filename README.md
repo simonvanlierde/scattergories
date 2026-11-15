@@ -9,20 +9,23 @@
 An unofficial Scattergories web app for playing at the table. It rolls the letter, draws the
 categories and runs the timer. Players write their answers on paper.
 
-To play with your own categories, fold the category panel with its chevron or press **C**. The app
-remembers that choice and keeps your saved deck.
+**Play:** [scattergories.duinlab.nl](https://scattergories.duinlab.nl). Open it on a phone and tap to
+roll. Once it has loaded, it works offline.
+
+Playing with the paper cards from the box? Fold the category panel with its arrow, or press **C**,
+and the app only rolls the letter and runs the timer. The app remembers that choice and keeps your
+saved deck.
 
 Scattergories is a party game by Hasbro. This project is not affiliated with or endorsed by
 Hasbro.
 
-**Live demo:** [scattergories.duinlab.nl](https://scattergories.duinlab.nl)
-
 <picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/phone-dark.png"><img alt="A round on a phone: the letter, the clock and twelve categories" src="docs/screenshots/phone-light.png" width="200"></picture>
 <picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/desktop-dark.png"><img alt="A round on a laptop, with the categories beside the letter" src="docs/screenshots/desktop-light.png" width="540"></picture>
 
-The app is translated into 9 languages. Each language rolls letters from its own alphabet, and a
-letter that starts more words comes up more often. It's a single-page React app with no accounts
-and no server, so your settings and custom categories stay in your browser.
+The app is translated into nine languages: English, Spanish, French, German, Italian, Dutch,
+Polish, Portuguese and Greek. Each one rolls letters from its own alphabet, and a letter that starts
+more words in that language's Wikipedia comes up more often. It's a single-page React app with no
+accounts and no application server, so your settings and custom categories stay in your browser.
 
 ## Quick start
 
