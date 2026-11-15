@@ -305,6 +305,7 @@
   .category-checklist--empty {
     display: grid;
     place-items: center;
+    gap: var(--space-3);
     padding: var(--space-8) var(--space-4);
     border-radius: 0;
     border-top: 1px solid var(--rule);
@@ -409,11 +410,13 @@
      and balance the lines so a wrapped name never leaves a lonely orphan word.
      A word too long for its chip ("Reptiles/Amphibians" on a phone) is
      hyphenated by the page language instead of losing its last letter to a
-     line of its own. */
+     line of its own. Only words of 12 letters or more hyphenate: balanced
+     lines otherwise hyphenate a shorter word that a plain wrap fits. */
   .category-checklist__label {
     min-width: 0;
     overflow-wrap: break-word;
     hyphens: auto;
+    hyphenate-limit-chars: 12 5 5;
     text-wrap: balance;
     font-weight: 550;
     letter-spacing: var(--tracking-normal);
@@ -489,10 +492,8 @@
        itself from it in the @container rules below. The categories don't
        change size between phases, so neither does the ring. */
     .play-grid:not(.play-grid--deck-collapsed) .playmat {
-      container-type: size;
       grid-template-columns: auto minmax(0, 1fr);
       align-items: center;
-      align-content: center;
       gap: var(--space-4);
       padding-block: var(--space-1);
     }
@@ -506,22 +507,32 @@
       column-width: 10rem;
     }
 
+    /* Folded or not, the playmat measures the height it is given so the ring
+       can grow into it (the @container rules below). */
+    .playmat {
+      container-type: size;
+      align-content: center;
+    }
+
     /* Two columns leave each label ~10rem, so the chip drops its three-column
        grid and becomes plain text flow: the number rides inline with the name
        instead of owning a column, and a name too long for one line wraps to the
        chip's full width instead of hanging off a fixed indent.
 
-       The name is set one step down from the wider layouts and the side padding
-       is trimmed, which is what keeps it on one line: a size up, a sixth of the
-       built-in names spilled onto a second line and grew the card. One line at
-       this size reads better than two at the next size up. The 44px tap target
-       comes from min-height, so nothing shrinks under the thumb. */
+       The name is set at the wider layouts' size, for reading from across the
+       table, with tighter lines and trimmed side padding: a name that wraps to
+       two lines still fits the 3.5rem row, so the board keeps its height. The
+       44px tap target comes from min-height, so nothing shrinks under the thumb. */
     .category-checklist__chip {
       display: block;
       align-content: center;
       min-height: 3.5rem;
       padding-inline: var(--space-1-5);
-      font-size: var(--text-md);
+      font-size: var(--text-lg);
+    }
+
+    .category-checklist__label {
+      line-height: 1.15;
     }
 
     .category-checklist__item {
@@ -588,9 +599,10 @@
   }
 
   /* Tall row: once a stacked ring beats a side-by-side one, the ring goes on
-     top with the controls below it, as in the full layout, and grows up to its
-     full 20rem. 7.5rem is the controls (3.25rem + 2.75rem rows) and the gaps. The
-     letter follows the full layout's size until the ring gets too small for it. */
+     top with the controls below it, as in the full layout, and grows into the
+     free height, up to 40rem on a portrait tablet. 7.5rem is the controls
+     (3.25rem + 2.75rem rows) and the gaps. The letter, readout and "Time's up!"
+     keep the full layout's proportions to the ring. */
   @container (min-height: 19rem) {
     .playmat__hero,
     .playmat .action-bar {
@@ -598,7 +610,7 @@
     }
 
     .playmat__hero {
-      --hero: min(20rem, 100cqi, 100cqb - 7.5rem);
+      --hero: min(40rem, 100cqi, 100cqb - 7.5rem);
       width: var(--hero);
     }
 
@@ -608,16 +620,17 @@
     }
 
     .playmat .letter-hero__glyph {
-      font-size: min(clamp(6rem, 40cqi, 14rem), var(--hero) * 0.55);
+      font-size: calc(var(--hero) * 0.55);
     }
 
     /* The readout shrinks with the ring, so it never crowds a small one. */
     .playmat .timer-ring__readout {
-      font-size: min(var(--text-3xl), var(--hero) * 0.12);
+      font-size: calc(var(--hero) * 0.12);
     }
 
+    /* Capped, so the italic stays inside the ring's gap on a large ring. */
     .playmat .timer-ring--done .timer-ring__readout {
-      font-size: min(var(--text-2xl), var(--hero) * 0.1);
+      font-size: min(var(--text-3xl), var(--hero) * 0.1);
     }
   }
 
@@ -673,6 +686,15 @@
   .action-bar__group--bare {
     border: 0;
     padding: 0;
+  }
+
+  /* Only large text sizes make a phone's playmat this narrow in em: the
+     secondary controls stack so their labels wrap at words, not letters. */
+  @container (max-width: 18em) {
+    .playmat .action-bar__group {
+      flex-direction: column;
+      align-items: stretch;
+    }
   }
 
   /* ─── Container-query responsive ─────────────────────────────── */
@@ -764,6 +786,16 @@
       min-height: 2.75rem;
       padding-inline: var(--space-2);
       font-size: var(--text-md);
+      white-space: normal;
+      /* Splits a word only when it cannot fit, at large text sizes. */
+      overflow-wrap: anywhere;
+    }
+  }
+
+  /* A phone on its side has the same short row beside the ring. */
+  @media (min-width: 52rem) and (max-height: 32rem) {
+    .playmat .action-bar__primary {
+      padding-inline: var(--space-2);
       white-space: normal;
     }
   }

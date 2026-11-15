@@ -33,6 +33,10 @@ msgstr "Sortear letra"
 msgid "buttons.nextRound"
 msgstr "Siguiente ronda"
 
+#. Skip round
+msgid "buttons.skipRound"
+msgstr "Saltar ronda"
+
 #. Spinning…
 msgid "buttons.spinning"
 msgstr "Girando…"

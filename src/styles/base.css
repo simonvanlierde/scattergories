@@ -61,7 +61,7 @@
   select {
     width: 100%;
     min-height: 3rem;
-    border: 1px solid var(--border-default);
+    border: 1px solid var(--border-control);
     background: var(--bg-raised);
     color: var(--text-primary);
     padding: 0.75rem 0.9rem;
@@ -117,10 +117,11 @@
     background: transparent;
   }
 
+  /* The alarm cue keeps its timing; components.css makes it a still on/off. */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
-    *::after {
+    :not(.app-shell)::after {
       /* biome-ignore lint/complexity/noImportantStyles: reduced-motion override must win over any specificity from component-level animations */
       animation-duration: 0.01ms !important;
       /* biome-ignore lint/complexity/noImportantStyles: reduced-motion override */

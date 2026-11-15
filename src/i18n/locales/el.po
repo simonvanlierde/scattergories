@@ -33,6 +33,10 @@ msgstr "Κλήρωση γράμματος"
 msgid "buttons.nextRound"
 msgstr "Επόμενος γύρος"
 
+#. Skip round
+msgid "buttons.skipRound"
+msgstr "Παράλειψη γύρου"
+
 #. Spinning…
 msgid "buttons.spinning"
 msgstr "Περιστροφή…"

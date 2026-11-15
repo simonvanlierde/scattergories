@@ -75,7 +75,7 @@ test("a round and the sheets run under the Content-Security-Policy", async ({ pa
   // One full round: roll a letter and let the clock run out.
   await page.getByRole("button", { name: "Roll a letter" }).click();
   await expect(page.getByRole("timer")).toContainText("Time's up!", { timeout: 20_000 });
-  await expect(page.getByRole("button", { name: "Next round" }).first()).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Next round" })).toBeEnabled();
 
   // The rules from the ? button, every section open.
   await page.getByRole("button", { name: "How to play" }).click();

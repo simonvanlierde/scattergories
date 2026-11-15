@@ -112,3 +112,40 @@ for (const theme of ["Light", "Dark"] as const) {
     expect(contrastRatio(fg, bg)).toBeGreaterThanOrEqual(4.5);
   });
 }
+
+for (const theme of ["Light", "Dark"] as const) {
+  test(`settings hints and field edges keep their contrast in ${theme.toLowerCase()} mode`, async ({ app }) => {
+    await app.switchTheme(theme);
+    await app.openSettings();
+
+    const pairs = await app.settingsSheet.evaluate((sheet) => {
+      const toRgb = (color: string): number[] => {
+        const canvas = document.createElement("canvas");
+        canvas.width = 1;
+        canvas.height = 1;
+        const ctx = canvas.getContext("2d")!;
+        ctx.fillStyle = color;
+        ctx.fillRect(0, 0, 1, 1);
+        const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+        return [r, g, b];
+      };
+      // The sheet's paper is the nearest painted ancestor of both.
+      const paper = (el: Element) => {
+        let node: Element | null = el;
+        while (node && getComputedStyle(node).backgroundColor === "rgba(0, 0, 0, 0)") {
+          node = node.parentElement;
+        }
+        return toRgb(getComputedStyle(node ?? sheet).backgroundColor);
+      };
+      const hint = sheet.querySelector(".ds-field__hint") as Element;
+      const field = sheet.querySelector(".ds-field__control") as Element;
+      return {
+        hint: { fg: toRgb(getComputedStyle(hint).color), bg: paper(hint) },
+        edge: { fg: toRgb(getComputedStyle(field).borderTopColor), bg: paper(field.parentElement as Element) },
+      };
+    });
+
+    expect(contrastRatio(pairs.hint.fg, pairs.hint.bg)).toBeGreaterThanOrEqual(4.5);
+    expect(contrastRatio(pairs.edge.fg, pairs.edge.bg)).toBeGreaterThanOrEqual(3);
+  });
+}

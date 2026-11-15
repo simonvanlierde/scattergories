@@ -80,7 +80,6 @@
     }
   }
 
-  .controlbar__copy p,
   .app-loading p,
   .app-error p,
   .banner p {
@@ -108,24 +107,11 @@
     color: var(--text-primary);
   }
 
-  .btn-secondary {
-    min-height: 2.75rem;
-    padding: 0.8rem 1rem;
-    font-weight: 700;
-  }
-
-  .btn-secondary {
-    border-color: var(--border-soft);
-    background: transparent;
-    color: var(--text-primary);
-  }
-
-  .btn-secondary:hover {
-    background: var(--accent-soft);
-  }
-
+  /* Wraps the tools onto a second row at large text sizes, instead of widening
+     the play grid past the screen. */
   .categories-card__header {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-3);
@@ -210,6 +196,10 @@
   .deck-list__pack {
     display: block;
     min-width: 0;
+  }
+
+  .deck-list__pack .settings-select {
+    width: 100%;
   }
 
   .deck-list__count {
@@ -512,7 +502,16 @@
     inset: 0;
     pointer-events: none;
     background: color-mix(in srgb, var(--danger) 22%, transparent);
+    /* The class stays on for the whole alarm window; only the flash shows. */
+    opacity: 0;
     animation: alarm-flash 520ms ease-in-out;
+  }
+
+  /* Reduced motion: the same brief cue, switched on and off with no fade. */
+  @media (prefers-reduced-motion: reduce) {
+    .app-shell.alarm::after {
+      animation: alarm-cue 520ms step-end;
+    }
   }
 
   /* Shortcuts list inside the Sheet */
@@ -586,10 +585,10 @@
     }
   }
 
-  @media (max-width: 51.99rem) {
-    .btn-secondary {
-      min-height: 2.6rem;
-      padding-block: 0.7rem;
+  @keyframes alarm-cue {
+    from,
+    to {
+      opacity: 0.45;
     }
   }
 
@@ -640,7 +639,7 @@
     width: auto;
     min-height: 2.75rem;
     padding: var(--space-1) var(--space-2);
-    border: 1px solid var(--rule);
+    border: 1px solid var(--border-control);
     border-radius: var(--radius-sm);
     background: transparent;
     color: var(--text-primary);

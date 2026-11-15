@@ -20,7 +20,7 @@ colors:
   night-card: "oklch(18% 0.015 70)"
   night-rule: "oklch(32% 0.015 70)"
   night-ink: "oklch(93% 0.011 85)"
-  night-ink-muted: "oklch(58% 0.015 85)"
+  night-ink-muted: "oklch(62% 0.015 85)"
   periwinkle: "oklch(76% 0.11 258)"
   periwinkle-strong: "oklch(84% 0.13 258)"
 typography:
@@ -156,7 +156,7 @@ muted (low chroma).
 
 - **Cream Paper** (`paper`): the page. **Card Paper** (`paper-card`) for sheets, **Sunken Paper**
   (`paper-sunken`) for recessed areas.
-- **Hairline Rule** (`rule`): every border and divider.
+- **Hairline Rule** (`rule`): every border and divider, except the edge of a field (Meta Ink).
 - **Ink** (`ink`): main text and the letter. **Secondary Ink**, **Muted Ink** and **Meta Ink** step
   down for secondary text, hints and quiet icons. Meta Ink is the lightest allowed for non-text UI
   (3:1).
@@ -196,6 +196,10 @@ figures, because Fraunces has none. Fraunces ships with its optical-size axis, s
 at the display size (`opsz` 144) and headings pick their own size; the italic file loads only for
 "Time's up!".
 
+Fraunces and Geist have no Greek glyphs. Greek falls through to Noto Serif Display and Inter, loaded
+as their Greek subsets only (`src/index.css`), so the Greek letter and titles keep a high-contrast
+display serif and the UI a neutral sans. They are close matches, not the house faces.
+
 **The Serif Is a Moment Rule.** Fraunces marks a moment or a heading: the letter, the end of a
 round, titles and the How to play lead. Anything you tap, every name in a list and every number is
 Geist.
@@ -207,8 +211,9 @@ Geist.
 - Below 52rem, the playmat (ring, letter, controls) sits above the categories. With the categories
   open, they take the height their list needs and the ring gets the rest. While that row is under
   19rem tall, the ring sits next to the controls and never gets smaller than `min(36vw, 9rem)`.
-  From 19rem up, it sits above them and grows to 20rem. With the categories collapsed, the ring is
-  full size (20rem) with the controls below. Categories flow in columns at least 10rem wide, so a
+  From 19rem up, it sits above them and grows into the free height, up to 40rem on a portrait
+  tablet, with the letter at 55% of the ring. With the categories collapsed, the ring takes the
+  same rule with the whole height, and the folded categories bar sits on the footer rule. Categories flow in columns at least 10rem wide, so a
   360px phone still gets two. The letter is half the ring in the side-by-side row, and on that
   smallest ring "Time's up!" shrinks with it (13% of the ring) so long translations stay inside.
   Under 21rem wide the categories heading drops its icon, so the title, the chevron and the three
@@ -240,7 +245,7 @@ for its urgency states. Panels and the playmat have no corners at all. Rules sep
 ### Buttons
 
 - **Primary:** holds the round's next step: Roll a letter, Pause or Resume, Next round.
-- **Round controls:** New letter and Next round pair their icons with visible labels.
+- **Round controls:** New letter and Skip round pair their icons with visible labels.
 - **Ghost and icon buttons:** transparent, in ink or secondary ink, with a 6% ink wash on hover.
   Icon buttons are at least 44px square. Ghost buttons are 44px tall at both sizes. Pressing scales
   them to 0.97 (0.92 for icons).
@@ -284,7 +289,8 @@ for its urgency states. Panels and the playmat have no corners at all. Rules sep
 
 ### Fields
 
-- Transparent with a hairline border. On focus the border turns navy with a soft navy halo. Labels
+- Transparent with a Meta Ink border (`--border-control`): the border is a field's only edge, so it
+  needs 3:1 like other non-text UI. On focus the border turns navy with a soft navy halo. Labels
   are small uppercase Geist, with a muted hint below.
 
 ## Do's and Don'ts
@@ -295,7 +301,8 @@ for its urgency states. Panels and the playmat have no corners at all. Rules sep
 - **Do** keep the letter the largest thing on screen in every layout.
 - **Do** give every state change a shape cue as well as a color (dash, stroke width, beat, border).
 - **Do** keep touch targets at 44px (`2.75rem`) or more.
-- **Do** respect `prefers-reduced-motion`: animations shrink to nothing.
+- **Do** respect `prefers-reduced-motion`: animations shrink to nothing. The one exception is the
+  alarm flash, which becomes a still tint that switches on and off over the same 520ms.
 - **Do** keep a moment to a single beat: one motion that lands and stops. No loops, confetti or
   celebration, since the app doesn't score and nobody has won.
 
@@ -320,5 +327,5 @@ shortcut does the same thing. The saved panel preference remembers the choice; r
 panel restores the category board without clearing the deck. There is no separate mode picker.
 Folding remains available during play and does not reset the letter or clock.
 
-Phone category rows reserve 3.5rem for two-line names and have no extra margin between rows,
-so changing the draw does not trade letter size for wrapped labels.
+Phone category rows reserve 3.5rem for two-line names (`--text-lg` at line-height 1.15) and have
+no extra margin between rows, so changing the draw does not trade letter size for wrapped labels.

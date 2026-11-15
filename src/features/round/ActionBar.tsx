@@ -46,8 +46,8 @@ export function ActionBar({ phase, isPaused, onPrimary, onNewLetter, onNextRound
   // New letter (reroll) — during the get-ready countdown (no answers written yet)
   // and while paused. Never mid-play, where it would wipe in-progress answers.
   const showNewLetter = phase === "buffer" || isPausedRound;
-  // Next round — while actively running or paused.
-  const showNextRound = phase === "running" || isPausedRound;
+  // Skip round — while actively running or paused.
+  const showSkipRound = phase === "running" || isPausedRound;
 
   const { label: primaryLabel, icon: primaryIcon } = resolvePrimary(phase, isPaused, t);
   // Skipping mid-play wipes the table's letter, so the live clock asks for a
@@ -86,10 +86,10 @@ export function ActionBar({ phase, isPaused, onPrimary, onNewLetter, onNextRound
           size="sm"
           leadingIcon={<Icon icon={SkipForward} size={18} />}
           className={skip.armed ? "action-bar__secondary ds-icon-button--armed" : "action-bar__secondary"}
-          disabled={!showNextRound}
+          disabled={!showSkipRound}
           onClick={mustConfirmSkip ? skip.onClick : onNextRound}
         >
-          {t("buttons.nextRound")}
+          {t("buttons.skipRound")}
         </Button>
       </ControlGroup>
       {/* Keep the live region mounted so arming is announced without moving focus. */}

@@ -12,8 +12,8 @@ import { expect, test } from "@playwright/test";
 // "Fully conformant" needs a full external audit: allow it only once one is done.
 const STATUS = /^Its conformance is (not assessed|partially conformant|non-conformant)\b/i;
 const SECTIONS = [
-  "Using scattergories",
-  "How accessible scattergories is",
+  "Using Scattergories",
+  "How accessible Scattergories is",
   "Known problems",
   "Tell us about a problem",
   "How we check",

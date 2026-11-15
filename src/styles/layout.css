@@ -139,7 +139,6 @@
   }
 
   .categories-card__content,
-  .custom-categories,
   .drawn-categories {
     min-height: 0;
     display: grid;
@@ -167,12 +166,8 @@
     gap: var(--space-1);
   }
 
-  .custom-list {
-    min-height: 0;
-  }
-
-  .custom-list {
-    overflow: auto;
+  .app-shell--boot .app-loading img {
+    justify-self: center;
   }
 
   .app-loading,
@@ -273,17 +268,19 @@
        goes to the letter instead of sitting empty below the list. The
        playmat's minimum is the smallest compact ring plus its padding
        (playmat.css). */
+    /* The row never gets shorter than the stacked controls (9rem), which only
+       binds at large text sizes, where rem grows and 36vw does not. */
     .play-grid {
       --ring-min: min(36vw, 9rem);
-      grid-template-rows: minmax(calc(var(--ring-min) + 2 * var(--space-1)), 1fr) minmax(0, auto);
+      grid-template-rows: minmax(max(var(--ring-min) + 2 * var(--space-1), 9rem), 1fr) minmax(0, auto);
       padding-right: 0.1rem;
       gap: var(--space-3);
     }
 
-    /* Collapsed: header-only card stays content-height, packed at the top. */
+    /* Collapsed: the playmat takes the height and the header-only card sits
+       at the bottom, under the controls. */
     .play-grid--deck-collapsed {
-      grid-template-rows: auto auto;
-      align-content: start;
+      grid-template-rows: minmax(0, 1fr) auto;
     }
 
     .playmat,
@@ -304,15 +301,10 @@
       gap: var(--space-2);
     }
 
-    /* Collapsed: shorten the rule to hug just the header cluster (icon+chevron). */
+    /* Collapsed: the header sits on the footer's rule, so it needs none. */
     .play-grid--deck-collapsed .categories-card {
       border-top: 0;
-      padding-top: var(--space-3);
-    }
-
-    .play-grid--deck-collapsed .categories-card__heading {
-      border-top: 1px solid var(--rule);
-      padding-top: var(--space-2);
+      padding-top: 0;
     }
 
     /* Open deck: header (title + controls) sits in a full-width row above the

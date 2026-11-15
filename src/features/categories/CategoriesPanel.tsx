@@ -144,10 +144,11 @@ function AddPackField({ actions }: { actions: CategoriesActions }) {
     }))
     .sort((a, b) => a.label.localeCompare(b.label, i18n.locale));
   return (
-    <label className="settings-select deck-list__pack" htmlFor="addPack">
+    <label className="deck-list__pack" htmlFor="addPack">
       <span className="sr-only">{t("categories.addPack")}</span>
       <select
         id="addPack"
+        className="settings-select"
         value=""
         onChange={(event) => {
           if (event.target.value) {
@@ -296,50 +297,36 @@ function DeckList({
   );
 }
 
-function CustomizeSheetBlock({
+function CustomizeSheet({
+  isOpen,
+  onClose,
   categories,
   actions,
   inputRef,
 }: {
+  isOpen: boolean;
+  onClose: () => void;
   categories: CategoriesState;
   actions: CategoriesActions;
   inputRef: RefObject<HTMLInputElement | null>;
 }) {
   const { _: t } = useLingui();
-  const [isOpen, setIsOpen] = useState(false);
-
-  // Editing the deck mid-round auto-pauses the clock; the edits themselves only
-  // take effect on the next redraw (handled in useCategoryBoard).
-  const openSheet = () => {
-    if (!categories.canEdit) {
-      actions.onTogglePause();
-    }
-    setIsOpen(true);
-  };
-
   return (
-    <>
-      <IconButton
-        label={t("categories.customize")}
-        icon={<Icon icon={SlidersHorizontal} size={18} />}
-        onClick={openSheet}
+    <Sheet
+      open={isOpen}
+      onClose={onClose}
+      title={t("categories.customizeTitle")}
+      closeLabel={t("buttons.closeTooltip")}
+    >
+      <DeckSettings catCountInput={categories.catCountInput} actions={actions} />
+      <AddCategories actions={actions} inputRef={inputRef} />
+      <DeckList
+        customCategories={categories.customCategories}
+        deckBuiltins={categories.deckBuiltins}
+        pinned={categories.pinned}
+        actions={actions}
       />
-      <Sheet
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        title={t("categories.customizeTitle")}
-        closeLabel={t("buttons.closeTooltip")}
-      >
-        <DeckSettings catCountInput={categories.catCountInput} actions={actions} />
-        <AddCategories actions={actions} inputRef={inputRef} />
-        <DeckList
-          customCategories={categories.customCategories}
-          deckBuiltins={categories.deckBuiltins}
-          pinned={categories.pinned}
-          actions={actions}
-        />
-      </Sheet>
-    </>
+    </Sheet>
   );
 }
 
@@ -349,14 +336,14 @@ function CategoriesCardHeader({
   allPinned,
   categories,
   actions,
-  inputRef,
+  onCustomize,
 }: {
   isPromptDeckOpen: boolean;
   deckToggleLabel: string;
   allPinned: boolean;
   categories: CategoriesState;
   actions: CategoriesActions;
-  inputRef: RefObject<HTMLInputElement | null>;
+  onCustomize: () => void;
 }) {
   const { _: t } = useLingui();
   const { canEdit, drawnCategories } = categories;
@@ -390,7 +377,11 @@ function CategoriesCardHeader({
             disabled={!canEdit || categories.isRerolling}
             onClick={() => actions.onTogglePinAll(drawnCategories)}
           />
-          <CustomizeSheetBlock categories={categories} actions={actions} inputRef={inputRef} />
+          <IconButton
+            label={t("categories.customize")}
+            icon={<Icon icon={SlidersHorizontal} size={18} />}
+            onClick={onCustomize}
+          />
         </div>
       ) : null}
     </div>
@@ -407,6 +398,16 @@ function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps
   // A fixed name: aria-expanded carries the state, so "Hide/Open" would contradict it.
   const deckToggleLabel = t("categories.title");
   const allPinned = drawnCategories.length > 0 && drawnCategories.every((name) => pinnedSet.has(name));
+  const [isCustomizing, setIsCustomizing] = useState(false);
+
+  // Editing the deck mid-round auto-pauses the clock; the edits themselves only
+  // take effect on the next redraw (handled in useCategoryBoard).
+  const openCustomize = () => {
+    if (!categories.canEdit) {
+      actions.onTogglePause();
+    }
+    setIsCustomizing(true);
+  };
 
   return (
     <section
@@ -418,6 +419,13 @@ function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps
         isPromptDeckOpen={isPromptDeckOpen}
         deckToggleLabel={deckToggleLabel}
         allPinned={allPinned}
+        categories={categories}
+        actions={actions}
+        onCustomize={openCustomize}
+      />
+      <CustomizeSheet
+        isOpen={isCustomizing}
+        onClose={() => setIsCustomizing(false)}
         categories={categories}
         actions={actions}
         inputRef={inputRef}
@@ -435,6 +443,7 @@ function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps
               // A tap mid-roll would pin whichever name was passing through.
               disabled={!categories.canEdit || categories.isRerolling}
               onTogglePin={actions.onTogglePin}
+              onCustomize={openCustomize}
             />
           </div>
         </div>

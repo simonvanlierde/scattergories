@@ -4,7 +4,7 @@ import { test } from "./fixtures";
 
 // spell-checker: ignore Sortear, Letra
 
-const SECONDARY_NEXT_ROUND = { name: "Next round" } as const;
+const SKIP_ROUND = { name: "Skip round" } as const;
 
 test("pausing freezes the clock and resuming runs the round out", async ({ app, page }) => {
   await page.clock.install();
@@ -36,7 +36,7 @@ test("skipping a live round asks for a second tap, a paused one does not", async
   await app.expectRunning();
   await expect(page.getByText("Round 1", { exact: true })).toBeVisible();
 
-  const skip = page.getByRole("button", SECONDARY_NEXT_ROUND);
+  const skip = page.getByRole("button", SKIP_ROUND);
   await skip.click();
   await expect(page.getByText("Tap again to skip this round")).toBeVisible();
   await expect(page.getByText("Round 1", { exact: true })).toBeVisible();

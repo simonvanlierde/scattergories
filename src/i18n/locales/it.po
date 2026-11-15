@@ -33,6 +33,10 @@ msgstr "Estrai lettera"
 msgid "buttons.nextRound"
 msgstr "Prossimo round"
 
+#. Skip round
+msgid "buttons.skipRound"
+msgstr "Salta il round"
+
 #. Spinning…
 msgid "buttons.spinning"
 msgstr "Sorteggio…"

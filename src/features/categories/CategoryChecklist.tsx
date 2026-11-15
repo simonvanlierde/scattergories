@@ -1,6 +1,7 @@
 import { useLingui } from "@lingui/react";
-import { Pin } from "lucide-react";
+import { Pin, SlidersHorizontal } from "lucide-react";
 import type { CSSProperties } from "react";
+import { Button } from "@/shared/ui/Button";
 import { cx } from "@/shared/ui/cx";
 import { Icon } from "@/shared/ui/Icon";
 
@@ -12,6 +13,7 @@ interface CategoryChecklistProps {
   customSet: Set<string>;
   disabled: boolean;
   onTogglePin: (name: string) => void;
+  onCustomize: () => void;
 }
 
 export function CategoryChecklist({
@@ -22,6 +24,7 @@ export function CategoryChecklist({
   customSet,
   disabled,
   onTogglePin,
+  onCustomize,
 }: CategoryChecklistProps) {
   const { _: t } = useLingui();
 
@@ -31,6 +34,9 @@ export function CategoryChecklist({
     return (
       <section className="category-checklist category-checklist--empty">
         <p className="category-checklist__empty">{t("categories.minimumRequired")}</p>
+        <Button variant="ghost" leadingIcon={<Icon icon={SlidersHorizontal} size={18} />} onClick={onCustomize}>
+          {t("categories.customize")}
+        </Button>
       </section>
     );
   }
