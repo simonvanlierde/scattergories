@@ -255,8 +255,8 @@
     }
 
     /* Hide the wordmark visually — the brand mark carries it at this width — but
-       keep the page's only <h1> in the a11y tree instead of `display: none`. */
-    .controlbar h1 {
+       keep it in the a11y tree instead of `display: none`. */
+    .controlbar__title {
       position: absolute;
       width: 1px;
       height: 1px;
