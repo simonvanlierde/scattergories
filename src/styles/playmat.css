@@ -305,6 +305,7 @@
   .category-checklist--empty {
     display: grid;
     place-items: center;
+    gap: var(--space-3);
     padding: var(--space-8) var(--space-4);
     border-radius: 0;
     border-top: 1px solid var(--rule);
