@@ -21,6 +21,7 @@ import { Sheet } from "@/shared/ui/Sheet";
 
 const OFFICIAL_GAME_URL = "https://hasbrogames.com/scattergories";
 const SOURCE_CODE_URL = "https://github.com/simonvanlierde/scattergories";
+const CATEGORY_FORM_URL = "https://github.com/simonvanlierde/scattergories/issues/new?template=category.yml";
 const LICENSE_URL = "https://github.com/simonvanlierde/scattergories/blob/main/LICENSE";
 
 interface HowToPlayModalProps {
@@ -203,6 +204,9 @@ export function HowToPlayModal({ onClose, onStart }: HowToPlayModalProps) {
               </li>
             ))}
           </ul>
+          <p className="modal-legal-links">
+            <ExternalAnchor href={CATEGORY_FORM_URL}>{t("modal.suggestCategoryLink")}</ExternalAnchor>
+          </p>
         </Section>
 
         <Section icon={Percent} title={t("modal.odds")}>

@@ -19,6 +19,8 @@ const CLASSIC_PACK_ID = "classic";
 interface CategoryPack {
   id: string;
   labelKey: string;
+  /* Audience or difficulty, shown beside the label in the pack picker. */
+  hintKey: string;
   /* Empty list means "every category except the adult ones" (Classic). */
   keys: readonly string[];
 }
@@ -191,36 +193,43 @@ const PACKS: readonly CategoryPack[] = Object.freeze([
   {
     id: CLASSIC_PACK_ID,
     labelKey: "packs.classic.label",
+    hintKey: "packs.classic.hint",
     keys: [],
   },
   {
     id: "foodie",
     labelKey: "packs.foodie.label",
+    hintKey: "packs.foodie.hint",
     keys: FOODIE_KEYS,
   },
   {
     id: "pop-culture",
     labelKey: "packs.popCulture.label",
+    hintKey: "packs.popCulture.hint",
     keys: POP_CULTURE_KEYS,
   },
   {
     id: "travel",
     labelKey: "packs.travel.label",
+    hintKey: "packs.travel.hint",
     keys: TRAVEL_KEYS,
   },
   {
     id: "kids",
     labelKey: "packs.kids.label",
+    hintKey: "packs.kids.hint",
     keys: KIDS_KEYS,
   },
   {
     id: "household",
     labelKey: "packs.household.label",
+    hintKey: "packs.household.hint",
     keys: HOUSEHOLD_KEYS,
   },
   {
     id: "grown-ups",
     labelKey: "packs.grownUps.label",
+    hintKey: "packs.grownUps.hint",
     keys: ADULT_KEYS,
   },
 ]);

@@ -39,6 +39,7 @@ describe("locale asset completeness", () => {
 
   it("every pack label resolves in English", () => {
     expect(PACKS.filter((pack) => !english[pack.labelKey]).map((pack) => pack.labelKey)).toEqual([]);
+    expect(PACKS.filter((pack) => !english[pack.hintKey]).map((pack) => pack.hintKey)).toEqual([]);
   });
 
   it.each(SUPPORTED_LOCALES)("%s compiles and preserves all messages, placeholders, and links", async (locale) => {

@@ -140,7 +140,7 @@ function AddPackField({ actions }: { actions: CategoriesActions }) {
   const packs = [...PACKS]
     .map((pack) => ({
       id: pack.id,
-      label: t(pack.labelKey),
+      label: `${t(pack.labelKey)} · ${t(pack.hintKey)}`,
     }))
     .sort((a, b) => a.label.localeCompare(b.label, i18n.locale));
   return (
