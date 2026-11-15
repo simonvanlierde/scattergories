@@ -7,7 +7,7 @@ import { GO, ROUND_STATE_TIMEOUT_MS, SCATTERGORIES_HEADING } from "../src/test/c
 type RoundButtonLabel = RegExp | string;
 const START_OR_NEXT_ROUND_BUTTON_LABEL = /Roll a letter|Next round/;
 const MUTE_BUTTON_LABEL = /Mute|Unmute/;
-// The timer, language, and theme controls now live in one settings sheet.
+// The timer, language and theme controls share one settings sheet.
 const SETTINGS_NAME = /^(Settings|Ajustes)$/i;
 
 interface AppFixture {
