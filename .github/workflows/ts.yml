@@ -75,6 +75,10 @@ jobs:
           flags: ts
       - run: pnpm run build
       - run: pnpm run budget
+      # Fails on a production dependency whose license MIT cannot take. shortcut: the
+      # Python tools in tools/ are dev-only and not shipped, so uv licenses are not
+      # checked (uv has no license listing); add pip-licenses if tools/ ever ships.
+      - run: pnpm run licenses
 
       # The preview and production jobs deploy this build, so they ship what the checks ran on.
       - if: github.event_name == 'pull_request' || github.event_name == 'push'

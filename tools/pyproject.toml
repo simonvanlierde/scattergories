@@ -26,6 +26,7 @@
 [tool.pytest.ini_options]
   addopts = [
     '--cov-branch',
+    '--cov-fail-under=90',
     '--cov-report=term-missing',
     '--cov=src/scattergories_tools',
     '--strict-config',

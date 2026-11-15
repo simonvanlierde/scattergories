@@ -56,12 +56,23 @@ const offline = (): Plugin => ({
       .filter((entry) => entry.isFile())
       .map((entry) => relative(fileURLToPath(publicDir), `${entry.parentPath}/${entry.name}`))
       .filter((path) => path !== "sw.js" && path !== "og.png" && !path.startsWith("_") && !path.startsWith("."));
-    const paths = ["/", ...new Set([...Object.keys(bundle), ...publicFiles].map((path) => `/${path}`))].sort();
+    const all = ["/", ...new Set([...Object.keys(bundle), ...publicFiles].map((path) => `/${path}`))].sort();
+    // Offline play needs the shell, English and Latin fonts. Other languages, font subsets and
+    // store screenshots are cached when first used.
+    const isLazy = (path: string) =>
+      path.startsWith("/screenshots/") ||
+      /^\/assets\/(?:[a-z]{2})-[\w-]+\.js$/.test(path) ||
+      (path.endsWith(".woff2") && !/-latin-(?!ext)/.test(path));
+    const paths = all.filter((path) => !isLazy(path));
+    const lazy = all.filter(isLazy);
     const worker = await readFile(new URL("sw.js", publicDir), "utf8");
     this.emitFile({
       type: "asset",
       fileName: "sw.js",
-      source: worker.replace("/* PRECACHE */ []", JSON.stringify(paths)),
+      source: worker
+        .replace("/* BUILD */ 0", String(Date.now()))
+        .replace("/* PRECACHE */ []", JSON.stringify(paths))
+        .replace("/* LAZY */ []", JSON.stringify(lazy)),
     });
   },
 });
