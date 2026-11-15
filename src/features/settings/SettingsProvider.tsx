@@ -186,7 +186,8 @@ function SettingsProvider({ children }: PropsWithChildren) {
       dispatch({ type: "update", key, value: actionValue });
     },
     // An inactive catalog reports "", which is no valid language tag.
-    addCustom: (raw, locale = i18n.locale || undefined) => dispatch({ type: "addCustom", value: raw, locale }),
+    addCustom: (raw, locale) =>
+      dispatch({ type: "addCustom", value: raw, locale: locale ?? (i18n.locale || undefined) }),
     removeCustom: (category) => dispatch({ type: "removeCustom", value: category }),
     togglePin: (name) => dispatch({ type: "togglePin", name }),
     togglePinAll: (names) => dispatch({ type: "togglePinAll", names }),

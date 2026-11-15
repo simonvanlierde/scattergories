@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 
 /**
  * Returns a debounced version of `commit` plus a `cancel` function.
@@ -8,7 +8,9 @@ import { useCallback, useEffect, useRef } from "react";
 export function useDebouncedCommit<T>(commit: (value: T) => void, delay = 500) {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const commitRef = useRef(commit);
-  commitRef.current = commit;
+  useLayoutEffect(() => {
+    commitRef.current = commit;
+  });
 
   // Kept memoized: it's read in the useEffect dependency array below, where a
   // render-body function would trip biome's useExhaustiveDependencies lint.
