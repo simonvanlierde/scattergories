@@ -7,6 +7,11 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- The privacy and accessibility pages show their links and buttons in your language. The statements
+  themselves stay in English, and their links say so.
+
 ## [0.5.0] - 2026-11-15
 
 ### Added
