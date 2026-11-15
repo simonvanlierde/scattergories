@@ -7,6 +7,11 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- Greek text uses Noto Serif Display for the letter and titles and Inter for the rest, instead
+  of whatever fonts the device has. Only the Greek parts of these fonts are downloaded.
+
 ### Fixed
 
 - The pink alarm wash at "Time's up!" is one brief flash again, instead of staying on for

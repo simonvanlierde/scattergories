@@ -196,6 +196,10 @@ figures, because Fraunces has none. Fraunces ships with its optical-size axis, s
 at the display size (`opsz` 144) and headings pick their own size; the italic file loads only for
 "Time's up!".
 
+Fraunces and Geist have no Greek glyphs. Greek falls through to Noto Serif Display and Inter, loaded
+as their Greek subsets only (`src/index.css`), so the Greek letter and titles keep a high-contrast
+display serif and the UI a neutral sans. They are close matches, not the house faces.
+
 **The Serif Is a Moment Rule.** Fraunces marks a moment or a heading: the letter, the end of a
 round, titles and the How to play lead. Anything you tap, every name in a list and every number is
 Geist.

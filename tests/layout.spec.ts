@@ -185,6 +185,17 @@ for (const locale of ["de", "el", "fr"]) {
   });
 }
 
+test("sets Greek in the Greek faces, not a system fallback", async ({ app: _app, page }) => {
+  await page.evaluate(() => localStorage.setItem("scattergories.language", "el"));
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("lang", "el");
+  await page.evaluate(() => document.fonts.ready);
+  const loaded = await page.evaluate(() =>
+    [...document.fonts].filter((face) => face.status === "loaded").map((face) => face.family.replaceAll('"', "")),
+  );
+  expect(loaded).toEqual(expect.arrayContaining(["Noto Serif Display Variable", "Inter Variable"]));
+});
+
 test.describe("wrapped sheet heading", () => {
   test.use({ viewport: { width: 320, height: 640 } });
 
