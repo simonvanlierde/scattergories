@@ -7,6 +7,18 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- The offline cache keeps the last two builds instead of growing with every release, and a first
+  visit stores only the shell, English, your language and the Latin fonts. Other languages are
+  stored when you first use them.
+- Hashed files are served from the cache without a refresh, and a slow connection falls back to
+  the installed app after 3.5 seconds.
+
+### Fixed
+
+- The service worker no longer stores an HTML error page returned for a font or unknown file.
+
 ## [0.4.0] - 2026-11-11
 
 ### Added

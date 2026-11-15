@@ -35,7 +35,7 @@ for (const path of ROUTES) {
     ).toEqual([]);
     expect(stored.sessionStorage).toBe(0);
     expect(stored.indexedDB).toEqual([]);
-    expect(stored.caches.filter((name) => name !== "scattergories-v1")).toEqual([]);
+    expect(stored.caches.filter((name) => !/^scattergories-\d+$/.test(name))).toEqual([]);
     expect(stored.serviceWorkers.filter((scope) => scope !== `${own}/`)).toEqual([]);
     // The page's own files must show up, or the capture saw nothing and proves nothing.
     expect([...origins]).toContain(own);
