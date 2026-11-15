@@ -249,14 +249,6 @@ msgstr "{custom} προσαρμοσμένες · {builtin} προεπιλεγμ�
 msgid "categories.emptyDeck"
 msgstr "Η τράπουλα είναι άδεια. Πρόσθεσε ένα πακέτο ή μια δική σου κατηγορία."
 
-#. Open categories
-msgid "categories.showDeck"
-msgstr "Άνοιγμα κατηγοριών"
-
-#. Hide categories
-msgid "categories.hideDeck"
-msgstr "Απόκρυψη κατηγοριών"
-
 #. Customize deck
 msgid "categories.customize"
 msgstr "Προσαρμογή τράπουλας"
@@ -285,17 +277,9 @@ msgstr "Αφαίρεση προεπιλεγμένων"
 msgid "categories.pinOne"
 msgstr "Καρφίτσωμα {name}"
 
-#. Unpin {name}
-msgid "categories.unpinOne"
-msgstr "Ξεκαρφίτσωμα {name}"
-
 #. Pin all
 msgid "categories.pinAll"
 msgstr "Καρφίτσωμα όλων"
-
-#. Unpin all
-msgid "categories.unpinAll"
-msgstr "Ξεκαρφίτσωμα όλων"
 
 #. Add categories
 msgid "categories.addSectionTitle"

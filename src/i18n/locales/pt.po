@@ -249,14 +249,6 @@ msgstr "{custom} próprias · {builtin} padrão"
 msgid "categories.emptyDeck"
 msgstr "O baralho está vazio. Adicione um pacote ou uma categoria personalizada."
 
-#. Open categories
-msgid "categories.showDeck"
-msgstr "Abrir categorias"
-
-#. Hide categories
-msgid "categories.hideDeck"
-msgstr "Ocultar categorias"
-
 #. Customize deck
 msgid "categories.customize"
 msgstr "Personalizar baralho"
@@ -285,17 +277,9 @@ msgstr "Remover todas as padrão"
 msgid "categories.pinOne"
 msgstr "Fixar {name}"
 
-#. Unpin {name}
-msgid "categories.unpinOne"
-msgstr "Desafixar {name}"
-
 #. Pin all
 msgid "categories.pinAll"
 msgstr "Fixar todas"
-
-#. Unpin all
-msgid "categories.unpinAll"
-msgstr "Desafixar todas"
 
 #. Add categories
 msgid "categories.addSectionTitle"

@@ -13,13 +13,13 @@ afterEach(() => {
 it("persists the category panel preference across remount with the same localStorage", async () => {
   const first = await renderApp();
 
-  await first.user.click(screen.getByRole("button", { name: "Hide categories" }));
-  expect(screen.getByRole("button", { name: "Open categories" })).toHaveAttribute("aria-expanded", "false");
+  await first.user.click(screen.getByRole("button", { name: "Categories" }));
+  expect(screen.getByRole("button", { name: "Categories" })).toHaveAttribute("aria-expanded", "false");
 
   first.view.unmount();
 
   await renderApp();
-  expect(screen.getByRole("button", { name: "Open categories" })).toHaveAttribute("aria-expanded", "false");
+  expect(screen.getByRole("button", { name: "Categories" })).toHaveAttribute("aria-expanded", "false");
 });
 
 it("redraws categories on a fresh round but keeps them when rerolling the letter", async () => {
@@ -158,4 +158,23 @@ it("keeps the category roll intact when the deck is edited while it spins", asyn
   await screen.findByRole("button", { name: "Pause" }, { timeout: 3000 });
   // Edits made mid-round wait for the next redraw.
   expect(drawnList).not.toHaveTextContent("Zed");
+});
+
+it("names each pin chip by its visible text and reports the pin as pressed", async () => {
+  const { user } = await renderApp();
+  const drawnList = screen.getByRole("list", { name: SELECTED_CATEGORIES });
+  await waitFor(() => expect(within(drawnList).getAllByRole("button").length).toBeGreaterThan(0));
+  const [chip] = within(drawnList).getAllByRole("button");
+  const label = chip?.querySelector(".category-checklist__label")?.textContent;
+
+  // SC 2.5.3: the name contains the visible "1 <label>" text and stays fixed.
+  expect(chip).toHaveAccessibleName(`1 ${label}`);
+  expect(chip).toHaveAttribute("aria-pressed", "false");
+  await user.click(chip as HTMLElement);
+  expect(chip).toHaveAccessibleName(`1 ${label}`);
+  expect(chip).toHaveAttribute("aria-pressed", "true");
+
+  const pinAll = screen.getByRole("button", { name: "Pin all" });
+  await user.click(pinAll);
+  expect(screen.getByRole("button", { name: "Pin all" })).toHaveAttribute("aria-pressed", "true");
 });

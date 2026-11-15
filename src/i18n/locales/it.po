@@ -249,14 +249,6 @@ msgstr "{custom} personali · {builtin} standard"
 msgid "categories.emptyDeck"
 msgstr "Il mazzo è vuoto. Aggiungi un pacchetto o una categoria personalizzata."
 
-#. Open categories
-msgid "categories.showDeck"
-msgstr "Apri categorie"
-
-#. Hide categories
-msgid "categories.hideDeck"
-msgstr "Nascondi categorie"
-
 #. Customize deck
 msgid "categories.customize"
 msgstr "Personalizza mazzo"
@@ -285,17 +277,9 @@ msgstr "Rimuovi tutte le standard"
 msgid "categories.pinOne"
 msgstr "Fissa {name}"
 
-#. Unpin {name}
-msgid "categories.unpinOne"
-msgstr "Sblocca {name}"
-
 #. Pin all
 msgid "categories.pinAll"
 msgstr "Fissa tutte"
-
-#. Unpin all
-msgid "categories.unpinAll"
-msgstr "Sblocca tutte"
 
 #. Add categories
 msgid "categories.addSectionTitle"

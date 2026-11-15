@@ -249,14 +249,6 @@ msgstr "{custom} custom · {builtin} built-in"
 msgid "categories.emptyDeck"
 msgstr "The deck is empty. Add a pack or a custom category."
 
-#. Open categories
-msgid "categories.showDeck"
-msgstr "Open categories"
-
-#. Hide categories
-msgid "categories.hideDeck"
-msgstr "Hide categories"
-
 #. Customize deck
 msgid "categories.customize"
 msgstr "Customize deck"
@@ -285,17 +277,9 @@ msgstr "Remove all built-in"
 msgid "categories.pinOne"
 msgstr "Pin {name}"
 
-#. Unpin {name}
-msgid "categories.unpinOne"
-msgstr "Unpin {name}"
-
 #. Pin all
 msgid "categories.pinAll"
 msgstr "Pin all"
-
-#. Unpin all
-msgid "categories.unpinAll"
-msgstr "Unpin all"
 
 #. Add categories
 msgid "categories.addSectionTitle"

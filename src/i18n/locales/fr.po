@@ -249,14 +249,6 @@ msgstr "{custom} perso · {builtin} standard"
 msgid "categories.emptyDeck"
 msgstr "Le paquet est vide. Ajoute un lot ou une catégorie personnalisée."
 
-#. Open categories
-msgid "categories.showDeck"
-msgstr "Ouvrir les catégories"
-
-#. Hide categories
-msgid "categories.hideDeck"
-msgstr "Masquer les catégories"
-
 #. Customize deck
 msgid "categories.customize"
 msgstr "Modifier le paquet"
@@ -285,17 +277,9 @@ msgstr "Supprimer toutes les standard"
 msgid "categories.pinOne"
 msgstr "Épingler {name}"
 
-#. Unpin {name}
-msgid "categories.unpinOne"
-msgstr "Désépingler {name}"
-
 #. Pin all
 msgid "categories.pinAll"
 msgstr "Tout épingler"
-
-#. Unpin all
-msgid "categories.unpinAll"
-msgstr "Tout désépingler"
 
 #. Add categories
 msgid "categories.addSectionTitle"

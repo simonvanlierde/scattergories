@@ -249,14 +249,6 @@ msgstr "{custom} eigene · {builtin} Standard"
 msgid "categories.emptyDeck"
 msgstr "Das Deck ist leer. Füge ein Set oder eine eigene Kategorie hinzu."
 
-#. Open categories
-msgid "categories.showDeck"
-msgstr "Kategorien öffnen"
-
-#. Hide categories
-msgid "categories.hideDeck"
-msgstr "Kategorien ausblenden"
-
 #. Customize deck
 msgid "categories.customize"
 msgstr "Deck anpassen"
@@ -285,17 +277,9 @@ msgstr "Alle Standardkategorien entfernen"
 msgid "categories.pinOne"
 msgstr "{name} fixieren"
 
-#. Unpin {name}
-msgid "categories.unpinOne"
-msgstr "{name} lösen"
-
 #. Pin all
 msgid "categories.pinAll"
 msgstr "Alle fixieren"
-
-#. Unpin all
-msgid "categories.unpinAll"
-msgstr "Alle lösen"
 
 #. Add categories
 msgid "categories.addSectionTitle"

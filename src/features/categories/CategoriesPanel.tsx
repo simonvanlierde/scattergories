@@ -181,7 +181,7 @@ function DeckListItem({ row, isPinned, actions }: { row: DeckRow; isPinned: bool
       </span>
       <span className="deck-list__actions">
         <IconButton
-          label={isPinned ? t("categories.unpinOne", { name: row.label }) : t("categories.pinOne", { name: row.label })}
+          label={t("categories.pinOne", { name: row.label })}
           icon={<Icon icon={Pin} size={16} />}
           aria-pressed={isPinned}
           onClick={() => actions.onTogglePin(row.name)}
@@ -384,7 +384,7 @@ function CategoriesCardHeader({
             onClick={actions.onRedraw}
           />
           <IconButton
-            label={allPinned ? t("categories.unpinAll") : t("categories.pinAll")}
+            label={t("categories.pinAll")}
             icon={<Icon icon={Pin} size={18} />}
             aria-pressed={allPinned}
             disabled={!canEdit || categories.isRerolling}
@@ -404,7 +404,8 @@ function CategoriesPanel({ categories, actions, inputRef }: CategoriesPanelProps
   // Decoration uses the frozen draw-time snapshot, not the live deck, so editing
   // the deck mid-round never re-styles (or blanks) the categories already drawn.
   const customSet = new Set(categories.drawnCustomCategories);
-  const deckToggleLabel = isPromptDeckOpen ? t("categories.hideDeck") : t("categories.showDeck");
+  // A fixed name: aria-expanded carries the state, so "Hide/Open" would contradict it.
+  const deckToggleLabel = t("categories.title");
   const allPinned = drawnCategories.length > 0 && drawnCategories.every((name) => pinnedSet.has(name));
 
   return (

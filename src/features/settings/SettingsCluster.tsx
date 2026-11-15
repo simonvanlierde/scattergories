@@ -200,7 +200,6 @@ export function SettingsCluster({
       <IconButton
         label={isMuted ? t("buttons.unmute") : t("buttons.mute")}
         icon={<Icon icon={isMuted ? VolumeX : Volume2} size={20} />}
-        aria-pressed={isMuted}
         onClick={onToggleMute}
       />
 

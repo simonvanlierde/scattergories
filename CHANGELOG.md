@@ -16,6 +16,9 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - The screen stays awake for the whole round after you switch to another app and back.
 - Editing the deck while the categories roll no longer cancels the roll.
+- Screen readers no longer announce toggles as contradictions such as "Unmute, pressed". The
+  mute button keeps its changing name, and the pin and category toggles keep a fixed name with
+  their state. Pin chips are named by their visible text, for example "1 Birds".
 - The R, P and C shortcuts now work on non-Latin keyboard layouts such as Greek.
 
 ## [0.4.0] - 2026-11-11
