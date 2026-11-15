@@ -7,6 +7,11 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Fixed
+
+- The screen stays awake for the whole round after you switch to another app and back.
+- Editing the deck while the categories roll no longer cancels the roll.
+
 ## [0.4.0] - 2026-11-11
 
 ### Added

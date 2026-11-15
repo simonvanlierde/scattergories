@@ -162,8 +162,10 @@ export function useRound({
 
     let sentinel: WakeLockSentinel | null = null;
     let isReleased = false;
+    let isRequesting = false;
 
     async function acquireWakeLock() {
+      isRequesting = true;
       try {
         const lock = await navigator.wakeLock.request("screen");
         sentinel = lock;
@@ -172,11 +174,22 @@ export function useRound({
         }
       } catch {
         // Denied, unsupported, or the tab lost focus mid-request — nothing to do.
+      } finally {
+        isRequesting = false;
       }
     }
     acquireWakeLock();
 
+    // The browser drops the lock whenever the page is hidden; take it back on return.
+    const reacquire = () => {
+      if (document.visibilityState === "visible" && !isRequesting && (!sentinel || sentinel.released)) {
+        acquireWakeLock();
+      }
+    };
+    document.addEventListener("visibilitychange", reacquire);
+
     return () => {
+      document.removeEventListener("visibilitychange", reacquire);
       isReleased = true;
       if (sentinel) {
         releaseWakeLock(sentinel);
