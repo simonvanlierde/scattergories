@@ -7,10 +7,19 @@ const PRECACHE = /* PRECACHE */ [];
 const LAZY = /* LAZY */ [];
 const NAVIGATION_TIMEOUT_MS = 3500;
 
-// The page's own language is not cached by a worker that is not yet in control, so install fetches it.
+// Languages whose letters are not in the Latin fonts that every visitor gets.
+const FONT_SUBSETS = { el: "greek", pl: "latin-ext" };
+
+// The page's own language is not cached by a worker that is not yet in control, so install
+// fetches its messages and, where it needs one, its font subset.
 const wantedLazy = () => {
   const codes = (self.navigator?.languages ?? []).map((tag) => tag.toLowerCase().split("-")[0]);
-  return LAZY.filter((path) => codes.some((code) => path.startsWith(`/assets/${code}-`)));
+  const subsets = codes.map((code) => FONT_SUBSETS[code]).filter(Boolean);
+  return LAZY.filter(
+    (path) =>
+      codes.some((code) => path.startsWith(`/assets/${code}-`)) ||
+      (path.endsWith(".woff2") && subsets.some((subset) => path.includes(`-${subset}-`))),
+  );
 };
 
 self.addEventListener("install", (event) => {
@@ -45,11 +54,12 @@ self.addEventListener("install", (event) => {
   );
 });
 
-// Cache names carry the build time, so the newest sorts first.
+// This build's cache first, so a rolled-back older build still serves and keeps its own files;
+// the others follow, newest first (their names carry the build time).
 async function buildCaches() {
-  return (await caches.keys())
-    .filter((name) => /^scattergories-\d+$/.test(name))
-    .sort((a, b) => Number(b.slice(14)) - Number(a.slice(14)));
+  const found = (await caches.keys()).filter((name) => /^scattergories-\d+$/.test(name));
+  const others = found.filter((name) => name !== CACHE).sort((a, b) => Number(b.slice(14)) - Number(a.slice(14)));
+  return found.includes(CACHE) ? [CACHE, ...others] : others;
 }
 
 // caches.match would search the oldest cache first and serve a stale shell.
@@ -65,7 +75,7 @@ async function lookup(request, options) {
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     (async () => {
-      // Keep this build and the one before it for tabs that still run it.
+      // Keep this build and the newest other one for tabs that still run it.
       const keep = (await buildCaches()).slice(0, 2);
       const stale = (await caches.keys()).filter((name) => name.startsWith("scattergories-") && !keep.includes(name));
       await Promise.all(stale.map((name) => caches.delete(name)));

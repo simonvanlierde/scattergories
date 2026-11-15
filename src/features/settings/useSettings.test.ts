@@ -5,6 +5,7 @@ import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ADULT_KEYS, getDefaultDeckBuiltins } from "@/domain/deck";
 import { durationMax } from "@/domain/game/constants";
+import { ensureLanguageLoaded, i18n } from "@/i18n/config";
 import { SettingsProvider, useSettings } from "./SettingsProvider";
 import { MAX_STRING_COUNT, SETTINGS_STORAGE_KEY } from "./schema";
 
@@ -336,6 +337,23 @@ describe("useSettings", () => {
         result.current.addCustom("animals");
       });
       expect(result.current.settings.customCategories).toEqual([]);
+    });
+
+    it("rejects a name that reads like a built-in's label in the current language", async () => {
+      await ensureLanguageLoaded("de");
+      await i18n.activate("de");
+      try {
+        const { result } = renderHook(() => useSettings(), { wrapper });
+        let problem: ReturnType<typeof result.current.addCustom>;
+        act(() => {
+          // cspell:disable-next-line -- German label of the built-in "Animals"
+          problem = result.current.addCustom("tiere");
+        });
+        expect(problem).toBe("duplicate");
+        expect(result.current.settings.customCategories).toEqual([]);
+      } finally {
+        await i18n.activate("en");
+      }
     });
   });
 
