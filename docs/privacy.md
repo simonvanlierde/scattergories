@@ -9,7 +9,7 @@ This page covers [scattergories.duinlab.nl](https://scattergories.duinlab.nl). S
 Your browser keeps:
 
 - your language, theme and sound preferences;
-- the round length, get-ready time, category count and repeat-letter preference;
+- the round length, get-ready time, category count, repeat-letter preference and whether keyboard shortcuts are on;
 - your category deck, custom categories, pinned categories and whether the category panel is open;
 - whether you have finished the welcome screen.
 

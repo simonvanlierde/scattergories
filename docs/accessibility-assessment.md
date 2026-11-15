@@ -11,7 +11,7 @@ Result: no criterion fails, 4 are not assessed, the rest pass or do not apply. C
 - **Keyboard probe**, same day: a throwaway Playwright script tabbed through the idle screen, opened and closed the settings sheet by keyboard and started a round with Space. It is not in the repository.
 - **Code reading** for everything else. A code reading is the only evidence for a Pass marked "code".
 
-Passing axe-core is not a conformance claim: it detects only some barriers, and the existing axe specs scan the dark theme only on the three document routes.
+Passing axe-core is not a conformance claim: it detects only some barriers, and the axe specs scan the home screen and the two statements in both themes, and the settings, how-to-play and deck sheets in the dark theme only.
 
 ## Results
 

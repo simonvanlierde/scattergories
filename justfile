@@ -127,11 +127,11 @@ repo-settings:
     if ! echo "$policies" | grep -qxF 'main'; then
         gh api -X POST "repos/{owner}/{repo}/environments/production/deployment-branch-policies" -f name="main" -f type="branch" >/dev/null 2>"$err" || fail
     fi
-    echo "Configured environment 'production'. Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID to both environments: see the Deploy section of the README."
+    echo "Configured environment 'production'. Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID to both environments: see the Deployment section of docs/architecture.md."
 
 # Set the GitHub About box from your answers: description, homepage and a topic per stack. Adds topics, never removes yours. Safe to rerun.
 repo-about:
-    gh repo edit --description 'A browser-based, local-first companion for playing Scattergories at the table — locale-aware letter rolling, timer, and category packs.' --homepage 'https://scattergories.duinlab.nl' --add-topic python --add-topic typescript
+    gh repo edit --description 'A free browser companion for playing Scattergories at the table: letters in nine languages, a timer and category packs. Works offline.' --homepage 'https://scattergories.duinlab.nl' --add-topic python --add-topic typescript
 
 # A repo's own recipes that copier updates never touch:
 import? 'just/local.just'
