@@ -196,6 +196,28 @@ test("sets Greek in the Greek faces, not a system fallback", async ({ app: _app,
   expect(loaded).toEqual(expect.arrayContaining(["Noto Serif Display Variable", "Inter Variable"]));
 });
 
+// A browser text-size or font-scale setting of 200% (WCAG 1.4.4). The overflow is
+// clipped, not scrollable, so the reflow spec's scrollWidth check cannot see it.
+test.describe("200% text on a phone", () => {
+  test.use({ viewport: { width: 390, height: 844 } });
+
+  test("keeps the primary button and the category tools on screen", async ({ app: _app, page }) => {
+    await page.evaluate(() => {
+      document.documentElement.style.fontSize = "200%";
+    });
+    await page.evaluate(() => document.fonts.ready);
+    const offScreen = await page.evaluate(() =>
+      [".action-bar__primary", ".categories-card__header-actions > button"].flatMap((selector) =>
+        [...document.querySelectorAll(selector)]
+          .map((el) => el.getBoundingClientRect())
+          .filter((box) => box.left < 0 || box.right > innerWidth || box.top < 0)
+          .map(() => selector),
+      ),
+    );
+    expect(offScreen).toEqual([]);
+  });
+});
+
 test.describe("wrapped sheet heading", () => {
   test.use({ viewport: { width: 320, height: 640 } });
 

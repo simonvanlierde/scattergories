@@ -124,8 +124,11 @@
     background: var(--accent-soft);
   }
 
+  /* Wraps the tools onto a second row at large text sizes, instead of widening
+     the play grid past the screen. */
   .categories-card__header {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-3);

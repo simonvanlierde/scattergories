@@ -273,9 +273,11 @@
        goes to the letter instead of sitting empty below the list. The
        playmat's minimum is the smallest compact ring plus its padding
        (playmat.css). */
+    /* The row never gets shorter than the stacked controls (9rem), which only
+       binds at large text sizes, where rem grows and 36vw does not. */
     .play-grid {
       --ring-min: min(36vw, 9rem);
-      grid-template-rows: minmax(calc(var(--ring-min) + 2 * var(--space-1)), 1fr) minmax(0, auto);
+      grid-template-rows: minmax(max(var(--ring-min) + 2 * var(--space-1), 9rem), 1fr) minmax(0, auto);
       padding-right: 0.1rem;
       gap: var(--space-3);
     }

@@ -20,6 +20,8 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   about 3 seconds. With reduced motion it shows as a still half-second tint.
 - On a portrait tablet, and with the categories folded on a phone, the ring and letter grow to
   fill the free space instead of stopping at 20rem. The folded categories bar sits at the bottom.
+- At 200% text size on a phone, the category tools wrap onto their own row instead of going off
+  screen, and the round controls stack so the main button stays in view.
 
 ## [0.4.0] - 2026-11-11
 

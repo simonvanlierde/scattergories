@@ -682,6 +682,15 @@
     padding: 0;
   }
 
+  /* Only large text sizes make a phone's playmat this narrow in em: the
+     secondary controls stack so their labels wrap at words, not letters. */
+  @container (max-width: 18em) {
+    .playmat .action-bar__group {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+
   /* ─── Container-query responsive ─────────────────────────────── */
   @container (min-width: 40rem) {
     .playmat {
@@ -771,6 +780,16 @@
       min-height: 2.75rem;
       padding-inline: var(--space-2);
       font-size: var(--text-md);
+      white-space: normal;
+      /* Splits a word only when it cannot fit, at large text sizes. */
+      overflow-wrap: anywhere;
+    }
+  }
+
+  /* A phone on its side has the same short row beside the ring. */
+  @media (min-width: 52rem) and (max-height: 32rem) {
+    .playmat .action-bar__primary {
+      padding-inline: var(--space-2);
       white-space: normal;
     }
   }
