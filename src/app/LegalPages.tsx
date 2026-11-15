@@ -31,6 +31,10 @@ export function LegalPage({ path }: { path: "/privacy" | "/accessibility" }) {
           </a>
           {/* biome-ignore lint/security/noDangerouslySetInnerHtml: trusted repository Markdown is compiled at build time. */}
           <article dangerouslySetInnerHTML={{ __html: isPrivacy ? privacyHtml : accessibilityHtml }} />
+          <p className="legal-page__credit">
+            Made by <a href={AUTHOR_URL}>{AUTHOR_NAME}</a> · <a href={SOURCE_CODE_URL}>Source</a> ·{" "}
+            <a href={LICENSE_URL}>MIT license</a>
+          </p>
         </main>
         <nav className="legal-page__nav" aria-label="Documents">
           <a href="/privacy" aria-current={isPrivacy ? "page" : undefined}>
@@ -40,10 +44,6 @@ export function LegalPage({ path }: { path: "/privacy" | "/accessibility" }) {
             Accessibility statement
           </a>
         </nav>
-        <p className="legal-page__credit">
-          Made by <a href={AUTHOR_URL}>{AUTHOR_NAME}</a> · <a href={SOURCE_CODE_URL}>Source</a> ·{" "}
-          <a href={LICENSE_URL}>MIT license</a>
-        </p>
       </div>
     </div>
   );
