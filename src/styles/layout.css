@@ -175,6 +175,10 @@
     overflow: auto;
   }
 
+  .app-shell--boot .app-loading img {
+    justify-self: center;
+  }
+
   .app-loading,
   .app-error {
     width: min(100% - 2rem, 34rem);

@@ -27,6 +27,8 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Text fields and menus have a darker edge (3:1), and hints and labels in the dark theme's
   sheets are lighter, so both meet WCAG AA contrast.
 - The add-a-pack menu in the deck sheet has one border instead of a box inside a box.
+- On a slow first load the page shows the die and the name on the app's paper, in light or dark,
+  instead of a blank white page.
 - An empty deck now shows a "Customize deck" button under its message, which opens the deck
   sheet.
 - The "Avoid letter repeats" checkbox is larger (20 px), and its whole row is at least 44 px tall.

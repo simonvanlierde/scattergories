@@ -198,6 +198,18 @@
     --button-fg: var(--accent-on);
   }
 
+  /* index.html's static shell has no data-theme until the script runs, so it
+     follows the system: the dark paper and ink it needs, from the block below. */
+  @media (prefers-color-scheme: dark) {
+    .app-shell--boot {
+      color-scheme: dark;
+      --surface-0: oklch(14% 0.015 70);
+      --surface-1: oklch(18% 0.015 70);
+      --surface-4: oklch(32% 0.015 70);
+      --surface-10: oklch(93% 0.011 85);
+    }
+  }
+
   /* ───────────────────────────────────────────────────────────
      DARK THEME — warm dark paper + warm off-white ink +
      lifted periwinkle accent (designed, not inverted)
