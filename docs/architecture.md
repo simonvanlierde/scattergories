@@ -1,12 +1,12 @@
 # Architecture
 
 Scattergories is a single-page React app with no backend. Everything runs in the browser.
-Settings and deck configuration persist in `localStorage`; active round progress and the session round count stay in memory.
-The only build-time input from outside the app is the locale asset bundle, which the Python `tools/` package regenerates.
+Settings and the deck are saved in `localStorage`. The current round and the session's round count stay in memory.
+The only build input from outside the app code is the letter-weight table, which the Python CLI in `tools/` regenerates.
 
 ## Layers
 
-The source is layered so the game rules never depend on React. The game screen calls the feature hooks only through `useGameController`, and renders each feature through its public component (`Playmat`, `CategoriesPanel`, `SettingsCluster`). The legal pages and the boot screen read the saved theme from `features/settings/` directly.
+The game rules never depend on React. The game screen calls the feature hooks only through `useGameController`, and renders each feature through its public component (`Playmat`, `CategoriesPanel`, `SettingsCluster`). The legal pages and the boot screen read the saved theme from `features/settings/` directly.
 
 ```mermaid
 flowchart TD
@@ -28,7 +28,7 @@ flowchart TD
 
 ## Round state machine
 
-A round runs on a `useReducer` in [`roundReducer.ts`](../src/domain/game/roundReducer.ts). The reducer is pure, so its transitions are unit-tested without rendering anything:
+A round runs on a `useReducer` in [`roundReducer.ts`](../src/domain/game/roundReducer.ts). The reducer is a pure function, so the unit tests check its transitions without rendering anything:
 
 ```mermaid
 stateDiagram-v2
@@ -45,42 +45,47 @@ stateDiagram-v2
 
 ## Data flow
 
-`useGameController` combines the feature hooks (`useRound`, `useCategoryBoard`, `useSettings`) and gives the shell a single typed interface. The categories feature owns the drawn board: `features/categories/useCategoryBoard.ts` composes and rolls the drawn categories, and `CategoriesPanel` edits the saved deck through `useSettings` itself. The deck rules live in one pure module, [`domain/deck.ts`](../src/domain/deck.ts): the category packs, the default deck, how a round's categories are drawn, and how its letter is drawn. Letters are rolled with locale-aware weights from `i18n/__generated__/letterWeights.json`, which `tools/` produces offline. Settings and custom category packs are the only saved state. They are written to `localStorage` from `features/settings/`, through the `safeStorage` wrapper in `shared/lib`. Game settings and custom category packs stay in the browser. The browser requests app files from the host; the app does not upload game inputs.
+`useGameController` combines the feature hooks (`useRound`, `useCategoryBoard`, `useSettings`) and gives the shell one typed interface. The categories feature owns the drawn board: `features/categories/useCategoryBoard.ts` draws the categories for a round, and `CategoriesPanel` edits the saved deck through `useSettings` itself.
 
-The reasons for the key choices live in [`adr/`](adr/).
+[`domain/deck.ts`](../src/domain/deck.ts) holds the deck rules as pure functions: the category packs, the default deck, and how a round's categories and letter are drawn. The letter draw uses each language's weights from `i18n/__generated__/letterWeights.json`, which `tools/` produces offline.
+
+All saved state goes to `localStorage` through the `safeStorage` wrapper in `shared/lib`. `features/settings/` saves the settings and the deck, `i18n/` saves the language, and `app/useOnboarding.ts` saves whether the welcome screen is done. The app requests its files from the host and uploads nothing.
+
+The decision records in [`adr/`](adr/) give the reasons for the main choices.
 
 ## Offline play
 
-The production build gives the service worker two lists: the shell, English, the Latin fonts and
-static files it caches before activation, and the files it caches on first use (other languages,
-other font subsets, store screenshots). Install also fetches the language chunk that matches the
-browser's language, so the first visit works offline in that language. The privacy and
-accessibility pages are served from the cached shell. A failed download, or a script, stylesheet or
-font response with the wrong content type (such as the host's HTML fallback), prevents installation
-or is not stored. The worker only caches paths in the build's own lists.
+The production build gives the service worker two lists. The first holds what it caches before it
+activates: the shell, English, the Latin fonts and static files. The second holds what it caches on
+first use: other languages, other font subsets and store screenshots. Install also fetches the
+language chunk for the browser's language, so the first visit works offline in that language. The
+privacy and accessibility pages are served from the cached shell.
+
+The worker only caches paths in those two lists. A failed download stops the install, and so does a
+script, stylesheet or font with the wrong content type (such as the host's HTML fallback). On first
+use, such a response is not stored.
 
 Each build has its own cache, named by build time. The worker keeps the current build and the one
-before it, so tabs that still run the old build find their hashed files, and deletes older ones. A
+before it, so tabs that still run the old build find their hashed files. It deletes older caches. A
 failed install deletes its partial cache, so the last complete build stays. Hashed files under
 `/assets/` are served from the cache without a network refresh. A page load waits 3.5 seconds for the
 network before using the cached shell.
 
 ## Translations
 
-Translations live in `src/i18n/locales/*.po`. Each catalog contains UI messages and
-category labels, with the English text in the source catalog. Message IDs stay the
-same across languages; interpolation uses ICU placeholders such as `{seconds}`.
-The rules attribution uses numbered tags for its three links. Edit the catalogs
-and run `pnpm i18n:compile` to check them. Vite compiles catalogs when building;
-English is bundled for offline fallback, and other languages load on demand.
+Translations live in `src/i18n/locales/*.po`. Each catalog holds the UI messages and
+category labels, and `en.po` holds the English source text. Message IDs are the same in
+every language, and placeholders use ICU syntax such as `{seconds}`. The rules
+attribution uses numbered tags for its three links.
 
-Catalogs are maintained by hand. Do not run `lingui extract`: symbolic and dynamic IDs
-are not discoverable, so extraction marks valid messages obsolete.
+Edit the catalogs by hand, then run `pnpm i18n:compile` to check them. Do not run
+`lingui extract`: it cannot find symbolic and dynamic IDs, so it marks valid messages
+obsolete. Vite compiles the catalogs at build time. English is always loaded, as the
+offline fallback, and other languages load when needed.
 
 ## Deployment
 
-The repository configures a Cloudflare Worker to serve `dist/` as static assets, with a fallback to
-`index.html`. [`wrangler.jsonc`](../wrangler.jsonc) names the Worker and its asset directory.
+A Cloudflare Worker serves `dist/` as static assets, with a fallback to `index.html`. [`wrangler.jsonc`](../wrangler.jsonc) names the Worker and its asset directory.
 [`public/_headers`](../public/_headers) sets the security headers.
 
 The [`ts` workflow](../.github/workflows/ts.yml) deploys the checked build after a push to `main`.
@@ -89,21 +94,21 @@ receive separate `scattergories-pr-<number>` previews. Fork and bot pull request
 The [retirement workflow](../.github/workflows/preview-retire.yml) deletes previews when their pull
 request closes or becomes a draft, and sweeps daily for missed deletions.
 
-These workflows need deployment credentials before they can publish. Without them, they report a
-notice and skip deployment.
+Without deployment credentials, these workflows print a notice and skip deployment.
 
 ### Set up Workers
 
 1. Create GitHub environments named `preview` and `production` in the repository's **Settings → Environments**.
-   Limit `production` deployment branches to `main`. Previews need to accept pull request refs.
-   The maintainer's `just repo-settings` recipe creates these environments and applies the repository's other settings.
+   Limit `production` deployment branches to `main`. Let `preview` accept pull request refs.
+   `just repo-settings` creates both environments and applies the other repository settings.
 2. Add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as secrets in each environment.
-   Use a Cloudflare token with Workers Scripts edit permission for the target account.
-   The deployment scripts also need to read that account's Workers subdomain.
+   The Cloudflare token needs Workers Scripts edit permission on the target account, and read
+   access to that account's Workers subdomain.
 3. Merge the deployment configuration to `main` and wait for its production job to pass.
    Check the reported `workers.dev` address: start a round, reload `/privacy` and `/accessibility`,
-   and check the security headers. Open a human pull request to verify preview creation and retirement.
+   and check the security headers. Open a pull request from a branch here (not a bot or a fork) to
+   check that a preview is created and later deleted.
 4. Add `scattergories.duinlab.nl` to the Worker's custom domains in Cloudflare.
    Check HTTPS, the home page, legal routes and security headers on the custom domain.
 
-For a local deployment after credentials are configured, run `pnpm build`, then `pnpm exec wrangler deploy`.
+To deploy from your own machine with the credentials set up, run `pnpm build`, then `pnpm exec wrangler deploy`.
