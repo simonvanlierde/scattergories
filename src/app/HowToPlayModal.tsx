@@ -1,6 +1,7 @@
-import { Trans, useLingui } from "@lingui/react";
+import { useLingui } from "@lingui/react";
 import {
   ChevronDown,
+  ExternalLink,
   Info,
   Keyboard,
   type LucideIcon,
@@ -18,11 +19,11 @@ import { BrandMark } from "@/shared/ui/BrandMark";
 import { Button } from "@/shared/ui/Button";
 import { Icon } from "@/shared/ui/Icon";
 import { Sheet } from "@/shared/ui/Sheet";
+import { AUTHOR_NAME, AUTHOR_URL, LICENSE_URL, SOURCE_CODE_URL } from "./links";
 
 const OFFICIAL_GAME_URL = "https://hasbrogames.com/scattergories";
-const SOURCE_CODE_URL = "https://github.com/simonvanlierde/scattergories";
 const CATEGORY_FORM_URL = "https://github.com/simonvanlierde/scattergories/issues/new?template=category.yml";
-const LICENSE_URL = "https://github.com/simonvanlierde/scattergories/blob/main/LICENSE";
+const ISSUES_URL = "https://github.com/simonvanlierde/scattergories/issues/new";
 
 interface HowToPlayModalProps {
   onClose: () => void;
@@ -47,7 +48,7 @@ const SHORTCUTS: readonly ShortcutDefinition[] = [
 ];
 
 // One icon per mechanic, matching the order of `modal.categoriesItems`
-// (customize deck, pin, reroll) and the controls in the categories panel.
+// (customize deck, pin, redraw) and the controls in the categories panel.
 const CATEGORY_ICONS: readonly LucideIcon[] = [SlidersHorizontal, Pin, RefreshCw];
 
 interface SectionProps {
@@ -66,18 +67,26 @@ function ExternalAnchor({ href, children }: { href: string; children?: ReactNode
   );
 }
 
-function Attribution() {
+interface AboutLinkProps {
+  href: string;
+  label: string;
+  /** Where the link goes, shown at the right of the row. */
+  destination?: string;
+  /** Opens another site in a new tab. Leave off for the app's own pages. */
+  external?: boolean;
+}
+
+function AboutLink({ href, label, destination, external = false }: AboutLinkProps) {
   return (
-    <p className="modal-attribution">
-      <Trans
-        id="modal.attribution"
-        components={[
-          <ExternalAnchor key="official" href={OFFICIAL_GAME_URL} />,
-          <ExternalAnchor key="repo" href={SOURCE_CODE_URL} />,
-          <ExternalAnchor key="license" href={LICENSE_URL} />,
-        ]}
-      />
-    </p>
+    <li>
+      <a href={href} {...(external && { target: "_blank", rel: "noopener noreferrer" })} className="about-link">
+        <span className="about-link__label">{label}</span>
+        <span className="about-link__where">
+          {destination}
+          {external && <Icon icon={ExternalLink} size={14} className="about-link__icon" />}
+        </span>
+      </a>
+    </li>
   );
 }
 
@@ -227,12 +236,27 @@ export function HowToPlayModal({ onClose, onStart }: HowToPlayModalProps) {
         </Section>
 
         <Section icon={Info} title={t("modal.about")}>
-          <Attribution />
+          <p>{t("about.intro")}</p>
+          <ul className="about-links">
+            <AboutLink
+              external
+              href={AUTHOR_URL}
+              label={t("about.madeBy", { name: AUTHOR_NAME })}
+              destination="simonvanlierde.com"
+            />
+            <AboutLink external href={SOURCE_CODE_URL} label={t("about.source")} destination="GitHub" />
+            <AboutLink external href={LICENSE_URL} label={t("about.license")} destination="MIT" />
+            <AboutLink external href={ISSUES_URL} label={t("about.report")} destination="GitHub" />
+            <AboutLink
+              external
+              href={OFFICIAL_GAME_URL}
+              label={t("about.officialGame")}
+              destination="hasbrogames.com"
+            />
+            <AboutLink href="/privacy" label={t("modal.privacyLink")} />
+            <AboutLink href="/accessibility" label={t("modal.accessibilityLink")} />
+          </ul>
           <p className="modal-privacy">{t("modal.privacy")}</p>
-          <p className="modal-legal-links">
-            <a href="/privacy">{t("modal.privacyLink")}</a>
-            <a href="/accessibility">{t("modal.accessibilityLink")}</a>
-          </p>
           <p className="modal-version">{t("modal.version", { version: __APP_VERSION__ })}</p>
         </Section>
       </div>

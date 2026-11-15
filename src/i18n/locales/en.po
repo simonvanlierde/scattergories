@@ -73,9 +73,9 @@ msgstr "Add"
 msgid "buttons.remove"
 msgstr "Remove"
 
-#. Add this category to your custom collection
+#. Add this category to your deck
 msgid "buttons.addTooltip"
-msgstr "Add this category to your custom collection"
+msgstr "Add this category to your deck"
 
 #. Close this window
 msgid "buttons.closeTooltip"
@@ -165,9 +165,9 @@ msgstr "How long each round lasts."
 msgid "settings.getReadyHint"
 msgstr "Countdown before the timer starts."
 
-#. Skips the last 8 letters drawn; common letters still come up more often.
+#. Skips the last 8 letters drawn. Common letters still come up more often.
 msgid "settings.avoidRepeatsHint"
-msgstr "Skips the last 8 letters drawn; common letters still come up more often."
+msgstr "Skips the last 8 letters drawn. Common letters still come up more often."
 
 #. Keyboard shortcuts
 msgid "settings.keyboardShortcuts"
@@ -249,9 +249,9 @@ msgstr "Re-roll the current letter"
 msgid "rail.shortcuts.p"
 msgstr "Pause or resume"
 
-#. Toggle the categories panel
+#. Show or hide the categories panel
 msgid "rail.shortcuts.c"
-msgstr "Toggle the categories panel"
+msgstr "Show or hide the categories panel"
 
 #. Open this shortcut list
 msgid "rail.shortcuts.help"
@@ -349,41 +349,41 @@ msgstr "A random letter is drawn. Every answer must start with it."
 msgid "modal.gameplayPoints.1"
 msgstr "Write one word for each category before the timer runs out (90 seconds by default)."
 
-#. Use a different word for each category, with no repeats within your own list.
+#. Use a different word for each category in your own list.
 msgid "modal.gameplayPoints.2"
-msgstr "Use a different word for each category, with no repeats within your own list."
+msgstr "Use a different word for each category in your own list."
 
-#. Playing with others: answers nobody else wrote score 1 point, matching answers score 0.
+#. With other players, an answer scores 1 point if nobody else wrote it, and 0 if someone did.
 msgid "modal.gameplayPoints.3"
-msgstr "Playing with others: answers nobody else wrote score 1 point, matching answers score 0."
+msgstr "With other players, an answer scores 1 point if nobody else wrote it, and 0 if someone did."
 
 #. Categories
 msgid "modal.categories"
 msgstr "Categories"
 
-#. The deck comes with a set of built-in categories, and you can add your own.
+#. The deck starts with built-in categories, and you can add your own.
 msgid "modal.categoriesText"
-msgstr "The deck comes with a set of built-in categories, and you can add your own."
+msgstr "The deck starts with built-in categories, and you can add your own."
 
-#. Customize the deck to add categories and built-in packs, or remove any you'd rather skip.
+#. Customize the deck to add categories or built-in packs, or to remove ones you don't want.
 msgid "modal.categoriesItems.0"
-msgstr "Customize the deck to add categories and built-in packs, or remove any you'd rather skip."
+msgstr "Customize the deck to add categories or built-in packs, or to remove ones you don't want."
 
-#. Pin a category to lock it into every round; unpinned ones are drawn at random to fill the rest.
+#. Pin a category to keep it in every round. The rest are drawn at random from the unpinned ones.
 msgid "modal.categoriesItems.1"
-msgstr "Pin a category to lock it into every round; unpinned ones are drawn at random to fill the rest."
+msgstr "Pin a category to keep it in every round. The rest are drawn at random from the unpinned ones."
 
-#. Reroll to draw a fresh set of categories for the current letter, without changing the letter.
+#. Redraw to get new categories for the same letter.
 msgid "modal.categoriesItems.2"
-msgstr "Reroll to draw a fresh set of categories for the current letter, without changing the letter."
+msgstr "Redraw to get new categories for the same letter."
 
 #. Letter odds
 msgid "modal.odds"
 msgstr "Letter odds"
 
-#. Each letter's chance of being drawn, from how often words start with it on Wikipedia in this language ({snapshot} snapshot). A draw never repeats the previous letter, and with “{setting}” on it skips the last {window} letters drawn. That makes rare letters come up a little more often than shown.
+#. Each letter's chance of being drawn, based on how often words start with it on Wikipedia in this language ({snapshot} snapshot). A draw never repeats the previous letter. With “{setting}” on, it also skips the last {window} letters. So rare letters come up a little more often than shown.
 msgid "modal.oddsText"
-msgstr "Each letter's chance of being drawn, from how often words start with it on Wikipedia in this language ({snapshot} snapshot). A draw never repeats the previous letter, and with “{setting}” on it skips the last {window} letters drawn. That makes rare letters come up a little more often than shown."
+msgstr "Each letter's chance of being drawn, based on how often words start with it on Wikipedia in this language ({snapshot} snapshot). A draw never repeats the previous letter. With “{setting}” on, it also skips the last {window} letters. So rare letters come up a little more often than shown."
 
 #. Letter
 msgid "modal.oddsLetter"
@@ -401,9 +401,29 @@ msgstr "Keyboard shortcuts"
 msgid "modal.about"
 msgstr "About"
 
-#. Scattergories is the original party game by Hasbro. This is a free, unofficial companion for playing it around the table. Browse the <0>official game</0> or this app's <1>source code</1>, released under the <2>MIT license</2>.
-msgid "modal.attribution"
-msgstr "Scattergories is the original party game by Hasbro. This is a free, unofficial companion for playing it around the table. Browse the <0>official game</0> or this app's <1>source code</1>, released under the <2>MIT license</2>."
+#. About: what the app is and is not
+msgid "about.intro"
+msgstr "Scattergories is a party game by Hasbro. This free app is not made or endorsed by Hasbro. It rolls the letter, runs the timer and shows the categories."
+
+#. About: author credit, {name} is the author's name
+msgid "about.madeBy"
+msgstr "Made by {name}"
+
+#. About: link to the source code
+msgid "about.source"
+msgstr "Source code"
+
+#. About: link to the license
+msgid "about.license"
+msgstr "License"
+
+#. About: link to report a problem
+msgid "about.report"
+msgstr "Report a problem"
+
+#. About: link to Hasbro's page for the game
+msgid "about.officialGame"
+msgstr "Official game"
 
 #. This app stores settings and custom categories in your browser only.
 msgid "modal.privacy"
@@ -433,13 +453,13 @@ msgstr "Light"
 msgid "theme.dark"
 msgstr "Dark"
 
-#. A fresh app version is ready.
+#. A new version of the app is ready.
 msgid "errors.chunkTitle"
-msgstr "A fresh app version is ready."
+msgstr "A new version of the app is ready."
 
-#. One of the interface chunks changed while the app was open. Reload to continue safely.
+#. The app was updated while it was open. Reload to keep playing.
 msgid "errors.chunkBody"
-msgstr "One of the interface chunks changed while the app was open. Reload to continue safely."
+msgstr "The app was updated while it was open. Reload to keep playing."
 
 #. Recovery mode
 msgid "errors.boundaryEyebrow"
@@ -449,9 +469,9 @@ msgstr "Recovery mode"
 msgid "errors.boundaryTitle"
 msgstr "Something went wrong."
 
-#. Reload the app to reset the current round and continue playing.
+#. Reload to keep playing. This resets the current round.
 msgid "errors.boundaryBody"
-msgstr "Reload the app to reset the current round and continue playing."
+msgstr "Reload to keep playing. This resets the current round."
 
 #. Reload app
 msgid "errors.reload"

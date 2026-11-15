@@ -401,9 +401,29 @@ msgstr "Atalhos de teclado"
 msgid "modal.about"
 msgstr "Sobre"
 
-#. Scattergories is the original party game by Hasbro. This is a free, unofficial companion for playing it around the table. Browse the <0>official game</0> or this app's <1>source code</1>, released under the <2>MIT license</2>.
-msgid "modal.attribution"
-msgstr "Scattergories é o jogo de festa original da Hasbro. Este é um complemento gratuito e não oficial para jogá-lo à mesa. Veja o <0>jogo oficial</0> ou o <1>código-fonte</1> deste app, lançado sob a <2>licença MIT</2>."
+#. About: what the app is and is not
+msgid "about.intro"
+msgstr "Scattergories é um jogo de festa da Hasbro. Este app gratuito não é feito nem aprovado pela Hasbro. Sorteia a letra, controla o tempo e mostra as categorias."
+
+#. About: author credit, {name} is the author's name
+msgid "about.madeBy"
+msgstr "Feito por {name}"
+
+#. About: link to the source code
+msgid "about.source"
+msgstr "Código-fonte"
+
+#. About: link to the license
+msgid "about.license"
+msgstr "Licença"
+
+#. About: link to report a problem
+msgid "about.report"
+msgstr "Comunicar um problema"
+
+#. About: link to Hasbro's page for the game
+msgid "about.officialGame"
+msgstr "Jogo oficial"
 
 #. This app stores settings and custom categories in your browser only.
 msgid "modal.privacy"

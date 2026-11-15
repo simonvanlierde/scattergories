@@ -133,8 +133,8 @@
     color: var(--text-secondary);
   }
 
-  /* Under 21rem the header's title, chevron and three tools ran about 14px past
-     the screen; the decorative icon goes so the row fits, and the title stays. */
+  /* Under 21rem the header's title, chevron and three tools overflow the screen
+     by about 14px, so the decorative icon goes and the title stays. */
   @media (max-width: 21rem) {
     .categories-card__heading h2 > svg {
       display: none;
@@ -281,10 +281,49 @@
     color: var(--text-secondary);
   }
 
-  .modal-attribution {
-    font-size: 0.92rem;
-    line-height: 1.55;
+  .about-links {
+    list-style: none;
+    margin: var(--space-2) 0 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  /* A long label or destination wraps the destination onto its own line, not the label into a column. */
+  .about-link {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: var(--space-3);
+    min-height: 2.75rem;
+    padding-block: var(--space-1);
+    border-bottom: 1px solid var(--rule);
+    color: var(--text-primary);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .about-link:hover .about-link__label {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .about-link__label {
+    flex: 1 1 5.5rem;
+  }
+
+  .about-link__where {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    margin-inline-start: auto;
+    font-size: var(--text-sm);
+    font-weight: 400;
     color: var(--text-secondary);
+  }
+
+  .about-link__icon {
+    flex: none;
   }
 
   .about-link-inline {

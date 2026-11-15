@@ -75,8 +75,7 @@ network before using the cached shell.
 
 Translations live in `src/i18n/locales/*.po`. Each catalog holds the UI messages and
 category labels, and `en.po` holds the English source text. Message IDs are the same in
-every language, and placeholders use ICU syntax such as `{seconds}`. The rules
-attribution uses numbered tags for its three links.
+every language, and placeholders use ICU syntax such as `{seconds}`.
 
 Edit the catalogs by hand, then run `pnpm i18n:compile` to check them. Do not run
 `lingui extract`: it cannot find symbolic and dynamic IDs, so it marks valid messages

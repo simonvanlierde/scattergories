@@ -32,7 +32,7 @@ const localStorageMock = (() => {
 })();
 
 vi.stubGlobal("localStorage", localStorageMock);
-// Ensure window.localStorage is also defined in jsdom
+// Code that reads window.localStorage gets the same mock.
 if (typeof window !== "undefined") {
   Object.defineProperty(window, "localStorage", {
     value: localStorageMock,
