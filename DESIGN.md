@@ -295,7 +295,8 @@ for its urgency states. Panels and the playmat have no corners at all. Rules sep
 - **Do** keep the letter the largest thing on screen in every layout.
 - **Do** give every state change a shape cue as well as a color (dash, stroke width, beat, border).
 - **Do** keep touch targets at 44px (`2.75rem`) or more.
-- **Do** respect `prefers-reduced-motion`: animations shrink to nothing.
+- **Do** respect `prefers-reduced-motion`: animations shrink to nothing. The one exception is the
+  alarm flash, which becomes a still tint that switches on and off over the same 520ms.
 - **Do** keep a moment to a single beat: one motion that lands and stops. No loops, confetti or
   celebration, since the app doesn't score and nobody has won.
 

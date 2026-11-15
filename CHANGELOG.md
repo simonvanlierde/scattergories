@@ -7,6 +7,11 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Fixed
+
+- The pink alarm wash at "Time's up!" is one brief flash again, instead of staying on for
+  about 3 seconds. With reduced motion it shows as a still half-second tint.
+
 ## [0.4.0] - 2026-11-11
 
 ### Added

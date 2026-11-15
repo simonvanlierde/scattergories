@@ -512,7 +512,16 @@
     inset: 0;
     pointer-events: none;
     background: color-mix(in srgb, var(--danger) 22%, transparent);
+    /* The class stays on for the whole alarm window; only the flash shows. */
+    opacity: 0;
     animation: alarm-flash 520ms ease-in-out;
+  }
+
+  /* Reduced motion: the same brief cue, switched on and off with no fade. */
+  @media (prefers-reduced-motion: reduce) {
+    .app-shell.alarm::after {
+      animation: alarm-cue 520ms step-end;
+    }
   }
 
   /* Shortcuts list inside the Sheet */
@@ -582,6 +591,13 @@
     }
 
     50% {
+      opacity: 0.45;
+    }
+  }
+
+  @keyframes alarm-cue {
+    from,
+    to {
       opacity: 0.45;
     }
   }
