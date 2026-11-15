@@ -15,12 +15,10 @@ for (const viewport of [
       }));
       expect(height.page).toBeLessThanOrEqual(height.viewport);
       await app.openHelp();
-      await page.getByRole("dialog").getByText("Categories", { exact: true }).click();
       await expect(page.getByRole("link", { name: "Suggest a category (English)" })).toHaveAttribute(
         "href",
         /issues\/new\?template=category\.yml$/,
       );
-      await page.getByText("About", { exact: true }).click();
       await page.getByRole("link", { name: "Privacy (English)", exact: true }).click();
       await expect(page.getByRole("heading", { level: 1 })).toHaveText("Privacy statement");
       await expect(page.getByRole("main")).toBeFocused();

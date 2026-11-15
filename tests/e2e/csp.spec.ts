@@ -79,9 +79,9 @@ test("a round and the sheets run under the Content-Security-Policy", async ({ pa
 
   // The rules from the ? button, every section open.
   await page.getByRole("button", { name: "How to play" }).click();
-  for (const summary of await howTo.locator("summary").all()) {
-    await summary.click();
-  }
+  await howTo.locator("details").evaluateAll((sections) => {
+    for (const section of sections) (section as HTMLDetailsElement).open = true;
+  });
   await howTo.getByRole("button", { name: "Close this window" }).click();
 
   // The language switch loads another locale's chunk.
