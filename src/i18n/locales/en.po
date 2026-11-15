@@ -310,6 +310,14 @@ msgstr "Pin all"
 msgid "categories.addSectionTitle"
 msgstr "Add categories"
 
+#. Custom category already in the deck
+msgid "categories.customDuplicate"
+msgstr "That category is already in your deck."
+
+#. Custom category list is at its cap
+msgid "categories.customFull"
+msgstr "The deck is full. Remove a category to add another."
+
 #. Your deck
 msgid "categories.deckSectionTitle"
 msgstr "Your deck"

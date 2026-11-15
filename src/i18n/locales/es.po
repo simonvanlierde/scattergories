@@ -310,6 +310,14 @@ msgstr "Fijar todas"
 msgid "categories.addSectionTitle"
 msgstr "Añadir categorías"
 
+#. Custom category already in the deck
+msgid "categories.customDuplicate"
+msgstr "Esa categoría ya está en tu mazo."
+
+#. Custom category list is at its cap
+msgid "categories.customFull"
+msgstr "El mazo está lleno. Quita una categoría para añadir otra."
+
 #. Your deck
 msgid "categories.deckSectionTitle"
 msgstr "Tu baraja"

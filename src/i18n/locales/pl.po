@@ -310,6 +310,14 @@ msgstr "Przypnij wszystkie"
 msgid "categories.addSectionTitle"
 msgstr "Dodaj kategorie"
 
+#. Custom category already in the deck
+msgid "categories.customDuplicate"
+msgstr "Ta kategoria jest już w twojej talii."
+
+#. Custom category list is at its cap
+msgid "categories.customFull"
+msgstr "Talia jest pełna. Usuń kategorię, aby dodać nową."
+
 #. Your deck
 msgid "categories.deckSectionTitle"
 msgstr "Twoja talia"

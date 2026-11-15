@@ -82,3 +82,31 @@ test("@smoke syncs the document language to the selected locale", async ({ app, 
 
   await expect(page.locator("html")).toHaveAttribute("lang", "es");
 });
+
+// The sheets use their own surface colours, so the light scans above say nothing about them in dark.
+test.describe("dark theme sheets", () => {
+  test.use({ colorScheme: "dark" });
+
+  test("settings has no detectable accessibility violations", async ({ app, page }) => {
+    await app.openSettings();
+
+    expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  });
+
+  test("how to play has no detectable accessibility violations", async ({ app, page }) => {
+    await app.openHelp();
+
+    expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  });
+
+  test("the deck sheet has no detectable accessibility violations", async ({ app, page }) => {
+    await expect(app.readyHeading).toBeVisible();
+    await page.getByRole("button", { name: "Customize deck" }).click();
+    const deck = page.getByRole("dialog", { name: "Customize deck" });
+    await expect(deck.locator(".deck-bulk-action").first()).toBeVisible();
+    // The sheet scales in from 0.96, so let it settle before axe samples contrast.
+    await deck.evaluate((el) => Promise.all(el.getAnimations({ subtree: true }).map((a) => a.finished)));
+
+    expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  });
+});

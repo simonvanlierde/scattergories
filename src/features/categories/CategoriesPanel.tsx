@@ -4,6 +4,7 @@ import type { RefObject } from "react";
 import { useState } from "react";
 import { PACKS } from "@/domain/deck";
 import { catCountDefault, catCountMax, catCountMin } from "@/domain/game/constants";
+import type { CustomCategoryProblem } from "@/features/settings/SettingsProvider";
 import { Button } from "@/shared/ui/Button";
 import { cx } from "@/shared/ui/cx";
 import { DebouncedNumberField } from "@/shared/ui/DebouncedNumberField";
@@ -30,7 +31,7 @@ interface CategoriesState {
 }
 
 interface CategoriesActions {
-  onAddCustom: (name: string) => void;
+  onAddCustom: (name: string) => CustomCategoryProblem | undefined;
   onRemoveCustom: (name: string) => void;
   onRemoveBuiltin: (name: string) => void;
   onTogglePin: (name: string) => void;
@@ -78,14 +79,19 @@ function AddCustomRow({
   onAddCustom,
 }: {
   inputRef: RefObject<HTMLInputElement | null>;
-  onAddCustom: (name: string) => void;
+  onAddCustom: (name: string) => CustomCategoryProblem | undefined;
 }) {
   const { _: t } = useLingui();
   // Local state keeps keystrokes from re-rendering the (large) deck list.
   const [value, setValue] = useState("");
+  const [problem, setProblem] = useState<CustomCategoryProblem>();
   const submit = () => {
-    onAddCustom(value);
-    setValue("");
+    const refused = onAddCustom(value);
+    setProblem(refused);
+    // A refused name stays in the field, so the player can edit it instead of retyping.
+    if (!refused) {
+      setValue("");
+    }
   };
   return (
     <div className="deck-add__custom">
@@ -97,7 +103,12 @@ function AddCustomRow({
         aria-label={t("settings.addCustom")}
         maxLength={50}
         placeholder={`${t("settings.addCustom")}...`}
-        onChange={(event) => setValue(event.target.value)}
+        aria-invalid={problem ? true : undefined}
+        aria-describedby={problem ? "newCategoryError" : undefined}
+        onChange={(event) => {
+          setValue(event.target.value);
+          setProblem(undefined);
+        }}
         onKeyDown={(event) => {
           if (event.key === "Enter") {
             event.preventDefault();
@@ -112,6 +123,11 @@ function AddCustomRow({
         aria-label={t("buttons.add")}
         title={t("buttons.addTooltip")}
       />
+      {problem && (
+        <p id="newCategoryError" className="deck-add__error" role="alert">
+          {problem === "full" ? t("categories.customFull") : t("categories.customDuplicate")}
+        </p>
+      )}
     </div>
   );
 }
