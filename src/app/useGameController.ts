@@ -19,11 +19,11 @@ const HowToPlayDialog = lazy(async () => ({
 
 /**
  * The one boundary between src/app/ and the feature hooks, grouped by concern:
- * `round` (letter and clock), `deck` (drawn categories and deck edits),
+ * `round` (letter and clock), `deck` (drawn categories; the panel edits the deck itself),
  * `settings` (saved values and their setters) and `app` (dialogs, language, errors).
  */
 function useGameController() {
-  const { settings, update, ...deckEdits } = useSettings();
+  const { settings, update } = useSettings();
   const { i18n } = useLingui();
   const promptDeck = usePromptDeckState(settings.promptDeckPreference, update);
   const roundSetup = useRoundSetup(settings);
@@ -68,12 +68,9 @@ function useGameController() {
   return {
     round,
     deck: {
-      ...board,
-      ...deckEdits,
+      board,
       ...promptDeck,
       availableCount: roundSetup.availableCount,
-      redraw: () => board.redrawCategories(true),
-      inputRef: app.newCategoryInputRef,
     },
     settings: {
       ...settings,
