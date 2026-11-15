@@ -11,6 +11,18 @@ feature form. For a bug, say what you did, what you expected and what happened, 
 version you used. A question the README and docs don't answer is a gap in the docs: open
 a feature request for it.
 
+## Suggest a category
+
+Use the [category form](https://github.com/simonvanlierde/scattergories/issues/new?template=category.yml),
+also linked from How to play in the app. Give the wording, its language, the audience and
+difficulty, example answers for at least three letters, and where the idea comes from.
+
+A suggestion is a proposal. The maintainer reviews it for wording, fit with the pack's
+audience, answers for most letters, and the right to share it. Only reviewed categories enter
+a built-in pack, and the app never adds one on its own. To save a round trip you can open a
+pull request that adds the category to every locale in `src/i18n/locales/` and to a pack in
+[`src/domain/deck.ts`](../src/domain/deck.ts), after the issue is agreed.
+
 ## Scope and response
 
 One person maintains scattergories, in their own time. Expect a reply to an issue or

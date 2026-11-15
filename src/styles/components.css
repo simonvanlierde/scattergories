@@ -1,5 +1,5 @@
 @layer components {
-  .controlbar h1,
+  .controlbar__title,
   .app-error h1,
   .app-loading h1 {
     font-family: var(--font-display);
@@ -12,7 +12,7 @@
   }
 
   /* Quieter footer wordmark — smaller than the error/loading screen headings. */
-  .controlbar h1 {
+  .controlbar__title {
     font-size: clamp(1rem, 1.6vw, 1.25rem);
   }
 

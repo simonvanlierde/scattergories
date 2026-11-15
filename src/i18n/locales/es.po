@@ -181,29 +181,50 @@ msgstr "Espacio, R, P, C y ? controlan la ronda desde el teclado."
 msgid "packs.classic.label"
 msgstr "Clásico"
 
+msgid "packs.classic.hint"
+msgstr "todas las edades"
+
 #. Foodie
 msgid "packs.foodie.label"
 msgstr "Comida"
+
+msgid "packs.foodie.hint"
+msgstr "fácil"
 
 #. Pop Culture
 msgid "packs.popCulture.label"
 msgstr "Cultura pop"
 
+msgid "packs.popCulture.hint"
+msgstr "más difícil"
+
 #. Travel
 msgid "packs.travel.label"
 msgstr "Viajes"
+
+msgid "packs.travel.hint"
+msgstr "media"
 
 #. Kids
 msgid "packs.kids.label"
 msgstr "Niños"
 
+msgid "packs.kids.hint"
+msgstr "jugadores jóvenes"
+
 #. Around the House
 msgid "packs.household.label"
 msgstr "En casa"
 
+msgid "packs.household.hint"
+msgstr "fácil"
+
 #. Grown-ups
 msgid "packs.grownUps.label"
 msgstr "Para adultos"
+
+msgid "packs.grownUps.hint"
+msgstr "solo adultos"
 
 #. Game board
 msgid "playmat.label"
@@ -1128,3 +1149,6 @@ msgstr "Privacidad (inglés)"
 
 msgid "modal.accessibilityLink"
 msgstr "Accesibilidad (inglés)"
+
+msgid "modal.suggestCategoryLink"
+msgstr "Sugerir una categoría (inglés)"
