@@ -5,6 +5,8 @@ function isTextEntryTarget(target: HTMLElement | null, tag: string | undefined):
 }
 
 export interface ShortcutHandlers {
+  /** Off by user choice (WCAG 2.1.4): no key does anything. */
+  isEnabled?: boolean;
   onSpace?: () => void;
   onR?: () => void;
   onP?: () => void;
@@ -14,6 +16,10 @@ export interface ShortcutHandlers {
 
 export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
   const onShortcut = useEffectEvent((event: KeyboardEvent) => {
+    if (handlers.isEnabled === false) {
+      return;
+    }
+
     // Browser/OS chords (Cmd+C, Ctrl+R, Alt+…) are never game shortcuts.
     if (event.metaKey || event.ctrlKey || event.altKey) {
       return;
@@ -42,22 +48,24 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
       return;
     }
 
-    switch (event.key.toLowerCase()) {
-      case "r":
+    // Letters match the physical key (event.code) so they work on non-Latin layouts
+    // such as Greek; "?" has no fixed key across layouts, so it matches the character.
+    switch (event.code) {
+      case "KeyR":
         handlers.onR?.();
-        break;
-      case "p":
+        return;
+      case "KeyP":
         handlers.onP?.();
-        break;
-      case "c":
+        return;
+      case "KeyC":
         handlers.onC?.();
-        break;
-      case "?":
-        event.preventDefault();
-        handlers.onHelp?.();
-        break;
+        return;
       default:
         break;
+    }
+    if (event.key === "?") {
+      event.preventDefault();
+      handlers.onHelp?.();
     }
   });
 

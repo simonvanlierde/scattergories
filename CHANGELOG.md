@@ -9,13 +9,35 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- A "Keyboard shortcuts" switch in Settings turns off the single-key shortcuts (Space, R, P, C
+  and ?). It is on by default and remembered.
 - A "Suggest a category" link in How to play opens a form for proposing a category. The
   contributor guide explains how suggestions are reviewed.
 
 ### Changed
 
+- The offline cache keeps the last two builds instead of growing with every release, and a first
+  visit stores only the shell, English, your language and the Latin fonts. Other languages are
+  stored when you first use them.
+- Hashed files are served from the cache without a refresh, and a slow connection falls back to
+  the installed app after 3.5 seconds.
 - The pack picker names each pack's audience or difficulty, such as "Kids · young players",
   in every language.
+
+### Fixed
+
+- The screen stays awake for the whole round after you switch to another app and back.
+- Editing the deck while the categories roll no longer cancels the roll.
+- Screen readers no longer announce toggles as contradictions such as "Unmute, pressed". The
+  mute button keeps its changing name, and the pin and category toggles keep a fixed name with
+  their state. Pin chips are named by their visible text, for example "1 Birds".
+- After the first-run rules close, focus lands on the main button instead of the page top.
+  The language list marks each language for screen readers, and the page heading now comes
+  first.
+- The deck list sorts by your language's alphabet, and a custom category is checked for
+  duplicates with that language's capitalization rules.
+- The R, P and C shortcuts now work on non-Latin keyboard layouts such as Greek.
+- The service worker no longer stores an HTML error page returned for a font or unknown file.
 
 ## [0.4.0] - 2026-11-11
 

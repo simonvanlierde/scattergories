@@ -79,3 +79,14 @@ it("lists each letter's chance in the rules as a table", async () => {
   expect(note).toHaveTextContent("with “Avoid letter repeats” on it skips the last 8 letters drawn");
   expect(note).toHaveTextContent("rare letters come up a little more often than shown");
 });
+
+it("moves focus to the main control after the first-run rules close", async () => {
+  const user = userEvent.setup();
+  render(<App />);
+
+  await screen.findByRole("dialog");
+  await user.keyboard("{Escape}");
+
+  await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+  expect(screen.getByRole("button", { name: "Roll a letter" })).toHaveFocus();
+});

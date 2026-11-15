@@ -85,3 +85,15 @@ it("links the category suggestion form from How to play", async () => {
   const link = await screen.findByRole("link", { name: "Suggest a category (English)" });
   expect(link).toHaveAttribute("href", expect.stringContaining("/issues/new?template=category.yml"));
 });
+
+it("puts the page's only h1 first and tags each language option with its own lang", async () => {
+  const { user } = await renderApp();
+
+  const [heading] = screen.getAllByRole("heading");
+  expect(heading).toHaveProperty("tagName", "H1");
+  expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+
+  await user.click(screen.getByRole("button", { name: "Settings" }));
+  const option = await screen.findByRole("option", { name: "Nederlands" });
+  expect(option).toHaveAttribute("lang", "nl");
+});

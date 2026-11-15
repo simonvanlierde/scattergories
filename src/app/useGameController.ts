@@ -42,7 +42,7 @@ function useGameController() {
     pinned: roundSetup.pinned,
     count: roundSetup.normalizedCategoryCount,
     // Deck edits made mid-round wait for the next redraw.
-    deferCompose: round.phase === "buffer" || round.phase === "running",
+    deferCompose: round.phase !== "idle" && round.phase !== "done",
   });
   const app = useAppControls({ i18n });
   const openHowToPlay = () => app.setIsHowToPlayOpen(true);
@@ -53,6 +53,7 @@ function useGameController() {
   const canReroll = round.phase === "buffer" || (round.phase === "running" && round.isPaused);
 
   useKeyboardShortcuts({
+    isEnabled: settings.keyboardShortcuts,
     onSpace: round.primaryAction,
     onR: () => {
       if (canReroll) {
@@ -79,7 +80,7 @@ function useGameController() {
       gameSeconds: roundSetup.gameSeconds,
       bufferSeconds: roundSetup.bufferSeconds,
       update,
-      toggle: (key: "isMuted" | "avoidRepeats") => update(key, !settings[key]),
+      toggle: (key: "isMuted" | "avoidRepeats" | "keyboardShortcuts") => update(key, !settings[key]),
       toggleTheme: () => update("theme", settings.theme === "light" ? "dark" : "light"),
     },
     app: {

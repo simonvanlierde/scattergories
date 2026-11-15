@@ -84,9 +84,10 @@ it("mutes and unmutes from the footer", async () => {
   const { user } = await renderApp();
 
   const mute = screen.getByRole("button", { name: "Mute" });
-  expect(mute).toHaveAttribute("aria-pressed", "false");
+  // The name flips, so it must not also claim a pressed state ("Unmute, pressed").
+  expect(mute).not.toHaveAttribute("aria-pressed");
 
   await user.click(mute);
 
-  expect(screen.getByRole("button", { name: "Unmute" })).toHaveAttribute("aria-pressed", "true");
+  expect(screen.getByRole("button", { name: "Unmute" })).not.toHaveAttribute("aria-pressed");
 });

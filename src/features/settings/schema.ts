@@ -32,6 +32,8 @@ interface Settings {
   isMuted: boolean;
   /** When true, a letter draw skips the last RECENT_LETTER_WINDOW letters (see domain/deck). */
   avoidRepeats: boolean;
+  /** Single-key shortcuts (Space, R, P, C, ?); off lets speech-input and assistive-tech users avoid stray keys. */
+  keyboardShortcuts: boolean;
   theme: Theme;
   themeSource: ThemeSource;
   promptDeckPreference: PromptDeckPreference;
@@ -68,6 +70,7 @@ function getDefaultSettings(): Settings {
     pinned: [],
     isMuted: false,
     avoidRepeats: true,
+    keyboardShortcuts: true,
     theme: getPreferredTheme(),
     themeSource: "system",
     promptDeckPreference: "auto",
@@ -144,6 +147,8 @@ function sanitizeSettings(raw: unknown): Settings {
     pinned,
     isMuted: typeof parsed.isMuted === "boolean" ? parsed.isMuted : fallback.isMuted,
     avoidRepeats: typeof parsed.avoidRepeats === "boolean" ? parsed.avoidRepeats : fallback.avoidRepeats,
+    keyboardShortcuts:
+      typeof parsed.keyboardShortcuts === "boolean" ? parsed.keyboardShortcuts : fallback.keyboardShortcuts,
     theme:
       parsed.themeSource === "user" && (parsed.theme === "light" || parsed.theme === "dark")
         ? parsed.theme
