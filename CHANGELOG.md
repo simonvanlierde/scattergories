@@ -7,6 +7,8 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-11-15
+
 ### Changed
 
 - The privacy and accessibility pages show their links and buttons in your language. The statements
@@ -196,7 +198,8 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   Greek.
 - Install it as an app and play offline. No account or server needed.
 
-[Unreleased]: https://github.com/simonvanlierde/scattergories/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/simonvanlierde/scattergories/compare/v0.5.1...HEAD
+[0.5.1]: https://github.com/simonvanlierde/scattergories/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/simonvanlierde/scattergories/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/simonvanlierde/scattergories/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/simonvanlierde/scattergories/compare/v0.2.0...v0.3.0
