@@ -39,6 +39,7 @@
     "test": "vitest run",
     "coverage": "vitest run --coverage",
     "budget": "node scripts/check-bundle-budgets.mjs",
+    "licenses": "pnpm licenses list --prod --json | node scripts/check-licenses.mjs",
     "verify": "pnpm run check && pnpm run typecheck && pnpm run coverage && pnpm run build && pnpm run budget",
     "icons": "node scripts/generate-icons.mjs",
     "test:e2e": "playwright test",
