@@ -24,14 +24,6 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - The pack picker names each pack's audience or difficulty, such as "Kids · young players",
   in every language.
 
-### Changed
-
-- The offline cache keeps the last two builds instead of growing with every release, and a first
-  visit stores only the shell, English, your language and the Latin fonts. Other languages are
-  stored when you first use them.
-- Hashed files are served from the cache without a refresh, and a slow connection falls back to
-  the installed app after 3.5 seconds.
-- Category names on a phone are a size larger, for reading from across the table. A name that
   wraps to two lines still fits its row, so twelve categories still fit on screen.
 - Greek text uses Noto Serif Display for the letter and titles and Inter for the rest, instead
   of whatever fonts the device has. Only the Greek parts of these fonts are downloaded.
