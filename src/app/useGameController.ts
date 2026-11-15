@@ -1,9 +1,9 @@
 import { useLingui } from "@lingui/react";
 import { lazy } from "react";
+import { useCategoryBoard } from "@/features/categories/useCategoryBoard";
 import { useRound } from "@/features/round/useRound";
 import { useSettings } from "@/features/settings/SettingsProvider";
 import { useAppControls } from "./useAppControls";
-import { useCategoryBoard } from "./useCategoryBoard";
 import { useKeyboardShortcuts } from "./useKeyboardShortcuts";
 import { usePromptDeckState } from "./usePromptDeckState";
 import { useRoundSetup } from "./useRoundSetup";
