@@ -1,11 +1,10 @@
 import { useLingui } from "@lingui/react";
 import { lazy } from "react";
+import { useCategoryBoard } from "@/features/categories/useCategoryBoard";
 import { useRound } from "@/features/round/useRound";
 import { useSettings } from "@/features/settings/SettingsProvider";
 import { useAppControls } from "./useAppControls";
-import { useCategoryBoard } from "./useCategoryBoard";
 import { useKeyboardShortcuts } from "./useKeyboardShortcuts";
-import { usePromptDeckState } from "./usePromptDeckState";
 import { useRoundSetup } from "./useRoundSetup";
 
 // NOTE: fetch starts at module load (app boot), not at first Suspense — first-run
@@ -18,14 +17,17 @@ const HowToPlayDialog = lazy(async () => ({
 }));
 
 /**
- * The one boundary between src/app/ and the feature hooks, grouped by concern:
- * `round` (letter and clock), `deck` (drawn categories and deck edits),
+ * The one place the game screen calls the feature hooks, grouped by concern:
+ * `round` (letter and clock), `deck` (drawn categories; the panel edits the deck itself),
  * `settings` (saved values and their setters) and `app` (dialogs, language, errors).
  */
 function useGameController() {
-  const { settings, update, ...deckEdits } = useSettings();
+  const { settings, update } = useSettings();
   const { i18n } = useLingui();
-  const promptDeck = usePromptDeckState(settings.promptDeckPreference, update);
+  // The drawn categories are what every player reads, so they show by default on
+  // every layout; only an explicit collapse hides them.
+  const isPromptDeckOpen = settings.promptDeckPreference !== "collapsed";
+  const togglePromptDeck = () => update("promptDeckPreference", isPromptDeckOpen ? "collapsed" : "open");
   const roundSetup = useRoundSetup(settings);
   const round = useRound({
     gameSeconds: roundSetup.gameSeconds,
@@ -37,9 +39,9 @@ function useGameController() {
     onLetterPicked: () => board.redrawCategories(true),
   });
   const board = useCategoryBoard({
-    customCategories: roundSetup.customCategories,
-    deckBuiltins: roundSetup.deckBuiltins,
-    pinned: roundSetup.pinned,
+    customCategories: settings.customCategories,
+    deckBuiltins: settings.deckBuiltins,
+    pinned: settings.pinned,
     count: roundSetup.normalizedCategoryCount,
     // Deck edits made mid-round wait for the next redraw.
     deferCompose: round.phase !== "idle" && round.phase !== "done",
@@ -61,19 +63,17 @@ function useGameController() {
       }
     },
     onP: round.togglePause,
-    onC: promptDeck.togglePromptDeck,
+    onC: togglePromptDeck,
     onHelp: openHowToPlay,
   });
 
   return {
     round,
     deck: {
-      ...board,
-      ...deckEdits,
-      ...promptDeck,
+      board,
+      isPromptDeckOpen,
+      togglePromptDeck,
       availableCount: roundSetup.availableCount,
-      redraw: () => board.redrawCategories(true),
-      inputRef: app.newCategoryInputRef,
     },
     settings: {
       ...settings,

@@ -117,4 +117,7 @@ function useCategoryBoard(params: UseCategoryBoardParams) {
   };
 }
 
+type CategoryBoard = ReturnType<typeof useCategoryBoard>;
+
+export type { CategoryBoard };
 export { useCategoryBoard };

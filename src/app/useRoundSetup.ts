@@ -18,7 +18,6 @@ function useRoundSetup(settings: {
   bufferSecondsInput: string;
   deckBuiltins: string[];
   customCategories: string[];
-  pinned: string[];
 }) {
   const gameSeconds = clampInt(settings.durationInput, durationMin, durationMax, durationDefault);
   const bufferSeconds = clampInt(settings.bufferSecondsInput, bufferSecondsMin, bufferSecondsMax, bufferSecondsDefault);
@@ -28,9 +27,6 @@ function useRoundSetup(settings: {
   const normalizedCategoryCount = getDrawCount(categoryCount, availableCount);
 
   return {
-    deckBuiltins: settings.deckBuiltins,
-    customCategories: settings.customCategories,
-    pinned: settings.pinned,
     gameSeconds,
     bufferSeconds,
     normalizedCategoryCount,

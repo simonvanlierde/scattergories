@@ -35,7 +35,7 @@ function ControlBar({ game }: { game: GameController }) {
       <div
         className={cx(
           "controlbar__brand",
-          (game.round.phase === "spinning" || game.deck.spinning) && "controlbar__brand--rolling",
+          (game.round.phase === "spinning" || game.deck.board.spinning) && "controlbar__brand--rolling",
         )}
       >
         {/* Big enough to carry all three glyphs — they are what visibly roll. */}
@@ -92,8 +92,6 @@ interface PlayGridProps {
 }
 
 function PlayGrid({ game }: PlayGridProps) {
-  const canEdit = canEditDeck(game.round.phase, game.round.isPaused);
-
   return (
     <section className={cx("play-grid", !game.deck.isPromptDeckOpen && "play-grid--deck-collapsed")}>
       <Playmat
@@ -113,34 +111,12 @@ function PlayGrid({ game }: PlayGridProps) {
       />
 
       <CategoriesPanel
-        categories={{
-          availableCount: game.deck.availableCount,
-          catCountInput: game.settings.catCountInput,
-          customCategories: game.settings.customCategories,
-          deckBuiltins: game.settings.deckBuiltins,
-          pinned: game.settings.pinned,
-          drawnCategories: game.deck.drawnCategories,
-          drawnCustomCategories: game.deck.drawnCustom,
-          isLanding: game.deck.landing,
-          isRerolling: game.deck.spinning,
-          isPromptDeckOpen: game.deck.isPromptDeckOpen,
-          canEdit,
-        }}
-        inputRef={game.deck.inputRef}
-        actions={{
-          onAddCustom: game.deck.addCustom,
-          onRemoveCustom: game.deck.removeCustom,
-          onRemoveBuiltin: game.deck.removeBuiltin,
-          onTogglePin: game.deck.togglePin,
-          onAddPack: game.deck.addPack,
-          onRemoveAllCustom: game.deck.removeAllCustom,
-          onRemoveAllBuiltins: game.deck.removeAllBuiltins,
-          onCatCountChange: (value) => game.settings.update("catCountInput", value),
-          onRedraw: game.deck.redraw,
-          onTogglePinAll: game.deck.togglePinAll,
-          onTogglePromptDeck: game.deck.togglePromptDeck,
-          onTogglePause: game.round.togglePause,
-        }}
+        board={game.deck.board}
+        availableCount={game.deck.availableCount}
+        isPromptDeckOpen={game.deck.isPromptDeckOpen}
+        canEdit={canEditDeck(game.round.phase, game.round.isPaused)}
+        onTogglePromptDeck={game.deck.togglePromptDeck}
+        onTogglePause={game.round.togglePause}
       />
     </section>
   );

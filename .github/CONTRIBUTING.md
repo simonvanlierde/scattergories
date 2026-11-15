@@ -78,7 +78,7 @@ The [prek](../.pre-commit-config.yaml) pre-commit hooks format, lint and spell-c
 
 [`docs/architecture.md`](../docs/architecture.md) has the layer diagram. Two rules:
 
-- `useGameController` is the one boundary between `src/app/` and the feature hooks. Go through it rather than reaching into feature internals.
+- The game screen reaches the feature hooks only through `useGameController`, and renders each feature through its public component. Keep feature logic in `src/features/`, not in the shell.
 - Round state runs on a `useReducer`. Saved settings use hooks backed by localStorage. Keep short-lived UI state next to the component that owns it.
 
 Record a design decision that isn't obvious as an ADR under [`docs/adr/`](../docs/adr/).
