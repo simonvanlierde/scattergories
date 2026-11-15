@@ -40,9 +40,8 @@ function ControlBar({ game }: { game: GameController }) {
       >
         {/* Big enough to carry all three glyphs — they are what visibly roll. */}
         <BrandMark size={32} />
-        {/* The page's real <h1> is the first thing in <main>; this wordmark is
-            footer chrome, so it drops its heading role (styles still key on h1). */}
-        <h1 role="presentation">{t("title")}</h1>
+        {/* The page's real <h1> is the first thing in <main>; this wordmark is footer chrome. */}
+        <p className="controlbar__title">{t("title")}</p>
       </div>
 
       <div className="controlbar__actions">
