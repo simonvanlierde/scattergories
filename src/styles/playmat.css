@@ -518,17 +518,20 @@
        instead of owning a column, and a name too long for one line wraps to the
        chip's full width instead of hanging off a fixed indent.
 
-       The name is set one step down from the wider layouts and the side padding
-       is trimmed, which is what keeps it on one line: a size up, a sixth of the
-       built-in names spilled onto a second line and grew the card. One line at
-       this size reads better than two at the next size up. The 44px tap target
-       comes from min-height, so nothing shrinks under the thumb. */
+       The name is set at the wider layouts' size, for reading from across the
+       table, with tighter lines and trimmed side padding: a name that wraps to
+       two lines still fits the 3.5rem row, so the board keeps its height. The
+       44px tap target comes from min-height, so nothing shrinks under the thumb. */
     .category-checklist__chip {
       display: block;
       align-content: center;
       min-height: 3.5rem;
       padding-inline: var(--space-1-5);
-      font-size: var(--text-md);
+      font-size: var(--text-lg);
+    }
+
+    .category-checklist__label {
+      line-height: 1.15;
     }
 
     .category-checklist__item {

@@ -327,5 +327,5 @@ shortcut does the same thing. The saved panel preference remembers the choice; r
 panel restores the category board without clearing the deck. There is no separate mode picker.
 Folding remains available during play and does not reset the letter or clock.
 
-Phone category rows reserve 3.5rem for two-line names and have no extra margin between rows,
-so changing the draw does not trade letter size for wrapped labels.
+Phone category rows reserve 3.5rem for two-line names (`--text-lg` at line-height 1.15) and have
+no extra margin between rows, so changing the draw does not trade letter size for wrapped labels.

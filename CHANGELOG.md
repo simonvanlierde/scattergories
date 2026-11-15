@@ -9,6 +9,8 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
+- Category names on a phone are a size larger, for reading from across the table. A name that
+  wraps to two lines still fits its row, so twelve categories still fit on screen.
 - Greek text uses Noto Serif Display for the letter and titles and Inter for the rest, instead
   of whatever fonts the device has. Only the Greek parts of these fonts are downloaded.
 - The second round control is now called "Skip round", so the end of a round no longer shows
