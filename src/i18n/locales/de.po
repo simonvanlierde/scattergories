@@ -310,6 +310,14 @@ msgstr "Alle fixieren"
 msgid "categories.addSectionTitle"
 msgstr "Kategorien hinzufügen"
 
+#. Custom category already in the deck
+msgid "categories.customDuplicate"
+msgstr "Diese Kategorie ist schon in deinem Stapel."
+
+#. Custom category list is at its cap
+msgid "categories.customFull"
+msgstr "Der Stapel ist voll. Entferne eine Kategorie, um eine neue hinzuzufügen."
+
 #. Your deck
 msgid "categories.deckSectionTitle"
 msgstr "Dein Deck"

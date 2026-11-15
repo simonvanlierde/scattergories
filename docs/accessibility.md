@@ -18,11 +18,11 @@ Players write answers on paper and score them together. The app does not offer a
 
 Scattergories aims to meet [WCAG 2.2](https://www.w3.org/TR/WCAG22/) at level AA.
 
-Its conformance is **not assessed**: a complete check against every criterion has not been done. The [assessment record](https://github.com/simonvanlierde/scattergories/blob/main/docs/accessibility-assessment.md) lists the evidence and remaining checks. There has been no independent audit.
+Its conformance is **partially conformant**: we know of no failing criterion, but a few criteria still need a manual check. The [assessment record](https://github.com/simonvanlierde/scattergories/blob/main/docs/accessibility-assessment.md) gives a result for every level A and AA criterion. There has been no independent audit.
 
 ## Known problems
 
-None that we know of yet. Automated checks do not cover every barrier. Screen-reader use, browser zoom and the full keyboard flow still need manual assessment.
+None found so far. Screen-reader use, browser zoom, text spacing and forced colors still need manual assessment.
 
 ## Tell us about a problem
 
@@ -42,14 +42,14 @@ The repository has automated checks for:
 
 The browser checks run in Chromium. Passing them does not establish WCAG conformance. See the [tests](https://github.com/simonvanlierde/scattergories/tree/main/tests) for their scope.
 
-No manual screen-reader or assistive-technology test is recorded. Automated keyboard tests do not replace testing the whole app with a keyboard. Scattergories needs HTML, CSS and JavaScript.
+No manual screen-reader or assistive-technology test is recorded. Scattergories needs HTML, CSS and JavaScript.
 
 ## About this statement
 
 Prepared: 7 November 2026.
 
-Last reviewed: 7 November 2026.
+Last reviewed: 15 November 2026.
 
 Next review: within 12 months, or at the next major release if sooner.
 
-Method: self-assessment of the repository's automated checks; the full WCAG assessment remains open.
+Method: self-assessment of every level A and AA criterion, using automated browser checks, a scripted keyboard run and a reading of the code. No assistive technology was used.

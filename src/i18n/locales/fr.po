@@ -310,6 +310,14 @@ msgstr "Tout épingler"
 msgid "categories.addSectionTitle"
 msgstr "Ajouter des catégories"
 
+#. Custom category already in the deck
+msgid "categories.customDuplicate"
+msgstr "Cette catégorie est déjà dans votre jeu."
+
+#. Custom category list is at its cap
+msgid "categories.customFull"
+msgstr "Le jeu est plein. Retirez une catégorie pour en ajouter une autre."
+
 #. Your deck
 msgid "categories.deckSectionTitle"
 msgstr "Ton paquet"

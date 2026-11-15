@@ -56,6 +56,22 @@ it("adds and removes a custom category from the deck", async () => {
   expect(within(dialog).getByRole("list", { name: DECK_LABEL })).not.toHaveTextContent(CUSTOM_CATEGORY);
 });
 
+it("says why a repeated custom category was refused and keeps what was typed", async () => {
+  const { user } = await renderApp();
+  const dialog = await openCustomizeDeck(user);
+
+  const input = within(dialog).getByRole("textbox", { name: "Add custom category" });
+  await user.type(input, `${CUSTOM_CATEGORY}{Enter}`);
+  await user.type(input, `${CUSTOM_CATEGORY.toUpperCase()}{Enter}`);
+
+  expect(within(dialog).getByRole("alert")).toHaveTextContent("That category is already in your deck.");
+  expect(input).toHaveAttribute("aria-invalid", "true");
+  expect(input).toHaveValue(CUSTOM_CATEGORY.toUpperCase());
+
+  await user.type(input, "x");
+  expect(within(dialog).queryByRole("alert")).not.toBeInTheDocument();
+});
+
 it("shows guidance when the deck is emptied and accepts a custom entry", async () => {
   const { user } = await renderApp();
   const dialog = await openCustomizeDeck(user);

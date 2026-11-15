@@ -3,7 +3,7 @@ import { ChevronDown, Pin, Plus, RefreshCw, SlidersHorizontal, Tags, Trash2 } fr
 import { useState } from "react";
 import { PACKS } from "@/domain/deck";
 import { catCountDefault, catCountMax, catCountMin } from "@/domain/game/constants";
-import { useSettings } from "@/features/settings/SettingsProvider";
+import { type CustomCategoryProblem, useSettings } from "@/features/settings/SettingsProvider";
 import { Button } from "@/shared/ui/Button";
 import { cx } from "@/shared/ui/cx";
 import { DebouncedNumberField } from "@/shared/ui/DebouncedNumberField";
@@ -48,9 +48,14 @@ function AddCustomRow() {
   const { addCustom } = useSettings();
   // Local state keeps keystrokes from re-rendering the (large) deck list.
   const [value, setValue] = useState("");
+  const [problem, setProblem] = useState<CustomCategoryProblem>();
   const submit = () => {
-    addCustom(value);
-    setValue("");
+    const refused = addCustom(value);
+    setProblem(refused);
+    // A refused name stays in the field, so the player can edit it instead of retyping.
+    if (!refused) {
+      setValue("");
+    }
   };
   return (
     <div className="deck-add__custom">
@@ -61,7 +66,12 @@ function AddCustomRow() {
         aria-label={t("settings.addCustom")}
         maxLength={50}
         placeholder={`${t("settings.addCustom")}...`}
-        onChange={(event) => setValue(event.target.value)}
+        aria-invalid={problem ? true : undefined}
+        aria-describedby={problem ? "newCategoryError" : undefined}
+        onChange={(event) => {
+          setValue(event.target.value);
+          setProblem(undefined);
+        }}
         onKeyDown={(event) => {
           if (event.key === "Enter") {
             event.preventDefault();
@@ -76,6 +86,11 @@ function AddCustomRow() {
         aria-label={t("buttons.add")}
         title={t("buttons.addTooltip")}
       />
+      {problem && (
+        <p id="newCategoryError" className="deck-add__error" role="alert">
+          {problem === "full" ? t("categories.customFull") : t("categories.customDuplicate")}
+        </p>
+      )}
     </div>
   );
 }
