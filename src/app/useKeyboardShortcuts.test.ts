@@ -56,6 +56,15 @@ describe("useKeyboardShortcuts", () => {
     expect(onC).toHaveBeenCalledOnce();
   });
 
+  it("follows the typed letter, not the key position, on a Dvorak layout", () => {
+    const onR = vi.fn();
+    const onP = vi.fn();
+    renderHook(() => useKeyboardShortcuts({ onR, onP }));
+    fireKey("r", "KeyP");
+    expect(onR).toHaveBeenCalledOnce();
+    expect(onP).not.toHaveBeenCalled();
+  });
+
   it("calls onHelp for ? and ignores every key when disabled", () => {
     const onHelp = vi.fn();
     const onSpace = vi.fn();

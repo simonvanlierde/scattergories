@@ -7,14 +7,23 @@ type Listener = (event: Record<string, unknown>) => void;
 const source = readFileSync(new URL("../public/sw.js", import.meta.url), "utf8")
   .replace("/* BUILD */ 0", "200")
   .replace("/* PRECACHE */ []", JSON.stringify(["/", "/assets/app-1.js"]))
-  .replace("/* LAZY */ []", JSON.stringify(["/assets/fr-1.js"]));
+  .replace(
+    "/* LAZY */ []",
+    JSON.stringify([
+      "/assets/fr-1.js",
+      "/assets/geist-latin-ext-wght-normal-1.woff2",
+      "/assets/inter-greek-wght-normal-1.woff2",
+    ]),
+  );
 
 const js = (body = "x") => new Response(body, { headers: { "content-type": "text/javascript" } });
+const font = () => new Response("x", { headers: { "content-type": "font/woff2" } });
 const html = () => new Response("<!doctype html>", { headers: { "content-type": "text/html" } });
 
 function boot(
   stored: Record<string, Record<string, Response>> = {},
   fetcher: (url: string, signal?: AbortSignal) => Promise<Response>,
+  languages = ["fr-FR"],
 ) {
   const listeners: Record<string, Listener> = {};
   const key = (r: RequestInfo) => new URL(typeof r === "string" ? r : (r as Request).url, "https://x.test").pathname;
@@ -35,7 +44,7 @@ function boot(
   };
   const self = {
     location: { origin: "https://x.test" },
-    navigator: { languages: ["fr-FR"] },
+    navigator: { languages },
     clients: { claim: async () => undefined },
     skipWaiting: async () => undefined,
     addEventListener: (type: string, fn: Listener) => {
@@ -72,6 +81,20 @@ describe("service worker", () => {
     expect(Object.keys(stored["scattergories-200"] ?? {}).sort()).toEqual(["/", "/assets/app-1.js", "/assets/fr-1.js"]);
   });
 
+  it("also installs the font subset a language needs", async () => {
+    const fetcher = async (url: string) => {
+      const path = new URL(url, "https://x.test").pathname;
+      return path === "/" ? html() : path.endsWith(".woff2") ? font() : js();
+    };
+    const pl = boot({}, fetcher, ["pl-PL"]);
+    await pl.run("install", {});
+    expect(Object.keys(pl.stored["scattergories-200"] ?? {})).toContain("/assets/geist-latin-ext-wght-normal-1.woff2");
+    expect(Object.keys(pl.stored["scattergories-200"] ?? {})).not.toContain("/assets/inter-greek-wght-normal-1.woff2");
+    const el = boot({}, fetcher, ["el"]);
+    await el.run("install", {});
+    expect(Object.keys(el.stored["scattergories-200"] ?? {})).toContain("/assets/inter-greek-wght-normal-1.woff2");
+  });
+
   it("drops a half-filled cache when install fails", async () => {
     const { stored, run } = boot({}, async () => html());
     await expect(run("install", {})).rejects.toThrow();
@@ -85,6 +108,24 @@ describe("service worker", () => {
     );
     await run("activate", {});
     expect(Object.keys(stored).sort()).toEqual(["other", "scattergories-100", "scattergories-200"]);
+  });
+
+  it("keeps its own cache when an older build is rolled back", async () => {
+    const { stored, run } = boot(
+      {
+        "scattergories-100": {},
+        "scattergories-200": { "/": html() },
+        "scattergories-300": {},
+        "scattergories-400": {},
+      },
+      async () => {
+        throw new Error("offline");
+      },
+    );
+    await run("activate", {});
+    expect(Object.keys(stored).sort()).toEqual(["scattergories-200", "scattergories-400"]);
+    const res = (await run("fetch", { request: request("/", "navigate") })) as Response;
+    expect(await res.text()).toBe("<!doctype html>");
   });
 
   it("does not cache an HTML fallback served as a script, nor unknown paths", async () => {

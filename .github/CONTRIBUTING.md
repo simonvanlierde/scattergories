@@ -137,7 +137,7 @@ has the one-time setup.
 
 `just repo-settings` applies the repository rulesets, creates the GitHub deployment environments
 and turns on security features. Read the recipe before you run it.
-[Deployment](../docs/architecture.md#deployment) lists the Cloudflare secrets and migration checks.
+[Deployment](../docs/architecture.md#deployment) lists the Cloudflare secrets and the checks after a deploy.
 
 ## Sign off your commits
 

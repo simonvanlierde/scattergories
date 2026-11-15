@@ -45,7 +45,7 @@ bring pen and paper.
   during a round.
 - Players can follow a round without looking at the screen. A tick sounds on each get-ready second
   after the first and in the last 10 s, and an alarm at the end. The phone vibrates at 15 s and
-  5 s left and at the end. Keyboard shortcuts (Space, R, P, C, ?) cover the controls.
+  5 s left and at the end. Keyboard shortcuts (Space, R, P, C, ?) cover the controls and can be turned off in Settings.
 - It runs installed as a PWA or in a browser tab. Light and dark themes follow the system unless
   you set one.
 
@@ -91,7 +91,7 @@ bring pen and paper.
   Color-blind players and anyone reading from a distance can still see it. `prefers-reduced-motion`
   turns animation off.
 - Touch targets are at least 44 px. `tests/layout.spec.ts` fails on any shorter control in the
-  settings and deck sheets. axe-core checks text contrast in the light theme.
+  settings and deck sheets. axe-core checks text contrast on the screens and the sheets, in both themes.
   `tests/contrast.spec.ts` checks the dark-theme categories heading, and the pin icon's 3:1
   non-text contrast in both themes.
 

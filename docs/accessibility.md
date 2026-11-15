@@ -7,7 +7,7 @@ This page covers [Scattergories](https://scattergories.duinlab.nl), an unofficia
 You can:
 
 - use light or dark colors, following your device's setting or choosing a theme yourself;
-- run the round with buttons or with the Space, R and P keys, show or hide the categories with C, and open help with ?;
+- run the round with buttons or with the Space, R and P keys, show or hide the categories with C, and open help with ? (Settings can turn the shortcuts off);
 - turn sound off and use the visible timer instead;
 - use your device's reduced-motion setting to shorten animations;
 - choose from nine interface languages. These privacy and accessibility pages are in English.
