@@ -1182,6 +1182,9 @@ msgstr "Holiday Activities"
 msgid "legal.back"
 msgstr "Back to the game"
 
+msgid "legal.documents"
+msgstr "Documents"
+
 msgid "legal.home"
 msgstr "Scattergories home"
 

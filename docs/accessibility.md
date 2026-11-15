@@ -10,7 +10,7 @@ You can:
 - run the round with buttons or with the Space, R and P keys, show or hide the categories with C, and open help with ? (Settings can turn the shortcuts off);
 - turn sound off and use the visible timer instead;
 - use your device's reduced-motion setting to shorten animations;
-- choose from nine interface languages. These privacy and accessibility pages are in English.
+- choose from nine interface languages. The privacy and accessibility statements are in English; the links and buttons around them follow your language.
 
 Players write answers on paper and score them together. The app does not offer answer entry or scoring.
 

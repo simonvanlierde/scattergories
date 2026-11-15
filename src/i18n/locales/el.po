@@ -1182,6 +1182,9 @@ msgstr "Ασχολίες διακοπών"
 msgid "legal.back"
 msgstr "Πίσω στο παιχνίδι"
 
+msgid "legal.documents"
+msgstr "Έγγραφα"
+
 msgid "legal.home"
 msgstr "Αρχική σελίδα Scattergories"
 

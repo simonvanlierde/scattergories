@@ -42,7 +42,7 @@ Production and pull request previews run on Cloudflare Workers.
 [Deployment setup](docs/architecture.md#deployment) lists the GitHub environments and secrets they need.
 Any static host can serve `dist/` too, as long as it falls back to `index.html`.
 
-The privacy and accessibility statements are at `/privacy` and `/accessibility`, in English only.
+The privacy and accessibility statements are at `/privacy` and `/accessibility`, in English. The links and buttons around them follow your language.
 The app renders them from [`docs/privacy.md`](docs/privacy.md) and
 [`docs/accessibility.md`](docs/accessibility.md).
 

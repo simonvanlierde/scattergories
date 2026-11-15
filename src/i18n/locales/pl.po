@@ -1182,6 +1182,9 @@ msgstr "Zajęcia świąteczne"
 msgid "legal.back"
 msgstr "Wróć do gry"
 
+msgid "legal.documents"
+msgstr "Dokumenty"
+
 msgid "legal.home"
 msgstr "Strona główna Scattergories"
 
