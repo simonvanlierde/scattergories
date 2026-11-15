@@ -1,5 +1,7 @@
-import { screen, waitFor, within } from "@testing-library/react";
-import { beforeEach, expect, it } from "vitest";
+// spell-checker: ignore Ñandú
+import { act, cleanup, screen, waitFor, within } from "@testing-library/react";
+import { afterEach, beforeEach, expect, it } from "vitest";
+import { ensureLanguageLoaded, i18n } from "@/i18n/config";
 import { CUSTOM_CATEGORY, KEYBOARD_CATEGORY, ONLY_CUSTOM_CATEGORY, PERSISTED_CATEGORY } from "./test/constants";
 import { DEFAULT_DRAW_COUNT } from "./test/gameConstants";
 import {
@@ -15,6 +17,13 @@ const EMPTY_DECK = /deck is empty/i;
 const MIN_VISIBLE_BOARD_ITEMS = 1;
 
 beforeEach(resetAppTestState);
+// Lingui is module-global: put English back so later tests find their labels.
+afterEach(async () => {
+  cleanup();
+  if (i18n.locale !== "en") {
+    await i18n.activate("en");
+  }
+});
 
 // Bulk removal is a two-tap action: the first tap arms, the second confirms.
 async function removeAllBuiltins(user: Awaited<ReturnType<typeof renderApp>>["user"], dialog: HTMLElement) {
@@ -111,4 +120,21 @@ it("persists custom categories across remount with the same localStorage", async
   const second = await renderApp();
   const remountedDialog = await openCustomizeDeck(second.user);
   expect(within(remountedDialog).getByRole("list", { name: DECK_LABEL })).toHaveTextContent(PERSISTED_CATEGORY);
+});
+
+it("sorts the deck list by the active language", async () => {
+  // Spanish puts Ñ after N; the default collation would put Ñandú before Nz.
+  window.localStorage.setItem(
+    "scattergories.settings.v1",
+    JSON.stringify({ customCategories: ["Ñandú", "Nz"], pinned: ["Ñandú", "Nz"], deckBuiltins: [] }),
+  );
+  const { user } = await renderApp();
+  const dialog = await openCustomizeDeck(user);
+  await act(async () => {
+    await ensureLanguageLoaded("es");
+    await i18n.activate("es");
+  });
+
+  const labels = [...dialog.querySelectorAll(".deck-list__label")].map((label) => label.textContent);
+  expect(labels).toEqual(["Nz", "Ñandú"]);
 });

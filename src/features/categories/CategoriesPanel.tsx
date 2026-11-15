@@ -246,7 +246,7 @@ function DeckList({
 }: Pick<CategoriesState, "customCategories" | "deckBuiltins" | "pinned"> & {
   actions: CategoriesActions;
 }) {
-  const { _: t } = useLingui();
+  const { _: t, i18n } = useLingui();
   const pinnedSet = new Set(pinned);
   // Within each group: pinned first, then alphabetical.
   const byPinThenLabel = (a: DeckRow, b: DeckRow) => {
@@ -255,7 +255,7 @@ function DeckList({
     if (aPinned !== bPinned) {
       return aPinned ? -1 : 1;
     }
-    return a.label.localeCompare(b.label);
+    return a.label.localeCompare(b.label, i18n.locale);
   };
   const customs = customCategories.map((name) => ({ name, label: name, isCustom: true })).sort(byPinThenLabel);
   const builtins = deckBuiltins

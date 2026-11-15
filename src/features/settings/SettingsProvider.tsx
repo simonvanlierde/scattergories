@@ -1,6 +1,7 @@
 import { createContext, type PropsWithChildren, useContext, useEffect, useReducer } from "react";
 import { addPackToDeck } from "@/domain/deck";
 import { categories } from "@/domain/game/constants";
+import { i18n } from "@/i18n/config";
 import { safeStorage } from "@/shared/lib/safeStorage";
 import {
   DARK_SCHEME_QUERY,
@@ -16,7 +17,7 @@ type SettingsAction =
   | { type: "hydrate"; settings: Settings }
   | { type: "update"; key: keyof Settings; value: Settings[keyof Settings] }
   | { type: "syncSystemTheme"; theme: Theme }
-  | { type: "addCustom"; value: string }
+  | { type: "addCustom"; value: string; locale: string | undefined }
   | { type: "removeCustom"; value: string }
   | { type: "togglePin"; name: string }
   | { type: "togglePinAll"; names: string[] }
@@ -28,7 +29,7 @@ type SettingsAction =
 interface SettingsContextValue {
   settings: Settings;
   update: <K extends keyof Settings>(key: K, value: Settings[K]) => void;
-  addCustom: (raw: string) => void;
+  addCustom: (raw: string, locale?: string) => void;
   removeCustom: (category: string) => void;
   togglePin: (name: string) => void;
   togglePinAll: (names: string[]) => void;
@@ -77,8 +78,10 @@ function settingsReducer(state: Settings, action: SettingsAction): Settings {
         return state;
       }
       // A custom name can't repeat another custom or shadow a built-in key, in any case.
-      const lower = trimmed.toLowerCase();
-      if ([...state.customCategories, ...categories].some((entry) => entry.toLowerCase() === lower)) {
+      const lower = trimmed.toLocaleLowerCase(action.locale);
+      if (
+        [...state.customCategories, ...categories].some((entry) => entry.toLocaleLowerCase(action.locale) === lower)
+      ) {
         return state;
       }
       return {
@@ -182,7 +185,8 @@ function SettingsProvider({ children }: PropsWithChildren) {
     update: (key, actionValue) => {
       dispatch({ type: "update", key, value: actionValue });
     },
-    addCustom: (raw) => dispatch({ type: "addCustom", value: raw }),
+    // An inactive catalog reports "", which is no valid language tag.
+    addCustom: (raw, locale = i18n.locale || undefined) => dispatch({ type: "addCustom", value: raw, locale }),
     removeCustom: (category) => dispatch({ type: "removeCustom", value: category }),
     togglePin: (name) => dispatch({ type: "togglePin", name }),
     togglePinAll: (names) => dispatch({ type: "togglePinAll", names }),

@@ -22,6 +22,8 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - After the first-run rules close, focus lands on the main button instead of the page top.
   The language list marks each language for screen readers, and the page heading now comes
   first.
+- The deck list sorts by your language's alphabet, and a custom category is checked for
+  duplicates with that language's capitalization rules.
 - The R, P and C shortcuts now work on non-Latin keyboard layouts such as Greek.
 
 ## [0.4.0] - 2026-11-11
