@@ -1,7 +1,8 @@
 # Security
 
-<!-- The advisories link below works only once Settings > Code security >
-     Private vulnerability reporting is on. `just repo-settings` turns it on. -->
+## Supported versions
+
+Only the latest release on `main` gets fixes.
 
 ## Report a vulnerability
 
@@ -27,15 +28,19 @@ CHANGELOG entry for that release links the advisory.
 
 ## Scope
 
-<!-- Say what this project is and what it is not: a server, stored user data, a
-     published package. Keep the lists below in line with it. -->
+Scattergories is a static web app (PWA) with no server and no accounts. Settings and
+custom category packs stay in the visitor's browser. `tools/` holds Python scripts that
+build the committed letter-weight table; they are not shipped.
 
 In scope:
 
-- The code in this repository and what it builds.
+- The web app and what it builds: the code in `src/`, the service worker, and the
+  response headers in `public/_headers`.
+- The Python tools in `tools/`.
 - The CI and release workflows in `.github/workflows`.
 - The dependencies in the lockfiles, when the problem affects this project.
 
 Out of scope:
 
 - A problem in a dependency that doesn't affect this project. Report it upstream.
+- The hosting platform itself. Report it to the provider.

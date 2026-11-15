@@ -2,13 +2,14 @@
 ts-sync:
     pnpm install
 
-# What CI runs: lint and unused code, types, tests, build, bundle budget, dependency audit.
+# What CI runs: lint and unused code, types, tests, build, bundle budget, licenses, dependency audit.
 ts-check:
     pnpm run check
     pnpm run typecheck
     pnpm run coverage
     pnpm run build
     pnpm run budget
+    pnpm run licenses
     pnpm audit --prod --audit-level=moderate
 
 # Fix what biome can fix, then format.
