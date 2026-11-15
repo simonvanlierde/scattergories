@@ -90,11 +90,9 @@ The [retirement workflow](../.github/workflows/preview-retire.yml) deletes previ
 request closes or becomes a draft, and sweeps daily for missed deletions.
 
 These workflows need deployment credentials before they can publish. Without them, they report a
-notice and skip deployment. They do not migrate an existing Cloudflare Pages domain automatically.
+notice and skip deployment.
 
-### Set up Workers and migrate from Pages
-
-Keep the Pages project and its production domain serving traffic until the Worker has passed the checks below.
+### Set up Workers
 
 1. Create GitHub environments named `preview` and `production` in the repository's **Settings → Environments**.
    Limit `production` deployment branches to `main`. Previews need to accept pull request refs.
@@ -105,8 +103,7 @@ Keep the Pages project and its production domain serving traffic until the Worke
 3. Merge the deployment configuration to `main` and wait for its production job to pass.
    Check the reported `workers.dev` address: start a round, reload `/privacy` and `/accessibility`,
    and check the security headers. Open a human pull request to verify preview creation and retirement.
-4. Move `scattergories.duinlab.nl` from Pages to the verified Worker's custom domains in Cloudflare.
-   Plan the domain reassignment before changing the Pages binding. Keep the Pages project available for rollback.
-   Check HTTPS, the home page, legal routes and security headers on the custom domain before retiring Pages.
+4. Add `scattergories.duinlab.nl` to the Worker's custom domains in Cloudflare.
+   Check HTTPS, the home page, legal routes and security headers on the custom domain.
 
 For a local deployment after credentials are configured, run `pnpm build`, then `pnpm exec wrangler deploy`.
