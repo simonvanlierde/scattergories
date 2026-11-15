@@ -409,11 +409,13 @@
      and balance the lines so a wrapped name never leaves a lonely orphan word.
      A word too long for its chip ("Reptiles/Amphibians" on a phone) is
      hyphenated by the page language instead of losing its last letter to a
-     line of its own. */
+     line of its own. Only words of 12 letters or more hyphenate: balanced
+     lines otherwise hyphenate a shorter word that a plain wrap fits. */
   .category-checklist__label {
     min-width: 0;
     overflow-wrap: break-word;
     hyphens: auto;
+    hyphenate-limit-chars: 12 5 5;
     text-wrap: balance;
     font-weight: 550;
     letter-spacing: var(--tracking-normal);
