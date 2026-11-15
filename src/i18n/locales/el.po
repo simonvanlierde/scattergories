@@ -33,6 +33,10 @@ msgstr "Κλήρωση γράμματος"
 msgid "buttons.nextRound"
 msgstr "Επόμενος γύρος"
 
+#. Skip round
+msgid "buttons.skipRound"
+msgstr "Παράλειψη γύρου"
+
 #. Spinning…
 msgid "buttons.spinning"
 msgstr "Περιστροφή…"
@@ -177,29 +181,50 @@ msgstr "Το Διάστημα, τα R, P, C και το ? ελέγχουν το�
 msgid "packs.classic.label"
 msgstr "Κλασικό"
 
+msgid "packs.classic.hint"
+msgstr "για όλους"
+
 #. Foodie
 msgid "packs.foodie.label"
 msgstr "Φαγητό"
+
+msgid "packs.foodie.hint"
+msgstr "εύκολο"
 
 #. Pop Culture
 msgid "packs.popCulture.label"
 msgstr "Ποπ κουλτούρα"
 
+msgid "packs.popCulture.hint"
+msgstr "πιο δύσκολο"
+
 #. Travel
 msgid "packs.travel.label"
 msgstr "Ταξίδια"
+
+msgid "packs.travel.hint"
+msgstr "μέτριο"
 
 #. Kids
 msgid "packs.kids.label"
 msgstr "Παιδιά"
 
+msgid "packs.kids.hint"
+msgstr "μικροί παίκτες"
+
 #. Around the House
 msgid "packs.household.label"
 msgstr "Στο σπίτι"
 
+msgid "packs.household.hint"
+msgstr "εύκολο"
+
 #. Grown-ups
 msgid "packs.grownUps.label"
 msgstr "Για ενήλικες"
+
+msgid "packs.grownUps.hint"
+msgstr "μόνο ενήλικες"
 
 #. Game board
 msgid "playmat.label"
@@ -1124,3 +1149,6 @@ msgstr "Απόρρητο (αγγλικά)"
 
 msgid "modal.accessibilityLink"
 msgstr "Προσβασιμότητα (αγγλικά)"
+
+msgid "modal.suggestCategoryLink"
+msgstr "Πρότεινε μια κατηγορία (αγγλικά)"

@@ -3,9 +3,11 @@
     /* ───────────────────────────────────────────────────────
        Typography — editorial: serif display + geometric sans UI
        ─────────────────────────────────────────────────────── */
+    /* The second family of each stack carries Greek only (index.css). */
     --font-display:
-      "Fraunces Variable", "Fraunces", "Iowan Old Style", "Apple Garamond", Georgia, "Times New Roman", serif;
-    --font-ui: "Geist Variable", "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+      "Fraunces Variable", "Noto Serif Display Variable", "Fraunces", "Iowan Old Style", "Apple Garamond", Georgia,
+      "Times New Roman", serif;
+    --font-ui: "Geist Variable", "Inter Variable", "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
     /* Every figure that is counted or timed is Geist: it has tabular figures,
        Fraunces does not. Set font-variant-numeric: tabular-nums with it. */
     --font-numeric: var(--font-ui);
@@ -150,6 +152,8 @@
     --border-subtle: var(--surface-4);
     --border-default: var(--surface-4);
     --border-strong: var(--surface-5);
+    /* The edge of a field: the only thing that marks it, so 3:1 like other non-text UI. */
+    --border-control: var(--surface-6);
     --border-accent: color-mix(in oklch, var(--accent-primary) 65%, transparent);
 
     /* Background */
@@ -194,6 +198,18 @@
     --button-fg: var(--accent-on);
   }
 
+  /* index.html's static shell has no data-theme until the script runs, so it
+     follows the system: the dark paper and ink it needs, from the block below. */
+  @media (prefers-color-scheme: dark) {
+    .app-shell--boot {
+      color-scheme: dark;
+      --surface-0: oklch(14% 0.015 70);
+      --surface-1: oklch(18% 0.015 70);
+      --surface-4: oklch(32% 0.015 70);
+      --surface-10: oklch(93% 0.011 85);
+    }
+  }
+
   /* ───────────────────────────────────────────────────────────
      DARK THEME — warm dark paper + warm off-white ink +
      lifted periwinkle accent (designed, not inverted)
@@ -210,7 +226,8 @@
     --surface-5: oklch(42% 0.014 70); /* ghost hover */
 
     /* Ink (warm off-white, hue 85) */
-    --surface-6: oklch(58% 0.015 85); /* muted */
+    /* 62% keeps muted text at 4.5:1 on the sheet (surface-1) and sunken (surface-2) paper. */
+    --surface-6: oklch(62% 0.015 85); /* muted */
     --surface-7: oklch(70% 0.014 85); /* tertiary */
     --surface-8: oklch(80% 0.013 85); /* secondary */
     --surface-9: oklch(87% 0.012 85); /* near-primary */

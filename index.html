@@ -29,7 +29,15 @@
     <title>Scattergories</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Static first paint until the script loads; React replaces it. -->
+      <main class="app-shell app-shell--loading app-shell--boot">
+        <div class="app-loading" role="status">
+          <img src="/favicon.svg" alt="" width="48" height="48" />
+          <h1>Scattergories</h1>
+        </div>
+      </main>
+    </div>
     <noscript>Scattergories needs JavaScript enabled to run.</noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>

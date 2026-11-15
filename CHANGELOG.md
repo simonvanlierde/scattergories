@@ -11,6 +11,32 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - A "Keyboard shortcuts" switch in Settings turns off the single-key shortcuts (Space, R, P, C
   and ?). It is on by default and remembered.
+- A "Suggest a category" link in How to play opens a form for proposing a category. The
+  contributor guide explains how suggestions are reviewed.
+
+### Changed
+
+- The offline cache keeps the last two builds instead of growing with every release, and a first
+  visit stores only the shell, English, your language and the Latin fonts. Other languages are
+  stored when you first use them.
+- Hashed files are served from the cache without a refresh, and a slow connection falls back to
+  the installed app after 3.5 seconds.
+- The pack picker names each pack's audience or difficulty, such as "Kids · young players",
+  in every language.
+
+### Changed
+
+- The offline cache keeps the last two builds instead of growing with every release, and a first
+  visit stores only the shell, English, your language and the Latin fonts. Other languages are
+  stored when you first use them.
+- Hashed files are served from the cache without a refresh, and a slow connection falls back to
+  the installed app after 3.5 seconds.
+- Category names on a phone are a size larger, for reading from across the table. A name that
+  wraps to two lines still fits its row, so twelve categories still fit on screen.
+- Greek text uses Noto Serif Display for the letter and titles and Inter for the rest, instead
+  of whatever fonts the device has. Only the Greek parts of these fonts are downloaded.
+- The second round control is now called "Skip round", so the end of a round no longer shows
+  two "Next round" buttons, one of them greyed out.
 
 ### Fixed
 
@@ -26,14 +52,20 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   duplicates with that language's capitalization rules.
 - The R, P and C shortcuts now work on non-Latin keyboard layouts such as Greek.
 - The service worker no longer stores an HTML error page returned for a font or unknown file.
-
-### Changed
-
-- The offline cache keeps the last two builds instead of growing with every release, and a first
-  visit stores only the shell, English, your language and the Latin fonts. Other languages are
-  stored when you first use them.
-- Hashed files are served from the cache without a refresh, and a slow connection falls back to
-  the installed app after 3.5 seconds.
+- The pink alarm wash at "Time's up!" is one brief flash again, instead of staying on for
+  about 3 seconds. With reduced motion it shows as a still half-second tint.
+- On a portrait tablet, and with the categories folded on a phone, the ring and letter grow to
+  fill the free space instead of stopping at 20rem. The folded categories bar sits at the bottom.
+- At 200% text size on a phone, the category tools wrap onto their own row instead of going off
+  screen, and the round controls stack so the main button stays in view.
+- Text fields and menus have a darker edge (3:1), and hints and labels in the dark theme's
+  sheets are lighter, so both meet WCAG AA contrast.
+- The add-a-pack menu in the deck sheet has one border instead of a box inside a box.
+- On a slow first load the page shows the die and the name on the app's paper, in light or dark,
+  instead of a blank white page.
+- An empty deck now shows a "Customize deck" button under its message, which opens the deck
+  sheet.
+- The "Avoid letter repeats" checkbox is larger (20 px), and its whole row is at least 44 px tall.
 
 ## [0.4.0] - 2026-11-11
 

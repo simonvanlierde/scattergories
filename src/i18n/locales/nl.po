@@ -33,6 +33,10 @@ msgstr "Loot een letter"
 msgid "buttons.nextRound"
 msgstr "Volgende ronde"
 
+#. Skip round
+msgid "buttons.skipRound"
+msgstr "Ronde overslaan"
+
 #. Spinning…
 msgid "buttons.spinning"
 msgstr "Draaien…"
@@ -177,29 +181,50 @@ msgstr "Spatie, R, P, C en ? bedienen de ronde met het toetsenbord."
 msgid "packs.classic.label"
 msgstr "Klassiek"
 
+msgid "packs.classic.hint"
+msgstr "voor iedereen"
+
 #. Foodie
 msgid "packs.foodie.label"
 msgstr "Eten"
+
+msgid "packs.foodie.hint"
+msgstr "makkelijk"
 
 #. Pop Culture
 msgid "packs.popCulture.label"
 msgstr "Popcultuur"
 
+msgid "packs.popCulture.hint"
+msgstr "moeilijker"
+
 #. Travel
 msgid "packs.travel.label"
 msgstr "Reizen"
+
+msgid "packs.travel.hint"
+msgstr "gemiddeld"
 
 #. Kids
 msgid "packs.kids.label"
 msgstr "Kinderen"
 
+msgid "packs.kids.hint"
+msgstr "jonge spelers"
+
 #. Around the House
 msgid "packs.household.label"
 msgstr "In huis"
 
+msgid "packs.household.hint"
+msgstr "makkelijk"
+
 #. Grown-ups
 msgid "packs.grownUps.label"
 msgstr "Voor volwassenen"
+
+msgid "packs.grownUps.hint"
+msgstr "alleen volwassenen"
 
 #. Game board
 msgid "playmat.label"
@@ -1124,3 +1149,6 @@ msgstr "Privacy (Engels)"
 
 msgid "modal.accessibilityLink"
 msgstr "Toegankelijkheid (Engels)"
+
+msgid "modal.suggestCategoryLink"
+msgstr "Categorie voorstellen (Engels)"

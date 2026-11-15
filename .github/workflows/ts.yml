@@ -86,6 +86,8 @@ jobs:
         with:
           name: dist
           path: dist
+          # dist/.well-known/security.txt is a hidden path; the default skips it.
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 7
       # Known advisories, moderate and up, in what ships: dependencies, not dev tooling.

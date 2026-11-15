@@ -33,6 +33,10 @@ msgstr "Estrai lettera"
 msgid "buttons.nextRound"
 msgstr "Prossimo round"
 
+#. Skip round
+msgid "buttons.skipRound"
+msgstr "Salta il round"
+
 #. Spinning…
 msgid "buttons.spinning"
 msgstr "Sorteggio…"
@@ -177,29 +181,50 @@ msgstr "Spazio, R, P, C e ? controllano il round dalla tastiera."
 msgid "packs.classic.label"
 msgstr "Classico"
 
+msgid "packs.classic.hint"
+msgstr "per tutti"
+
 #. Foodie
 msgid "packs.foodie.label"
 msgstr "Cibo"
+
+msgid "packs.foodie.hint"
+msgstr "facile"
 
 #. Pop Culture
 msgid "packs.popCulture.label"
 msgstr "Cultura pop"
 
+msgid "packs.popCulture.hint"
+msgstr "più difficile"
+
 #. Travel
 msgid "packs.travel.label"
 msgstr "Viaggi"
+
+msgid "packs.travel.hint"
+msgstr "medio"
 
 #. Kids
 msgid "packs.kids.label"
 msgstr "Bambini"
 
+msgid "packs.kids.hint"
+msgstr "giovani giocatori"
+
 #. Around the House
 msgid "packs.household.label"
 msgstr "In casa"
 
+msgid "packs.household.hint"
+msgstr "facile"
+
 #. Grown-ups
 msgid "packs.grownUps.label"
 msgstr "Per adulti"
+
+msgid "packs.grownUps.hint"
+msgstr "solo adulti"
 
 #. Game board
 msgid "playmat.label"
@@ -1124,3 +1149,6 @@ msgstr "Privacy (inglese)"
 
 msgid "modal.accessibilityLink"
 msgstr "Accessibilità (inglese)"
+
+msgid "modal.suggestCategoryLink"
+msgstr "Proponi una categoria (inglese)"

@@ -2,7 +2,7 @@
 
 This page covers [Scattergories](https://scattergories.duinlab.nl), an unofficial companion for playing the game around a table. Simon van Lierde builds it and is responsible for this page.
 
-## Using scattergories
+## Using Scattergories
 
 You can:
 
@@ -14,7 +14,7 @@ You can:
 
 Players write answers on paper and score them together. The app does not offer answer entry or scoring.
 
-## How accessible scattergories is
+## How accessible Scattergories is
 
 Scattergories aims to meet [WCAG 2.2](https://www.w3.org/TR/WCAG22/) at level AA.
 

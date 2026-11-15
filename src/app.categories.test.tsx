@@ -70,6 +70,17 @@ it("shows guidance when the deck is emptied and accepts a custom entry", async (
   expect(within(dialog).getByRole("list", { name: DECK_LABEL })).toHaveTextContent(KEYBOARD_CATEGORY);
 });
 
+it("offers the deck sheet from the empty board", async () => {
+  const { user } = await renderApp();
+  const dialog = await openCustomizeDeck(user);
+  await removeAllBuiltins(user, dialog);
+  await user.click(within(dialog).getByRole("button", { name: "Close this window" }));
+
+  const empty = screen.getByText("Add categories to your deck to play.").parentElement as HTMLElement;
+  await user.click(within(empty).getByRole("button", { name: "Customize deck" }));
+  expect(await screen.findByRole("dialog", { name: "Customize deck" })).toBeVisible();
+});
+
 it("always shows custom categories and lets built-ins be cleared and re-added", async () => {
   const { user } = await renderApp();
   const dialog = await openCustomizeDeck(user);

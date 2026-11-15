@@ -47,7 +47,7 @@ it("keeps the playmat lean: mute lives in the top bar, round controls always ren
   // layout never shifts as the phase changes.
   const roundControls = within(playmat).getByRole("group", { name: "Round controls" });
   expect(within(roundControls).getByRole("button", { name: "New letter" })).toBeInTheDocument();
-  expect(within(roundControls).getByRole("button", { name: "Next round" })).toBeInTheDocument();
+  expect(within(roundControls).getByRole("button", { name: "Skip round" })).toBeInTheDocument();
   // Mute is a borderless toggle in the top settings cluster, not on the playmat.
   expect(screen.getByRole("button", { name: "Mute" })).toBeInTheDocument();
   expect(within(playmat).queryByRole("button", { name: "Mute" })).not.toBeInTheDocument();
@@ -76,6 +76,14 @@ it("opens and dismisses the How To Play dialog", async () => {
 
   await user.keyboard("{Escape}");
   expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+});
+
+it("links the category suggestion form from How to play", async () => {
+  const { user } = await renderApp();
+
+  await user.click(screen.getByRole("button", { name: "How to play" }));
+  const link = await screen.findByRole("link", { name: "Suggest a category (English)" });
+  expect(link).toHaveAttribute("href", expect.stringContaining("/issues/new?template=category.yml"));
 });
 
 it("puts the page's only h1 first and tags each language option with its own lang", async () => {

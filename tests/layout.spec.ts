@@ -38,7 +38,8 @@ const viewports = [
   // min(36vw, 9rem), and the letter is half the ring.
   { width: 360, height: 740, minGlyphPx: 64 },
   { width: 390, height: 844, minGlyphPx: 96 },
-  { width: 820, height: 1180, minGlyphPx: 160 },
+  // A tablet flat on the table: the ring grows past the phone's 20rem into the free height.
+  { width: 820, height: 1180, minGlyphPx: 300 },
 ];
 
 for (const { width, height, minGlyphPx } of viewports) {
@@ -108,6 +109,10 @@ test.describe("touch targets", () => {
   test("keeps every control in the settings and deck sheets at least 44px tall", async ({ app, page }) => {
     await app.openSettings();
     expect(await shortControls(app.settingsSheet)).toEqual([]);
+    // The checkbox row is the target for each checkbox setting, not the box.
+    for (const row of await app.settingsSheet.locator(".settings-toggle").all()) {
+      expect((await row.boundingBox())?.height).toBeGreaterThanOrEqual(44);
+    }
     await app.closeSettings();
 
     const deck = page.getByRole("dialog", { name: "Customize deck" });
@@ -139,7 +144,7 @@ for (const viewport of [
 test("names the secondary round actions visibly", async ({ app: _app, page }) => {
   const controls = page.getByRole("group", { name: "Round controls" });
   await expect(controls.getByRole("button", { name: "New letter", exact: true })).toHaveText("New letter");
-  await expect(controls.getByRole("button", { name: "Next round", exact: true })).toHaveText("Next round");
+  await expect(controls.getByRole("button", { name: "Skip round", exact: true })).toHaveText("Skip round");
 });
 
 for (const locale of ["de", "el", "fr"]) {
@@ -183,6 +188,39 @@ for (const locale of ["de", "el", "fr"]) {
     });
   });
 }
+
+test("sets Greek in the Greek faces, not a system fallback", async ({ app: _app, page }) => {
+  await page.evaluate(() => localStorage.setItem("scattergories.language", "el"));
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("lang", "el");
+  await page.evaluate(() => document.fonts.ready);
+  const loaded = await page.evaluate(() =>
+    [...document.fonts].filter((face) => face.status === "loaded").map((face) => face.family.replaceAll('"', "")),
+  );
+  expect(loaded).toEqual(expect.arrayContaining(["Noto Serif Display Variable", "Inter Variable"]));
+});
+
+// A browser text-size or font-scale setting of 200% (WCAG 1.4.4). The overflow is
+// clipped, not scrollable, so the reflow spec's scrollWidth check cannot see it.
+test.describe("200% text on a phone", () => {
+  test.use({ viewport: { width: 390, height: 844 } });
+
+  test("keeps the primary button and the category tools on screen", async ({ app: _app, page }) => {
+    await page.evaluate(() => {
+      document.documentElement.style.fontSize = "200%";
+    });
+    await page.evaluate(() => document.fonts.ready);
+    const offScreen = await page.evaluate(() =>
+      [".action-bar__primary", ".categories-card__header-actions > button"].flatMap((selector) =>
+        [...document.querySelectorAll(selector)]
+          .map((el) => el.getBoundingClientRect())
+          .filter((box) => box.left < 0 || box.right > innerWidth || box.top < 0)
+          .map(() => selector),
+      ),
+    );
+    expect(offScreen).toEqual([]);
+  });
+});
 
 test.describe("wrapped sheet heading", () => {
   test.use({ viewport: { width: 320, height: 640 } });
