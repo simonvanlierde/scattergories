@@ -215,6 +215,10 @@
     min-width: 0;
   }
 
+  .deck-list__pack .settings-select {
+    width: 100%;
+  }
+
   .deck-list__count {
     font-size: var(--text-sm);
     color: var(--text-secondary);

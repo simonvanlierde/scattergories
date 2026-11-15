@@ -144,10 +144,11 @@ function AddPackField({ actions }: { actions: CategoriesActions }) {
     }))
     .sort((a, b) => a.label.localeCompare(b.label, i18n.locale));
   return (
-    <label className="settings-select deck-list__pack" htmlFor="addPack">
+    <label className="deck-list__pack" htmlFor="addPack">
       <span className="sr-only">{t("categories.addPack")}</span>
       <select
         id="addPack"
+        className="settings-select"
         value=""
         onChange={(event) => {
           if (event.target.value) {
