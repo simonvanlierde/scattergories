@@ -35,7 +35,7 @@ pnpm build        # static build to dist/
 ```
 
 The repository configures Cloudflare Workers for production and pull request previews.
-[Deployment setup and the Pages migration](docs/architecture.md#deployment) describe the required GitHub environments and secrets.
+[Deployment setup](docs/architecture.md#deployment) describes the required GitHub environments and secrets.
 You can also serve `dist/` on a static host with a fallback to `index.html`.
 
 The app serves English privacy and accessibility statements at `/privacy` and `/accessibility`.
