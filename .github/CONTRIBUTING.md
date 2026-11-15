@@ -128,7 +128,7 @@ The maintainer runs `just release X.Y.Z`. [Publishing](https://github.com/simonv
 
 The maintainer can run `just repo-settings` to apply the repository rulesets and create the
 GitHub deployment environments. It also configures security features; review the recipe before running it.
-[Deployment](../docs/architecture.md#deployment) lists the Cloudflare secrets and migration checks.
+[Deployment](../docs/architecture.md#deployment) lists the Cloudflare secrets and the checks after a deploy.
 
 Run `just release X.Y.Z` to prepare a release. The first run updates the version in `package.json`
 and prepares the dated changelog section. It commits both files. Review and merge that commit through a pull request.

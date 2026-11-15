@@ -7,20 +7,26 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-11-15
+
 ### Added
 
 - A "Keyboard shortcuts" switch in Settings turns off the single-key shortcuts (Space, R, P, C
   and ?). It is on by default and remembered.
+- A security policy and a `/.well-known/security.txt` say how to report a vulnerability.
 - A "Suggest a category" link in How to play opens a form for proposing a category. The
   contributor guide explains how suggestions are reviewed.
 
 ### Changed
 
 - The offline cache keeps the last two builds instead of growing with every release, and a first
-  visit stores only the shell, English, your language and the Latin fonts. Other languages are
-  stored when you first use them.
+  visit stores only the shell, English, your browser's language and the fonts for Latin text,
+  plus the Polish or Greek font subset when your browser asks for one of those. Other languages
+  are stored when you first use them.
 - Hashed files are served from the cache without a refresh, and a slow connection falls back to
   the installed app after 3.5 seconds.
+- The social card shown in link previews is redrawn from a live round.
+- The page declares its canonical address, so search results and link previews use one URL.
 - The pack picker names each pack's audience or difficulty, such as "Kids · young players",
   in every language.
 - Category names on a phone are a size larger, for reading from across the table. A name that
@@ -32,6 +38,11 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- A custom category that is already in the deck, that matches a built-in's name in your
+  language, or that would pass the limit now says why it was refused and keeps what you typed,
+  instead of clearing the field.
+- The R, P and C shortcuts follow the letter you type on layouts such as Dvorak, where the key
+  labelled R is not in the QWERTY position.
 - The screen stays awake for the whole round after you switch to another app and back.
 - Editing the deck while the categories roll no longer cancels the roll.
 - Screen readers no longer announce toggles as contradictions such as "Unmute, pressed". The
@@ -176,7 +187,8 @@ project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   Greek.
 - Install it as an app and play offline. No account or server needed.
 
-[Unreleased]: https://github.com/simonvanlierde/scattergories/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/simonvanlierde/scattergories/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/simonvanlierde/scattergories/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/simonvanlierde/scattergories/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/simonvanlierde/scattergories/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/simonvanlierde/scattergories/compare/v0.1.0...v0.2.0

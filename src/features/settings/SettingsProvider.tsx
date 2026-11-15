@@ -25,9 +25,12 @@ function customCategoryProblem(
   if (existing.length >= MAX_STRING_COUNT) {
     return "full";
   }
-  // A custom name can't repeat another custom or shadow a built-in key, in any case.
+  // A custom name can't repeat another custom, shadow a built-in key (the stored name that
+  // pins use) or read the same as a built-in's label in this language, in any case.
   const lower = trimmed.toLocaleLowerCase(locale);
-  return [...existing, ...categories].some((entry) => entry.toLocaleLowerCase(locale) === lower)
+  // An inactive catalog has no labels to read.
+  const builtinLabels = i18n.locale ? categories.map((key) => i18n._(`category.${key}`)) : [];
+  return [...existing, ...categories, ...builtinLabels].some((entry) => entry.toLocaleLowerCase(locale) === lower)
     ? "duplicate"
     : undefined;
 }

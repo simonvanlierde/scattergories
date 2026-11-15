@@ -181,6 +181,7 @@ msgstr "Spacja, R, P, C i ? sterują rundą z klawiatury."
 msgid "packs.classic.label"
 msgstr "Klasyczne"
 
+#. Short note on who a pack is for or how hard it is, shown beside its name
 msgid "packs.classic.hint"
 msgstr "dla wszystkich"
 
@@ -188,6 +189,7 @@ msgstr "dla wszystkich"
 msgid "packs.foodie.label"
 msgstr "Jedzenie"
 
+#. Short note on who a pack is for or how hard it is, shown beside its name
 msgid "packs.foodie.hint"
 msgstr "łatwa"
 
@@ -195,6 +197,7 @@ msgstr "łatwa"
 msgid "packs.popCulture.label"
 msgstr "Popkultura"
 
+#. Short note on who a pack is for or how hard it is, shown beside its name
 msgid "packs.popCulture.hint"
 msgstr "trudniejsza"
 
@@ -202,6 +205,7 @@ msgstr "trudniejsza"
 msgid "packs.travel.label"
 msgstr "Podróże"
 
+#. Short note on who a pack is for or how hard it is, shown beside its name
 msgid "packs.travel.hint"
 msgstr "średnia"
 
@@ -209,6 +213,7 @@ msgstr "średnia"
 msgid "packs.kids.label"
 msgstr "Dzieci"
 
+#. Short note on who a pack is for or how hard it is, shown beside its name
 msgid "packs.kids.hint"
 msgstr "młodzi gracze"
 
@@ -216,6 +221,7 @@ msgstr "młodzi gracze"
 msgid "packs.household.label"
 msgstr "W domu"
 
+#. Short note on who a pack is for or how hard it is, shown beside its name
 msgid "packs.household.hint"
 msgstr "łatwa"
 
@@ -223,6 +229,7 @@ msgstr "łatwa"
 msgid "packs.grownUps.label"
 msgstr "Dla dorosłych"
 
+#. Short note on who a pack is for or how hard it is, shown beside its name
 msgid "packs.grownUps.hint"
 msgstr "tylko dorośli"
 
@@ -1158,5 +1165,6 @@ msgstr "Prywatność (angielski)"
 msgid "modal.accessibilityLink"
 msgstr "Dostępność (angielski)"
 
+#. Link in How to play that opens the category suggestion form (English only)
 msgid "modal.suggestCategoryLink"
 msgstr "Zaproponuj kategorię (angielski)"
