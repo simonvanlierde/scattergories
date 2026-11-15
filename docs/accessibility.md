@@ -1,13 +1,13 @@
 # Accessibility statement
 
-This page covers [Scattergories](https://scattergories.duinlab.nl), an unofficial companion for playing the game around a table. Simon van Lierde builds it and is responsible for this page.
+This page covers [Scattergories](https://scattergories.duinlab.nl), an unofficial app for playing the game around a table. Simon van Lierde builds it and is responsible for this page.
 
 ## Using Scattergories
 
 You can:
 
 - use light or dark colors, following your device's setting or choosing a theme yourself;
-- operate the round with buttons or keyboard shortcuts: Space, R and P; open categories with C and help with ?;
+- run the round with buttons or with the Space, R and P keys, show or hide the categories with C, and open help with ?;
 - turn sound off and use the visible timer instead;
 - use your device's reduced-motion setting to shorten animations;
 - choose from nine interface languages. These privacy and accessibility pages are in English.
@@ -42,7 +42,7 @@ The repository has automated checks for:
 
 The browser checks run in Chromium. Passing them does not establish WCAG conformance. See the [tests](https://github.com/simonvanlierde/scattergories/tree/main/tests) for their scope.
 
-No manual screen-reader or assistive-technology test is recorded. Scattergories needs HTML, CSS and JavaScript.
+No manual test with a screen reader or other assistive technology is recorded. Scattergories relies on HTML, CSS and JavaScript.
 
 ## About this statement
 

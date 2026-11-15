@@ -1,8 +1,8 @@
 # Privacy statement
 
-Scattergories saves your settings on this device. It has no accounts, cookies, advertising or analytics. Your categories and settings are not sent to us.
+Scattergories saves your settings on this device. It has no accounts, cookies, advertising or analytics. The app does not send your categories or settings to us.
 
-This page covers [scattergories.duinlab.nl](https://scattergories.duinlab.nl). Simon van Lierde runs this unofficial companion for the Hasbro game.
+This page covers [scattergories.duinlab.nl](https://scattergories.duinlab.nl). Simon van Lierde runs the site, an unofficial app for the Hasbro game.
 
 ## What Scattergories stores on your device
 
@@ -13,13 +13,13 @@ Your browser keeps:
 - your category deck, custom categories, pinned categories and whether the category panel is open;
 - whether you have finished the welcome screen.
 
-Settings are saved automatically, including default settings on your first visit. The app also caches its files so it can work offline. Fonts ship with the app.
+The app saves settings automatically, including the defaults on your first visit. It also stores its own files so it works offline. Fonts ship with the app.
 
 Players write answers on paper. The app does not record answers, scores or player names.
 
 ## How to delete it
 
-Clear this site's data in your browser's settings. This removes saved preferences, custom categories and offline files. They cannot be recovered from us.
+Clear this site's data in your browser's settings. This removes saved preferences, custom categories and offline files. We cannot recover them for you.
 
 ## What our host sees
 
