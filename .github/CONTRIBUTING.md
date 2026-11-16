@@ -7,6 +7,7 @@ Bug reports, feature requests and pull requests are welcome. Read the
 ## Report a bug or ask for a feature
 
 Open an [issue](https://github.com/simonvanlierde/scattergories/issues) with the bug or
+<<<<<<< before updating
 feature form. For a bug, say what you did, what you expected and what happened, and
 which browser you used. If the README and docs don't answer a question, open a feature request for it.
 
@@ -20,6 +21,11 @@ I review each suggestion: the wording, whether it suits the pack's audience, whe
 letters have answers, and whether we may share it. Only reviewed categories go into a built-in
 pack. Once we agree on the issue, you can open a pull request that adds the category to every
 locale in `src/i18n/locales/` and to a pack in [`src/domain/deck.ts`](../src/domain/deck.ts).
+=======
+feature form. For a bug, say what you did, what you expected and what happened, with the
+release or commit you used. A question the README and docs don't answer is a gap in the docs: open
+a feature request for it.
+>>>>>>> after updating
 
 ## Scope and response
 
@@ -32,8 +38,14 @@ with a link to this section.
 
 ## Set up and check
 
+<<<<<<< before updating
 [Prerequisites](#prerequisites) installs the tools, the dependencies and the git hooks.
 `just check` runs the checks CI runs, and `just fmt` fixes and formats.
+=======
+The [README](../README.md) says how to install the tools, the dependencies
+and the git hooks. `just check` runs the checks CI runs, and `just fmt` fixes and
+formats.
+>>>>>>> after updating
 
 uv and pnpm lock only releases at least a week old. If `just check` fails on
 a security fix newer than that, add the package to `exclude-newer-package` under `[tool.uv]` in `tools/pyproject.toml` or `minimumReleaseAgeExclude` in `pnpm-workspace.yaml`,
@@ -109,9 +121,15 @@ The app runs a round with a letter, a timer and categories, and it doesn't keep 
   that GitHub's Revert button writes.
 - **The pull request body** has the shape of
   [the pull request template](pull_request_template.md): what it fixes and why, three or
+<<<<<<< before updating
   four bullets, and a `Tested:` line with the proof (the command and its result, or a test
   that fails without the change). A `Not checked:` line lists what did not run and why, and
   any design choice or security path that only a person can judge. "Nothing" is fine.
+=======
+  four bullets, a `Tested:` line with the proof (the command and its result, or a test
+  that fails without the change), and a `Not checked:` line with what did not run and why,
+  and any design choice or security path that only a person can judge. "Nothing" is fine.
+>>>>>>> after updating
 - **The changelog** ([CHANGELOG.md](../CHANGELOG.md)) follows
   [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/). Write each entry for
   the people who use the project, not as a commit subject. Mark breaking changes
@@ -120,6 +138,7 @@ The app runs a round with a letter, a timer and categories, and it doesn't keep 
 
 ## Make a release
 
+<<<<<<< before updating
 The maintainer runs `just release X.Y.Z` twice:
 
 1. The first run sets the version in `package.json`, adds the dated changelog section and commits
@@ -136,6 +155,9 @@ has the one-time setup.
 `just repo-settings` applies the repository rulesets, creates the GitHub deployment environments
 and turns on security features. Read the recipe before you run it.
 [Deployment](../docs/architecture.md#deployment) lists the Cloudflare secrets and the checks after a deploy.
+=======
+The maintainer runs `just release X.Y.Z`. [Publishing](https://github.com/simonvanlierde/project-templates/blob/main/docs/setup.md#publishing) has the steps and the one-time setup.
+>>>>>>> after updating
 
 ## Sign off your commits
 

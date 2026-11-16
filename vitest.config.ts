@@ -2,12 +2,18 @@
 import { defineConfig, mergeConfig } from "vitest/config";
 import viteConfig from "./vite.config.ts";
 
+<<<<<<< before updating
 // Unit tests only: Playwright runs tests/ against the built app.
+=======
+// Unit tests only: Playwright runs tests/e2e/ against the built app. A Worker script's
+// tests, in worker/, set the node environment themselves.
+>>>>>>> after updating
 export default mergeConfig(
   viteConfig,
   defineConfig({
     test: {
       environment: "jsdom",
+<<<<<<< before updating
       globals: true,
       // Bound concurrent catalog compilation and full-app jsdom mounts.
       maxWorkers: 2,
@@ -36,6 +42,9 @@ export default mergeConfig(
           },
         },
       },
+=======
+      include: ["src/**/*.test.{ts,tsx}", "worker/**/*.test.ts"],
+>>>>>>> after updating
     },
   }),
 );

@@ -1,13 +1,9 @@
 # Task runner: https://just.systems. `just` lists the recipes, `just <name>` runs one.
 #
-# `import?` skips a recipe file you did not scaffold. Recipes are prefixed
-# (`py-`, `ts-`, `rs-`, `go-`) because imports share one namespace, except the few only
-# one kind has, such as `pipeline` or `up`.
+# Each stack's recipes are in just/, prefixed (`py-`, `ts-`) because
+# imports share one namespace, except the few only one kind has, such as `pipeline` or `up`.
 import? 'just/python.just'
 import? 'just/ts.just'
-import? 'just/rust.just'
-import? 'just/go.just'
-import? 'just/docker.just'
 
 # List the recipes (what a bare `just` runs).
 default:
@@ -17,19 +13,32 @@ default:
 check:
     @just py-check
     @just ts-check
+    @if just --show local-check >/dev/null 2>&1; then just local-check; fi
 
 # Fix and format every stack here, as each stack's `fmt` recipe does.
 fmt:
     @just py-fmt
     @just ts-fmt
 
-# Run every git hook over the whole repo, not just staged files. The checks workflow skips
-# the hooks in its SKIP list, which the stack workflows run instead. Here they all run, so
-# this can fail where the checks workflow passes.
+# The checks workflow skips the hooks in its SKIP list, which the stack workflows run
+# instead. Here they all run, so this can fail where the checks workflow passes.
+
+# Run every git hook over the whole repo, not just staged files.
 hooks:
     prek run -a
 
+<<<<<<< before updating
 # Release X.Y.Z. First run: set package.json's version, cut CHANGELOG's [Unreleased] into [X.Y.Z], and commit both; merge that to main. Second run, on up-to-date main: sign and push tag vX.Y.Z.
+=======
+# Needs Chromium: `pnpm exec playwright install chromium`. Check the result at 300 px wide and cropped to the centre square (docs/hosting.md#social-card).
+
+# Render docs/og-card.html to the 1200x630 social card image, in each place the page serves it from.
+og-card:
+    pnpm exec playwright screenshot --viewport-size=1200,630 "file://$PWD/docs/og-card.html" "$PWD/public/og.png"
+    sed -E -i.bak "s/og\.png(\?v=[0-9a-f]+)?\"/og.png?v=$(shasum -a 256 public/og.png | cut -c1-8)\"/" index.html && rm index.html.bak
+
+# Release X.Y.Z. First run: set package.json's version, cut CHANGELOG's [Unreleased] into [X.Y.Z] and commit both; merge that to main. Second run, on up-to-date main: sign and push tag vX.Y.Z.
+>>>>>>> after updating
 release version:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -41,6 +50,9 @@ release version:
     # Not grep -q: it stops reading early, and under pipefail git show then fails on a
     # changelog bigger than the pipe buffer.
     if git show origin/main:CHANGELOG.md | grep "^## \[$version\] - " >/dev/null; then
+        # The app shows package.json's version, so the tag must name the same one.
+        app=$(git show origin/main:package.json | node -p 'JSON.parse(require("fs").readFileSync(0, "utf8")).version')
+        [ "$app" = "$version" ] || { echo "package.json on origin/main is at $app, not $version" >&2; exit 1; }
         .github/scripts/tag-release.sh "$version"
         exit 0
     fi
@@ -55,13 +67,19 @@ release version:
         END { if (!h) exit 1; if (!l) { print ""; print "[Unreleased]: " repo "/compare/v" v "...HEAD"; print "[" v "]: " link } }
     ' CHANGELOG.md >"$tmp" || { echo "CHANGELOG.md has no [Unreleased] section" >&2; exit 1; }
     .github/scripts/release-notes.sh "$tag" "$tmp" >/dev/null || { echo "[Unreleased] has no entries to release" >&2; exit 1; }
+<<<<<<< before updating
     node -e 'const fs = require("node:fs"); const pkg = JSON.parse(fs.readFileSync("package.json", "utf8")); pkg.version = process.argv[1]; fs.writeFileSync("package.json", JSON.stringify(pkg, null, 2) + "\n");' "$version"
+=======
+    # A line edit keeps the file as Biome formats it.
+    sed -i.bak 's/^  "version": "[^"]*",$/  "version": "'"$version"'",/' package.json && rm package.json.bak
+    [ "$(node -p "require('./package.json').version")" = "$version" ] || { echo "could not set the version in package.json" >&2; exit 1; }
+>>>>>>> after updating
     cp "$tmp" CHANGELOG.md
     git add CHANGELOG.md package.json
     git commit -s -m "chore: release $version" -- CHANGELOG.md package.json
     echo "Merge this commit to main, then run: just release $version"
 
-# Protect the default branch (no deletion, no force-push, linear history, PRs squash-merged after the always-on checks pass and one approval) and the v* tags. Turn on private vulnerability reporting, CodeQL default setup and Dependabot alerts. Create the `preview` environment for pull request previews and the `production` environment, deployed from `main` only. Safe to rerun.
+# Protect the default branch (no deletion, no force-push, linear history, PRs squash-merged after the always-on checks pass and one approval) and the v* tags. Turn on secret scanning with push protection, private vulnerability reporting, CodeQL default setup and Dependabot alerts. Create the `preview` environment for pull request previews and the `production` environment, deployed from `main` only. Create the `copier-update` environment, used from `main` only. Safe to rerun.
 repo-settings:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -70,10 +88,18 @@ repo-settings:
     fail() {
         cat "$err" >&2
         grep -qE 'HTTP (403|404)' "$err" && echo "Rulesets on a private repo need a paid GitHub plan (or the repo does not exist, or you lack admin rights)." >&2
+        grep -qE 'HTTP (403|404)' "$err" && echo "On that plan an environment cannot limit branches either, so a workflow on any branch could read the update App's key. Use an App for this repo alone, or none: https://github.com/simonvanlierde/project-templates/blob/main/docs/updates.md#the-update-app" >&2
         exit 1
     }
     # Merge-method switches live on the repo itself; the ruleset also limits the PR button.
     gh api -X PATCH repos/{owner}/{repo} -F allow_squash_merge=true -F allow_merge_commit=false -F allow_rebase_merge=false -F delete_branch_on_merge=true -F web_commit_signoff_required=true >/dev/null 2>"$err" || fail
+    # Push protection refuses a push that holds a known secret format, before it reaches the repo.
+    # A private repo without Secret Protection refuses this, so it warns instead of failing.
+    if gh api -X PATCH repos/{owner}/{repo} -f 'security_and_analysis[secret_scanning][status]=enabled' -f 'security_and_analysis[secret_scanning_push_protection][status]=enabled' >/dev/null 2>"$err"; then
+        echo "Turned on secret scanning and push protection."
+    else
+        echo "Warning: secret scanning could not be turned on (a private repo needs Secret Protection): $(cat "$err")" >&2
+    fi
     # Adopt an existing ruleset by name, else one with the same target that protects the same
     # refs as the file, updating it in place. The list has no conditions, so each candidate is read.
     for name in main main-checks tags; do
@@ -112,13 +138,14 @@ repo-settings:
     else
         echo "Warning: CodeQL default setup could not be turned on, so code scanning stays off: $(cat "$err")" >&2
     fi
-    # Dependabot alerts let Renovate open security PRs and turn on the dependency graph.
+    # Dependabot alerts let Dependabot open security PRs and turn on the dependency graph.
     gh api -X PUT repos/{owner}/{repo}/vulnerability-alerts >/dev/null 2>"$err" || fail
     echo "Turned on Dependabot alerts."
     # The preview jobs read the Cloudflare secrets from this environment. It takes no reviewer
     # or branch limit: previews run on pull request refs and must start unattended.
     gh api -X PUT "repos/{owner}/{repo}/environments/preview" >/dev/null 2>"$err" || fail
     echo "Configured environment 'preview'."
+<<<<<<< before updating
     # The production job deploys from main only, unattended, so no reviewer.
     gh api -X PUT "repos/{owner}/{repo}/environments/production" \
         -F "deployment_branch_policy[protected_branches]=false" \
@@ -129,9 +156,28 @@ repo-settings:
     fi
     echo "Configured environment 'production'. Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID to both environments: see the Deployment section of docs/architecture.md."
 
+=======
+    # An environment that only main may deploy from, with no reviewer.
+    main_only_env() {
+        gh api -X PUT "repos/{owner}/{repo}/environments/$1" \
+            -F "deployment_branch_policy[protected_branches]=false" \
+            -F "deployment_branch_policy[custom_branch_policies]=true" >/dev/null 2>"$err" || fail
+        policies=$(gh api "repos/{owner}/{repo}/environments/$1/deployment-branch-policies" --jq '.branch_policies[].name' 2>/dev/null || true)
+        if ! echo "$policies" | grep -qxF 'main'; then
+            gh api -X POST "repos/{owner}/{repo}/environments/$1/deployment-branch-policies" -f name="main" -f type="branch" >/dev/null 2>"$err" || fail
+        fi
+    }
+    # The production jobs deploy from main only, unattended, so no reviewer.
+    main_only_env production
+    echo "Configured environment 'production'. Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID to both environments: see the Deploy section of the README."
+    # copier-update.yml's push job reads the update App's key from this environment, from main only.
+    main_only_env copier-update
+    echo "Configured environment 'copier-update'. For template updates that change workflows, add the update App: https://github.com/simonvanlierde/project-templates/blob/main/docs/updates.md#the-update-app"
+>>>>>>> after updating
 # Set the GitHub About box from your answers: description, homepage and a topic per stack. Adds topics, never removes yours. Safe to rerun.
 repo-about:
     gh repo edit --description 'A free browser companion for playing Scattergories at the table: letters in nine languages, a timer and category packs. Works offline.' --homepage 'https://scattergories.duinlab.nl' --add-topic python --add-topic typescript
 
-# A repo's own recipes that copier updates never touch:
+# A repo's own recipes that copier updates never touch. A `local-check` recipe there runs
+# at the end of `just check`.
 import? 'just/local.just'

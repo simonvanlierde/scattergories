@@ -48,6 +48,10 @@ export default defineConfig({
       use: { ...devices["iPhone 13"] },
     },
   ],
+<<<<<<< before updating
+=======
+  // Build locally for these tests; CI deploys the separate check job's build.
+>>>>>>> after updating
   webServer: {
     // The tests run against the production build, which is what Cloudflare Worker serves.
     command: `pnpm build && pnpm preview --host ${HOST} --port ${PORT} --strictPort`,

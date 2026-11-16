@@ -29,7 +29,12 @@
   },
   "scripts": {
     "dev": "vite",
+<<<<<<< before updating
     "build": "tsc -b && vite build",
+=======
+    "fix": "biome check --write",
+    "licenses": "pnpm licenses list --prod --json | node scripts/checkLicenses.mjs",
+>>>>>>> after updating
     "preview": "vite preview",
     "check": "biome check && knip && pnpm run spellcheck",
     "fix": "biome check --write",

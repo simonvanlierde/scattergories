@@ -15,7 +15,8 @@ permissions:
 
 env:
   # The action installs the newest prek unless told otherwise.
-  # renovate: datasource=github-releases depName=j178/prek
+
+  # Dependabot cannot read this pin; template updates refresh it.
   PREK_VERSION: 0.5.7
 
 concurrency:
@@ -57,7 +58,11 @@ jobs:
           # scanning covers the server side (free on public repos; a private repo needs
           # GitHub Advanced Security).
           # zizmor runs in the next step, the only one given a token.
+<<<<<<< before updating
           SKIP: ruff-check,ruff-format,ty,biome,tsc,cspell,cargo-fmt,cargo-clippy,golangci-lint-fmt,golangci-lint,betterleaks,zizmor
+=======
+          SKIP: ruff-check,ruff-format,ty,biome,tsc,betterleaks,zizmor
+>>>>>>> after updating
 
       # zizmor's online audits (impostor commits, known-vulnerable actions) need a token.
       # It is read-only, and only this hook sees it, not every third-party hook above.

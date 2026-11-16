@@ -1,9 +1,15 @@
 import { expect, type Page, test } from "@playwright/test";
 import { ROUTES } from "./routes";
 
+<<<<<<< before updating
 // Vite preview applies the policy to network and precached responses. Collect
 // violations before the first load, then prove the policy blocks an inline script.
 async function underPolicy(page: Page) {
+=======
+// vite preview sends no headers, so apply the Content-Security-Policy from the
+// locally built _headers file and fail on any violation.
+test("the built app runs under its own Content-Security-Policy", async ({ page }) => {
+>>>>>>> after updating
   const headersFile = await (await page.request.get("/_headers")).text();
   const policy = headersFile.match(/Content-Security-Policy:\s*(.+)/)?.[1] as string;
   const violations: string[] = [];

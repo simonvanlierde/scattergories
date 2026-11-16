@@ -30,24 +30,22 @@ jobs:
         with:
           persist-credentials: false
 
-      # .github/scripts/tag-release.sh signs the tag. A lightweight or unverified one publishes
-      # nothing.
-      - name: refuse a tag GitHub cannot verify
+      # Publish only a tag signed with a key in .github/allowed_signers on the default
+      # branch: .github/scripts/verify-tag.sh says why.
+      - name: refuse a tag not signed with an allowed key
         env:
           TAG: ${{ github.ref_name }}
-          REPO: ${{ github.repository }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           GH_TOKEN: ${{ github.token }}
+        run: bash "$GITHUB_WORKSPACE/.github/scripts/verify-tag.sh" --fetch "$TAG" "origin/$DEFAULT_BRANCH"
+
+      # The app shows package.json's version, so the tag must name the same one.
+      - name: refuse a tag that differs from package.json
+        env:
+          TAG: ${{ github.ref_name }}
         run: |
-          set -euo pipefail
-          read -r type sha < <(gh api "repos/$REPO/git/ref/tags/$TAG" --jq '.object.type + " " + .object.sha')
-          if [ "$type" != tag ]; then
-            echo "$TAG is a lightweight tag; make it with .github/scripts/tag-release.sh" >&2
-            exit 1
-          fi
-          if [ "$(gh api "repos/$REPO/git/tags/$sha" --jq '.verification.verified')" != true ]; then
-            echo "GitHub cannot verify the signature on $TAG" >&2
-            exit 1
-          fi
+          app=$(node -p 'require("././package.json").version')
+          [ "$app" = "${TAG#v}" ] || { echo "::error::package.json is at $app, not ${TAG#v}"; exit 1; }
 
       - name: create the release
         env:
