@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { BASE } from "./base";
 import { LEGAL_LINKED_FROM } from "./routes";
 
 /**
@@ -7,8 +8,8 @@ import { LEGAL_LINKED_FROM } from "./routes";
  */
 
 const PAGES = [
-  ["/accessibility", "Accessibility statement", "Accessibility (English)"],
-  ["/privacy", "Privacy statement", "Privacy (English)"],
+  [`${BASE}accessibility`, "Accessibility statement", "Accessibility (English)"],
+  [`${BASE}privacy`, "Privacy statement", "Privacy (English)"],
 ] as const;
 
 for (const [href, name] of PAGES) {
@@ -41,6 +42,6 @@ for (const path of LEGAL_LINKED_FROM) {
 for (const [href] of PAGES) {
   test(`${href} links back home`, async ({ page }) => {
     await page.goto(href);
-    await expect(page.locator('a[href="/"]').first()).toBeVisible();
+    await expect(page.locator(`a[href="${BASE}"]`).first()).toBeVisible();
   });
 }

@@ -1,10 +1,11 @@
 import { expect, type Page, test } from "@playwright/test";
+import { BASE } from "./base";
 import { ROUTES } from "./routes";
 
 // Vite preview applies the policy to network and precached responses. Collect
 // violations before the first load, then prove the policy blocks an inline script.
 async function underPolicy(page: Page) {
-  const headersFile = await (await page.request.get("/_headers")).text();
+  const headersFile = await (await page.request.get(`${BASE}_headers`)).text();
   const policy = headersFile.match(/Content-Security-Policy:\s*(.+)/)?.[1] as string;
   const violations: string[] = [];
   await page.exposeFunction("reportViolation", (text: string) => violations.push(text));

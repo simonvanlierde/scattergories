@@ -16,14 +16,20 @@ on:
 permissions:
   contents: read
 
+# One group per pull request or sweep: the retire job's own group already orders it
+# against that pull request's deploy.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: false
+
 jobs:
   retire:
     name: Retire
-    if: github.event_name != 'pull_request' || (github.event.pull_request.head.repo.full_name == github.repository && !endsWith(github.event.pull_request.user.login, '[bot]'))
+    if: github.event_name != 'pull_request' || (github.event.pull_request.head.repo.full_name == github.repository && github.head_ref != 'chore/copier-update' && !endsWith(github.event.pull_request.user.login, '[bot]'))
     runs-on: ubuntu-latest
     environment: preview
     # One job per Worker name prefix, each in its preview job's group, so a retire waits for
-    # that deploy in flight and the two kinds never cancel each other's pending runs.
+    # that deploy in flight. A newer pending job replaces the previous pending job.
     strategy:
       fail-fast: false
       matrix:
@@ -70,3 +76,16 @@ jobs:
           PRS: ${{ github.event.pull_request.number || inputs.prs }}
           SLUG: ${{ matrix.slug }}
         run: .github/scripts/preview-retire.sh
+
+  notify:
+    # The daily sweep only: a failed pull request run shows on that pull request.
+    # The only job that may write issues.
+    name: "retire preview: report failure"
+    needs: [retire]
+    # A job that runs past timeout-minutes ends cancelled, not failed.
+    if: always() && github.event_name == 'schedule' && (contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled'))
+    permissions:
+      issues: write # opens or comments on the failure issue
+    uses: $/.github/workflows/report-failure.yml
+    with:
+      title: Daily preview sweep failed

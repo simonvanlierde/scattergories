@@ -25,8 +25,6 @@ jobs:
     runs-on: ubuntu-latest
     # The jsdom integration tests mount the full category list and need the headroom.
     timeout-minutes: 15
-    outputs:
-      playwright: ${{ steps.playwright.outputs.version }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -58,11 +56,6 @@ jobs:
           path: ${{ steps.pnpm-store.outputs.path }}
           key: ${{ steps.pnpm-cache.outputs.cache-primary-key }}
 
-      # The e2e container's tag must match the installed Playwright exactly, so it
-      # is read from the package the lockfile resolved, not kept in sync by hand.
-      - id: playwright
-        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
-
       - run: pnpm run check
       - run: pnpm run typecheck
       - run: pnpm run coverage --coverage.reporter=lcov
@@ -92,10 +85,33 @@ jobs:
           retention-days: 7
       # Known advisories, moderate and up, in what ships: dependencies, not dev tooling.
       - run: pnpm audit --prod --audit-level=moderate
+      # Lists the license of each package that ships (dependencies, not dev tooling) and
+      # fails on one MIT cannot take. The allow-list is in scripts/checkLicenses.mjs.
+      - run: pnpm run licenses
+
+  # The e2e container's tag must match the locked Playwright exactly. A job of its own reads it,
+  # so e2e starts beside check instead of waiting for all of it.
+  playwright:
+    name: "ts: playwright version"
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          sparse-checkout: pnpm-lock.yaml
+          sparse-checkout-cone-mode: false
+      - id: version
+        run: |
+          version=$(grep -oPm1 "^  '@playwright/test@\K[0-9.]+(?=':)" pnpm-lock.yaml)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
   e2e:
     name: e2e (chromium)
-    needs: check
+    needs: playwright
     runs-on: ubuntu-latest
     # Chromium runs every spec; Firefox, WebKit and the mobile projects run the @smoke ones.
     timeout-minutes: 25
@@ -103,11 +119,10 @@ jobs:
       # Firefox refuses to launch as root when $HOME belongs to another user.
       HOME: /root
     # The browser and its system libraries come with the image, at the version the
-    # check job read from the lockfile, so a Playwright bump needs no edit here. That
-    # tag comes from the lockfile, so no digest can be pinned next to it.
+    # playwright job read, so a Playwright bump needs no edit here and no digest can sit beside it.
     container:
       # jactionlint ignore=unpinned-images
-      image: mcr.microsoft.com/playwright:v${{ needs.check.outputs.playwright }}-noble
+      image: mcr.microsoft.com/playwright:v${{ needs.playwright.outputs.version }}-noble
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -153,9 +168,10 @@ jobs:
   # the token, so they skip with a notice, as does a repo without the secret.
   preview:
     name: preview
-    # Bot pull requests (Renovate, Dependabot) get no preview, so their code never sees the token.
-    if: github.event_name == 'pull_request' && !github.event.pull_request.draft && !endsWith(github.event.pull_request.user.login, '[bot]')
-    # Shares the web app job of preview-retire.yml, so a retire waits for a deploy in flight.
+    # Bot pull requests (Renovate, Dependabot, the update App) get no preview, and a bot's
+    # push does not start one. A person's later ready or reopen deploys the head as it is.
+    if: github.event_name == 'pull_request' && !github.event.pull_request.draft && github.head_ref != 'chore/copier-update' && !endsWith(github.event.pull_request.user.login, '[bot]') && !endsWith(github.actor, '[bot]')
+    # Shares the retire job's group, so a retire waits for a deploy in flight.
     concurrency:
       group: preview-${{ github.event.pull_request.number }}
     needs: check
@@ -168,29 +184,16 @@ jobs:
       name: preview
       url: ${{ steps.upload.outputs.url }}
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
       - id: gate
         env:
           TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           FORK: ${{ github.event.pull_request.head.repo.full_name != github.repository }}
-        run: |
-          missing=""
-          [ -n "$TOKEN" ] || missing=CLOUDFLARE_API_TOKEN
-          [ -n "$ACCOUNT" ] || missing="${missing:+$missing and }CLOUDFLARE_ACCOUNT_ID"
-          if [ "$FORK" = "true" ]; then
-            echo "::notice::Preview skipped: fork PR."
-            echo "run=false" >> "$GITHUB_OUTPUT"
-          elif [ -n "$missing" ]; then
-            echo "::notice::Preview skipped: $missing not set."
-            echo "run=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "run=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - if: steps.gate.outputs.run == 'true'
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
+        run: '"$GITHUB_WORKSPACE/.github/scripts/cloudflare-gate.sh" Preview'
 
       - if: steps.gate.outputs.run == 'true'
         uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
@@ -215,22 +218,31 @@ jobs:
         run: |
           printf '\n/*\n  X-Robots-Tag: noindex\n' >> dist/_headers
 
+      # This job may have queued behind a close or a draft switch: a retire that
+      # ran first must not be undone by a deploy. This step alone holds GH_TOKEN, so the
+      # deploy step, which holds the Cloudflare token, never gets it.
       - if: steps.gate.outputs.run == 'true'
-        id: upload
+        id: pr
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           PR: ${{ github.event.pull_request.number }}
         run: |-
-          # This job may have queued behind a close or a draft switch: a retire that
-          # ran first must not be undone by a deploy.
           state=$(gh api "repos/$REPO/pulls/$PR" --jq '.state + " " + (.draft|tostring)')
           if [ "$state" != "open false" ]; then
             echo "::notice::Preview skipped: pull request $PR is no longer open and ready ($state)."
-            exit 0
+            echo "open=false" >>"$GITHUB_OUTPUT"
+          else
+            echo "open=true" >>"$GITHUB_OUTPUT"
           fi
+
+      - if: steps.gate.outputs.run == 'true' && steps.pr.outputs.open == 'true'
+        id: upload
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |-
           "$GITHUB_WORKSPACE/.github/scripts/deploy-worker.sh" Preview "scattergories-pr-$PR"
 
   # Production: every push to main deploys the build the checks ran on. Without the
@@ -249,25 +261,15 @@ jobs:
       name: production
       url: ${{ steps.deploy.outputs.url }}
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
       - id: gate
         env:
           TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          missing=""
-          [ -n "$TOKEN" ] || missing=CLOUDFLARE_API_TOKEN
-          [ -n "$ACCOUNT" ] || missing="${missing:+$missing and }CLOUDFLARE_ACCOUNT_ID"
-          if [ -n "$missing" ]; then
-            echo "::notice::Production deploy skipped: $missing not set."
-            echo "run=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "run=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - if: steps.gate.outputs.run == 'true'
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
+        run: '"$GITHUB_WORKSPACE/.github/scripts/cloudflare-gate.sh" "Production deploy"'
 
       - if: steps.gate.outputs.run == 'true'
         uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
@@ -285,10 +287,14 @@ jobs:
         with:
           name: dist
           path: dist
-
+      # Keep the duplicate workers.dev origin out of search results.
+      - if: steps.gate.outputs.run == 'true'
+        run: |
+          printf '\nhttps://:worker.:subdomain.workers.dev/*\n  X-Robots-Tag: noindex\n' >> dist/_headers
       - if: steps.gate.outputs.run == 'true'
         id: deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: '"$GITHUB_WORKSPACE/.github/scripts/deploy-worker.sh" Production'
+        # --domain attaches the custom domain here only: previews deploy the same config.
+        run: '"$GITHUB_WORKSPACE/.github/scripts/deploy-worker.sh" Production "" --domain scattergories.duinlab.nl'
