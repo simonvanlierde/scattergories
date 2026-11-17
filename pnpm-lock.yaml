@@ -25,14 +25,14 @@ importers:
         specifier: 5.3.0
         version: 5.3.0
       '@lingui/core':
-        specifier: ^6.11.0
-        version: 6.11.0(@babel/core@7.29.7)
+        specifier: ^6.12.0
+        version: 6.12.0(@babel/core@7.29.7)
       '@lingui/react':
-        specifier: ^6.11.0
-        version: 6.11.0(@babel/core@7.29.7)(react@19.3.1)
+        specifier: ^6.12.0
+        version: 6.12.0(@babel/core@7.29.7)(react@19.3.1)
       lucide-react:
-        specifier: ^1.66.0
-        version: 1.66.0(@types/react@19.3.0)(react@19.3.1)
+        specifier: ^1.71.0
+        version: 1.71.0(@types/react@19.3.0)(react@19.3.1)
       react:
         specifier: ^19.3.1
         version: 19.3.1
@@ -81,7 +81,7 @@ importers:
         version: 6.11.0
       '@lingui/vite-plugin':
         specifier: ^6.11.0
-        version: 6.11.0(@babel/core@7.29.7)(@lingui/babel-plugin-lingui-macro@6.11.0(@babel/core@7.29.7))(@rolldown/plugin-babel@0.3.0(@babel/core@7.29.7)(@babel/runtime@7.29.10)(rolldown@1.2.16)(vite@8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(esbuild@0.28.2)(rolldown@1.2.16)(vite@8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
+        version: 6.11.0(@babel/core@7.29.7)(@lingui/babel-plugin-lingui-macro@6.12.0(@babel/core@7.29.7))(@rolldown/plugin-babel@0.3.0(@babel/core@7.29.7)(@babel/runtime@7.29.10)(rolldown@1.2.16)(vite@8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(esbuild@0.28.2)(rolldown@1.2.16)(vite@8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
       '@playwright/test':
         specifier: ^1.64.1
         version: 1.64.1
@@ -1126,6 +1126,15 @@ packages:
       '@babel/core':
         optional: true
 
+  '@lingui/babel-plugin-lingui-macro@6.12.0':
+    resolution: {integrity: sha512-hG7KVmE8loEOJwDQyjheJzrtpxKbvFFJ+wQ5k0N7dO9ED03mRG0HO2XCjZUsB+UZEu0CUn/k3yrwJAQ8/4/dEQ==}
+    engines: {node: '>=22.19.0'}
+    peerDependencies:
+      '@babel/core': 7.29.7
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+
   '@lingui/cli@6.11.0':
     resolution: {integrity: sha512-R5qiCOAsV6STn+O3bWF+ttngLuh7Q+wf+83J34D0xDN/5pPAnYiek26rqGFwcpM9nAESzCEM0IoQsutpGCRLvg==}
     engines: {node: '>=22.19.0'}
@@ -1143,8 +1152,21 @@ packages:
     resolution: {integrity: sha512-2TYTmbXkecuUxFU0DaPrRF8slUCzEd+G3Wh0RXws/uP2RkakvrcMx+m+ZjdVHypT/3VyjIGsCfDpFSnlLppo+g==}
     engines: {node: '>=22.19.0'}
 
+  '@lingui/conf@6.12.0':
+    resolution: {integrity: sha512-A4Xcip2Mcgd0iN/rs3RpxDc8MPlYiET9elP44knC7IVpJwH5zb7feK8NFsdtFQ3YlJebdLz6Qk6zjrCbq5TZKg==}
+    engines: {node: '>=22.19.0'}
+
   '@lingui/core@6.11.0':
     resolution: {integrity: sha512-JQLQeUCu0MWxHbBjQbrRdoPQqD15tKLFpXMaXII60TsWnfeNhcqBVhL1c2U9VStIjlc3c9S2sMaieawahyMkwQ==}
+    engines: {node: '>=22.19.0'}
+    peerDependencies:
+      babel-plugin-macros: 2 || 3
+    peerDependenciesMeta:
+      babel-plugin-macros:
+        optional: true
+
+  '@lingui/core@6.12.0':
+    resolution: {integrity: sha512-ya/N3Jb64MiaovtEy58NleSsKFL0iTRqRxEZDXtzNllbd47yOFe3hENFD4OaI2wJByjZMZfJprfw4p9jQeYPTQ==}
     engines: {node: '>=22.19.0'}
     peerDependencies:
       babel-plugin-macros: 2 || 3
@@ -1158,6 +1180,10 @@ packages:
 
   '@lingui/message-utils@6.11.0':
     resolution: {integrity: sha512-pRRELzVBQyXKhdFzhOi98hCfRDCHBhQmmCxraxrSkuthO+YD+4Xurap+9LiejAQqj1D2HAUxC+pEc7I9MPXfzQ==}
+    engines: {node: '>=22.19.0'}
+
+  '@lingui/message-utils@6.12.0':
+    resolution: {integrity: sha512-WIRy9tnthJVudnEcNdnNNh2ZMyeSoM1eTrB8BDK5A/+BefWoHSH/Pue7wEAhRlepPgVNp+lv+/ax5O16EEqlBg==}
     engines: {node: '>=22.19.0'}
 
   '@lingui/native-tools-android-arm64@0.2.0':
@@ -1224,8 +1250,8 @@ packages:
     peerDependencies:
       '@lingui/conf': ^6.0.1
 
-  '@lingui/react@6.11.0':
-    resolution: {integrity: sha512-cHPALGiDeIeHOVOuBaYvgcs3ES4HuGSLM5DD4Q+RwneCP64gytHCoiSWhf8AfNySV7CxfNbtPSmuCqAP3NP+qA==}
+  '@lingui/react@6.12.0':
+    resolution: {integrity: sha512-p+s6wPInjPUA4y/V5ywNzY2ZRBCQgmtMczDHBQVLat24hBO5vMRNBY5uz4xKjC3xTDRPlUKWasRL3BgRKbbU+w==}
     engines: {node: '>=22.19.0'}
     peerDependencies:
       babel-plugin-macros: 2 || 3
@@ -2386,8 +2412,8 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
-  lucide-react@1.66.0:
-    resolution: {integrity: sha512-8zjbi/Us+ETXqfBwmXF/FHrWGIqOdE6zT1yUdRJLQVoptomSkB0zdFWVIM667t9K8djWDaXdkBkqi2qVTuDNiw==}
+  lucide-react@1.71.0:
+    resolution: {integrity: sha512-8YtvF+bqT/EMqAXU7kWvYdRu+TV9j4kS1eIS7IbN1j1Z1DgupbrTL0nDIygdqgBDTD7AJPP607VdVgzDTar4zA==}
     peerDependencies:
       '@types/react': '*'
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -3682,6 +3708,13 @@ snapshots:
     optionalDependencies:
       '@babel/core': 7.29.7
 
+  '@lingui/babel-plugin-lingui-macro@6.12.0(@babel/core@7.29.7)':
+    dependencies:
+      '@lingui/conf': 6.12.0
+      '@lingui/message-utils': 6.12.0
+    optionalDependencies:
+      '@babel/core': 7.29.7
+
   '@lingui/cli@6.11.0(esbuild@0.28.2)(rolldown@1.2.16)':
     dependencies:
       '@babel/core': 7.29.7
@@ -3720,10 +3753,24 @@ snapshots:
       lilconfig: 3.1.4
       normalize-path: 3.0.0
 
+  '@lingui/conf@6.12.0':
+    dependencies:
+      jest-validate: 29.7.0
+      jiti: 2.7.0
+      lilconfig: 3.1.4
+      normalize-path: 3.0.0
+
   '@lingui/core@6.11.0(@babel/core@7.29.7)':
     dependencies:
       '@lingui/babel-plugin-lingui-macro': 6.11.0(@babel/core@7.29.7)
       '@lingui/message-utils': 6.11.0
+    transitivePeerDependencies:
+      - '@babel/core'
+
+  '@lingui/core@6.12.0(@babel/core@7.29.7)':
+    dependencies:
+      '@lingui/babel-plugin-lingui-macro': 6.12.0(@babel/core@7.29.7)
+      '@lingui/message-utils': 6.12.0
     transitivePeerDependencies:
       - '@babel/core'
 
@@ -3734,6 +3781,12 @@ snapshots:
       pofile-ts: 4.0.3
 
   '@lingui/message-utils@6.11.0':
+    dependencies:
+      '@messageformat/date-skeleton': 1.1.0
+      '@messageformat/parser': 5.2.0
+      '@noble/hashes': 2.4.0
+
+  '@lingui/message-utils@6.12.0':
     dependencies:
       '@messageformat/date-skeleton': 1.1.0
       '@messageformat/parser': 5.2.0
@@ -3781,16 +3834,16 @@ snapshots:
       '@lingui/native-tools-win32-arm64-msvc': 0.2.0
       '@lingui/native-tools-win32-x64-msvc': 0.2.0
 
-  '@lingui/react@6.11.0(@babel/core@7.29.7)(react@19.3.1)':
+  '@lingui/react@6.12.0(@babel/core@7.29.7)(react@19.3.1)':
     dependencies:
-      '@lingui/babel-plugin-lingui-macro': 6.11.0(@babel/core@7.29.7)
-      '@lingui/core': 6.11.0(@babel/core@7.29.7)
+      '@lingui/babel-plugin-lingui-macro': 6.12.0(@babel/core@7.29.7)
+      '@lingui/core': 6.12.0(@babel/core@7.29.7)
       react: 19.3.1
       use-sync-external-store: 1.7.0(react@19.3.1)
     transitivePeerDependencies:
       - '@babel/core'
 
-  '@lingui/vite-plugin@6.11.0(@babel/core@7.29.7)(@lingui/babel-plugin-lingui-macro@6.11.0(@babel/core@7.29.7))(@rolldown/plugin-babel@0.3.0(@babel/core@7.29.7)(@babel/runtime@7.29.10)(rolldown@1.2.16)(vite@8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(esbuild@0.28.2)(rolldown@1.2.16)(vite@8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))':
+  '@lingui/vite-plugin@6.11.0(@babel/core@7.29.7)(@lingui/babel-plugin-lingui-macro@6.12.0(@babel/core@7.29.7))(@rolldown/plugin-babel@0.3.0(@babel/core@7.29.7)(@babel/runtime@7.29.10)(rolldown@1.2.16)(vite@8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(esbuild@0.28.2)(rolldown@1.2.16)(vite@8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))':
     dependencies:
       '@lingui/cli': 6.11.0(esbuild@0.28.2)(rolldown@1.2.16)
       '@lingui/conf': 6.11.0
@@ -3798,7 +3851,7 @@ snapshots:
       vite: 8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
     optionalDependencies:
       '@babel/core': 7.29.7
-      '@lingui/babel-plugin-lingui-macro': 6.11.0(@babel/core@7.29.7)
+      '@lingui/babel-plugin-lingui-macro': 6.12.0(@babel/core@7.29.7)
       '@rolldown/plugin-babel': 0.3.0(@babel/core@7.29.7)(@babel/runtime@7.29.10)(rolldown@1.2.16)(vite@8.3.5(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
       rolldown: 1.2.16
     transitivePeerDependencies:
@@ -4681,7 +4734,7 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  lucide-react@1.66.0(@types/react@19.3.0)(react@19.3.1):
+  lucide-react@1.71.0(@types/react@19.3.0)(react@19.3.1):
     dependencies:
       react: 19.3.1
     optionalDependencies:
