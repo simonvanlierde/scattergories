@@ -128,7 +128,7 @@ The maintainer runs `just release X.Y.Z` twice:
    pushes the version tag.
 
 The release workflow verifies the tag signature and publishes that version's changelog section.
-[Publishing](https://github.com/simonvanlierde/project-templates/blob/main/docs/usage.md#publishing)
+[Publishing](https://github.com/simonvanlierde/project-templates/blob/main/docs/setup.md#publishing)
 has the one-time setup.
 
 ### Repository setup

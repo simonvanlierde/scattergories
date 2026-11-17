@@ -72,6 +72,11 @@ words:
   - scattergories
   - duinlab
   - Wikitext
+  - creatordate
+  - licensecheck
+  - signingkey
+  - surrogateescape
+  - xfail
   # Codecov setting
   - carryforward
   # Fonts

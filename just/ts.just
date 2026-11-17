@@ -2,15 +2,15 @@
 ts-sync:
     pnpm install
 
-# What CI runs: lint and unused code, types, tests, build, bundle budget, licenses, dependency audit.
+# What CI runs: lint and unused code, types, tests, build, bundle budget, dependency audit, licenses.
 ts-check:
     pnpm run check
     pnpm run typecheck
     pnpm run coverage
     pnpm run build
     pnpm run budget
-    pnpm run licenses
     pnpm audit --prod --audit-level=moderate
+    pnpm run licenses
 
 # Fix what biome can fix, then format.
 ts-fmt:
@@ -29,8 +29,10 @@ ts-test *args:
 ts-e2e *args:
     pnpm run test:e2e {{ args }}
 
-# Screenshot every route at 390 and 1440 px, light and dark, into the gitignored
-# shots/ (`<route>-<width>-<scheme>.png`). Builds and serves the app like ts-e2e.
+# The files go into the gitignored shots/ (`<route>-<width>-<scheme>.png`). It builds
+# and serves the app like ts-e2e.
+
+# Screenshot every route at 390 and 1440 px, light and dark.
 ts-shots:
     rm -rf ./shots
     SHOTS=1 pnpm exec playwright test --project shots
